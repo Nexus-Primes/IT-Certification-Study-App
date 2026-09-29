@@ -39,12 +39,17 @@ import {
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v204';
+  const APP_VERSION = 'v205';
   // Shown in the "What's new" panel (Settings, command palette, or automatically once per
   // release). Newest first; keep entries short and user-facing. Entries before v133 predate
   // this app having per-build version numbers at all, so their "version" is the date instead —
   // still real history, just not tagged with a build number the way later entries are.
   const CHANGELOG = [
+    { version: 'v205', date: 'September 2026', title: 'Mistake patterns, keyboard accessibility, and study packets', items: [
+      "New: \"Mistake patterns\" (linked from the Readiness report) — mines your last 25 sessions' actual wrong answers for real patterns: specific answer pairs you keep confusing, and which question phrasing styles (negative wording, \"BEST fit\", etc.) trip you up most, not just which domains.",
+      "New: \"Study packet\" (linked from Study guide) — bundles one domain's guide chapter, key terms, and related labs into a single page, for printing or saving as a PDF to study somewhere this app isn't open.",
+      "Fixed: the custom dropdown and date-picker menus (used throughout Practice, Settings, and Study plan) now support real keyboard navigation — arrow keys, Home/End, and type-ahead in dropdowns; arrow-key day-by-day browsing in the date picker, plus full spoken dates instead of a bare number for screen readers."
+    ] },
     { version: 'v204', date: 'September 2026', title: 'Under-the-hood cleanup', items: [
       "Changed: moved every pure helper (icons, date formatting, shuffling) out of app.js into its own module — no visible change, just a safer foundation to build on. Also removed two accidental duplicate functions found along the way."
     ] },
@@ -331,7 +336,9 @@ import {
     settings: ['Settings & data', 'Make it yours'], report: ['Readiness report', 'A snapshot to print or save'],
     'guide-digest': ['Highlights digest', "Everything you've marked worth remembering"],
     achievements: ['Achievements', 'Milestones earned along the way'],
-    examday: ['Exam day', 'Everything for the final stretch, in one place']
+    examday: ['Exam day', 'Everything for the final stretch, in one place'],
+    mistakes: ['Mistake patterns', "What keeps tripping you up, not just where"],
+    packet: ['Study packet', 'One domain, ready to print or save offline']
   };
 
   // iconPaths/icon/hydrateIcons now live in utils.js (imported above).
@@ -380,6 +387,11 @@ import {
 
     const syncLabel = () => { trigger.querySelector('.xselect-label').textContent = select.options[select.selectedIndex]?.textContent || ''; };
     const close = () => { menu.classList.add('hidden'); trigger.setAttribute('aria-expanded', 'false'); };
+    const optionEls = () => [...menu.querySelectorAll('.xselect-option')];
+    // Real focus, not aria-activedescendant — every option is already a genuine focusable
+    // button, so moving actual DOM focus between them works with any screen reader for free,
+    // instead of needing the container to own focus and announce a virtual position.
+    const focusOptionAt = index => { const opts = optionEls(); if (!opts.length) return; opts[((index % opts.length) + opts.length) % opts.length].focus(); };
     const open = () => {
       closeAnyCustomPopover();
       menu.innerHTML = '';
@@ -391,7 +403,26 @@ import {
       });
       menu.classList.remove('hidden'); trigger.setAttribute('aria-expanded', 'true');
       openCustomPopover = close;
+      // Land keyboard focus on the current selection (or the first option), the same way a
+      // native <select> highlights the current value the instant it opens.
+      focusOptionAt(Math.max(0, select.selectedIndex));
     };
+    // Arrow keys / Home / End move real focus between options; typing a letter jumps to the
+    // next option starting with it — the same interaction a native <select> already gives you
+    // for free, which a custom-built replacement otherwise silently drops.
+    menu.addEventListener('keydown', event => {
+      const opts = optionEls(); const current = opts.indexOf(document.activeElement);
+      if (event.key === 'ArrowDown') { event.preventDefault(); focusOptionAt(current + 1); }
+      else if (event.key === 'ArrowUp') { event.preventDefault(); focusOptionAt(current - 1); }
+      else if (event.key === 'Home') { event.preventDefault(); focusOptionAt(0); }
+      else if (event.key === 'End') { event.preventDefault(); focusOptionAt(opts.length - 1); }
+      else if (event.key === 'Escape') { event.preventDefault(); close(); trigger.focus(); }
+      else if (event.key.length === 1 && /[a-z0-9]/i.test(event.key)) {
+        const letter = event.key.toLowerCase(); const from = current + 1;
+        const match = opts.slice(from).concat(opts.slice(0, from)).find(o => o.textContent.trim().toLowerCase().startsWith(letter));
+        if (match) { event.preventDefault(); match.focus(); }
+      }
+    });
     trigger.addEventListener('click', () => (menu.classList.contains('hidden') ? open() : close()));
     select.addEventListener('change', syncLabel);
     syncLabel();
@@ -413,13 +444,23 @@ import {
     trigger.innerHTML = `<span class="xdate-trigger-label"></span>${icon('calendar')}`;
     const popover = document.createElement('div');
     popover.className = 'xdate-popover hidden';
+    popover.setAttribute('role', 'dialog');
+    popover.setAttribute('aria-label', 'Choose a date');
     wrap.append(trigger, popover);
 
     let viewDate = input.value ? new Date(`${input.value}T00:00:00`) : new Date();
+    // The day currently reachable by Tab (roving tabindex, like a native date grid) — separate
+    // from the selected value, since arrow-key browsing moves this around before anything is
+    // actually chosen.
+    let focusDateStr = input.value || todayKey();
     const syncLabel = () => { trigger.querySelector('.xdate-trigger-label').textContent = input.value ? formatDateKey(input.value) : 'mm/dd/yyyy'; };
     const setValue = value => { input.value = value; input.dispatchEvent(new Event('change', { bubbles: true })); syncLabel(); };
     const close = () => popover.classList.add('hidden');
-    const render = () => {
+    // A screen reader hearing a bare day button ("15, button") has no idea what month or year
+    // it's in — the full date needs to be the accessible name, even though the visible label
+    // stays just the day number for a scannable grid.
+    const dayLabel = dateStr => new Intl.DateTimeFormat(undefined, { month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(`${dateStr}T00:00:00`));
+    const render = focusAfter => {
       const year = viewDate.getFullYear(); const month = viewDate.getMonth();
       const startDow = new Date(year, month, 1).getDay();
       const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -429,19 +470,39 @@ import {
       for (let i = startDow - 1; i >= 0; i--) cells.push({ day: daysInPrev - i, muted: true, dateStr: null });
       for (let d = 1; d <= daysInMonth; d++) cells.push({ day: d, muted: false, dateStr: `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}` });
       while (cells.length % 7 !== 0) cells.push({ day: '', muted: true, dateStr: null });
-      popover.innerHTML = `<div class="xdate-head"><button type="button" class="xdate-nav" data-nav="-1">${icon('chevron')}</button><strong>${escapeHtml(viewDate.toLocaleDateString(undefined, { month: 'long', year: 'numeric' }))}</strong><button type="button" class="xdate-nav" data-nav="1">${icon('chevron')}</button></div><div class="xdate-grid">${['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => `<div class="xdate-dow">${d}</div>`).join('')}${cells.map(c => `<button type="button" class="xdate-day${c.muted ? ' muted' : ''}${c.dateStr && c.dateStr === input.value ? ' selected' : ''}${c.dateStr === todayStr ? ' today' : ''}" ${c.dateStr ? `data-date="${c.dateStr}"` : 'disabled'}>${c.day}</button>`).join('')}</div><div class="xdate-foot"><button type="button" data-act="clear">Clear</button><button type="button" data-act="today">Today</button></div>`;
-      popover.querySelectorAll('.xdate-nav').forEach(btn => btn.addEventListener('click', () => { viewDate = new Date(year, month + Number(btn.dataset.nav), 1); render(); }));
-      popover.querySelectorAll('.xdate-day[data-date]').forEach(btn => btn.addEventListener('click', () => { setValue(btn.dataset.date); close(); }));
-      popover.querySelector('[data-act="clear"]').addEventListener('click', () => { setValue(''); close(); });
-      popover.querySelector('[data-act="today"]').addEventListener('click', () => { setValue(todayStr); close(); });
+      popover.innerHTML = `<div class="xdate-head"><button type="button" class="xdate-nav" data-nav="-1" aria-label="Previous month">${icon('chevron')}</button><strong aria-live="polite">${escapeHtml(viewDate.toLocaleDateString(undefined, { month: 'long', year: 'numeric' }))}</strong><button type="button" class="xdate-nav" data-nav="1" aria-label="Next month">${icon('chevron')}</button></div><div class="xdate-grid" role="grid">${['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => `<div class="xdate-dow">${d}</div>`).join('')}${cells.map(c => `<button type="button" class="xdate-day${c.muted ? ' muted' : ''}${c.dateStr && c.dateStr === input.value ? ' selected' : ''}${c.dateStr === todayStr ? ' today' : ''}" ${c.dateStr ? `data-date="${c.dateStr}" aria-label="${escapeHtml(dayLabel(c.dateStr))}" tabindex="${c.dateStr === focusDateStr ? '0' : '-1'}"` : 'disabled aria-hidden="true"'}>${c.day}</button>`).join('')}</div><div class="xdate-foot"><button type="button" data-act="clear">Clear</button><button type="button" data-act="today">Today</button></div>`;
+      popover.querySelectorAll('.xdate-nav').forEach(btn => btn.addEventListener('click', () => { viewDate = new Date(year, month + Number(btn.dataset.nav), 1); focusDateStr = `${viewDate.getFullYear()}-${String(viewDate.getMonth() + 1).padStart(2, '0')}-01`; render(true); }));
+      popover.querySelectorAll('.xdate-day[data-date]').forEach(btn => btn.addEventListener('click', () => { setValue(btn.dataset.date); close(); trigger.focus(); }));
+      popover.querySelector('[data-act="clear"]').addEventListener('click', () => { setValue(''); close(); trigger.focus(); });
+      popover.querySelector('[data-act="today"]').addEventListener('click', () => { setValue(todayStr); close(); trigger.focus(); });
+      if (focusAfter) popover.querySelector(`.xdate-day[data-date="${focusDateStr}"]`)?.focus();
     };
+    // Left/right move a day, up/down move a week, crossing into the next or previous month
+    // re-renders the grid around the new date — the same browsing model a native date input's
+    // own picker uses, instead of forcing Tab-by-Tab travel through every day in between.
+    const moveFocus = deltaDays => {
+      focusDateStr = addDays(focusDateStr, deltaDays);
+      const next = new Date(`${focusDateStr}T00:00:00`);
+      if (next.getMonth() !== viewDate.getMonth() || next.getFullYear() !== viewDate.getFullYear()) viewDate = new Date(next.getFullYear(), next.getMonth(), 1);
+      render(true);
+    };
+    popover.addEventListener('keydown', event => {
+      if (!event.target.classList.contains('xdate-day')) return;
+      if (event.key === 'ArrowRight') { event.preventDefault(); moveFocus(1); }
+      else if (event.key === 'ArrowLeft') { event.preventDefault(); moveFocus(-1); }
+      else if (event.key === 'ArrowDown') { event.preventDefault(); moveFocus(7); }
+      else if (event.key === 'ArrowUp') { event.preventDefault(); moveFocus(-7); }
+      else if (event.key === 'Escape') { event.preventDefault(); close(); trigger.focus(); }
+    });
     trigger.addEventListener('click', () => {
       if (!popover.classList.contains('hidden')) { close(); return; }
       closeAnyCustomPopover();
       viewDate = input.value ? new Date(`${input.value}T00:00:00`) : new Date();
+      focusDateStr = input.value || todayKey();
       render();
       popover.classList.remove('hidden');
       openCustomPopover = close;
+      popover.querySelector(`.xdate-day[data-date="${focusDateStr}"]`)?.focus();
     });
     syncLabel();
   }
@@ -683,6 +744,7 @@ import {
   let expandedDomains = new Set();
   let glossaryQuery = '';
   let glossaryDomain = 'all';
+  let packetDomain = 'all';
   let labDomainFilter = null;
   let labCoreFilter = 'all';
   let labQuery = '';
@@ -801,7 +863,7 @@ import {
   async function activateCert(certId) {
     if (!certId || certId === activeCertId) return;
     activeSession = null; flashSession = null; activeLab = null; activeCrossword = null;
-    glossaryQuery = ''; glossaryDomain = 'all'; labDomainFilter = null; labCoreFilter = 'all'; labQuery = ''; commandQuery = '';
+    glossaryQuery = ''; glossaryDomain = 'all'; packetDomain = 'all'; labDomainFilter = null; labCoreFilter = 'all'; labQuery = ''; commandQuery = '';
     loadCertData(certId);
     await reloadStateForActiveCert();
     updateCertChrome();
@@ -885,7 +947,7 @@ import {
   async function switchProfile(profileId) {
     if (!profileId || profileId === activeProfileId) { closeDialog(); return; }
     activeSession = null; flashSession = null; activeLab = null; activeCrossword = null;
-    glossaryQuery = ''; glossaryDomain = 'all'; labDomainFilter = null; labCoreFilter = 'all'; labQuery = ''; commandQuery = '';
+    glossaryQuery = ''; glossaryDomain = 'all'; packetDomain = 'all'; labDomainFilter = null; labCoreFilter = 'all'; labQuery = ''; commandQuery = '';
     activeReview = null; resultsView = null;
     activeProfileId = profileId;
     try { localStorage.setItem(ACTIVE_PROFILE_KEY, profileId); } catch {}
@@ -2052,7 +2114,7 @@ import {
   const ROUTE_GROUP = {
     flashcards: 'study', crossword: 'study', glossary: 'study', guide: 'study', notes: 'study',
     practice: 'practice', exams: 'practice', labs: 'practice',
-    objectives: 'plan', history: 'plan', planner: 'plan'
+    objectives: 'plan', history: 'plan', planner: 'plan', achievements: 'plan'
   };
   let navOpenGroups;
   try {
@@ -2086,7 +2148,7 @@ import {
     if (location.hash === `#${route}`) renderRoute(); else location.hash = route;
   }
 
-  const CERTS_ONLY_ROUTES = new Set(['practice', 'flashcards', 'exams', 'objectives', 'planner', 'crossword', 'report', 'guide-digest', 'achievements', 'examday']);
+  const CERTS_ONLY_ROUTES = new Set(['practice', 'flashcards', 'exams', 'objectives', 'planner', 'crossword', 'report', 'guide-digest', 'achievements', 'examday', 'mistakes']);
 
   function renderRoute() {
     clearInterval(timerHandle); timerHandle = null;
@@ -2121,7 +2183,7 @@ import {
     else ({ dashboard: renderDashboard, planner: renderPlanner, practice: renderPractice, exams: renderExams, flashcards: renderFlashcards,
       crossword: renderCrosswordHub, notes: renderNotes,
       glossary: renderGlossary, guide: renderStudyGuide, labs: renderLabs, commands: renderCommandReference, objectives: renderObjectives, history: renderHistory, settings: renderSettings,
-      report: renderReadinessReport, 'guide-digest': renderHighlightsDigest, achievements: renderAchievementsPage, examday: renderExamDay }[route] || renderDashboard)();
+      report: renderReadinessReport, 'guide-digest': renderHighlightsDigest, achievements: renderAchievementsPage, examday: renderExamDay, mistakes: renderMistakePatterns, packet: renderStudyPacket }[route] || renderDashboard)();
     main.classList.remove('page-enter'); void main.offsetWidth; main.classList.add('page-enter');
     hydrateIcons(main); updateChrome(); main.focus({ preventScroll: true }); window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -2939,6 +3001,54 @@ import {
       .map(row => ({ concept: row.concept, daysSince: Math.floor((Date.now() - row.lastSeen) / 86400000) }))
       .sort((a, b) => b.daysSince - a.daysSince)
       .slice(0, limit);
+  }
+
+  // ---------- Mistake-pattern mining ----------
+  // A domain mastery percentage says WHERE you're weak; this looks at HOW you're actually
+  // getting things wrong — mined from the last 25 sessions' full per-question review detail
+  // (finishSession keeps `review` only on the most recent 25, so this is a recent-behavior
+  // signal, not a lifetime one — which is arguably what you want for "what's tripping me up
+  // right now" anyway).
+  function getRecentReviewEntries() {
+    return state.sessions.flatMap(session => (session.review || []).map(entry => ({ ...entry, sessionDate: session.date })));
+  }
+
+  // Two specific answer choices that keep getting swapped for each other — not just "you got
+  // this concept wrong sometimes", but "you specifically keep picking B when the answer is C."
+  // Unordered pair (A can be the correct answer in one miss and the wrong pick in another) since
+  // either direction is the same underlying confusion. Requires 2+ occurrences so one fluke
+  // wrong click doesn't read as a "pattern."
+  function getConfusionPairs(limit = 6) {
+    const misses = getRecentReviewEntries().filter(entry => !entry.firstCorrect && entry.selected != null && Array.isArray(entry.options));
+    const byKey = new Map();
+    misses.forEach(entry => {
+      const wrongText = entry.options[entry.selected]; const correctText = entry.options[entry.correct];
+      if (!wrongText || !correctText || wrongText === correctText) return;
+      const key = [wrongText, correctText].sort().join(' ||| ');
+      if (!byKey.has(key)) { const [a, b] = key.split(' ||| '); byKey.set(key, { a, b, count: 0, conceptId: entry.conceptId, domain: entry.domain }); }
+      byKey.get(key).count++;
+    });
+    return [...byKey.values()].filter(row => row.count >= 2).sort((a, b) => b.count - a.count).slice(0, limit);
+  }
+
+  // Does HOW a question is worded correlate with missing it, independent of which concept it's
+  // testing? A technician who reliably knows the material can still get tripped up specifically
+  // by negative phrasing ("which is NOT...") or by a "BEST fit" question when several options are
+  // technically defensible. Needs a real sample per style (5+) before a miss rate means anything.
+  const MISTAKE_PHRASING_PATTERNS = [
+    { id: 'negative', label: 'Negative phrasing ("NOT" / "EXCEPT")', test: p => /\b(NOT|EXCEPT)\b/.test(p) },
+    { id: 'best-fit', label: '"BEST fit" framing', test: p => /\bBEST\b/.test(p) },
+    { id: 'most-likely', label: '"MOST likely" framing', test: p => /\bMOST likely\b/i.test(p) },
+    { id: 'first-step', label: '"FIRST" / next-step framing', test: p => /\bFIRST\b/.test(p) }
+  ];
+
+  function getPhrasingPatternStats() {
+    const entries = getRecentReviewEntries();
+    return MISTAKE_PHRASING_PATTERNS.map(pattern => {
+      const matches = entries.filter(entry => pattern.test(entry.prompt || ''));
+      const missed = matches.filter(entry => !entry.firstCorrect).length;
+      return { ...pattern, seen: matches.length, missed, missRate: matches.length ? Math.round((missed / matches.length) * 100) : null };
+    }).filter(row => row.seen >= 5).sort((a, b) => b.missRate - a.missRate);
   }
 
   function nextQuestion() {
@@ -4587,7 +4697,7 @@ import {
     // show a banner rather than link to a chapter that's no longer there.
     const savedPosition = state.guideReadPosition;
     const resumeDomain = savedPosition && CERT.cores[savedPosition.core] && domainById[savedPosition.domain] ? domainById[savedPosition.domain] : null;
-    main.innerHTML = `<div class="section-head"><div><h2>Study guide</h2><p>Plain-language chapters on what each domain actually covers, how it's used, and why it matters — read this before drilling questions, or whenever a topic still feels unfamiliar. Select any text to highlight it.</p></div>${chapters.length ? `<div class="button-row"><button class="ghost small hidden" type="button" id="guide-stop-speech" data-action="guide-speak-stop">${icon('x')} Stop reading</button><button class="ghost small" type="button" data-action="start-focus-timer">${icon('clock')} Focus timer</button><button class="ghost small" type="button" data-route="guide-digest">${icon('spark')} View highlights</button><button class="ghost small" type="button" data-action="print-page">${icon('download')} Print / save</button></div>` : ''}</div>
+    main.innerHTML = `<div class="section-head"><div><h2>Study guide</h2><p>Plain-language chapters on what each domain actually covers, how it's used, and why it matters — read this before drilling questions, or whenever a topic still feels unfamiliar. Select any text to highlight it.</p></div>${chapters.length ? `<div class="button-row"><button class="ghost small hidden" type="button" id="guide-stop-speech" data-action="guide-speak-stop">${icon('x')} Stop reading</button><button class="ghost small" type="button" data-action="start-focus-timer">${icon('clock')} Focus timer</button><button class="ghost small" type="button" data-route="guide-digest">${icon('spark')} View highlights</button><button class="ghost small" type="button" data-route="packet">${icon('folder')} Study packet</button><button class="ghost small" type="button" data-action="print-page">${icon('download')} Print / save</button></div>` : ''}</div>
       ${resumeDomain ? `<div class="notice" style="margin-bottom:18px">${icon('book')}<span>Continue reading <strong>${escapeHtml(resumeDomain.name)}</strong>${savedPosition.core !== objectiveCore ? ` <small style="color:var(--muted-2)">(${escapeHtml(CERT.cores[savedPosition.core].name)})</small>` : ''}</span><button class="secondary small" style="margin-left:auto" data-action="guide-resume-position">${icon('arrow')} Jump there</button></div>` : ''}
       ${coreEntries.length > 1 ? `<div class="domain-tabs">${coreEntries.map(([key, c]) => `<button class="tab-button ${objectiveCore === key ? 'active' : ''}" data-action="objective-core" data-core="${key}">${escapeHtml(c.name)} · ${escapeHtml(c.code)}</button>`).join('')}</div>` : ''}
       ${chapters.length ? `<div class="domain-tabs" style="margin-bottom:24px">${chapters.map(chapter => `<button class="tab-button" data-action="guide-jump" data-domain-id="${chapter.domain}">${escapeHtml(domainById[chapter.domain].name)}</button>`).join('')}</div>` : ''}
@@ -4611,6 +4721,37 @@ import {
         : `<div class="empty-state"><div><span class="stat-icon" style="margin:0 auto 12px">${icon('book')}</span><h3>No study guide yet for ${escapeHtml(core.name)}</h3><p>Written chapters haven't been added for this track yet — the Glossary and Exam Map still cover every term and objective in the meantime.</p><button class="secondary" data-route="glossary">Open Glossary</button></div></div>`}`;
     updateGuideSpeechUI();
     if (chapters.length) observeGuideChapters();
+  }
+
+  function studyPacketDomainOptions() {
+    const all = Object.values(CERT.cores).flatMap(core => core.domains);
+    return `<option value="all" ${packetDomain === 'all' ? 'selected' : ''}>Whole track (${all.length} domains)</option>${all.map(domain => `<option value="${domain.id}" ${packetDomain === domain.id ? 'selected' : ''}>${escapeHtml(domain.name)}</option>`).join('')}`;
+  }
+
+  // A bundled, offline-readable packet for one domain or the whole track — guide chapters, key
+  // terms, and the labs that go with them, in one page meant to be printed or saved as a PDF and
+  // read somewhere this app isn't open. Uses GUIDE directly (not getGuideChapters(), which is
+  // scoped to whichever core's tab is currently active on the Study guide page) so "whole track"
+  // genuinely means every domain across every core, not just the one you happened to be viewing.
+  function renderStudyPacket() {
+    const chapters = packetDomain === 'all' ? GUIDE : GUIDE.filter(chapter => chapter.domain === packetDomain);
+    const concepts = allConcepts().filter(concept => packetDomain === 'all' || concept.domain === packetDomain);
+    const labs = LABS.filter(lab => packetDomain === 'all' || lab.domain === packetDomain);
+    main.innerHTML = `<div class="section-head"><div><h2>Study packet</h2><p>Guide chapters, key terms, and the labs that go with them, bundled for offline reading — pick one domain or the whole track, then print or save as a PDF.</p></div></div>
+      <div class="builder" style="grid-template-columns:1fr auto;margin-bottom:22px">
+        <div class="field"><label for="packet-domain">Domain</label><select id="packet-domain">${studyPacketDomainOptions()}</select></div>
+        <button class="secondary" type="button" data-action="print-page" style="align-self:end">${icon('download')} Print / save</button>
+      </div>
+      ${chapters.length ? chapters.map(chapter => {
+        const domain = domainById[chapter.domain];
+        return `<article class="guide-chapter">
+          <div class="guide-chapter-head"><div><span class="eyebrow">Domain ${domain.number} · ${domain.weight}% of the exam</span><h3>${escapeHtml(domain.name)}</h3></div></div>
+          <p class="guide-overview">${escapeHtml(chapter.overview)}</p>
+          ${chapter.sections.map(section => `<div class="guide-section"><h4>${escapeHtml(section.heading)}</h4>${section.objectives ? `<div class="guide-section-meta">Covers objective${section.objectives.length === 1 ? '' : 's'} ${section.objectives.join(', ')}</div>` : ''}${section.body.split('\n\n').map(p => `<p>${escapeHtml(p)}</p>`).join('')}</div>`).join('')}
+        </article>`;
+      }).join('') : `<div class="notice" style="margin-bottom:22px">${icon('info')}<span>No written guide chapter for this domain yet — the terms and labs below still cover it.</span></div>`}
+      ${concepts.length ? `<section class="panel" style="margin-bottom:22px"><div class="panel-header"><div><h2>Key terms</h2><p>${concepts.length} term${concepts.length === 1 ? '' : 's'}.</p></div></div><div class="panel-body"><div class="glossary-list">${concepts.map(concept => `<article class="glossary-item"><strong>${escapeHtml(concept.term)}</strong><p>${escapeHtml(concept.definition)}</p></article>`).join('')}</div></div></section>` : ''}
+      ${labs.length ? `<section class="panel"><div class="panel-header"><div><h2>Related labs</h2><p>Hands-on practice for this material — open the app to actually run these.</p></div></div><div class="panel-body"><ul class="gap-list">${labs.map(lab => `<li><span>${escapeHtml(lab.title)}</span><span class="tag">${lab.difficulty}</span></li>`).join('')}</ul></div></section>` : ''}`;
   }
 
   // Every highlighted snippet across every chapter, in one place — reconstructed on demand from
@@ -4885,7 +5026,7 @@ import {
       timelineLine = `${countdown.days} day${countdown.days === 1 ? '' : 's'} until the exam on ${formatPlanDate(countdown.date)}. Not enough session history yet for a pace projection.`;
     }
 
-    main.innerHTML = `<div class="section-head"><div><h2>Readiness report</h2><p>A one-page snapshot of where you stand — print it, save it, or check it before exam day.</p></div><div class="button-row report-actions"><button class="ghost small" data-route="history">${icon('arrow')} Back to Progress</button><button class="ghost small" data-route="examday">${icon('flag')} Exam day checklist</button><button class="secondary small" data-action="print-page">${icon('download')} Print / save</button></div></div>
+    main.innerHTML = `<div class="section-head"><div><h2>Readiness report</h2><p>A one-page snapshot of where you stand — print it, save it, or check it before exam day.</p></div><div class="button-row report-actions"><button class="ghost small" data-route="history">${icon('arrow')} Back to Progress</button><button class="ghost small" data-route="mistakes">${icon('repeat')} Mistake patterns</button><button class="ghost small" data-route="examday">${icon('flag')} Exam day checklist</button><button class="secondary small" data-action="print-page">${icon('download')} Print / save</button></div></div>
       <section class="report-page">
         <header class="report-head">
           <div><span class="eyebrow">${escapeHtml(CERT.name)}</span><h1>Readiness Report</h1><p>${coreEntries.map(([, c]) => escapeHtml(c.code)).join(' · ')} · Generated ${generatedOn}${metaState.displayName ? ` · Prepared for ${escapeHtml(metaState.displayName)}` : ''}</p></div>
@@ -4966,6 +5107,24 @@ import {
           if (!result) return `<div class="schedule-row" style="grid-template-columns:1fr auto"><div class="mastery-label"><strong>${escapeHtml(core.name)}</strong><small>${escapeHtml(core.code)} · no result recorded yet</small></div><button class="ghost small" data-action="record-exam-result" data-core="${coreId}">${icon('edit')} Record result</button></div>`;
           return `<div class="schedule-row" style="grid-template-columns:1fr auto auto"><div class="mastery-label"><strong>${escapeHtml(core.name)}</strong><small>${escapeHtml(core.code)} · ${result.score}/900 on ${formatDateKey(result.date)}${passed ? ' · Passed' : ' · Below passing'}</small></div><button class="ghost small" data-action="record-exam-result" data-core="${coreId}">${icon('edit')} Edit</button>${passed ? `<button class="secondary small" data-action="download-pass-card" data-core="${coreId}">${icon('download')} Pass card</button>` : ''}</div>`;
         }).join('')}</div></div>
+      </section>`;
+  }
+
+  // A domain mastery percentage says where you're weak; this says how you're actually getting
+  // things wrong — mined from real recent wrong answers rather than aggregate accuracy.
+  function renderMistakePatterns() {
+    const pairs = getConfusionPairs(6);
+    const phrasing = getPhrasingPatternStats();
+    main.innerHTML = `<div class="section-head"><div><h2>Mistake patterns</h2><p>What keeps tripping you up, not just where — mined from your last 25 sessions' actual wrong answers.</p></div><button class="ghost small" data-route="report">${icon('arrow')} Back to Readiness report</button></div>
+
+      <section class="panel" style="margin-bottom:18px">
+        <div class="panel-header"><div><h2>Terms you keep confusing</h2><p>Specific answer pairs picked wrong for each other more than once recently — not just "missed this concept," but "keeps swapping these two."</p></div></div>
+        <div class="panel-body">${pairs.length ? `<ul class="gap-list">${pairs.map(p => `<li><span>${escapeHtml(p.a)} ↔ ${escapeHtml(p.b)} <span class="tag amber" style="margin-left:6px">${p.count}× confused</span></span>${p.conceptId ? `<button class="ghost small" data-action="drill-concept" data-concept="${escapeHtml(p.conceptId)}">${icon('target')} Drill</button>` : ''}</li>`).join('')}</ul>` : `<p style="color:var(--muted);font-size:13px;margin:0">Not enough recent misses yet to spot a real pattern — this needs the same two answers mixed up at least twice.</p>`}</div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header"><div><h2>Question-style weak spots</h2><p>Miss rate by how a question is worded, independent of which domain it's testing.</p></div></div>
+        <div class="panel-body">${phrasing.length ? `<div class="mastery-list">${phrasing.map(row => `<div><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:6px"><span>${escapeHtml(row.label)}</span><span>${row.missRate}% missed · ${row.missed}/${row.seen}</span></div><div class="progress-track"><div class="progress-bar" style="width:${row.missRate}%"></div></div></div>`).join('')}</div>` : `<p style="color:var(--muted);font-size:13px;margin:0">Not enough recent questions in any one phrasing style yet to say anything meaningful.</p>`}</div>
       </section>`;
   }
 
@@ -5369,6 +5528,8 @@ import {
       items.push({ type: 'Action', label: 'Achievements', sub: `${getAchievements().filter(b => b.earned).length}/${ACHIEVEMENTS.length} earned`, icon: 'trophy', run: () => navigate('achievements') });
       items.push({ type: 'Action', label: 'Exam day', sub: 'Checklist and last-minute review', icon: 'flag', run: () => navigate('examday') });
     }
+    // Mistake patterns and Study packet already get a palette entry from the routeMeta loop
+    // above (the latter isn't certs-only, same as Study guide itself) — no need to duplicate them here.
     items.push({ type: 'Action', label: `Switch to ${state.settings.theme === 'dark' ? 'light' : 'dark'} theme`, icon: state.settings.theme === 'dark' ? 'sun' : 'moon', run: () => setThemeMode(state.settings.theme === 'dark' ? 'light' : 'dark') });
     items.push({ type: 'Action', label: 'Keyboard shortcuts', sub: 'Every shortcut in one place', icon: 'keyboard', run: () => openShortcuts() });
     items.push({ type: 'Action', label: "What's new", sub: `Changelog · ${APP_VERSION}`, icon: 'sparkles', run: () => openWhatsNew(true) });
@@ -5597,6 +5758,10 @@ import {
     if (action === 'drill-objective') {
       const dom = domainById[button.dataset.domain];
       startPractice({ count: 15, domain: button.dataset.domain, objective: button.dataset.objective, mode: `${dom ? dom.name + ' · ' : ''}Objective ${button.dataset.objective} drill` });
+    }
+    if (action === 'drill-concept') {
+      const concept = conceptById[button.dataset.concept];
+      startPractice({ count: 1, conceptIds: [button.dataset.concept], mode: concept ? `${concept.term} drill` : 'Concept drill' });
     }
     if (action === 'practice-missed') startMissedPractice(button.dataset.domain);
     if (action === 'practice-concept') {
@@ -6035,6 +6200,7 @@ import {
     if (event.target.id === 'import-file' && event.target.files[0]) importData(event.target.files[0]);
     if (event.target.id === 'avatar-photo-input' && event.target.files[0]) handleAvatarPhotoUpload(event.target.files[0]);
     if (event.target.id === 'glossary-domain') { glossaryDomain = event.target.value; renderGlossaryResults(); }
+    if (event.target.id === 'packet-domain') { packetDomain = event.target.value; renderStudyPacket(); }
     if (event.target.id === 'lab-core-filter') { labCoreFilter = event.target.value; renderLabResults(); }
     if (event.target.matches('.examday-check')) {
       state.examDayChecklist[event.target.dataset.item] = event.target.checked;
