@@ -388,7 +388,7 @@ svg { width: 19px; height: 19px; display: block; stroke-width: 1.8; }
 .palette-dot.current { border-color: var(--primary); color: var(--primary); }
 .palette-dot.done { background: var(--primary-soft); }
 .palette-dot.flagged { color: var(--amber); border-color: var(--amber); }
-.ghost.flag-active, .quiz-button.flag-active { color: var(--amber); border-color: var(--amber); background: var(--amber-soft); }
+.ghost.flag-active, .quiz-button.flag-active, .icon-button.flag-active { color: var(--amber); border-color: var(--amber); background: var(--amber-soft); }
 
 .results-hero { max-width: 820px; margin: 0 auto 18px; padding: 32px; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); text-align: center; }
 .results-score { width: 150px; margin: 0 auto 20px; }
@@ -632,6 +632,11 @@ svg { width: 19px; height: 19px; display: block; stroke-width: 1.8; }
 .highlight-swatch { width: 22px; height: 22px; padding: 0; border: 2px solid var(--border); border-radius: 50%; cursor: pointer; }
 .highlight-swatch:hover { border-color: var(--text); transform: scale(1.12); }
 .focus-timer-bar { position: fixed; right: 22px; bottom: 22px; z-index: 60; display: flex; align-items: center; gap: 8px; width: min(300px, calc(100vw - 32px)); padding: 9px 12px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); box-shadow: 0 14px 34px rgba(0, 0, 0, .28); }
+.scratchpad-panel { position: fixed; right: 22px; bottom: 22px; z-index: 60; display: flex; flex-direction: column; gap: 8px; width: min(320px, calc(100vw - 32px)); padding: 12px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); box-shadow: 0 14px 34px rgba(0, 0, 0, .28); }
+.scratchpad-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.scratchpad-head span { display: flex; align-items: center; gap: 6px; }
+.scratchpad-head svg { width: 13px; height: 13px; }
+.scratchpad-panel textarea { min-height: 220px; padding: 10px; border: 1px solid var(--border-soft); border-radius: 10px; background: var(--surface-2); color: var(--text); font-family: "Cascadia Code", Consolas, monospace; font-size: 13px; resize: vertical; }
 .focus-timer-icon { flex: 0 0 auto; display: grid; place-items: center; color: var(--primary); }
 .focus-timer-icon svg { width: 18px; height: 18px; }
 .focus-timer-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }

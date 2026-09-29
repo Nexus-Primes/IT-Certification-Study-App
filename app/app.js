@@ -33,12 +33,17 @@
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v202';
+  const APP_VERSION = 'v203';
   // Shown in the "What's new" panel (Settings, command palette, or automatically once per
   // release). Newest first; keep entries short and user-facing. Entries before v133 predate
   // this app having per-build version numbers at all, so their "version" is the date instead —
   // still real history, just not tagged with a build number the way later entries are.
   const CHANGELOG = [
+    { version: 'v203', date: 'September 2026', title: 'Spaced repetition everywhere, and a real exam review screen', items: [
+      "New: \"Spaced review\" (Practice page) — a multiple-choice session built from whatever's actually due, using the exact same review schedule Flashcards already tracks. A concept you nail in a quiz now reschedules the same way a flashcard rating does, instead of two separate, disconnected systems.",
+      "New: a scratchpad during mock exams (icon-button next to fullscreen) — scratch notes that stay with you through the whole exam and are wiped when it ends, same as the real thing.",
+      "Changed: the \"submit this exam?\" screen now shows a real, clickable question grid — jump straight to anything unanswered or flagged instead of a plain answered/blank count."
+    ] },
     { version: 'v202', date: 'September 2026', title: 'Adaptive difficulty, achievements, exam day, and pass cards', items: [
       "New: \"Adaptive difficulty\" practice mode (Practice page) — the next question gets harder every time you're right and easier every time you're not, instead of a fixed random mix.",
       "New: Achievements (Plan & progress) — 12 real milestones computed from your own practice, labs, streaks, and exam history, with a toast the moment one's earned.",
@@ -2484,12 +2489,14 @@
     const flaggedCount = Object.keys(state.flaggedQuestions).length;
     const weakDomains = getWeakDomains(4);
     const weakObjectiveCount = getWeakObjectives(5).length;
+    const dueCount = getDueCards(false).length;
     main.innerHTML = `
       <div class="section-head"><div><h2>Choose how you want to train</h2><p>Practice reveals explanations immediately. First attempts always count separately, so second chances help learning without hiding weak spots.</p></div><span class="tag teal">${QUESTIONS.length.toLocaleString()} question forms</span></div>
       <section class="card-grid">
         <article class="mode-card featured"><span class="stat-icon">${icon('bolt')}</span><h3>Quick 10</h3><p>A balanced ten-question set${Object.keys(CERT.cores).length > 1 ? ' across both cores' : ''}. The fastest way to build a daily habit.</p><div class="card-meta"><span>~8 minutes</span><i class="dot"></i><span>Balanced</span></div><div class="button-row"><button class="primary" data-action="quick-practice">Start practice ${icon('arrow')}</button></div></article>
         <article class="mode-card"><span class="stat-icon">${icon('target')}</span><h3>Weak-area trainer</h3><p>Prioritizes domains where your accuracy and practice depth are lowest.</p><div class="card-meta"><span>15 questions</span><i class="dot"></i><span>Adaptive</span></div><div class="button-row"><button class="secondary" data-action="weak-practice">Train weak areas</button></div></article>
         <article class="mode-card"><span class="stat-icon">${icon('bolt')}</span><h3>Adaptive difficulty</h3><p>Gets harder every time you're right, easier every time you're not — finds the real edge of what you know instead of a flat mix.</p><div class="card-meta"><span>15 questions</span><i class="dot"></i><span>Adjusts as you go</span></div><div class="button-row"><button class="secondary" data-action="adaptive-practice">Start adaptive set</button></div></article>
+        <article class="mode-card"><span class="stat-icon">${icon('clock')}</span><h3>Spaced review</h3><p>Multiple-choice review of whatever's actually due right now — the same schedule Flashcards uses, so a concept you nailed in a quiz won't resurface early just because you never flipped its card.</p><div class="card-meta"><span>${dueCount} due</span><i class="dot"></i><span>Spaced repetition</span></div><div class="button-row"><button class="secondary" data-action="spaced-review-practice" ${dueCount ? '' : 'disabled'}>Review what's due</button></div></article>
         <article class="mode-card"><span class="stat-icon">${icon('repeat')}</span><h3>Missed-question repair</h3><p>Revisits concepts behind your earlier misses using fresh question forms.</p><div class="card-meta"><span>${missedCount} missed forms</span><i class="dot"></i><span>Targeted</span></div><div class="button-row"><button class="secondary" data-action="missed-practice" ${missedCount ? '' : 'disabled'}>Repair misses</button></div></article>
         <article class="mode-card"><span class="stat-icon">${icon('flag')}</span><h3>Flagged questions</h3><p>The exact questions you flagged for review, across every practice, exam, and recap quiz.</p><div class="card-meta"><span>${flaggedCount} flagged</span><i class="dot"></i><span>Your picks</span></div><div class="button-row"><button class="secondary" data-action="review-flagged" ${flaggedCount ? '' : 'disabled'}>Review flagged</button></div></article>
         <article class="mode-card"><span class="stat-icon">${icon('alert')}</span><h3>Cram session</h3><p>One set combining your flagged questions, weakest objectives, and recent misses — built for the day before your exam.</p><div class="card-meta"><span>${flaggedCount} flagged</span><i class="dot"></i><span>${weakObjectiveCount} weak spots</span></div><div class="button-row"><button class="secondary" data-action="start-cram">${icon('bolt')} Start cram session</button></div></article>
@@ -2681,6 +2688,15 @@
     session.questions[nextIndex] = withFreshOptions([picked], `${session.id}-${nextIndex}`)[0];
   }
 
+  // Whatever's actually due — regardless of whether it was ever seen as a flashcard — reused as
+  // a normal multiple-choice practice set instead of a flip-card review. getDueCards(false)
+  // excludes never-scheduled concepts, matching the Dashboard's "today's plan" due check.
+  function startSpacedReviewPractice() {
+    const due = getDueCards(false);
+    if (!due.length) { toast("Nothing due for review right now — you're caught up.", 'error'); return; }
+    startPractice({ count: Math.min(20, due.length), conceptIds: due.map(concept => concept.id), mode: 'Spaced review' });
+  }
+
   function startPractice(options = {}) {
     const count = Number(options.count || 10);
     const questions = sampleQuestions(options, count);
@@ -2811,7 +2827,7 @@
       id: `exam-${Date.now()}`, source: 'exams', mode: `${core.name} ${full ? 'simulation' : 'sprint'}`,
       core: coreId, questions: weightedExamQuestions(coreId, length), index: 0,
       responses: Array(length).fill(null), startedAt: Date.now(), durationSeconds,
-      secondChance: false
+      secondChance: false, scratchpadOpen: false, scratchpadText: ''
     };
     if (state.settings.fullscreenExams) requestExamFullscreen();
     navigate('exams');
@@ -2836,9 +2852,10 @@
         <div class="quiz-progress"><div class="quiz-progress-meta"><span>${escapeHtml(session.mode)}</span><span>${session.index + 1} of ${session.questions.length}</span></div><div class="progress-track"><div class="progress-bar" style="width:${progress}%"></div></div></div>
         <div class="timer ${examMode && remaining < 300 ? 'warning' : ''}" id="quiz-timer">${icon('clock')}<span>${formatDuration(remaining)}</span></div>
         <button class="icon-button small" type="button" data-action="speak-question" aria-label="Read question aloud">${icon('play')}</button>
-        ${examMode ? `<button class="icon-button small" type="button" data-action="toggle-fullscreen" aria-label="Toggle fullscreen">${icon('maximize')}</button>` : ''}
+        ${examMode ? `<button class="icon-button small ${session.scratchpadOpen ? 'flag-active' : ''}" type="button" data-action="toggle-scratchpad" aria-label="Toggle scratchpad">${icon('edit')}</button><button class="icon-button small" type="button" data-action="toggle-fullscreen" aria-label="Toggle fullscreen">${icon('maximize')}</button>` : ''}
         <button class="ghost small" data-action="exit-session">Exit session</button>
       </div>
+      ${examMode && session.scratchpadOpen ? `<div class="scratchpad-panel"><div class="scratchpad-head"><span>${icon('edit')} Scratchpad</span><div class="button-row"><button class="ghost small" type="button" data-action="clear-scratchpad">Clear</button><button class="icon-button small" type="button" data-action="toggle-scratchpad" aria-label="Close scratchpad">${icon('x')}</button></div></div><textarea id="exam-scratchpad" placeholder="Scratch work — cleared when this exam ends, same as the real thing.">${escapeHtml(session.scratchpadText || '')}</textarea></div>` : ''}
       <article class="question-card">
         <div class="question-meta"><span class="tag teal">${core.name}</span><span class="tag">${domain.number} ${domain.name}</span><span class="tag">Objective ${question.objective}</span>${session.adaptive ? (({ label, tone }) => `<span class="tag ${tone}">${label}</span>`)(adaptiveLevelLabel(session.adaptiveTarget)) : `<span class="tag ${question.difficulty === 'Challenge' ? 'amber' : ''}">${question.difficulty}</span>`}</div>
         <h2>${escapeHtml(question.prompt)}</h2>
@@ -2966,6 +2983,12 @@
     state.stats.answered++; if (response.firstCorrect) state.stats.firstCorrect++; if (response.corrected) state.stats.corrected++;
     state.activity[todayKey()] = (state.activity[todayKey()] || 0) + 1;
     state.stats.bestStreak = Math.max(state.stats.bestStreak, getStreak()); saveState();
+    // A quiz question is a review of that concept exactly as much as flipping a flashcard is —
+    // first-try-correct maps to "good", corrected-on-a-second-chance to "hard" (it wasn't free
+    // recall), and a wrong answer to "again". Never "easy": that grade means "I don't need this
+    // again soon," and a system that can't ask a follow-up question shouldn't hand that out —
+    // only the flashcard's own explicit self-rating does.
+    scheduleReview(question.conceptId, response.firstCorrect ? 'good' : response.corrected ? 'hard' : 'again');
     checkMilestones();
   }
 
@@ -3040,9 +3063,19 @@
     else if (session.source === 'exams') showExamReview(); else finishSession();
   }
 
+  // A real review screen, not just a text count — every question as its own jump target,
+  // color-coded exactly like OnVUE's own review grid (unanswered vs. flagged vs. answered), so
+  // you can go straight to what's actually unresolved instead of paging through in order.
   function showExamReview() {
     const session = activeSession; const answered = session.responses.filter(Boolean).length;
-    openDialog(`<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="review-title"><h2 id="review-title">Submit this simulation?</h2><p>You answered ${answered} of ${session.questions.length} questions. ${session.questions.length - answered ? `${session.questions.length - answered} are still blank.` : 'Every question has a response.'}</p><div class="button-row"><button class="primary" data-action="submit-exam">Submit & score</button><button class="secondary" data-action="close-dialog">Keep reviewing</button></div></div>`);
+    const blank = session.questions.length - answered;
+    const flaggedCount = session.questions.filter(q => state.flaggedQuestions[q.id]).length;
+    const grid = session.questions.map((q, index) => {
+      const done = session.responses[index]?.selected !== undefined;
+      const flagged = state.flaggedQuestions[q.id];
+      return `<button type="button" class="palette-dot ${done ? 'done' : ''} ${flagged ? 'flagged' : ''}" data-jump="${index}" title="Question ${index + 1}${done ? '' : ' — unanswered'}${flagged ? ' — flagged' : ''}">${index + 1}</button>`;
+    }).join('');
+    openDialog(`<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="review-title"><h2 id="review-title">Submit this simulation?</h2><p>${blank ? `${blank} question${blank === 1 ? '' : 's'} still blank` : 'Every question has a response'}${flaggedCount ? ` · ${flaggedCount} flagged for review` : ''}. Click any number to jump straight to it.</p><div class="quiz-palette" style="margin:14px 0">${grid}</div><div class="button-row"><button class="primary" data-action="submit-exam">Submit & score</button><button class="secondary" data-action="close-dialog">Keep reviewing</button></div></div>`);
   }
 
   function finishSession(timedOut = false) {
@@ -3412,17 +3445,27 @@
       </div>`;
   }
 
-  function rateFlashcard(rating) {
-    if (!flashSession) return;
-    const concept = flashSession.cards[flashSession.index];
-    const existing = state.flashcards[concept.id] || { interval: 0, ease: 2.5, reviews: 0 };
+  // The one spaced-repetition schedule per concept, shared by every surface that can review
+  // it — a Flashcards self-rating and a Practice/Exam question are just two different ways of
+  // producing the same four-tier signal (again/hard/good/easy), and either one reschedules the
+  // same `state.flashcards[conceptId]` entry. A concept learned entirely through quiz questions
+  // still builds a real review schedule; the name is kept as-is (not renamed to e.g.
+  // "srSchedule") purely to avoid a data migration for every existing account's saved progress.
+  function scheduleReview(conceptId, rating) {
+    const existing = state.flashcards[conceptId] || { interval: 0, ease: 2.5, reviews: 0 };
     let interval = existing.interval || 0; let ease = existing.ease || 2.5;
     if (rating === 'again') { interval = .007; ease = Math.max(1.3, ease - .2); }
     if (rating === 'hard') { interval = Math.max(1, Math.round(interval * 1.2) || 1); ease = Math.max(1.3, ease - .15); }
     if (rating === 'good') { interval = interval < 1 ? 3 : Math.max(3, Math.round(interval * ease)); }
     if (rating === 'easy') { ease += .15; interval = interval < 1 ? 7 : Math.max(7, Math.round(interval * ease * 1.3)); }
     const due = new Date(Date.now() + interval * 86400000);
-    state.flashcards[concept.id] = { interval, ease, due: due.toISOString(), reviews: (existing.reviews || 0) + 1, lastRating: rating };
+    state.flashcards[conceptId] = { interval, ease, due: due.toISOString(), reviews: (existing.reviews || 0) + 1, lastRating: rating };
+  }
+
+  function rateFlashcard(rating) {
+    if (!flashSession) return;
+    const concept = flashSession.cards[flashSession.index];
+    scheduleReview(concept.id, rating);
     state.activity[todayKey()] = (state.activity[todayKey()] || 0) + 1; saveState();
     flashSession.index++; flashSession.flipped = false;
     flashSession.submitted = false; flashSession.typed = ''; flashSession.matchHint = null;
@@ -5428,6 +5471,7 @@
     if (domain === 'certs') {
       items.push({ type: 'Action', label: 'Weak-area trainer', sub: 'Target your lowest-mastery domains', icon: 'target', run: () => startPractice({ count: 15, weak: true, mode: 'Weak-area trainer' }) });
       items.push({ type: 'Action', label: 'Adaptive difficulty', sub: 'Question difficulty adjusts as you answer', icon: 'bolt', run: () => startAdaptivePractice({ count: 15, mode: 'Adaptive difficulty' }) });
+      items.push({ type: 'Action', label: 'Spaced review', sub: `${getDueCards(false).length} due for review`, icon: 'clock', run: () => startSpacedReviewPractice() });
       items.push({ type: 'Action', label: 'Review flagged questions', sub: `${Object.keys(state.flaggedQuestions).length} flagged`, icon: 'flag', run: () => startFlaggedReview() });
       items.push({ type: 'Action', label: 'Simulate an exam', sub: 'Full timed mock exam', icon: 'clipboard', run: () => navigate('exams') });
       items.push({ type: 'Action', label: 'Export to Anki', sub: `All ${allConcepts().length} cards as a TSV file`, icon: 'download', run: () => exportAnkiDeck() });
@@ -5656,6 +5700,7 @@
     if (action === 'start-today') startTodaysSession();
     if (action === 'weak-practice') startPractice({ count: 15, weak: true, mode: 'Weak-area trainer' });
     if (action === 'adaptive-practice') startAdaptivePractice({ count: 15, mode: 'Adaptive difficulty' });
+    if (action === 'spaced-review-practice') startSpacedReviewPractice();
     if (action === 'missed-practice') startPractice({ count: 20, missed: true, mode: 'Missed-question repair' });
     if (action === 'review-flagged') startFlaggedReview();
     if (action === 'domain-drill') startPractice({ count: 15, domain: button.dataset.domain, mode: `${domainById[button.dataset.domain].name} drill` });
@@ -5716,6 +5761,8 @@
     if (action === 'exit-session') { openDialog(`<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="exit-session-title"><h2 id="exit-session-title">Leave this session?</h2><p>Your unfinished answers will not be added to history.</p><div class="button-row"><button class="danger-button" data-action="confirm-exit-session">Leave session</button><button class="secondary" data-action="close-dialog">Keep studying</button></div></div>`); }
     if (action === 'confirm-exit-session') { closeDialog(); exitFullscreenIfActive(); stopSpeakOnce(); activeSession = null; renderRoute(); }
     if (action === 'toggle-fullscreen') { if (document.fullscreenElement) exitFullscreenIfActive(); else requestExamFullscreen(); }
+    if (action === 'toggle-scratchpad' && activeSession) { activeSession.scratchpadOpen = !activeSession.scratchpadOpen; renderQuiz(); }
+    if (action === 'clear-scratchpad' && activeSession) { activeSession.scratchpadText = ''; renderQuiz(); }
     if (action === 'speak-question') speakCurrentQuestion();
     if (action === 'speak-flashcard') speakCurrentFlashcard();
     if (action === 'retry-session') button.dataset.source === 'exams' ? startExam(button.dataset.core, 'sprint') : startPractice({ count: 10, mode: 'Quick 10' });
@@ -6008,7 +6055,7 @@
     const answer = event.target.closest('[data-answer]');
     if (answer) { chooseAnswer(Number(answer.dataset.answer)); return; }
     const jump = event.target.closest('[data-jump]');
-    if (jump && activeSession) { activeSession.index = Number(jump.dataset.jump); renderQuiz(); return; }
+    if (jump && activeSession) { closeDialog(); activeSession.index = Number(jump.dataset.jump); renderQuiz(); return; }
     const rate = event.target.closest('[data-rate]');
     if (rate) { rateFlashcard(rate.dataset.rate); return; }
     const actionButton = event.target.closest('[data-action]');
@@ -6117,6 +6164,7 @@
     if (event.target.id === 'glossary-search') { glossaryQuery = event.target.value; renderGlossaryResults(); }
     if (event.target.id === 'lab-search') { labQuery = event.target.value; renderLabResults(); }
     if (event.target.id === 'command-search') { commandQuery = event.target.value; renderCommandResults(); }
+    if (event.target.id === 'exam-scratchpad' && activeSession) activeSession.scratchpadText = event.target.value;
     if (event.target.id === 'palette-input') { paletteSel = 0; renderPaletteResults(); }
     if (event.target.id === 'setting-font-name') { const sample = document.getElementById('font-preview-sample'); if (sample) sample.style.fontFamily = buildFontStack(event.target.value); }
     // Deliberately no re-render here (unlike toggle/select) — rebuilding the panel on every
