@@ -1,0 +1,14 @@
+# Real per-account progress data and PIN registry — personal study data, not app code.
+data/profiles.json
+data/progress.json
+data/progress-*.json
+
+# Historical progress snapshots taken before risky changes — same reasoning as above.
+backup/
+
+# User-supplied reference material (PDFs etc.), not part of the app itself.
+files/
+
+# Python
+__pycache__/
+*.pyc

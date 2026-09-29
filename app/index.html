@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1220">
+  <meta name="description" content="Cert Study — an offline-first certification study system covering CompTIA A+, Network+, Security+, and 3CX, plus program fundamentals courses like Blender.">
+  <title>Cert Study — Learn. Practice. Pass.</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/api/app-icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/app/styles.css?v=66">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Primary navigation">
+      <button class="brand" id="brand-switch" type="button" aria-haspopup="dialog" aria-label="Switch between Certifications and Programs">
+        <span class="brand-mark" data-icon="cap"></span>
+        <span class="brand-copy"><strong>Cert Study</strong><small>Exam prep</small></span>
+      </button>
+
+      <nav class="nav-list" aria-label="Study sections">
+        <button class="nav-item is-active" data-route="dashboard" aria-current="page"><span data-icon="grid"></span><span>Dashboard</span></button>
+
+        <div class="nav-group" data-group="study">
+          <button class="nav-group-toggle" data-nav-toggle aria-expanded="true" aria-controls="navgrp-study"><span>Study</span><span class="nav-group-chevron" data-icon="chevron"></span></button>
+          <div class="nav-group-items" id="navgrp-study">
+            <button class="nav-item" data-route="flashcards" data-domain="certs"><span data-icon="layers"></span><span>Flashcards</span><span class="nav-badge" id="due-badge">0</span></button>
+            <button class="nav-item" data-route="crossword" data-domain="certs"><span data-icon="crossword"></span><span>Crossword</span></button>
+            <button class="nav-item" data-route="glossary"><span data-icon="book"></span><span>Glossary</span></button>
+            <button class="nav-item" data-route="guide"><span data-icon="brain"></span><span>Study guide</span></button>
+            <button class="nav-item" data-route="notes"><span data-icon="edit"></span><span>My notes</span><span class="nav-badge" id="notes-badge">0</span></button>
+          </div>
+        </div>
+
+        <div class="nav-group" data-group="practice">
+          <button class="nav-group-toggle" data-nav-toggle aria-expanded="false" aria-controls="navgrp-practice"><span>Practice</span><span class="nav-group-chevron" data-icon="chevron"></span></button>
+          <div class="nav-group-items" id="navgrp-practice">
+            <button class="nav-item" data-route="practice" data-domain="certs"><span data-icon="target"></span><span>Practice</span></button>
+            <button class="nav-item" data-route="exams" data-domain="certs"><span data-icon="clipboard"></span><span>Mock exams</span></button>
+            <button class="nav-item" data-route="labs"><span data-icon="terminal"></span><span>Labs</span></button>
+          </div>
+        </div>
+
+        <div class="nav-group" data-group="plan">
+          <button class="nav-group-toggle" data-nav-toggle aria-expanded="false" aria-controls="navgrp-plan"><span>Plan &amp; progress</span><span class="nav-group-chevron" data-icon="chevron"></span></button>
+          <div class="nav-group-items" id="navgrp-plan">
+            <button class="nav-item" data-route="objectives" data-domain="certs"><span data-icon="map"></span><span>Exam map</span></button>
+            <button class="nav-item" data-route="history"><span data-icon="chart"></span><span>Progress</span></button>
+            <button class="nav-item" data-route="planner" data-domain="certs"><span data-icon="calendar"></span><span>Study plan</span></button>
+            <button class="nav-item" data-route="achievements" data-domain="certs"><span data-icon="trophy"></span><span>Achievements</span></button>
+          </div>
+        </div>
+      </nav>
+
+      <div class="sidebar-spacer"></div>
+      <div class="cert-switcher">
+        <span class="eyebrow">Current track</span>
+        <button class="cert-button" id="cert-button" aria-haspopup="dialog">
+          <span class="mini-mark">A+</span>
+          <span><strong>CompTIA A+</strong><small>220-1201 · 220-1202</small></span>
+          <span data-icon="chevron"></span>
+        </button>
+      </div>
+      <button class="nav-item settings-link" data-route="settings"><span data-icon="settings"></span><span>Settings & data</span></button>
+      <button class="profile-chip" type="button" id="profile-chip-btn" data-action="open-account-dialog" aria-haspopup="dialog" aria-label="Switch account">
+        <div class="avatar" id="profile-avatar">IT</div>
+        <div><strong id="profile-name">Future technician</strong><small id="sidebar-level">Foundation level</small></div>
+      </button>
+    </aside>
+
+    <div class="app-main">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" id="mobile-menu" aria-label="Open navigation"><span data-icon="menu"></span></button>
+        <div class="topbar-title">
+          <span class="eyebrow" id="page-kicker">Study command center</span>
+          <h1 id="page-title">Dashboard</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-button" id="palette-btn" data-action="open-palette" aria-label="Open command palette — Ctrl or Cmd plus K"><span data-icon="command"></span></button>
+          <button class="icon-button" id="update-check-btn" data-action="check-for-updates" aria-label="Check for updates"><span data-icon="rotate"></span></button>
+          <button class="icon-button" id="theme-toggle" aria-label="Toggle light and dark theme"><span data-icon="sun"></span></button>
+          <button class="streak-pill" data-route="history" aria-label="Current study streak"><span data-icon="flame"></span><strong id="header-streak">0</strong><span>day streak</span></button>
+          <button class="primary compact" id="quick-practice-btn" data-action="quick-practice"><span data-icon="play"></span>Quick 10</button>
+        </div>
+      </header>
+
+      <main id="main-content" tabindex="-1"></main>
+      <footer class="app-footer">
+        <span id="footer-note">Cert Study uses original practice content mapped to the public CompTIA A+ objectives.</span>
+        <span id="footer-disclaimer">Not affiliated with or endorsed by CompTIA.</span>
+        <button id="footer-version" class="footer-version" type="button" data-action="open-whats-new" aria-label="View version history"></button>
+      </footer>
+    </div>
+  </div>
+
+  <div class="mobile-backdrop" id="mobile-backdrop"></div>
+  <div class="guide-audio-bar hidden" id="guide-audio-bar" role="status"></div>
+  <div class="focus-timer-bar hidden" id="focus-timer-bar" role="status"></div>
+  <div class="guide-highlight-popover hidden" id="guide-highlight-popover" role="toolbar" aria-label="Highlight color">
+    <button type="button" class="highlight-swatch" data-action="confirm-highlight" data-color="amber" data-letter="Y" style="background:var(--amber)" aria-label="Highlight in yellow"></button>
+    <button type="button" class="highlight-swatch" data-action="confirm-highlight" data-color="green" data-letter="G" style="background:var(--green)" aria-label="Highlight in green"></button>
+    <button type="button" class="highlight-swatch" data-action="confirm-highlight" data-color="blue" data-letter="B" style="background:var(--blue)" aria-label="Highlight in blue"></button>
+    <button type="button" class="highlight-swatch" data-action="confirm-highlight" data-color="violet" data-letter="P" style="background:var(--violet)" aria-label="Highlight in pink"></button>
+  </div>
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+  <div id="a11y-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div class="dialog-layer" id="dialog-layer"></div>
+
+  <script src="/data/concepts.js?v=41" defer></script>
+  <script src="/data/labs.js?v=9" defer></script>
+  <script src="/data/aplus-guide.js?v=1" defer></script>
+  <script src="/data/networkplus.js?v=28" defer></script>
+  <script src="/data/networkplus-labs.js?v=7" defer></script>
+  <script src="/data/networkplus-guide.js?v=1" defer></script>
+  <script src="/data/securityplus.js?v=24" defer></script>
+  <script src="/data/securityplus-labs.js?v=6" defer></script>
+  <script src="/data/securityplus-guide.js?v=1" defer></script>
+  <script src="/data/3cx-basic.js?v=16" defer></script>
+  <script src="/data/3cx-basic-labs.js?v=5" defer></script>
+  <script src="/data/3cx-basic-guide.js?v=1" defer></script>
+  <script src="/data/3cx-advanced.js?v=17" defer></script>
+  <script src="/data/3cx-advanced-labs.js?v=5" defer></script>
+  <script src="/data/3cx-advanced-guide.js?v=1" defer></script>
+  <script src="/data/winserver-hybrid.js?v=6" defer></script>
+  <script src="/data/winserver-hybrid-labs.js?v=1" defer></script>
+  <script src="/data/winserver-hybrid-guide.js?v=1" defer></script>
+  <script src="/data/dp300.js?v=7" defer></script>
+  <script src="/data/dp300-labs.js?v=1" defer></script>
+  <script src="/data/dp300-guide.js?v=1" defer></script>
+  <script src="/data/blender-fundamentals.js?v=2" defer></script>
+  <script src="/data/blender-fundamentals-labs.js?v=4" defer></script>
+  <script src="/app/app.js?v=161" defer></script>
+</body>
+</html>

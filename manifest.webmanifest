@@ -1,0 +1,12 @@
+{
+  "name": "Cert Study — Certification Exam Prep",
+  "short_name": "Cert Study",
+  "description": "Offline-first practice exams, flashcards, labs, and progress tracking for CompTIA A+, Network+, Security+, and 3CX Basic and Advanced Certification, plus program fundamentals courses like Blender.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "icons": [
+    { "src": "/api/app-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
