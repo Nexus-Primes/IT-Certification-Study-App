@@ -39,12 +39,16 @@ import {
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v206';
+  const APP_VERSION = 'v207';
   // Shown in the "What's new" panel (Settings, command palette, or automatically once per
   // release). Newest first; keep entries short and user-facing. Entries before v133 predate
   // this app having per-build version numbers at all, so their "version" is the date instead —
   // still real history, just not tagged with a build number the way later entries are.
   const CHANGELOG = [
+    { version: 'v207', date: 'September 2026', title: 'Fill in the blank', items: [
+      "New: \"Fill in the blank\" (Study nav, next to Crossword) — real Study guide paragraphs with the key terms blanked out, one domain at a time. Type the term back into its actual sentence instead of picking it from four multiple-choice options or recalling it in isolation on a flashcard.",
+      "Every blank — right or wrong — reschedules that concept the same spaced-review way a flashcard rating does, so this feeds the same due-card queue rather than starting a separate one."
+    ] },
     { version: 'v206', date: 'September 2026', title: 'Search, review reminders, a final review sheet, and effort-vs-weight', items: [
       "New: \"Search\" (topbar icon, next to the command palette) — one search box across the Study guide, Glossary, and Labs for whichever track is active, with a jump-straight-there button on every result.",
       "New: \"Final review sheet\" (linked from Mistake patterns) — a one-page printable pulled entirely from your own recent performance: terms you keep confusing, your most-missed concepts with their definitions, and remaining gaps by domain.",
@@ -336,6 +340,7 @@ import {
     practice: ['Practice', 'Build durable recall'],
     exams: ['Mock exams', 'Train under exam conditions'], flashcards: ['Flashcards', 'Spaced repetition'],
     crossword: ['Crossword', 'Learn terms by solving, not memorizing'],
+    cloze: ['Fill in the blank', 'Type the term back into real guide prose'],
     glossary: ['Glossary', 'Fast reference outside the quiz flow'],
     guide: ['Study guide', 'Learn the why before you drill the what'],
     labs: ['Interactive labs', 'Practice the workflow'], commands: ['Command reference', 'Every command taught across the labs'], objectives: ['Exam map', 'Know the blueprint'],
@@ -745,6 +750,7 @@ import {
   let flashSession = null;
   let activeLab = null;
   let activeCrossword = null;
+  let clozeSession = null;
   let timerHandle = null;
   let objectiveCore = 'core1';
   // Which domain cards are expanded on the Exam Map — collapsed by default so the page reads as
@@ -872,7 +878,7 @@ import {
   // Shared by the cert switcher and by planner actions that need to act on a track that isn't active yet.
   async function activateCert(certId) {
     if (!certId || certId === activeCertId) return;
-    activeSession = null; flashSession = null; activeLab = null; activeCrossword = null;
+    activeSession = null; flashSession = null; activeLab = null; activeCrossword = null; clozeSession = null;
     glossaryQuery = ''; glossaryDomain = 'all'; packetDomain = 'all'; labDomainFilter = null; labCoreFilter = 'all'; labQuery = ''; commandQuery = ''; globalSearchQuery = '';
     loadCertData(certId);
     await reloadStateForActiveCert();
@@ -956,7 +962,7 @@ import {
   // being switched into) plus a full state/meta/plan reload for the new account's own data.
   async function switchProfile(profileId) {
     if (!profileId || profileId === activeProfileId) { closeDialog(); return; }
-    activeSession = null; flashSession = null; activeLab = null; activeCrossword = null;
+    activeSession = null; flashSession = null; activeLab = null; activeCrossword = null; clozeSession = null;
     glossaryQuery = ''; glossaryDomain = 'all'; packetDomain = 'all'; labDomainFilter = null; labCoreFilter = 'all'; labQuery = ''; commandQuery = ''; globalSearchQuery = '';
     activeReview = null; resultsView = null;
     activeProfileId = profileId;
@@ -2159,7 +2165,7 @@ import {
     if (location.hash === `#${route}`) renderRoute(); else location.hash = route;
   }
 
-  const CERTS_ONLY_ROUTES = new Set(['practice', 'flashcards', 'exams', 'objectives', 'planner', 'crossword', 'report', 'guide-digest', 'achievements', 'examday', 'mistakes', 'finalreview']);
+  const CERTS_ONLY_ROUTES = new Set(['practice', 'flashcards', 'exams', 'objectives', 'planner', 'crossword', 'cloze', 'report', 'guide-digest', 'achievements', 'examday', 'mistakes', 'finalreview']);
 
   function renderRoute() {
     clearInterval(timerHandle); timerHandle = null;
@@ -2190,9 +2196,10 @@ import {
     else if (flashSession && route === 'flashcards') renderFlashSession();
     else if (activeLab && route === 'labs') renderLabWorkbench();
     else if (activeCrossword && route === 'crossword') renderCrosswordPlay();
+    else if (clozeSession && route === 'cloze') renderClozePlay();
     else if (activeReview && route === 'history') renderStoredReview(activeReview);
     else ({ dashboard: renderDashboard, planner: renderPlanner, practice: renderPractice, exams: renderExams, flashcards: renderFlashcards,
-      crossword: renderCrosswordHub, notes: renderNotes,
+      crossword: renderCrosswordHub, cloze: renderClozeHub, notes: renderNotes,
       glossary: renderGlossary, guide: renderStudyGuide, labs: renderLabs, commands: renderCommandReference, objectives: renderObjectives, history: renderHistory, settings: renderSettings,
       report: renderReadinessReport, 'guide-digest': renderHighlightsDigest, achievements: renderAchievementsPage, examday: renderExamDay, mistakes: renderMistakePatterns, packet: renderStudyPacket,
       finalreview: renderFinalReview, search: renderSearch }[route] || renderDashboard)();
@@ -3667,6 +3674,144 @@ import {
       <div class="field" style="max-width:480px;margin-bottom:20px"><label for="global-search-input">Search everything</label><input id="global-search-input" type="text" placeholder="Search terms, guide chapters, or labs…" value="${escapeHtml(globalSearchQuery)}" autocomplete="off"></div>
       <section id="global-search-results">${globalSearchResultsMarkup()}</section>`;
     document.getElementById('global-search-input')?.focus();
+  }
+
+  // ---------- Fill in the blank (cloze-deletion guide drills) ----------
+  // A third recall modality alongside Flashcards (term shown, definition hidden, self-rated) and
+  // Practice (multiple choice): here the term itself has to be produced, in the actual prose
+  // context it's used in, not recognized among four options or recalled in isolation. Every
+  // blank still feeds the exact same spaced-review schedule scheduleReview() maintains for
+  // flashcards and quiz answers, so this is a new way to advance that one shared schedule, not a
+  // second disconnected stats system.
+  function escapeRegex(str) { return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+  // Finds real concept terms inside a real paragraph and returns where they are, so they can be
+  // blanked out later. Matches against the part of the term before any parenthetical expansion
+  // (mirrors crosswordAnswerFromTerm's own approach to the same "MDM (Mobile Device Management)"
+  // shape) since that's normally how a term actually appears in flowing prose. Overlapping hits
+  // (e.g. both "IP address" and "address" matching the same span) keep only the first found;
+  // capped at 3 per paragraph so a passage doesn't turn into more blank than readable text.
+  function findClozeHits(paragraph, concepts) {
+    const found = [];
+    concepts.forEach(concept => {
+      const phrase = concept.term.split('(')[0].trim();
+      if (phrase.length < 4) return;
+      const match = new RegExp(`\\b${escapeRegex(phrase)}\\b`, 'i').exec(paragraph);
+      if (match) found.push({ conceptId: concept.id, term: phrase, index: match.index, length: match[0].length });
+    });
+    found.sort((a, b) => a.index - b.index);
+    const kept = [];
+    found.forEach(hit => { if (!kept.some(k => hit.index < k.index + k.length && hit.index + hit.length > k.index)) kept.push(hit); });
+    return kept.slice(0, 3);
+  }
+
+  function buildClozeParagraphs(domainId) {
+    const domainConcepts = CONCEPTS.filter(c => c.domain === domainId);
+    const items = [];
+    GUIDE.filter(chapter => chapter.domain === domainId).forEach(chapter => {
+      const addParagraph = (text, paraIndex, heading) => {
+        const hits = findClozeHits(text || '', domainConcepts);
+        if (hits.length) items.push({ domainId, heading, para: text, hits });
+      };
+      addParagraph(chapter.overview, -1, 'Overview');
+      (chapter.sections || []).forEach(section => (section.body || '').split('\n\n').forEach((para, i) => addParagraph(para, i, section.heading)));
+    });
+    return items;
+  }
+
+  function renderClozeHub() {
+    const rows = Object.values(domainById).map(domain => ({ domain, count: buildClozeParagraphs(domain.id).length }));
+    const cards = rows.map(({ domain, count }) => `<article class="lab-card">
+        <div class="lab-card-top"><span class="lab-type">${icon('edit')}</span><span class="difficulty">${count ? `${count} passage${count === 1 ? '' : 's'}` : 'No guide content yet'}</span></div>
+        <h3>${escapeHtml(domain.name)}</h3>
+        <p>Real Study guide paragraphs with the key terms blanked out — type them back in context instead of picking from four choices.</p>
+        <div class="card-meta"><span>${escapeHtml(CERT.name)}</span></div>
+        <div class="button-row">${count ? `<button class="secondary" data-action="start-cloze" data-domain-id="${domain.id}">Start drill ${icon('arrow')}</button>` : `<button class="secondary" disabled>Not enough content yet</button>`}</div>
+      </article>`).join('');
+    main.innerHTML = `<div class="section-head"><div><h2>Fill in the blank</h2><p>Every domain's Study guide content, turned into a different kind of recall drill — the term has to come from you, not a menu of four choices. Right or wrong, each one reschedules that concept the same way a flashcard rating would.</p></div></div>
+      <section class="lab-grid">${cards}</section>`;
+  }
+
+  function startCloze(domainId) {
+    const domain = domainById[domainId]; if (!domain) return;
+    const pool = buildClozeParagraphs(domainId);
+    if (!pool.length) { toast('Not enough guide content with recognizable terms in this domain yet.', 'error'); return; }
+    const items = seededShuffle(pool, Date.now()).slice(0, Math.min(8, pool.length));
+    clozeSession = { domainId, items, index: 0, startedAt: Date.now(), correct: 0, total: 0, results: null };
+    navigate('cloze');
+  }
+
+  // Slices the original (unescaped) paragraph text around each hit so every non-blank segment
+  // still gets escapeHtml'd individually — building this from an already-escaped string would
+  // double-escape entities and corrupt the character offsets findClozeHits computed.
+  function clozeParagraphMarkup(item, results) {
+    let cursor = 0; let html = '';
+    item.hits.forEach((hit, i) => {
+      html += escapeHtml(item.para.slice(cursor, hit.index));
+      if (!results) {
+        html += `<input type="text" class="cloze-blank" id="cloze-blank-${i}" data-hit="${i}" autocomplete="off" autocapitalize="off" spellcheck="false" style="width:${Math.max(70, hit.length * 9)}px" aria-label="Blank ${i + 1} of ${item.hits.length}">`;
+      } else {
+        const res = results[i];
+        html += res.correct
+          ? `<span class="cloze-answer correct">${escapeHtml(hit.term)}</span>`
+          : `<span class="cloze-answer incorrect">${escapeHtml(res.typed || '(blank)')}</span> <span class="cloze-answer correct">${escapeHtml(hit.term)}</span>`;
+      }
+      cursor = hit.index + hit.length;
+    });
+    html += escapeHtml(item.para.slice(cursor));
+    return html;
+  }
+
+  function renderClozePlay() {
+    const session = clozeSession; if (!session) return renderClozeHub();
+    if (session.index >= session.items.length) return finishClozeSession();
+    const item = session.items[session.index];
+    const domain = domainById[item.domainId];
+    const revealed = !!session.results;
+    main.innerHTML = `<section class="flash-shell">
+      <div class="quiz-top"><div class="quiz-progress"><div class="quiz-progress-meta"><span>Fill in the blank</span><span>${session.index + 1} of ${session.items.length}</span></div><div class="progress-track"><div class="progress-bar" style="width:${(session.index / session.items.length) * 100}%"></div></div></div><span class="tag teal">${escapeHtml(domain.name)}</span><button class="ghost small" data-action="exit-cloze">End drill</button></div>
+      <div class="recall-card" style="text-align:left">
+        <span class="eyebrow">${escapeHtml(item.heading)}</span>
+        <form id="cloze-check-form"><p style="font-size:16px;line-height:1.9;margin-top:12px">${clozeParagraphMarkup(item, session.results)}</p>
+        ${revealed
+          ? `<div class="button-row" style="margin-top:16px"><button class="primary" type="button" data-action="cloze-next">${session.index + 1 >= session.items.length ? 'See results' : 'Next passage'} ${icon('arrow')}</button></div>`
+          : `<div class="button-row" style="margin-top:16px"><button class="primary" type="submit">Check answers</button></div>`}
+        </form>
+      </div>
+    </section>`;
+    hydrateIcons(main);
+    if (!revealed) document.getElementById('cloze-blank-0')?.focus();
+  }
+
+  function checkClozeAnswers() {
+    const session = clozeSession; if (!session) return;
+    const item = session.items[session.index];
+    const results = item.hits.map((hit, i) => {
+      const typed = (document.getElementById(`cloze-blank-${i}`)?.value || '').trim();
+      const correct = typed.toLowerCase() === hit.term.toLowerCase();
+      scheduleReview(hit.conceptId, correct ? 'good' : 'again');
+      session.total++; if (correct) session.correct++;
+      return { typed, correct };
+    });
+    session.results = results;
+    state.activity[todayKey()] = (state.activity[todayKey()] || 0) + 1;
+    saveState();
+    renderClozePlay();
+  }
+
+  function clozeNext() {
+    if (!clozeSession) return;
+    clozeSession.index++; clozeSession.results = null;
+    renderClozePlay();
+  }
+
+  function finishClozeSession() {
+    const session = clozeSession;
+    const seconds = session ? Math.floor((Date.now() - session.startedAt) / 1000) : 0;
+    const correct = session?.correct || 0; const total = session?.total || 0;
+    clozeSession = null;
+    main.innerHTML = `<section class="results-hero"><span class="stat-icon" style="margin:0 auto 16px">${icon('edit')}</span><h2>Drill complete</h2><p>${correct} of ${total} blank${total === 1 ? '' : 's'} correct in ${formatDuration(seconds)}. Every term you typed — right or wrong — just updated its spaced-review schedule, the same as a flashcard rating would.</p><div class="button-row" style="justify-content:center"><button class="primary" data-route="cloze">Try another domain</button><button class="secondary" data-route="dashboard">Back to dashboard</button></div></section>`;
+    hydrateIcons(main);
   }
 
   // ---------- Crossword ----------
@@ -6045,6 +6190,9 @@ import {
     if (action === 'clear-command-search') { commandQuery = ''; const input = document.getElementById('command-search'); if (input) input.value = ''; renderCommandResults(); }
     if (action === 'start-crossword') startCrossword(button.dataset.domainId);
     if (action === 'exit-crossword') { activeCrossword = null; renderCrosswordHub(); hydrateIcons(main); }
+    if (action === 'start-cloze') startCloze(button.dataset.domainId);
+    if (action === 'exit-cloze') { clozeSession = null; renderClozeHub(); hydrateIcons(main); }
+    if (action === 'cloze-next') clozeNext();
     if (action === 'crossword-new-puzzle' && activeCrossword) startCrossword(activeCrossword.domainId);
     if (action === 'cw-select' && activeCrossword) {
       const cw = activeCrossword;
@@ -6303,6 +6451,7 @@ import {
       toast(text.trim() ? (had ? 'Note updated.' : 'Note saved.') : 'Note deleted.');
     }
     if (event.target.id === 'custom-card-form') saveCustomCard();
+    if (event.target.id === 'cloze-check-form') checkClozeAnswers();
     if (event.target.id === 'recall-form' && flashSession) {
       const typed = document.getElementById('recall-input').value;
       flashSession.typed = typed;
