@@ -3,7 +3,7 @@ import {
   letters, iconPaths, icon, hydrateIcons, escapeHtml, pct, localDateKey, todayKey, addDays,
   daysBetween, formatDate, formatDateKey, formatPlanDate, formatDuration, hashNumber,
   seededShuffle, recallMatchHint
-} from './utils.js?v=1';
+} from './utils.js?v=2';
 
 (function () {
   'use strict';
@@ -39,12 +39,19 @@ import {
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v205';
+  const APP_VERSION = 'v206';
   // Shown in the "What's new" panel (Settings, command palette, or automatically once per
   // release). Newest first; keep entries short and user-facing. Entries before v133 predate
   // this app having per-build version numbers at all, so their "version" is the date instead —
   // still real history, just not tagged with a build number the way later entries are.
   const CHANGELOG = [
+    { version: 'v206', date: 'September 2026', title: 'Search, review reminders, a final review sheet, and effort-vs-weight', items: [
+      "New: \"Search\" (topbar icon, next to the command palette) — one search box across the Study guide, Glossary, and Labs for whichever track is active, with a jump-straight-there button on every result.",
+      "New: \"Final review sheet\" (linked from Mistake patterns) — a one-page printable pulled entirely from your own recent performance: terms you keep confusing, your most-missed concepts with their definitions, and remaining gaps by domain.",
+      "New: \"Practice effort vs. exam weight\" (Exam Map) — shows how your answered questions are actually split across domains next to what the blueprint says each domain is worth, so a domain worth 20% of the exam can't quietly get 5% of your practice without it showing.",
+      "New: session results now show a per-domain trend — how your accuracy on each domain you just practiced moved since the last time you touched it, not just this attempt's number in isolation.",
+      "New: opt-in review reminders (Settings → Notifications) — a browser notification when spaced-review flashcards are due, checked once a day when you open or return to the app."
+    ] },
     { version: 'v205', date: 'September 2026', title: 'Mistake patterns, keyboard accessibility, and study packets', items: [
       "New: \"Mistake patterns\" (linked from the Readiness report) — mines your last 25 sessions' actual wrong answers for real patterns: specific answer pairs you keep confusing, and which question phrasing styles (negative wording, \"BEST fit\", etc.) trip you up most, not just which domains.",
       "New: \"Study packet\" (linked from Study guide) — bundles one domain's guide chapter, key terms, and related labs into a single page, for printing or saving as a PDF to study somewhere this app isn't open.",
@@ -338,7 +345,9 @@ import {
     achievements: ['Achievements', 'Milestones earned along the way'],
     examday: ['Exam day', 'Everything for the final stretch, in one place'],
     mistakes: ['Mistake patterns', "What keeps tripping you up, not just where"],
-    packet: ['Study packet', 'One domain, ready to print or save offline']
+    packet: ['Study packet', 'One domain, ready to print or save offline'],
+    finalreview: ['Final review sheet', 'Your worst mix-ups and remaining gaps, one page'],
+    search: ['Search', 'Find anything across the guide, glossary, and labs']
   };
 
   // iconPaths/icon/hydrateIcons now live in utils.js (imported above).
@@ -655,7 +664,7 @@ import {
   // server tracks — the uploaded photo always overwrites the same file on disk (see avatarUrl
   // below for which one), so nothing about the photo itself is stored in progress.json, only
   // this small pointer.
-  const defaultMeta = () => ({ version: 1, seenVersion: null, lastBackupDate: null, backupSnoozeUntil: null, displayName: '', avatar: { type: 'initials', emoji: '', color: '', photoVersion: 0 }, appIconShape: 'cap', appIconColor: '#2dd4bf', autoBackupEnabled: true });
+  const defaultMeta = () => ({ version: 1, seenVersion: null, lastBackupDate: null, backupSnoozeUntil: null, displayName: '', avatar: { type: 'initials', emoji: '', color: '', photoVersion: 0 }, appIconShape: 'cap', appIconColor: '#2dd4bf', autoBackupEnabled: true, notifyReviewsEnabled: false, lastReviewNotifyDate: null });
   const AVATAR_EMOJIS = ['🎓', '💻', '🛠️', '🔒', '📡', '🧠', '⚡', '🎯', '📚', '🖥️'];
   const AVATAR_COLORS = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#ec4899'];
   // Reuses the same 6 icons already defined in iconPaths (no new SVG art to design) and the
@@ -745,6 +754,7 @@ import {
   let glossaryQuery = '';
   let glossaryDomain = 'all';
   let packetDomain = 'all';
+  let globalSearchQuery = '';
   let labDomainFilter = null;
   let labCoreFilter = 'all';
   let labQuery = '';
@@ -863,7 +873,7 @@ import {
   async function activateCert(certId) {
     if (!certId || certId === activeCertId) return;
     activeSession = null; flashSession = null; activeLab = null; activeCrossword = null;
-    glossaryQuery = ''; glossaryDomain = 'all'; packetDomain = 'all'; labDomainFilter = null; labCoreFilter = 'all'; labQuery = ''; commandQuery = '';
+    glossaryQuery = ''; glossaryDomain = 'all'; packetDomain = 'all'; labDomainFilter = null; labCoreFilter = 'all'; labQuery = ''; commandQuery = ''; globalSearchQuery = '';
     loadCertData(certId);
     await reloadStateForActiveCert();
     updateCertChrome();
@@ -947,13 +957,14 @@ import {
   async function switchProfile(profileId) {
     if (!profileId || profileId === activeProfileId) { closeDialog(); return; }
     activeSession = null; flashSession = null; activeLab = null; activeCrossword = null;
-    glossaryQuery = ''; glossaryDomain = 'all'; packetDomain = 'all'; labDomainFilter = null; labCoreFilter = 'all'; labQuery = ''; commandQuery = '';
+    glossaryQuery = ''; glossaryDomain = 'all'; packetDomain = 'all'; labDomainFilter = null; labCoreFilter = 'all'; labQuery = ''; commandQuery = ''; globalSearchQuery = '';
     activeReview = null; resultsView = null;
     activeProfileId = profileId;
     try { localStorage.setItem(ACTIVE_PROFILE_KEY, profileId); } catch {}
     closeDialog();
     await reloadStateForActiveCert();
     checkAutoBackup();
+    checkDueReviewNotification();
     updateCertChrome();
     updateChrome();
     if (location.hash === '#dashboard') renderRoute(); else location.hash = 'dashboard';
@@ -2148,7 +2159,7 @@ import {
     if (location.hash === `#${route}`) renderRoute(); else location.hash = route;
   }
 
-  const CERTS_ONLY_ROUTES = new Set(['practice', 'flashcards', 'exams', 'objectives', 'planner', 'crossword', 'report', 'guide-digest', 'achievements', 'examday', 'mistakes']);
+  const CERTS_ONLY_ROUTES = new Set(['practice', 'flashcards', 'exams', 'objectives', 'planner', 'crossword', 'report', 'guide-digest', 'achievements', 'examday', 'mistakes', 'finalreview']);
 
   function renderRoute() {
     clearInterval(timerHandle); timerHandle = null;
@@ -2183,7 +2194,8 @@ import {
     else ({ dashboard: renderDashboard, planner: renderPlanner, practice: renderPractice, exams: renderExams, flashcards: renderFlashcards,
       crossword: renderCrosswordHub, notes: renderNotes,
       glossary: renderGlossary, guide: renderStudyGuide, labs: renderLabs, commands: renderCommandReference, objectives: renderObjectives, history: renderHistory, settings: renderSettings,
-      report: renderReadinessReport, 'guide-digest': renderHighlightsDigest, achievements: renderAchievementsPage, examday: renderExamDay, mistakes: renderMistakePatterns, packet: renderStudyPacket }[route] || renderDashboard)();
+      report: renderReadinessReport, 'guide-digest': renderHighlightsDigest, achievements: renderAchievementsPage, examday: renderExamDay, mistakes: renderMistakePatterns, packet: renderStudyPacket,
+      finalreview: renderFinalReview, search: renderSearch }[route] || renderDashboard)();
     main.classList.remove('page-enter'); void main.offsetWidth; main.classList.add('page-enter');
     hydrateIcons(main); updateChrome(); main.focus({ preventScroll: true }); window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -3205,6 +3217,18 @@ import {
     hydrateIcons(main);
   }
 
+  // The % a session just showed doesn't say whether that's an improvement on its own — finds the
+  // most recent PRIOR session that touched this domain (state.sessions[0] is always the one that
+  // was just finished and unshifted by finishSession, so the search starts at index 1) so the
+  // results screen can show a real session-over-session delta instead of a one-off snapshot.
+  function previousDomainScore(domainId) {
+    for (let i = 1; i < state.sessions.length; i++) {
+      const stat = state.sessions[i].domains && state.sessions[i].domains[domainId];
+      if (stat && stat.total) return pct(stat.correct, stat.total);
+    }
+    return null;
+  }
+
   function renderResults(session, result) {
     resultsView = { session, result };
     const examMode = session.source === 'exams';
@@ -3215,7 +3239,11 @@ import {
     });
     lastResultsMissed = Object.fromEntries(Object.entries(missedByDomain).map(([id, set]) => [id, [...set]]));
     const totalMissed = Object.values(lastResultsMissed).reduce((sum, ids) => sum + ids.length, 0);
-    const domainRows = Object.entries(result.domains).map(([id, stat]) => ({ id, domain: domainById[id], score: pct(stat.correct, stat.total), total: stat.total, correct: stat.correct, missed: (lastResultsMissed[id] || []).length })).sort((a, b) => a.score - b.score);
+    const domainRows = Object.entries(result.domains).map(([id, stat]) => {
+      const score = pct(stat.correct, stat.total);
+      const prevScore = previousDomainScore(id);
+      return { id, domain: domainById[id], score, total: stat.total, correct: stat.correct, missed: (lastResultsMissed[id] || []).length, delta: prevScore == null ? null : score - prevScore };
+    }).sort((a, b) => a.score - b.score);
     main.innerHTML = `<section class="results-hero">
       <div class="radial results-score" style="--value:${result.score};--ring-color:${pass ? 'var(--primary)' : 'var(--amber)'}"><div class="radial-content"><strong>${examMode ? result.scaled : `${result.score}%`}</strong><small>${examMode ? 'estimated / 900' : 'first attempt'}</small></div></div>
       <h2>${session.diagnostic ? 'Your starting point is set.' : pass ? 'Strong work—keep sharpening.' : 'Good baseline. Now close the gaps.'}</h2>
@@ -3224,7 +3252,7 @@ import {
       <div class="button-row" style="justify-content:center"><button class="primary" data-action="retry-session" data-source="${session.source}" data-core="${session.core || ''}">${icon('repeat')} Train another set</button>${totalMissed ? `<button class="secondary" data-action="review-missed">${icon('layers')} Review ${totalMissed} missed</button><button class="secondary" data-action="practice-missed" data-domain="all">${icon('target')} Practice ${totalMissed} missed</button>` : ''}<button class="secondary" data-route="history">View progress</button></div>
     </section>
     ${domainRows.length > 1 ? `<div class="section-head" style="max-width:820px;margin:25px auto 14px"><div><h2>Domain breakdown</h2><p>How this attempt broke down by domain — jump straight into what you missed instead of a random redo.</p></div></div>
-    <section class="results-domains">${domainRows.map(row => `<div class="results-domain-row"><div><strong style="color:${domainAccentColor(row.domain, 4.6)}">${escapeHtml(row.domain.name)}</strong><div class="progress-track"><div class="progress-bar" style="width:${row.score}%"></div></div></div><span class="results-domain-score">${row.correct}/${row.total} · ${row.score}%</span>${row.missed ? `<button class="ghost small" data-action="practice-missed" data-domain="${row.id}">Practice ${row.missed} missed</button>` : `<span class="tag" style="justify-self:end">Clean sweep</span>`}</div>`).join('')}</section>` : ''}
+    <section class="results-domains">${domainRows.map(row => { const deltaTag = row.delta == null ? '' : row.delta === 0 ? ` <span class="tag" title="Same as the last time you practiced this domain">steady</span>` : ` <span class="tag ${row.delta > 0 ? 'teal' : 'amber'}" title="${row.delta > 0 ? 'Up' : 'Down'} ${Math.abs(row.delta)} point${Math.abs(row.delta) === 1 ? '' : 's'} since the last time you practiced this domain">${row.delta > 0 ? '▲' : '▼'}${Math.abs(row.delta)}</span>`; return `<div class="results-domain-row"><div><strong style="color:${domainAccentColor(row.domain, 4.6)}">${escapeHtml(row.domain.name)}</strong><div class="progress-track"><div class="progress-bar" style="width:${row.score}%"></div></div></div><span class="results-domain-score">${row.correct}/${row.total} · ${row.score}%${deltaTag}</span>${row.missed ? `<button class="ghost small" data-action="practice-missed" data-domain="${row.id}">Practice ${row.missed} missed</button>` : `<span class="tag" style="justify-self:end">Clean sweep</span>`}</div>`; }).join('')}</section>` : ''}
     <div class="section-head" id="answer-review" style="margin:25px 0 14px"><div><h2>Answer review</h2><p>Every question with your choice, the correct answer, and why. Flag anything to revisit, or attach a note. This stays available from Progress.</p></div></div>
     ${answerReviewMarkup(result.review || [], { filter: reviewFilter, flaggable: true })}`;
     hydrateIcons(main); updateChrome();
@@ -3590,6 +3618,55 @@ import {
     main.innerHTML = `<div class="section-head"><div><h2>Command reference</h2><p>Every command taught across ${escapeHtml(CERT.name)}'s interactive labs, gathered in one searchable, printable place.</p></div><div class="button-row"><span class="tag teal">${all.length} commands</span><button class="ghost small" data-route="labs">${icon('arrow')} Back to labs</button><button class="secondary small" data-action="print-page">${icon('download')} Print / save</button></div></div>
       <div class="field" style="max-width:380px;margin-bottom:18px"><label for="command-search">Search commands</label><input id="command-search" type="text" placeholder="Search by command or what it does…" value="${escapeHtml(commandQuery)}" autocomplete="off"></div>
       <section id="command-results">${commandResultsMarkup()}</section>`;
+  }
+
+  // ---------- Global search (guide + glossary + labs, one box) ----------
+  // Distinct from the command palette, which only jumps to pages/actions by name — this searches
+  // the actual content of whichever track is active, the same way the palette can't.
+  function snippetAround(text, term) {
+    const lower = text.toLowerCase();
+    const idx = lower.indexOf(term);
+    if (idx === -1) return escapeHtml(text.slice(0, 140)) + (text.length > 140 ? '…' : '');
+    const start = Math.max(0, idx - 60);
+    const end = Math.min(text.length, idx + term.length + 60);
+    return `${start > 0 ? '…' : ''}${escapeHtml(text.slice(start, end))}${end < text.length ? '…' : ''}`;
+  }
+
+  function globalSearchResultsMarkup() {
+    const term = globalSearchQuery.trim().toLowerCase();
+    if (term.length < 2) return `<div class="empty-state"><div><span class="stat-icon" style="margin:0 auto 12px">${icon('search')}</span><p>Type at least 2 characters to search the Study guide, Glossary, and Labs for ${escapeHtml(CERT.name)}.</p></div></div>`;
+    const guideHits = [];
+    GUIDE.forEach(chapter => {
+      const domain = domainById[chapter.domain];
+      if (!domain) return;
+      if ((chapter.overview || '').toLowerCase().includes(term)) guideHits.push({ domain, heading: 'Overview', snippet: snippetAround(chapter.overview, term) });
+      (chapter.sections || []).forEach(section => {
+        const haystack = `${section.heading}\n${section.body}`.toLowerCase();
+        if (haystack.includes(term)) guideHits.push({ domain, heading: section.heading, snippet: snippetAround(section.body, term) });
+      });
+    });
+    const termHits = allConcepts().filter(c => c.term.toLowerCase().includes(term) || c.definition.toLowerCase().includes(term) || (c.scenario || '').toLowerCase().includes(term));
+    const labHits = LABS.filter(l => l.title.toLowerCase().includes(term) || l.summary.toLowerCase().includes(term) || (l.brief || '').toLowerCase().includes(term));
+    if (!guideHits.length && !termHits.length && !labHits.length) return `<div class="empty-state"><div><h3>No matches for "${escapeHtml(globalSearchQuery.trim())}"</h3><p>Try a shorter or different word.</p></div></div>`;
+    return `
+      ${guideHits.length ? `<section class="panel" style="margin-bottom:16px"><div class="panel-header"><div><h2>Study guide</h2><p>${guideHits.length} match${guideHits.length === 1 ? '' : 'es'}</p></div></div><div class="panel-body"><ul class="gap-list">${guideHits.slice(0, 20).map(hit => `<li><span><strong>${escapeHtml(hit.domain.name)}</strong> — ${escapeHtml(hit.heading)}<br><span style="color:var(--muted);font-size:12px">${hit.snippet}</span></span><button class="ghost small" data-action="guide-jump" data-domain-id="${hit.domain.id}">${icon('book')} Open</button></li>`).join('')}</ul></div></section>` : ''}
+      ${termHits.length ? `<section class="panel" style="margin-bottom:16px"><div class="panel-header"><div><h2>Glossary</h2><p>${termHits.length} match${termHits.length === 1 ? '' : 'es'}</p></div></div><div class="panel-body"><div class="glossary-list">${termHits.slice(0, 20).map(c => `<article class="glossary-item"><strong>${escapeHtml(c.term)}</strong><p>${escapeHtml(c.definition)}</p><button class="ghost small" data-action="practice-concept" data-concept="${c.id}">${icon('target')} Practice</button></article>`).join('')}</div></div></section>` : ''}
+      ${labHits.length ? `<section class="panel"><div class="panel-header"><div><h2>Labs</h2><p>${labHits.length} match${labHits.length === 1 ? '' : 'es'}</p></div></div><div class="panel-body"><div class="lab-grid">${labHits.slice(0, 20).map(lab => `<article class="lab-card"><h3>${escapeHtml(lab.title)}</h3><p>${escapeHtml(lab.summary)}</p><div class="button-row"><button class="secondary small" data-action="start-lab" data-lab="${lab.id}">${icon('play')} Launch lab</button></div></article>`).join('')}</div></div></section>` : ''}
+    `;
+  }
+
+  // Only the results region is rebuilt on every keystroke, matching the glossary/lab search
+  // pattern, so the search input never loses focus the way a full main.innerHTML rebuild would.
+  function renderGlobalSearchResults() {
+    const region = document.getElementById('global-search-results');
+    if (region) { region.innerHTML = globalSearchResultsMarkup(); hydrateIcons(region); }
+  }
+
+  function renderSearch() {
+    main.innerHTML = `<div class="section-head"><div><h2>Search</h2><p>Find anything across the Study guide, Glossary, and Labs for ${escapeHtml(CERT.name)}.</p></div></div>
+      <div class="field" style="max-width:480px;margin-bottom:20px"><label for="global-search-input">Search everything</label><input id="global-search-input" type="text" placeholder="Search terms, guide chapters, or labs…" value="${escapeHtml(globalSearchQuery)}" autocomplete="off"></div>
+      <section id="global-search-results">${globalSearchResultsMarkup()}</section>`;
+    document.getElementById('global-search-input')?.focus();
   }
 
   // ---------- Crossword ----------
@@ -4781,13 +4858,31 @@ import {
         : `<div class="empty-state"><div><span class="stat-icon" style="margin:0 auto 12px">${icon('spark')}</span><h3>No highlights yet</h3><p>Select any text in a Study guide chapter and choose "Highlight" to start building this digest.</p><button class="primary" data-route="guide">${icon('book')} Open Study guide</button></div></div>`}`;
   }
 
+  // getDomainMetrics().seen (total answered question forms for that domain, ever) stands in for
+  // real practice reps — mastery% alone can look fine while a domain worth real exam weight is
+  // quietly getting a fraction of the actual practice attention the blueprint says it deserves.
+  function domainEffortRows(core) {
+    const rows = core.domains.map(domain => ({ domain, seen: getDomainMetrics(domain.id).seen }));
+    const totalSeen = rows.reduce((sum, row) => sum + row.seen, 0);
+    return rows.map(row => ({ ...row, share: totalSeen ? Math.round((row.seen / totalSeen) * 100) : 0 }));
+  }
+
   function renderObjectives() {
     const core = CERT.cores[objectiveCore];
     const coreEntries = Object.entries(CERT.cores);
     const domainGaps = Object.fromEntries(core.domains.map(domain => [domain.id, unmasteredConcepts(domain.id)]));
     const coreGapsTotal = Object.values(domainGaps).reduce((sum, gaps) => sum + gaps.length, 0);
+    const effortRows = domainEffortRows(core);
+    const totalReps = effortRows.reduce((sum, row) => sum + row.seen, 0);
     main.innerHTML = `<div class="section-head"><div><h2>The official blueprint, made usable</h2><p>Study time should follow domain weight and your evidence—not chapter length or comfort. ${coreEntries.length > 1 ? `Passing every required exam earns ${escapeHtml(CERT.name)}.` : `Passing this exam earns ${escapeHtml(CERT.name)}.`}</p></div></div>
       ${coreEntries.length > 1 ? `<div class="domain-tabs">${coreEntries.map(([key, c]) => `<button class="tab-button ${objectiveCore === key ? 'active' : ''}" data-action="objective-core" data-core="${key}">${escapeHtml(c.name)} · ${escapeHtml(c.code)}</button>`).join('')}</div>` : ''}
+      ${totalReps ? `<section class="panel" style="margin-bottom:18px"><div class="panel-header"><div><h2>Practice effort vs. exam weight</h2><p>How your ${totalReps} answered question${totalReps === 1 ? '' : 's'} in ${escapeHtml(core.name)} actually split across domains, next to what the blueprint says each is worth.</p></div></div>
+        <div class="panel-body"><div class="mastery-list">${effortRows.map(row => {
+          const delta = row.share - row.domain.weight;
+          const deltaTag = Math.abs(delta) >= 8 ? ` <span class="tag ${delta > 0 ? '' : 'amber'}">${delta > 0 ? 'over' : 'under'}-practiced ${Math.abs(delta)} pt${Math.abs(delta) === 1 ? '' : 's'}</span>` : '';
+          return `<div><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span>${escapeHtml(row.domain.name)}</span><span>${row.domain.weight}% of exam · ${row.share}% of your reps${deltaTag}</span></div><div class="progress-track"><div class="progress-bar" style="width:${row.domain.weight}%"></div></div><div class="progress-track" style="margin-top:3px"><div class="progress-bar" style="width:${row.share}%;background:var(--amber)"></div></div></div>`;
+        }).join('')}</div></div>
+      </section>` : ''}
       <section class="objective-layout"><aside class="exam-summary-card"><span class="exam-code">${core.code}</span><h2>${core.name}</h2><p>${escapeHtml(core.description)}</p><div class="summary-list"><div class="summary-line"><span>Questions</span><strong>Maximum ${core.maxQuestions}</strong></div><div class="summary-line"><span>Time</span><strong>${core.duration} minutes</strong></div><div class="summary-line"><span>Question types</span><strong>${escapeHtml(core.questionTypes || 'Multiple choice')}</strong></div><div class="summary-line"><span>Passing score</span><strong>${core.passingScore}/900</strong></div><div class="summary-line"><span>Recommended</span><strong>${escapeHtml(core.recommendedPrep || 'Hands-on practice recommended')}</strong></div></div><div class="notice" style="margin-top:16px">${icon('info')}<span>Scaled scoring is not a raw percentage. This app uses transparent estimates for learning only.</span></div>
         ${coreGapsTotal ? `<button class="primary" style="width:100%;margin-top:14px" data-action="practice-gaps">${icon('target')} Practice all ${coreGapsTotal} remaining concept${coreGapsTotal === 1 ? '' : 's'}</button>` : `<div class="notice" style="margin-top:14px">${icon('check')}<span>You've hit the mastery bar (3+ attempts, 80%+ accuracy) on every concept in ${escapeHtml(core.name)}. Domain % scores below still climb toward 100% with total rep count, so keep practicing to push those the rest of the way.</span></div>`}
       </aside>
@@ -5026,7 +5121,7 @@ import {
       timelineLine = `${countdown.days} day${countdown.days === 1 ? '' : 's'} until the exam on ${formatPlanDate(countdown.date)}. Not enough session history yet for a pace projection.`;
     }
 
-    main.innerHTML = `<div class="section-head"><div><h2>Readiness report</h2><p>A one-page snapshot of where you stand — print it, save it, or check it before exam day.</p></div><div class="button-row report-actions"><button class="ghost small" data-route="history">${icon('arrow')} Back to Progress</button><button class="ghost small" data-route="mistakes">${icon('repeat')} Mistake patterns</button><button class="ghost small" data-route="examday">${icon('flag')} Exam day checklist</button><button class="secondary small" data-action="print-page">${icon('download')} Print / save</button></div></div>
+    main.innerHTML = `<div class="section-head"><div><h2>Readiness report</h2><p>A one-page snapshot of where you stand — print it, save it, or check it before exam day.</p></div><div class="button-row report-actions"><button class="ghost small" data-route="history">${icon('arrow')} Back to Progress</button><button class="ghost small" data-route="mistakes">${icon('repeat')} Mistake patterns</button><button class="ghost small" data-route="finalreview">${icon('download')} Final review sheet</button><button class="ghost small" data-route="examday">${icon('flag')} Exam day checklist</button><button class="secondary small" data-action="print-page">${icon('download')} Print / save</button></div></div>
       <section class="report-page">
         <header class="report-head">
           <div><span class="eyebrow">${escapeHtml(CERT.name)}</span><h1>Readiness Report</h1><p>${coreEntries.map(([, c]) => escapeHtml(c.code)).join(' · ')} · Generated ${generatedOn}${metaState.displayName ? ` · Prepared for ${escapeHtml(metaState.displayName)}` : ''}</p></div>
@@ -5092,7 +5187,7 @@ import {
 
       <section class="panel" style="margin-bottom:18px">
         <div class="panel-header"><div><h2>Exam-day readiness</h2><p>Content mastery, mock exams, and hands-on labs, blended into one read.</p></div><span class="tag ${examDay.value >= 80 ? 'teal' : examDay.value >= 55 ? 'amber' : ''}">${examDay.value}%</span></div>
-        <div class="panel-body"><div class="button-row"><button class="ghost small" data-route="report">${icon('chart')} Full readiness report</button></div></div>
+        <div class="panel-body"><div class="button-row"><button class="ghost small" data-route="report">${icon('chart')} Full readiness report</button><button class="ghost small" data-route="finalreview">${icon('download')} Final review sheet</button></div></div>
       </section>
 
       ${weakObjectives.length ? `<section class="panel" style="margin-bottom:18px"><div class="panel-header"><div><h2>Last-minute review</h2><p>Your lowest-confidence objectives right now.</p></div></div><div class="panel-body"><ul class="gap-list">${weakObjectives.map(row => `<li><span>${row.objective.code} · ${escapeHtml(row.objective.title)}</span><button class="ghost small" data-action="drill-objective" data-domain="${row.domain.id}" data-objective="${row.objective.code}">${icon('target')} Drill</button></li>`).join('')}</ul></div></section>` : ''}
@@ -5115,7 +5210,7 @@ import {
   function renderMistakePatterns() {
     const pairs = getConfusionPairs(6);
     const phrasing = getPhrasingPatternStats();
-    main.innerHTML = `<div class="section-head"><div><h2>Mistake patterns</h2><p>What keeps tripping you up, not just where — mined from your last 25 sessions' actual wrong answers.</p></div><button class="ghost small" data-route="report">${icon('arrow')} Back to Readiness report</button></div>
+    main.innerHTML = `<div class="section-head"><div><h2>Mistake patterns</h2><p>What keeps tripping you up, not just where — mined from your last 25 sessions' actual wrong answers.</p></div><div class="button-row"><button class="ghost small" data-route="report">${icon('arrow')} Back to Readiness report</button><button class="secondary small" data-route="finalreview">${icon('download')} Final review sheet</button></div></div>
 
       <section class="panel" style="margin-bottom:18px">
         <div class="panel-header"><div><h2>Terms you keep confusing</h2><p>Specific answer pairs picked wrong for each other more than once recently — not just "missed this concept," but "keeps swapping these two."</p></div></div>
@@ -5128,6 +5223,45 @@ import {
       </section>`;
   }
 
+  // A one-page printable pulled entirely from the person's own recent performance — distinct from
+  // the Study packet (a domain/track's full content, regardless of how you're doing in it): this
+  // is only ever the specific things this specific person is still getting wrong or hasn't closed.
+  function renderFinalReview() {
+    const pairs = getConfusionPairs(8);
+    const missedCounts = {};
+    getRecentReviewEntries().forEach(entry => { if (!entry.firstCorrect) missedCounts[entry.conceptId] = (missedCounts[entry.conceptId] || 0) + 1; });
+    const mostMissed = Object.entries(missedCounts)
+      .map(([conceptId, count]) => ({ concept: conceptById[conceptId], count }))
+      .filter(row => row.concept)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10);
+    const gapsByDomain = Object.values(CERT.cores).flatMap(core => core.domains)
+      .map(domain => ({ domain, gaps: unmasteredConcepts(domain.id) }))
+      .filter(row => row.gaps.length);
+    const generatedOn = new Intl.DateTimeFormat(undefined, { month: 'long', day: 'numeric', year: 'numeric' }).format(new Date());
+    main.innerHTML = `<div class="section-head"><div><h2>Final review sheet</h2><p>Built from your own recent performance, not a generic summary — a focused last pass.</p></div><div class="button-row"><button class="ghost small" data-route="mistakes">${icon('arrow')} Back to Mistake patterns</button><button class="secondary small" data-action="print-page">${icon('download')} Print / save</button></div></div>
+      <section class="report-page">
+        <header class="report-head"><div><span class="eyebrow">${escapeHtml(CERT.name)}</span><h1>Final Review Sheet</h1><p>Generated ${generatedOn}${metaState.displayName ? ` · Prepared for ${escapeHtml(metaState.displayName)}` : ''}</p></div></header>
+
+        <section class="panel" style="margin-bottom:18px">
+          <div class="panel-header"><div><h2>Terms you keep confusing</h2><p>Answer pairs mixed up more than once across your last 25 sessions.</p></div></div>
+          <div class="panel-body">${pairs.length ? `<ul class="gap-list">${pairs.map(p => `<li><span>${escapeHtml(p.a)} ↔ ${escapeHtml(p.b)}</span><span class="tag amber">${p.count}×</span></li>`).join('')}</ul>` : `<p style="color:var(--muted);font-size:13px;margin:0">No repeated confusions in recent sessions.</p>`}</div>
+        </section>
+
+        <section class="panel" style="margin-bottom:18px">
+          <div class="panel-header"><div><h2>Most-missed concepts recently</h2><p>Definitions worth one more read before you go in.</p></div></div>
+          <div class="panel-body">${mostMissed.length ? `<div class="glossary-list">${mostMissed.map(row => `<article class="glossary-item"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><strong>${escapeHtml(row.concept.term)}</strong><span class="tag amber">${row.count}× missed</span></div><p>${escapeHtml(row.concept.definition)}</p></article>`).join('')}</div>` : `<p style="color:var(--muted);font-size:13px;margin:0">No recent misses recorded yet.</p>`}</div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header"><div><h2>Remaining gaps by domain</h2><p>Concepts still below the mastery bar (3+ attempts, 80%+).</p></div></div>
+          <div class="panel-body">${gapsByDomain.length ? gapsByDomain.map(row => `<details class="gap-details" style="margin-bottom:12px"><summary>${escapeHtml(row.domain.name)} — ${row.gaps.length} remaining</summary><ul class="gap-list">${row.gaps.map(item => `<li><span>${escapeHtml(item.concept.term)}</span><span class="tag ${item.status === 'Below 80%' ? 'amber' : ''}">${item.status === 'New' ? 'Not started' : item.status === 'Building' ? `${item.seen}/${MASTERY_MIN_SEEN} attempts` : `${item.accuracy}% so far`}</span></li>`).join('')}</ul></details>`).join('') : `<p style="color:var(--muted);font-size:13px;margin:0">Every concept has hit the mastery bar — nothing left to close.</p>`}</div>
+        </section>
+
+        <footer class="report-footer"><p>Built from your own recent performance — come back after more practice for an updated version. Generated by Cert Study ${APP_VERSION}.</p></footer>
+      </section>`;
+  }
+
   function renderSettings() {
     const isPrograms = currentDomain() === 'programs';
     main.innerHTML = `<div class="section-head"><div><h2>Settings and local data</h2><p>Your progress is saved locally on this machine by the local server, in its own file per account. Export a backup before wiping that file or moving to another computer.</p></div></div><section class="settings-grid">
@@ -5135,6 +5269,7 @@ import {
       <article class="settings-card"><h3>Look &amp; feel</h3><p>Purely cosmetic — none of this changes how mastery or scoring works.</p><div class="setting-row"><div><strong>Color theme</strong><small>Dark, light, or follow your system setting automatically.</small></div><div class="domain-tabs" style="margin:0">${['dark', 'light', 'auto'].map(mode => `<button class="tab-button ${state.settings.themeMode === mode ? 'active' : ''}" type="button" data-action="set-theme-mode" data-mode="${mode}">${mode === 'auto' ? 'Auto' : mode === 'dark' ? 'Dark' : 'Light'}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Accent color</strong><small>Retints buttons, progress bars, and highlights across the app.</small></div><div class="swatch-row">${ACCENT_THEMES.map(a => `<button type="button" class="swatch-btn ${state.settings.accentColor === a.id ? 'active' : ''}" style="background:${a[state.settings.theme].primary}" data-action="set-accent-color" data-accent="${a.id}" title="${a.label}"></button>`).join('')}</div></div><div class="setting-row stacked"><div><strong>App font</strong><small>Start typing to see common fonts, or type any exact name of your own.</small></div><div class="button-row" style="width:100%;align-items:center"><input type="text" id="setting-font-name" class="setting-date-input" style="flex:1;min-width:200px" placeholder="e.g. Calibri, Comic Sans MS" value="${escapeHtml(state.settings.fontFamily || '')}" autocomplete="off">${'queryLocalFonts' in window ? `<button class="secondary small" type="button" data-action="browse-local-fonts">Check Installed Fonts</button>` : ''}${state.settings.fontFamily ? `<button class="secondary small" type="button" data-action="reset-font-family">Reset</button>` : ''}</div><p id="font-preview-sample" style="margin:8px 0 0;font-family:${escapeHtml(buildFontStack(state.settings.fontFamily))};font-size:13px;color:var(--muted)">The quick brown fox jumps over the lazy dog.</p></div><div class="setting-row stacked"><div><strong>Text size</strong><small>Scales the whole app, not just body text.</small></div><div class="domain-tabs" style="margin:0">${[['0.9', 'Small'], ['1', 'Default'], ['1.15', 'Large'], ['1.3', 'Extra large']].map(([size, label]) => `<button class="tab-button ${Number(state.settings.fontSize) === Number(size) ? 'active' : ''}" type="button" data-action="set-font-size" data-size="${size}">${label}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Corner style</strong><small>Rounded or sharp corners across the app.</small></div><div class="domain-tabs" style="margin:0">${[['rounded', 'Rounded'], ['sharp', 'Sharp']].map(([id, label]) => `<button class="tab-button ${(state.settings.cornerStyle || 'rounded') === id ? 'active' : ''}" type="button" data-action="set-corner-style" data-corners="${id}">${label}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Density</strong><small>How much breathing room cards and lists get.</small></div><div class="domain-tabs" style="margin:0">${[['comfortable', 'Comfortable'], ['compact', 'Compact']].map(([id, label]) => `<button class="tab-button ${(state.settings.density || 'comfortable') === id ? 'active' : ''}" type="button" data-action="set-density" data-density="${id}">${label}</button>`).join('')}</div></div></article>
       <article class="settings-card"><h3>Accessibility</h3><p>None of this changes how mastery or scoring works.</p><div class="setting-row"><div><strong>Reading mode</strong><small>Wider line, letter, and word spacing, a plainer font, and calmer motion — for the Study guide, notes, and quiz text.</small></div><label class="switch"><input id="setting-reading-mode" type="checkbox" ${state.settings.readingMode ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Reduce motion</strong><small>Turns off animations and transitions app-wide — independent of Reading mode, for anyone sensitive to motion who doesn't want the other changes.</small></div><label class="switch"><input id="setting-reduced-motion" type="checkbox" ${state.settings.reducedMotion ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Colorblind-safe colors</strong><small>Swaps correct/incorrect from green/red to blue/amber — one of the hardest pairs to tell apart with red-green colorblindness.</small></div><label class="switch"><input id="setting-colorblind" type="checkbox" ${state.settings.colorblindMode ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>High contrast</strong><small>Solid backgrounds instead of soft tints, and darker muted text — for low-vision readability.</small></div><label class="switch"><input id="setting-high-contrast" type="checkbox" ${state.settings.highContrast ? 'checked' : ''}><span></span></label></div></article>
       <article class="settings-card"><h3>Learning preferences</h3><p>Adjust behavior without changing how first-attempt mastery is calculated.</p><div class="setting-row"><div><strong>Second-chance learning</strong><small>One retry in practice; first attempt still drives mastery.</small></div><label class="switch"><input id="setting-second" type="checkbox" ${state.settings.secondChance ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Sound effects</strong><small>A short tone on correct/incorrect answers in Practice.</small></div><label class="switch"><input id="setting-sound" type="checkbox" ${state.settings.soundEffects ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Focus mode</strong><small>Hide the sidebar while a quiz or exam is in progress.</small></div><label class="switch"><input id="setting-focus" type="checkbox" ${state.settings.focusMode ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Fullscreen exams</strong><small>Go fullscreen automatically when starting a mock exam — closer to real testing-center conditions.</small></div><label class="switch"><input id="setting-fullscreen-exam" type="checkbox" ${state.settings.fullscreenExams ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Start page</strong><small>What loads when you open the app.</small></div><select id="setting-start-page">${[['dashboard', 'Dashboard'], ['practice', 'Practice'], ['guide', 'Study guide'], ['history', 'Progress']].map(([id, label]) => `<option value="${id}" ${(state.settings.startPage || 'dashboard') === id ? 'selected' : ''}>${label}</option>`).join('')}</select></div><div class="setting-row"><div><strong>Milestone celebrations</strong><small>What happens when you cross a real milestone.</small></div><div class="domain-tabs" style="margin:0">${[['confetti', 'Confetti'], ['simple', 'Simple'], ['off', 'Off']].map(([id, label]) => `<button class="tab-button ${(state.settings.celebrationStyle || 'confetti') === id ? 'active' : ''}" type="button" data-action="set-celebration-style" data-style="${id}">${label}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Tip of the day</strong><small>A daily study tip on the Dashboard.</small></div><label class="switch"><input id="setting-show-tip" type="checkbox" ${state.settings.showTipOfDay !== false ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>All tracks at a glance</strong><small>Every track's progress, shown on the Dashboard.</small></div><label class="switch"><input id="setting-show-alltracks" type="checkbox" ${state.settings.showAllTracks !== false ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Read-aloud speed</strong><small>Used when you listen to Study guide chapters.</small></div><select id="setting-speech-rate">${[0.75, 1, 1.25, 1.5].map(rate => `<option value="${rate}" ${state.settings.speechRate === rate ? 'selected' : ''}>${rate}×</option>`).join('')}</select></div>${isPrograms ? '' : `<div class="setting-row stacked"><div><strong>Exam date</strong><small>Drives the dashboard countdown and the readiness projection.</small></div><div class="setting-date-group"><input type="date" id="settings-exam-date" class="setting-date-input" value="${state.examDate || ''}"><button class="secondary small" data-action="set-exam-date">Save</button></div></div>`}</article>
+      ${isPrograms ? '' : `<article class="settings-card"><h3>Notifications</h3><p>A local browser notification — nothing leaves this machine, and nothing is sent while the app is fully closed.</p><div class="setting-row"><div><strong>Review reminders</strong><small>${!('Notification' in window) ? 'Not supported in this browser.' : Notification.permission === 'denied' ? 'Blocked — enable notifications for this site in your browser settings first.' : "A nudge when spaced-review flashcards are due for whichever track is active — checked once a day when you open or return to the app, not while it's fully closed."}</small></div><label class="switch"><input id="setting-notify-reviews" type="checkbox" ${metaState.notifyReviewsEnabled ? 'checked' : ''} ${(!('Notification' in window) || Notification.permission === 'denied') ? 'disabled' : ''}><span></span></label></div></article>`}
       <article class="settings-card"><h3>Progress backup</h3><p>Export or restore everything in one JSON file — every track's practice history, mastery, flashcards, and labs, plus your study plan. Not just ${escapeHtml(CERT.name)}.</p><div class="button-row" style="margin-top:20px"><button class="secondary" data-action="export-data">${icon('download')} Export data</button><button class="secondary" data-action="save-backup-file">${icon('folder')} Save to backup folder</button><button class="secondary" data-action="choose-import">${icon('upload')} Import data</button><input type="file" id="import-file" accept="application/json" class="hidden"></div><p style="margin-top:10px">${metaState.lastBackupDate ? `Last backup: ${formatDateKey(metaState.lastBackupDate)} (${daysBetween(metaState.lastBackupDate, todayKey()) === 0 ? 'today' : `${daysBetween(metaState.lastBackupDate, todayKey())} day${daysBetween(metaState.lastBackupDate, todayKey()) === 1 ? '' : 's'} ago`}).` : 'No backup yet.'} Saved-to-folder copies land in <code>backup/</code> next to this app, named with the version that made them.</p><div class="setting-row"><div><strong>Automatic daily backup</strong><small>Saves to the backup folder once a day, the first time you open the app.</small></div><label class="switch"><input id="setting-auto-backup" type="checkbox" ${metaState.autoBackupEnabled !== false ? 'checked' : ''}><span></span></label></div><div class="setting-row" style="margin-top:20px"><div><strong>Reset all progress</strong><small>This cannot be undone unless you exported a backup.</small></div><button class="danger-button small" data-action="confirm-reset">${icon('trash')} Reset</button></div></article>
       <article class="settings-card"><h3>${isPrograms ? 'Content' : 'Content and scoring'}</h3><p>${isPrograms ? `${LABS.length} hands-on labs and ${CONCEPTS.length} reference terms. No quizzes, exams, or flashcards — this is a purely hands-on program.` : `${QUESTIONS.length.toLocaleString()} original question forms from ${CONCEPTS.length} curated concepts, plus ${LABS.length} guided labs. No real exam items or brain dumps.`}</p><div class="setting-row"><div><strong>Current track</strong><small>${escapeHtml(CERT.name)} · ${Object.values(CERT.cores).map(core => escapeHtml(core.code)).join(' · ')}</small></div><button class="secondary small" data-action="open-cert-dialog">${icon('repeat')} Switch ${isPrograms ? 'program' : 'track'}</button></div>${isPrograms ? '' : `<div class="setting-row"><div><strong>Practice scoring</strong><small>Transparent first-attempt percentage; simulations add a clearly labeled scaled estimate.</small></div></div>`}</article>
       <article class="settings-card"><h3>Primary references</h3><p>${isPrograms ? "Reference material is mapped to the software's own public documentation. Interfaces change between versions — verify against the current release." : 'Exam facts and domain weights are mapped to each vendor\'s public materials. Objectives change—verify before scheduling.'}</p><div class="source-list">${(CERT.sources || []).map(source => `<a class="source-link" href="${source.url}" target="_blank" rel="noopener"><span>${escapeHtml(source.label)}</span>${icon('external')}</a>`).join('')}</div></article>
@@ -5252,6 +5387,39 @@ import {
     if (!hasAnyProgress()) return;
     if (metaState.lastBackupDate === todayKey()) return;
     saveBackupToFolder();
+  }
+
+  // Opt-in only — toggling on requires the browser's own Notification permission, requested here
+  // rather than assumed. This is a plain page-triggered Notification, not a push subscription: it
+  // can only fire while this tab is open (foreground or background), never while the app is fully
+  // closed, since there's no server to push from. Good enough for "I left the app open" or "I just
+  // reopened it" nudges; the Settings copy is upfront about that limit rather than overpromising.
+  async function setNotifyReviews(enabled) {
+    if (!enabled) { metaState.notifyReviewsEnabled = false; saveMeta(); toast('Review reminders off.'); renderRoute(); return; }
+    if (!('Notification' in window)) { toast('Notifications are not supported in this browser.', 'error'); renderRoute(); return; }
+    if (Notification.permission === 'denied') { toast('Notifications are blocked for this site — enable them in your browser settings first.', 'error'); renderRoute(); return; }
+    const perm = Notification.permission === 'granted' ? 'granted' : await Notification.requestPermission();
+    if (perm !== 'granted') { toast('Notification permission was not granted.', 'error'); renderRoute(); return; }
+    metaState.notifyReviewsEnabled = true; saveMeta();
+    toast("Review reminders on — you'll get a nudge when cards are due.");
+    renderRoute();
+  }
+
+  // Checked at boot and whenever the tab regains focus, throttled to once a day by
+  // lastReviewNotifyDate — same daily-gate pattern as checkAutoBackup above. Only ever looks at
+  // whichever track is active at the moment of the check, not every track at once.
+  function checkDueReviewNotification() {
+    if (!metaState.notifyReviewsEnabled) return;
+    if (!('Notification' in window) || Notification.permission !== 'granted') return;
+    if (metaState.lastReviewNotifyDate === todayKey()) return;
+    const due = getDueCards(false).length;
+    if (!due) return;
+    metaState.lastReviewNotifyDate = todayKey();
+    saveMeta();
+    try {
+      const n = new Notification('Cert Study — reviews due', { body: `${due} card${due === 1 ? '' : 's'} due for review in ${CERT.name}.`, icon: '/api/app-icon.svg', tag: 'cert-study-due-reviews' });
+      n.onclick = () => { window.focus(); n.close(); };
+    } catch {}
   }
 
   // RFC 5545 requires literal backslash/semicolon/comma/newline to be backslash-escaped inside
@@ -5516,6 +5684,7 @@ import {
       items.push({ type: 'Page', label: meta[0], sub: meta[1], icon: 'arrow', run: () => navigate(route) });
     });
     items.push({ type: 'Action', label: 'Start Quick 10', sub: 'Balanced 10-question set', icon: 'bolt', run: () => startPractice({ count: 10, mode: 'Quick 10' }) });
+    items.push({ type: 'Action', label: 'Search everything', sub: 'Guide, glossary, and labs', icon: 'search', run: () => navigate('search') });
     if (domain === 'certs') {
       items.push({ type: 'Action', label: 'Weak-area trainer', sub: 'Target your lowest-mastery domains', icon: 'target', run: () => startPractice({ count: 15, weak: true, mode: 'Weak-area trainer' }) });
       items.push({ type: 'Action', label: 'Adaptive difficulty', sub: 'Question difficulty adjusts as you answer', icon: 'bolt', run: () => startAdaptivePractice({ count: 15, mode: 'Adaptive difficulty' }) });
@@ -6191,6 +6360,7 @@ import {
     if (event.target.id === 'setting-colorblind') { state.settings.colorblindMode = event.target.checked; saveState(); updateChrome(); toast('Colorblind-safe colors ' + (event.target.checked ? 'on.' : 'off.')); }
     if (event.target.id === 'setting-high-contrast') { state.settings.highContrast = event.target.checked; saveState(); updateChrome(); toast('High contrast ' + (event.target.checked ? 'on.' : 'off.')); }
     if (event.target.id === 'setting-auto-backup') { metaState.autoBackupEnabled = event.target.checked; saveMeta(); toast('Automatic daily backup ' + (event.target.checked ? 'on.' : 'off.')); }
+    if (event.target.id === 'setting-notify-reviews') setNotifyReviews(event.target.checked);
     if (event.target.id === 'setting-start-page') { state.settings.startPage = event.target.value; saveState(); toast('Start page saved.'); }
     if (event.target.id === 'setting-show-tip') { state.settings.showTipOfDay = event.target.checked; saveState(); toast('Dashboard preference saved.'); }
     if (event.target.id === 'setting-show-alltracks') { state.settings.showAllTracks = event.target.checked; saveState(); toast('Dashboard preference saved.'); }
@@ -6219,6 +6389,7 @@ import {
     if (event.target.id === 'glossary-search') { glossaryQuery = event.target.value; renderGlossaryResults(); }
     if (event.target.id === 'lab-search') { labQuery = event.target.value; renderLabResults(); }
     if (event.target.id === 'command-search') { commandQuery = event.target.value; renderCommandResults(); }
+    if (event.target.id === 'global-search-input') { globalSearchQuery = event.target.value; renderGlobalSearchResults(); }
     if (event.target.id === 'exam-scratchpad' && activeSession) activeSession.scratchpadText = event.target.value;
     if (event.target.id === 'palette-input') { paletteSel = 0; renderPaletteResults(); }
     if (event.target.id === 'setting-font-name') { const sample = document.getElementById('font-preview-sample'); if (sample) sample.style.fontFamily = buildFontStack(event.target.value); }
@@ -6372,6 +6543,10 @@ import {
   document.getElementById('mobile-menu').addEventListener('click', () => { document.getElementById('sidebar').classList.add('open'); document.getElementById('mobile-backdrop').classList.add('open'); });
   document.getElementById('mobile-backdrop').addEventListener('click', closeMobileNav);
   window.addEventListener('hashchange', renderRoute);
+  // A page-triggered Notification only fires while this tab is open — catching the moment
+  // someone actually returns to it is what makes the daily reminder check meaningful at all,
+  // not just the boot-time check above (which only fires once, whenever the tab first loaded).
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') checkDueReviewNotification(); });
   window.addEventListener('beforeunload', event => { if (activeSession && activeSession.source === 'exams') { event.preventDefault(); event.returnValue = ''; } });
 
   // Manual "check for updates" — forces the browser to re-fetch service-worker.js right now
@@ -6401,6 +6576,7 @@ import {
     loadCertData(CERT_REGISTRY.some(item => item.id === storedCert) ? storedCert : CERT_REGISTRY[0].id);
     await initState();
     checkAutoBackup();
+    checkDueReviewNotification();
     updateCertChrome();
     hydrateIcons(); updateChrome();
     if (!location.hash) history.replaceState(null, '', `#${state.settings.startPage || 'dashboard'}`);
