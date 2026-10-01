@@ -39,12 +39,16 @@ import {
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v208';
+  const APP_VERSION = 'v209';
   // Shown in the "What's new" panel (Settings, command palette, or automatically once per
   // release). Newest first; keep entries short and user-facing. Entries before v133 predate
   // this app having per-build version numbers at all, so their "version" is the date instead —
   // still real history, just not tagged with a build number the way later entries are.
   const CHANGELOG = [
+    { version: 'v209', date: 'October 2026', title: 'A much quieter Dashboard', items: [
+      "Changed: the Dashboard is now two sections instead of six — a status hero (readiness, accuracy, streak, one primary action) and a single \"Focus next\" panel (your weakest domain plus due/flagged counts). The full domain-by-domain breakdown, the longer recommendation list, the 14-day activity strip, and the all-tracks list are all still one click away (Exam Map, Progress, and the track switcher) — they just don't load by default anymore.",
+      "Fits on one screen without scrolling on a normal window size."
+    ] },
     { version: 'v208', date: 'October 2026', title: 'Browse cards, case studies, a terminal sandbox, and jump-to-page shortcuts', items: [
       "New: \"Browse cards\" (Study nav) — every concept in one sortable, filterable table: accuracy, review interval, and due date at a glance. Select any rows to drill them, reset their schedule, or suspend them out of Practice, Adaptive, Exams, and Flashcards until you unsuspend them.",
       "New: \"Case studies\" (Practice nav) — branching help-desk tickets where each choice leads to a consequence and the next question, testing a troubleshooting chain instead of one isolated multiple-choice answer. Launches with 3 new original tickets (a ransomware response, a dead network jack, and an unstable desktop) alongside the 2 that already existed as Labs.",
@@ -2393,74 +2397,53 @@ import {
       ${state.settings.showAllTracks !== false ? allTracksSectionMarkup() : ''}`;
   }
 
+  // Kept deliberately to one hero + one focus panel so the whole page reads in one glance
+  // without scrolling — the full domain-by-domain breakdown, the longer recommendation list,
+  // the activity history, tip of the day, and the all-tracks list all still exist (Exam Map,
+  // Progress, and Settings respectively); this screen only needs to answer two questions:
+  // "where do I stand" and "what's the one thing to do right now."
   function renderDashboard() {
     if (currentDomain() === 'programs') return renderProgramsDashboard();
     const readiness = getReadiness();
-    const accuracy = pct(state.stats.firstCorrect, state.stats.answered);
-    const weakest = getWeakDomains(2);
-    const weakLab = weakest.length ? LABS.find(l => l.domain === weakest[0].domain.id && !state.completedLabs[l.id]) : null;
+    const weakest = getWeakDomains(1)[0];
     const recent = state.sessions[0];
     const wkDelta = readinessDelta(7);
     const countdown = examCountdown();
-    const weakObjective = getWeakObjectives(1)[0];
     const trendLabel = (wkDelta != null && wkDelta !== 0) ? `${wkDelta > 0 ? '+' : ''}${wkDelta} pts in 7 days` : 'Evidence-weighted';
     const todaysPlan = getTodaysSessionPlan();
-    const tip = getTipOfTheDay();
+    const dueCount = getDueCards(false).length;
+    const flaggedCount = Object.keys(state.flaggedQuestions).length;
     main.innerHTML = `
       ${backupReminderMarkup()}
       ${cramReminderMarkup()}
       <section class="hero">
         <div class="hero-copy">
-          <span class="eyebrow">${escapeHtml(CERT.name)} · ${QUESTIONS.length.toLocaleString()} original questions${countdown ? ` · exam in ${countdown.days} day${countdown.days === 1 ? '' : 's'}` : ''}</span>
-          <h2>Build the instincts to <span>solve</span>, not just memorize.</h2>
-          <p>${Object.keys(CERT.cores).length} exam${Object.keys(CERT.cores).length > 1 ? 's' : ''}. ${Object.values(CERT.cores).flatMap(core => core.domains).length} weighted domains. One focused system that adapts practice to your misses and turns every answer into a useful explanation.</p>
+          <span class="eyebrow">${escapeHtml(CERT.name)}${countdown ? ` · exam in ${countdown.days} day${countdown.days === 1 ? '' : 's'}` : ''}</span>
+          <h2>${readiness >= 80 ? 'Exam-ready range' : readiness >= 55 ? 'Momentum is building' : 'Build your baseline'}</h2>
+          <p>${state.stats.answered ? `${pct(state.stats.firstCorrect, state.stats.answered)}% first-try accuracy · ${getMasteredConcepts()} concepts mastered · ${getStreak()}-day streak` : 'Complete a Quick 10 to establish your first mastery signal.'}</p>
           <div class="button-row">
             <button class="primary" data-action="start-today">${icon('play')} ${escapeHtml(todaysSessionLabel(todaysPlan))}</button>
             <button class="secondary" data-action="quick-practice">${icon('bolt')} Quick 10</button>
-            <button class="secondary" data-route="exams">${icon('clipboard')} Simulate an exam</button>
           </div>
         </div>
         <div class="readiness-card">
           <div class="radial" style="--value:${readiness}"><div class="radial-content"><strong>${readiness}%</strong><small>readiness</small></div></div>
-          <div class="readiness-copy"><span class="eyebrow">Overall signal</span><h3>${readiness >= 80 ? 'Exam-ready range' : readiness >= 55 ? 'Momentum is building' : 'Build your baseline'}</h3><p>${state.stats.answered ? `${accuracy}% first-attempt accuracy across ${state.stats.answered} answers.` : 'Complete a Quick 10 to establish your first mastery signal.'}</p><span class="trend${wkDelta != null && wkDelta < 0 ? ' down' : ''}">${icon('arrow')} ${trendLabel}</span></div>
+          <div class="readiness-copy"><span class="trend${wkDelta != null && wkDelta < 0 ? ' down' : ''}">${icon('arrow')} ${trendLabel}</span></div>
         </div>
       </section>
 
-      <section class="stat-grid" aria-label="Study statistics">
-        <div class="stat-card"><span class="stat-icon">${icon('target')}</span><div class="stat-copy"><strong>${accuracy}%</strong><span>First-try accuracy</span></div></div>
-        <div class="stat-card"><span class="stat-icon">${icon('brain')}</span><div class="stat-copy"><strong>${getMasteredConcepts()}</strong><span>Concepts mastered</span></div></div>
-        <div class="stat-card"><span class="stat-icon">${icon('layers')}</span><div class="stat-copy"><strong>${getDueCards(false).length || Math.min(20, allConcepts().filter(c => !state.flashcards[c.id]).length)}</strong><span>Flashcards ready</span></div></div>
-        <div class="stat-card"><span class="stat-icon">${icon('terminal')}</span><div class="stat-copy"><strong>${Object.keys(state.completedLabs).length}/${LABS.length}</strong><span>Labs completed</span></div></div>
-      </section>
-
-      <section class="dashboard-grid">
-        <article class="panel">
-          <div class="panel-header"><div><h2>Domain mastery</h2><p>Accuracy plus depth of practice—weighted like the exam.</p></div><button class="ghost small" data-route="objectives">View exam map</button></div>
-          <div class="panel-body"><div class="mastery-list">
-            ${Object.values(CERT.cores).flatMap(core => core.domains).map(domain => {
-              const metrics = getDomainMetrics(domain.id);
-              return `<div class="mastery-row"><div class="mastery-label"><strong>${domain.name}</strong><small>${coreByDomain[domain.id].name} · ${domain.weight}% weight</small></div><div class="progress-track"><div class="progress-bar" style="width:${metrics.mastery}%"></div></div><span class="mastery-value">${metrics.mastery}%</span></div>`;
-            }).join('')}
-          </div></div>
-        </article>
-        <div class="panel">
-          <div class="panel-header"><div><h2>Next best move</h2><p>Based on your weakest signals and review queue.</p></div></div>
-          <div class="panel-body">
-            <div class="recommend-list">
-              ${weakest.map((item, index) => `<button class="recommend-card" data-action="domain-drill" data-domain="${item.domain.id}"><span class="stat-icon">${icon(index ? 'repeat' : 'target')}</span><span><strong>Drill ${item.domain.name}</strong><small>${item.seen ? `${item.accuracy}% across ${item.seen} attempts` : 'No baseline yet · start here'}</small></span>${icon('chevron')}</button>`).join('')}
-              ${weakObjective ? `<button class="recommend-card" data-action="drill-objective" data-domain="${weakObjective.domain.id}" data-objective="${weakObjective.objective.code}"><span class="stat-icon">${icon('spark')}</span><span><strong>Sharpen objective ${weakObjective.objective.code} — ${escapeHtml(weakObjective.objective.title)}</strong><small>${weakObjective.seen ? `${weakObjective.mastery}% mastery · ${escapeHtml(weakObjective.domain.name)}` : `Untested so far · ${escapeHtml(weakObjective.domain.name)}`}</small></span>${icon('chevron')}</button>` : ''}
-              ${weakLab ? `<button class="recommend-card" data-action="start-lab" data-lab="${weakLab.id}"><span class="stat-icon">${icon('terminal')}</span><span><strong>Hands-on: ${escapeHtml(weakLab.title)}</strong><small>${escapeHtml(weakest[0].domain.name)} · sequencing &amp; judgment, not just recall</small></span>${icon('chevron')}</button>` : ''}
-              ${Object.keys(state.flaggedQuestions).length ? `<button class="recommend-card" data-action="review-flagged"><span class="stat-icon">${icon('flag')}</span><span><strong>Review flagged questions</strong><small>${Object.keys(state.flaggedQuestions).length} flagged for study</small></span>${icon('chevron')}</button>` : ''}
-              <button class="recommend-card" data-action="start-flash"><span class="stat-icon">${icon('layers')}</span><span><strong>Review flashcards</strong><small>${getDueCards(false).length || 'New cards'} ready now</small></span>${icon('chevron')}</button>
-              ${recent ? `<button class="recommend-card" data-route="history"><span class="stat-icon">${icon('chart')}</span><span><strong>Review last session</strong><small>${recent.label} · ${recent.score}%</small></span>${icon('chevron')}</button>` : ''}
-            </div>
-            <div class="panel-header" style="padding:22px 0 5px"><div><h3>Last 14 days</h3><p>${getStreak()} day current streak</p></div></div>
-            <div class="activity-strip">${activityMarkup()}</div>
+      <section class="panel">
+        <div class="panel-header"><div><h2>Focus next</h2><p>${weakest ? 'Your lowest-confidence domain right now.' : 'Keep practicing to surface a focus area.'}</p></div><button class="ghost small" data-route="objectives">${icon('arrow')} Full breakdown</button></div>
+        <div class="panel-body">
+          ${weakest ? `<div class="weak-row"><div class="weak-row-top"><div class="mastery-label"><strong>${escapeHtml(weakest.domain.name)}</strong><small>${weakest.seen ? `${weakest.accuracy}% across ${weakest.seen} attempts` : 'No baseline yet'}</small></div><div class="progress-track"><div class="progress-bar" style="width:${weakest.mastery}%"></div></div><span class="mastery-value">${weakest.mastery}%</span></div><div class="button-row weak-actions"><button class="ghost small" data-action="domain-drill" data-domain="${weakest.domain.id}">${icon('target')} Drill it</button></div></div>` : ''}
+          <div class="button-row" style="margin-top:16px;flex-wrap:wrap">
+            ${dueCount ? `<button class="ghost small" data-action="start-flash">${icon('layers')} ${dueCount} due</button>` : ''}
+            ${flaggedCount ? `<button class="ghost small" data-action="review-flagged">${icon('flag')} ${flaggedCount} flagged</button>` : ''}
+            <button class="ghost small" data-route="exams">${icon('clipboard')} Simulate exam</button>
+            ${recent ? `<button class="ghost small" data-route="history">${icon('chart')} Last session: ${recent.score}%</button>` : ''}
           </div>
         </div>
-      </section>
-      ${state.settings.showTipOfDay !== false && tip ? `<div class="notice teal" style="margin-top:20px">${icon('sparkles')}<span><strong>Tip of the day — ${escapeHtml(tip.term)}:</strong> ${escapeHtml(tip.tip)}</span></div>` : ''}
-      ${state.settings.showAllTracks !== false ? allTracksSectionMarkup() : ''}`;
+      </section>`;
   }
 
   function domainOptions(coreValue = 'all') {
