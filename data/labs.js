@@ -839,6 +839,170 @@
       "end_bad_close": { "end": true, "success": false, "prompt": "A slow sync can point to a licensing or storage problem that will resurface, or affect other users later — closing the ticket without checking assumes the fix is complete when it hasn't actually been confirmed." }
     },
     "explanation": "The symptom pointed at permissions from the start, since every other cloud service worked normally for this one user. Confirming (rather than assuming) the account was actually granted access, fixing the real gap, and then checking sync health and licensing before closing the ticket rules out a second, quieter problem hiding behind the first one."
+  },
+  {
+    "id": "phishing-click-incident-scenario",
+    "core": "core2",
+    "domain": "c2d2",
+    "type": "scenario",
+    "difficulty": "Advanced",
+    "minutes": 11,
+    "title": "An employee clicked a phishing link and files look wrong",
+    "summary": "Work a suspected-ransomware ticket through the correct incident-response order, not whatever feels fastest.",
+    "brief": "Dozens of shared-drive files were renamed with a strange extension this morning, right after an employee clicked a link in an unexpected invoice email. Work the ticket by choosing your next action at each step.",
+    "ticket": {
+      "subject": "Files renamed with a strange extension on the shared drive",
+      "details": [
+        "Reported by: Accounting employee",
+        "Symptom: dozens of shared-drive files renamed with a '.locked' extension this morning",
+        "The employee mentions clicking a link in an unexpected invoice email right before this started"
+      ]
+    },
+    "startNode": "start",
+    "nodes": {
+      "start": {
+        "prompt": "What's the single most urgent first action?",
+        "options": [
+          { "label": "Disconnect the affected workstation from the network immediately (unplug Ethernet / disable Wi-Fi), then investigate", "next": "step2", "correct": true },
+          { "label": "Open a few of the renamed files to see what's actually wrong with them", "next": "end_bad_open", "correct": false },
+          { "label": "Email the whole office asking who else clicked the link", "next": "end_bad_email", "correct": false },
+          { "label": "Immediately wipe and reimage the workstation", "next": "end_bad_wipe", "correct": false }
+        ]
+      },
+      "step2": {
+        "prompt": "With the workstation isolated, what's the next step?",
+        "options": [
+          { "label": "Check which shares that workstation's account had access to, to scope how far this spread", "next": "step3", "correct": true },
+          { "label": "Reconnect it to test whether the problem is really gone", "next": "end_bad_reconnect", "correct": false },
+          { "label": "Delete the renamed files to clean up the mess", "next": "end_bad_delete", "correct": false }
+        ]
+      },
+      "step3": {
+        "prompt": "Scoping shows the renamed files are limited to shares this one account could reach, and the '.locked' extension plus a ransom note match known ransomware behavior. What's the right next move?",
+        "options": [
+          { "label": "Report the incident per company policy and restore the affected files from backup once the workstation is confirmed clean", "next": "end_good", "correct": true },
+          { "label": "Pay whatever the ransom note demands to get the files back fastest", "next": "end_bad_ransom", "correct": false },
+          { "label": "Quietly fix it yourself without telling anyone, to avoid trouble", "next": "end_bad_hide", "correct": false }
+        ]
+      },
+      "end_good": { "end": true, "success": true, "prompt": "Isolating first contained the blast radius, scoping identified exactly what was affected, and reporting plus restoring from a clean backup is the standard incident-response path — never paying a ransom or hiding an incident." },
+      "end_bad_open": { "end": true, "success": false, "prompt": "Opening a potentially malicious file on an already-compromised host risks spreading the infection further. Containment always comes before investigation." },
+      "end_bad_email": { "end": true, "success": false, "prompt": "A broad, undirected email doesn't contain anything, and may tip off whoever's behind the attack that they've been noticed while the live compromise keeps spreading." },
+      "end_bad_wipe": { "end": true, "success": false, "prompt": "Wiping before scoping the damage destroys evidence needed to understand what was accessed, and risks missing that other systems are also compromised." },
+      "end_bad_reconnect": { "end": true, "success": false, "prompt": "Reconnecting an unconfirmed, still-compromised host immediately undoes the one containment step that was actually working." },
+      "end_bad_delete": { "end": true, "success": false, "prompt": "Deleting evidence makes recovery and any later investigation harder, and does nothing to address the actual compromise." },
+      "end_bad_ransom": { "end": true, "success": false, "prompt": "Paying a ransom doesn't guarantee file recovery, funds further attacks, and skips every proper containment and reporting step." },
+      "end_bad_hide": { "end": true, "success": false, "prompt": "An unreported incident can't be properly contained, investigated, or learned from — and likely violates policy and, depending on the data involved, the law." }
+    },
+    "explanation": "A suspected ransomware incident follows a strict order: isolate the affected system first to stop it from spreading, then scope what was actually affected, then report and recover from a known-good backup. Each step depends on the one before it — recovery without isolation just gets re-encrypted, and reporting without scoping leaves responders guessing."
+  },
+  {
+    "id": "new-hire-no-network-scenario",
+    "core": "core1",
+    "domain": "c1d2",
+    "type": "scenario",
+    "difficulty": "Advanced",
+    "minutes": 10,
+    "title": "A new hire's desk has a network jack but no internet",
+    "summary": "Trace a dead network jack back to its real physical cause instead of swapping hardware.",
+    "brief": "A new hire's desktop shows \"limited connectivity\" at a desk that worked fine for the previous employee last month. Work the ticket by choosing your next action at each step.",
+    "ticket": {
+      "subject": "New hire can't get online at their desk",
+      "details": [
+        "Reported by: IT helpdesk, on behalf of a new hire",
+        "Symptom: desktop plugged into the office wall jack shows 'limited connectivity', no internet",
+        "The same jack worked fine for the previous employee last month"
+      ]
+    },
+    "startNode": "start",
+    "nodes": {
+      "start": {
+        "prompt": "What's the best first step to characterize this?",
+        "options": [
+          { "label": "Check the desktop's IP configuration to see what address (if any) it actually received", "next": "step2", "correct": true },
+          { "label": "Assume the network card is broken and replace it", "next": "end_bad_replace_nic", "correct": false },
+          { "label": "Tell the new hire to use their personal phone hotspot instead", "next": "end_bad_workaround", "correct": false }
+        ]
+      },
+      "step2": {
+        "prompt": "ipconfig shows a 169.254.x.x address. What does that tell you, and what's next?",
+        "options": [
+          { "label": "That's APIPA — the device never got a real address from DHCP; check the switch port and patch cable next", "next": "step3", "correct": true },
+          { "label": "That's a normal address, so the problem must be the website being tested, not the network", "next": "end_bad_misread", "correct": false },
+          { "label": "That means the DNS server is down", "next": "end_bad_dns", "correct": false }
+        ]
+      },
+      "step3": {
+        "prompt": "The patch cable from that wall jack isn't connected to anything on the patch panel — the previous employee's PC must have used a different jack entirely. What's the right fix?",
+        "options": [
+          { "label": "Patch that jack's cable into an open switch port, then re-check the link light and IP configuration", "next": "end_good", "correct": true },
+          { "label": "Give the new hire the previous employee's exact IP address manually", "next": "end_bad_static", "correct": false },
+          { "label": "Reboot the switch", "next": "end_bad_reboot", "correct": false }
+        ]
+      },
+      "end_good": { "end": true, "success": true, "prompt": "Patching the jack into an open switch port completes the physical path, so DHCP can finally reach the device and hand out a real address — confirmed once the link light comes on and ipconfig shows a normal one." },
+      "end_bad_replace_nic": { "end": true, "success": false, "prompt": "Replacing hardware before confirming the cause wastes time and money — an APIPA address points to a DHCP/connectivity problem, not a failed network card." },
+      "end_bad_workaround": { "end": true, "success": false, "prompt": "A personal hotspot sidesteps the actual problem instead of fixing the desk's network access, and introduces its own security and reliability concerns." },
+      "end_bad_misread": { "end": true, "success": false, "prompt": "169.254.x.x is Automatic Private IP Addressing (APIPA) — a sign DHCP failed, not a normal usable address." },
+      "end_bad_dns": { "end": true, "success": false, "prompt": "DNS resolves names to addresses; APIPA means the device never got an address at all, which is a DHCP/connectivity issue, not a DNS one." },
+      "end_bad_static": { "end": true, "success": false, "prompt": "Manually assigning someone else's address risks an IP conflict and doesn't fix why DHCP isn't reaching this jack in the first place." },
+      "end_bad_reboot": { "end": true, "success": false, "prompt": "Rebooting the switch disrupts everyone else on it and doesn't address the actual problem: this one jack was never patched to a switch port." }
+    },
+    "explanation": "An APIPA (169.254.x.x) address is the key clue: the device never heard back from a DHCP server, pointing to a connectivity problem between the device and the network rather than a hardware failure or DNS issue. Tracing the physical path — cable, wall jack, patch panel, switch port — found the real gap: the jack was simply never patched in."
+  },
+  {
+    "id": "desktop-random-reboot-scenario",
+    "core": "core1",
+    "domain": "c1d3",
+    "type": "scenario",
+    "difficulty": "Advanced",
+    "minutes": 10,
+    "title": "A desktop keeps randomly rebooting under load",
+    "summary": "Narrow a spontaneous-reboot ticket down to the real failing component instead of guessing.",
+    "brief": "A design team member's PC spontaneously reboots, more often during heavy work like large file exports, with no blue screen captured. Work the ticket by choosing your next action at each step.",
+    "ticket": {
+      "subject": "Workstation reboots itself a few times a day",
+      "details": [
+        "Reported by: Design team member",
+        "Symptom: PC spontaneously reboots, more often during heavy work (large file exports)",
+        "No blue screen captured — it just restarts"
+      ]
+    },
+    "startNode": "start",
+    "nodes": {
+      "start": {
+        "prompt": "What's the best first step?",
+        "options": [
+          { "label": "Check internal temperatures and make sure airflow/fans aren't obstructed or failed", "next": "step2", "correct": true },
+          { "label": "Immediately reinstall the operating system", "next": "end_bad_reinstall", "correct": false },
+          { "label": "Replace the power supply right away", "next": "end_bad_psu_first", "correct": false }
+        ]
+      },
+      "step2": {
+        "prompt": "Temperatures and fans check out fine — nothing's overheating. What's the next thing to rule out?",
+        "options": [
+          { "label": "Run a memory diagnostic to check for bad RAM, since reboots correlate with memory-heavy tasks", "next": "step3", "correct": true },
+          { "label": "Check if the monitor cable is loose", "next": "end_bad_monitor", "correct": false },
+          { "label": "Clear the browser cache", "next": "end_bad_browser", "correct": false }
+        ]
+      },
+      "step3": {
+        "prompt": "The memory diagnostic reports errors on one of two installed RAM sticks. What's the right fix?",
+        "options": [
+          { "label": "Remove the failing RAM stick and confirm stability under the same heavy workload with just the known-good one", "next": "end_good", "correct": true },
+          { "label": "Reseat both sticks and consider the problem solved without re-testing", "next": "end_bad_reseat_only", "correct": false },
+          { "label": "Increase the page file size to compensate", "next": "end_bad_pagefile", "correct": false }
+        ]
+      },
+      "end_good": { "end": true, "success": true, "prompt": "Isolating and removing the module the diagnostic actually flagged, then confirming stability under the same heavy workload that used to trigger reboots, confirms the fix instead of just hoping it's fixed." },
+      "end_bad_reinstall": { "end": true, "success": false, "prompt": "A reinstall addresses software corruption, not a hardware-level spontaneous reboot, and skips every diagnostic step that would actually find the cause." },
+      "end_bad_psu_first": { "end": true, "success": false, "prompt": "A failing power supply is a reasonable eventual suspect, but jumping straight to a parts swap before checking the more easily tested causes (heat, memory) wastes a part if it isn't the actual problem." },
+      "end_bad_monitor": { "end": true, "success": false, "prompt": "A loose monitor cable causes display problems, not spontaneous full-system reboots." },
+      "end_bad_browser": { "end": true, "success": false, "prompt": "Browser cache is a software-level concern entirely unrelated to the machine restarting itself at the hardware level." },
+      "end_bad_reseat_only": { "end": true, "success": false, "prompt": "The diagnostic already identified a specific failing module — reseating without re-testing just hopes the connection was the problem instead of confirming it." },
+      "end_bad_pagefile": { "end": true, "success": false, "prompt": "A page file is virtual memory on disk, not a fix for a RAM module the diagnostic has already flagged as physically failing." }
+    },
+    "explanation": "Spontaneous reboots under load follow a logical elimination order: rule out the simplest physical cause (heat/airflow) first, then test the next most likely (memory), and once a diagnostic identifies a specific faulty component, isolate and confirm the fix under the same conditions that originally triggered the problem — rather than guessing, swapping parts blindly, or assuming a fix worked without re-testing it."
   }
 ];
 })();

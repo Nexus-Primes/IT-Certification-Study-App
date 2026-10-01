@@ -39,12 +39,18 @@ import {
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v207';
+  const APP_VERSION = 'v208';
   // Shown in the "What's new" panel (Settings, command palette, or automatically once per
   // release). Newest first; keep entries short and user-facing. Entries before v133 predate
   // this app having per-build version numbers at all, so their "version" is the date instead —
   // still real history, just not tagged with a build number the way later entries are.
   const CHANGELOG = [
+    { version: 'v208', date: 'October 2026', title: 'Browse cards, case studies, a terminal sandbox, and jump-to-page shortcuts', items: [
+      "New: \"Browse cards\" (Study nav) — every concept in one sortable, filterable table: accuracy, review interval, and due date at a glance. Select any rows to drill them, reset their schedule, or suspend them out of Practice, Adaptive, Exams, and Flashcards until you unsuspend them.",
+      "New: \"Case studies\" (Practice nav) — branching help-desk tickets where each choice leads to a consequence and the next question, testing a troubleshooting chain instead of one isolated multiple-choice answer. Launches with 3 new original tickets (a ransomware response, a dead network jack, and an unstable desktop) alongside the 2 that already existed as Labs.",
+      "New: \"Terminal sandbox\" (Practice nav) — a free-form simulated shell with its own filesystem and no scripted task: ls, cd, cat, mkdir, rm, mv, cp, echo, ipconfig, ping, and more, for building raw command fluency beyond any single lab's script. Up/Down recalls command history.",
+      "New: press G then a letter to jump straight to any of 16 common pages (G D for Dashboard, G P for Practice, G L for Labs, and more) — see the Shortcuts dialog (press ?) for the full list."
+    ] },
     { version: 'v207', date: 'September 2026', title: 'Fill in the blank', items: [
       "New: \"Fill in the blank\" (Study nav, next to Crossword) — real Study guide paragraphs with the key terms blanked out, one domain at a time. Type the term back into its actual sentence instead of picking it from four multiple-choice options or recalling it in isolation on a flashcard.",
       "Every blank — right or wrong — reschedules that concept the same spaced-review way a flashcard rating does, so this feeds the same due-card queue rather than starting a separate one."
@@ -343,7 +349,8 @@ import {
     cloze: ['Fill in the blank', 'Type the term back into real guide prose'],
     glossary: ['Glossary', 'Fast reference outside the quiz flow'],
     guide: ['Study guide', 'Learn the why before you drill the what'],
-    labs: ['Interactive labs', 'Practice the workflow'], commands: ['Command reference', 'Every command taught across the labs'], objectives: ['Exam map', 'Know the blueprint'],
+    labs: ['Interactive labs', 'Practice the workflow'], casestudies: ['Case studies', 'Work a ticket through a chain of consequences'], sandbox: ['Terminal sandbox', 'Free-form command practice, no scripted task'], commands: ['Command reference', 'Every command taught across the labs'], objectives: ['Exam map', 'Know the blueprint'],
+    browse: ['Browse cards', 'Every concept in one sortable, filterable table'],
     history: ['Progress', 'Turn results into a plan'], notes: ['My notes', 'Your own annotations, in one place'],
     settings: ['Settings & data', 'Make it yours'], report: ['Readiness report', 'A snapshot to print or save'],
     'guide-digest': ['Highlights digest', "Everything you've marked worth remembering"],
@@ -602,7 +609,7 @@ import {
     // textbook-style highlights in the Study guide, addressed by the same chapter-section-
     // paragraph indices buildSpeechSegments() already uses to map read-aloud segments to real
     // DOM nodes (section -1 / para 0 means the chapter's own overview paragraph).
-    notes: {}, readinessLog: [], onboardedAt: null, examDate: null, guideResume: {}, customConcepts: {}, guideReadPosition: null, milestonesSeen: {}, guideHighlights: {}, examDayChecklist: {}, examResults: {},
+    notes: {}, readinessLog: [], onboardedAt: null, examDate: null, guideResume: {}, customConcepts: {}, guideReadPosition: null, milestonesSeen: {}, guideHighlights: {}, examDayChecklist: {}, examResults: {}, suspendedConcepts: {},
     // Streak freeze: start with one banked. streakFreezeDates records which specific missed
     // days were already covered (so a freeze is only ever spent once per gap, permanently —
     // see checkStreakFreeze). streakFreezeGrantedAt is the highest real-streak-length a refill
@@ -625,7 +632,7 @@ import {
     // shape can't crash `sessions.unshift` / `Object.entries(questionStats)` downstream.
     if (!Array.isArray(merged.sessions)) merged.sessions = [];
     if (!Array.isArray(merged.readinessLog)) merged.readinessLog = [];
-    for (const key of ['questionStats', 'flashcards', 'activity', 'completedLabs', 'flaggedQuestions', 'flaggedLabs', 'completedCrosswords', 'notes', 'guideResume', 'customConcepts', 'milestonesSeen', 'streakFreezeDates', 'guideHighlights', 'examDayChecklist', 'examResults']) {
+    for (const key of ['questionStats', 'flashcards', 'activity', 'completedLabs', 'flaggedQuestions', 'flaggedLabs', 'completedCrosswords', 'notes', 'guideResume', 'customConcepts', 'milestonesSeen', 'streakFreezeDates', 'guideHighlights', 'examDayChecklist', 'examResults', 'suspendedConcepts']) {
       if (!merged[key] || typeof merged[key] !== 'object' || Array.isArray(merged[key])) merged[key] = {};
     }
     return merged;
@@ -761,6 +768,11 @@ import {
   let glossaryDomain = 'all';
   let packetDomain = 'all';
   let globalSearchQuery = '';
+  let browseQuery = '';
+  let browseDomain = 'all';
+  let browseStatus = 'all';
+  let browseSort = 'term';
+  let browseSelected = new Set();
   let labDomainFilter = null;
   let labCoreFilter = 'all';
   let labQuery = '';
@@ -878,8 +890,9 @@ import {
   // Shared by the cert switcher and by planner actions that need to act on a track that isn't active yet.
   async function activateCert(certId) {
     if (!certId || certId === activeCertId) return;
-    activeSession = null; flashSession = null; activeLab = null; activeCrossword = null; clozeSession = null;
+    activeSession = null; flashSession = null; activeLab = null; activeCrossword = null; clozeSession = null; sandboxSession = null;
     glossaryQuery = ''; glossaryDomain = 'all'; packetDomain = 'all'; labDomainFilter = null; labCoreFilter = 'all'; labQuery = ''; commandQuery = ''; globalSearchQuery = '';
+    browseQuery = ''; browseDomain = 'all'; browseStatus = 'all'; browseSort = 'term'; browseSelected = new Set();
     loadCertData(certId);
     await reloadStateForActiveCert();
     updateCertChrome();
@@ -962,8 +975,9 @@ import {
   // being switched into) plus a full state/meta/plan reload for the new account's own data.
   async function switchProfile(profileId) {
     if (!profileId || profileId === activeProfileId) { closeDialog(); return; }
-    activeSession = null; flashSession = null; activeLab = null; activeCrossword = null; clozeSession = null;
+    activeSession = null; flashSession = null; activeLab = null; activeCrossword = null; clozeSession = null; sandboxSession = null;
     glossaryQuery = ''; glossaryDomain = 'all'; packetDomain = 'all'; labDomainFilter = null; labCoreFilter = 'all'; labQuery = ''; commandQuery = ''; globalSearchQuery = '';
+    browseQuery = ''; browseDomain = 'all'; browseStatus = 'all'; browseSort = 'term'; browseSelected = new Set();
     activeReview = null; resultsView = null;
     activeProfileId = profileId;
     try { localStorage.setItem(ACTIVE_PROFILE_KEY, profileId); } catch {}
@@ -1690,7 +1704,7 @@ import {
 
   function getDueCards(includeNew = true) {
     const now = Date.now();
-    const pool = allConcepts();
+    const pool = allConcepts().filter(concept => !state.suspendedConcepts[concept.id]);
     const reviewed = pool.filter(concept => state.flashcards[concept.id] && new Date(state.flashcards[concept.id].due).getTime() <= now);
     if (!includeNew) return reviewed;
     const fresh = pool.filter(concept => !state.flashcards[concept.id]);
@@ -2129,8 +2143,8 @@ import {
   // (a lightweight UI convenience, not synced study data).
   const NAV_OPEN_KEY = 'cert-study-nav-open';
   const ROUTE_GROUP = {
-    flashcards: 'study', crossword: 'study', glossary: 'study', guide: 'study', notes: 'study',
-    practice: 'practice', exams: 'practice', labs: 'practice',
+    flashcards: 'study', browse: 'study', crossword: 'study', cloze: 'study', glossary: 'study', guide: 'study', notes: 'study',
+    practice: 'practice', exams: 'practice', labs: 'practice', casestudies: 'practice', sandbox: 'practice',
     objectives: 'plan', history: 'plan', planner: 'plan', achievements: 'plan'
   };
   let navOpenGroups;
@@ -2165,7 +2179,7 @@ import {
     if (location.hash === `#${route}`) renderRoute(); else location.hash = route;
   }
 
-  const CERTS_ONLY_ROUTES = new Set(['practice', 'flashcards', 'exams', 'objectives', 'planner', 'crossword', 'cloze', 'report', 'guide-digest', 'achievements', 'examday', 'mistakes', 'finalreview']);
+  const CERTS_ONLY_ROUTES = new Set(['practice', 'flashcards', 'exams', 'objectives', 'planner', 'crossword', 'cloze', 'browse', 'casestudies', 'sandbox', 'report', 'guide-digest', 'achievements', 'examday', 'mistakes', 'finalreview']);
 
   function renderRoute() {
     clearInterval(timerHandle); timerHandle = null;
@@ -2199,8 +2213,8 @@ import {
     else if (clozeSession && route === 'cloze') renderClozePlay();
     else if (activeReview && route === 'history') renderStoredReview(activeReview);
     else ({ dashboard: renderDashboard, planner: renderPlanner, practice: renderPractice, exams: renderExams, flashcards: renderFlashcards,
-      crossword: renderCrosswordHub, cloze: renderClozeHub, notes: renderNotes,
-      glossary: renderGlossary, guide: renderStudyGuide, labs: renderLabs, commands: renderCommandReference, objectives: renderObjectives, history: renderHistory, settings: renderSettings,
+      crossword: renderCrosswordHub, cloze: renderClozeHub, browse: renderBrowse, notes: renderNotes,
+      glossary: renderGlossary, guide: renderStudyGuide, labs: renderLabs, casestudies: renderCaseStudiesHub, sandbox: renderSandbox, commands: renderCommandReference, objectives: renderObjectives, history: renderHistory, settings: renderSettings,
       report: renderReadinessReport, 'guide-digest': renderHighlightsDigest, achievements: renderAchievementsPage, examday: renderExamDay, mistakes: renderMistakePatterns, packet: renderStudyPacket,
       finalreview: renderFinalReview, search: renderSearch }[route] || renderDashboard)();
     main.classList.remove('page-enter'); void main.offsetWidth; main.classList.add('page-enter');
@@ -2534,7 +2548,10 @@ import {
   }
 
   function sampleQuestions(filter, count, seed = Date.now()) {
-    let source = QUESTIONS.filter(question => (!filter.core || filter.core === 'all' || question.core === filter.core) && (!filter.domain || filter.domain === 'all' || question.domain === filter.domain));
+    // Suspension only excludes a concept from automatic/random selection — an explicit
+    // conceptIds request (e.g. drilling one concept by hand from Browse) bypasses it on
+    // purpose, since that's a deliberate choice to test it anyway, not a random draw.
+    let source = QUESTIONS.filter(question => (filter.conceptIds || !state.suspendedConcepts[question.conceptId]) && (!filter.core || filter.core === 'all' || question.core === filter.core) && (!filter.domain || filter.domain === 'all' || question.domain === filter.domain));
     if (filter.conceptIds) {
       const idSet = new Set(filter.conceptIds);
       source = source.filter(question => idSet.has(question.conceptId));
@@ -2628,7 +2645,7 @@ import {
   // most once per session (same rule sampleQuestions already follows elsewhere).
   function startAdaptivePractice(options = {}) {
     const count = Math.min(50, Math.max(5, Number(options.count || 15)));
-    const pool = QUESTIONS.filter(q => (!options.core || options.core === 'all' || q.core === options.core) && (!options.domain || options.domain === 'all' || q.domain === options.domain));
+    const pool = QUESTIONS.filter(q => !state.suspendedConcepts[q.conceptId] && (!options.core || options.core === 'all' || q.core === options.core) && (!options.domain || options.domain === 'all' || q.domain === options.domain));
     if (!pool.length) { toast('No matching questions are available yet.', 'error'); return; }
     const sessionId = `session-${Date.now()}`;
     const conceptStats = conceptStatsMap();
@@ -3331,7 +3348,7 @@ import {
 
   function startFlashcards(filter = {}) {
     const now = Date.now();
-    let cards = allConcepts().filter(concept => (!filter.core || filter.core === 'all' || concept.core === filter.core) && (!filter.domain || filter.domain === 'all' || concept.domain === filter.domain));
+    let cards = allConcepts().filter(concept => !state.suspendedConcepts[concept.id] && (!filter.core || filter.core === 'all' || concept.core === filter.core) && (!filter.domain || filter.domain === 'all' || concept.domain === filter.domain));
     const due = cards.filter(concept => state.flashcards[concept.id] && new Date(state.flashcards[concept.id].due).getTime() <= now);
     const fresh = cards.filter(concept => !state.flashcards[concept.id]);
     const future = cards.filter(concept => state.flashcards[concept.id] && new Date(state.flashcards[concept.id].due).getTime() > now).sort((a, b) => new Date(state.flashcards[a.id].due) - new Date(state.flashcards[b.id].due));
@@ -3514,6 +3531,120 @@ import {
     hydrateIcons(main);
   }
 
+  // ---------- Browse cards (Anki-"Browse"-style deck manager) ----------
+  // Practice, Flashcards, and Spaced review each hand you a curated NEXT set — none of them let
+  // you see or manage the whole deck's state at once. This is that missing view: every concept,
+  // sortable and filterable, with bulk actions (reset a schedule, suspend/unsuspend from
+  // automatic selection) that nothing else in the app exposes.
+  function browseDomainOptions() {
+    const all = Object.values(CERT.cores).flatMap(core => core.domains);
+    return `<option value="all" ${browseDomain === 'all' ? 'selected' : ''}>All domains</option>${all.map(domain => `<option value="${domain.id}" ${browseDomain === domain.id ? 'selected' : ''}>${escapeHtml(domain.name)}</option>`).join('')}`;
+  }
+
+  function browseTableData() {
+    const stats = conceptStatsMap();
+    const now = Date.now();
+    return allConcepts().map(concept => {
+      const stat = stats[concept.id] || null; // null for custom concepts — they carry no quiz stats
+      const accuracy = stat && stat.seen ? pct(stat.correct, stat.seen) : null;
+      const mastered = stat ? isConceptMastered(stat) : false;
+      const card = state.flashcards[concept.id] || null;
+      const suspended = !!state.suspendedConcepts[concept.id];
+      const due = card ? new Date(card.due).getTime() : null;
+      const isDue = due != null && due <= now;
+      return { concept, domain: domainById[concept.domain], seen: stat ? stat.seen : null, accuracy, mastered, card, suspended, due, isDue };
+    });
+  }
+
+  function browseStatusBadge(row) {
+    if (row.suspended) return { label: 'Suspended', cls: '' };
+    if (row.mastered) return { label: 'Mastered', cls: 'teal' };
+    if (row.isDue) return { label: 'Due', cls: 'amber' };
+    if (!row.card && !row.seen) return { label: 'New', cls: '' };
+    return { label: 'Learning', cls: '' };
+  }
+
+  function browseFilteredRows() {
+    const term = browseQuery.trim().toLowerCase();
+    let rows = browseTableData();
+    if (browseDomain !== 'all') rows = rows.filter(r => r.concept.domain === browseDomain);
+    if (term) rows = rows.filter(r => r.concept.term.toLowerCase().includes(term));
+    if (browseStatus === 'due') rows = rows.filter(r => r.isDue && !r.suspended);
+    else if (browseStatus === 'new') rows = rows.filter(r => !r.card && !r.seen && !r.suspended);
+    else if (browseStatus === 'mastered') rows = rows.filter(r => r.mastered && !r.suspended);
+    else if (browseStatus === 'suspended') rows = rows.filter(r => r.suspended);
+    const sorters = {
+      term: (a, b) => a.concept.term.localeCompare(b.concept.term),
+      domain: (a, b) => a.domain.name.localeCompare(b.domain.name) || a.concept.term.localeCompare(b.concept.term),
+      accuracy: (a, b) => (a.accuracy ?? -1) - (b.accuracy ?? -1),
+      interval: (a, b) => (a.card?.interval ?? -1) - (b.card?.interval ?? -1),
+      due: (a, b) => (a.due ?? Infinity) - (b.due ?? Infinity)
+    };
+    return rows.sort(sorters[browseSort] || sorters.term);
+  }
+
+  function browseHeadMarkup() {
+    const col = (key, label) => `<button type="button" class="browse-sort${browseSort === key ? ' active' : ''}" data-action="browse-sort" data-sort="${key}">${label}${browseSort === key ? icon('chevron') : ''}</button>`;
+    return `<div class="browse-row browse-head"><span></span>${col('term', 'Term')}<span>Status</span>${col('accuracy', 'Accuracy')}${col('interval', 'Interval')}${col('due', 'Due')}<span>Actions</span></div>`;
+  }
+
+  function browseRowMarkup(row) {
+    const badge = browseStatusBadge(row);
+    const checked = browseSelected.has(row.concept.id);
+    const isBuiltIn = !!conceptById[row.concept.id];
+    return `<div class="browse-row${checked ? ' selected' : ''}">
+      <label class="browse-check"><input type="checkbox" class="browse-row-check" data-concept="${escapeHtml(row.concept.id)}" ${checked ? 'checked' : ''}><span class="visually-hidden">Select ${escapeHtml(row.concept.term)}</span></label>
+      <div class="browse-term"><strong>${escapeHtml(row.concept.term)}</strong><small>${escapeHtml(row.domain ? row.domain.name : '')}</small></div>
+      <span class="tag ${badge.cls}">${badge.label}</span>
+      <span class="browse-cell">${row.accuracy == null ? '—' : `${row.accuracy}% (${row.seen})`}</span>
+      <span class="browse-cell">${row.card ? `${row.card.interval}d` : '—'}</span>
+      <span class="browse-cell">${row.due == null ? '—' : row.isDue ? 'Due now' : formatDateKey(localDateKey(new Date(row.due)))}</span>
+      ${isBuiltIn ? `<button class="ghost small" data-action="browse-drill" data-concept="${escapeHtml(row.concept.id)}">${icon('target')} Drill</button>` : `<button class="ghost small" data-action="edit-custom-card" data-id="${escapeHtml(row.concept.id)}">${icon('edit')} Edit</button>`}
+    </div>`;
+  }
+
+  function browseBulkBarMarkup() {
+    const n = browseSelected.size;
+    if (!n) return '';
+    return `<div class="notice" style="margin:14px 0"><span>${n} selected</span><div class="button-row" style="margin-left:auto;flex-wrap:wrap">
+      <button class="secondary small" data-action="browse-drill-selected">${icon('target')} Drill selected</button>
+      <button class="ghost small" data-action="browse-reset-selected">${icon('rotate')} Reset schedule</button>
+      <button class="ghost small" data-action="browse-suspend-selected">${icon('flag')} Suspend</button>
+      <button class="ghost small" data-action="browse-unsuspend-selected">${icon('check')} Unsuspend</button>
+      <button class="ghost small" data-action="browse-clear-selection">Clear</button>
+    </div></div>`;
+  }
+
+  // Re-renders just the table + bulk bar + count, so the search box above never loses focus —
+  // same "rebuild a region, not the whole page" pattern the Glossary/Labs search already use.
+  function renderBrowseTable() {
+    const rows = browseFilteredRows();
+    const body = document.getElementById('browse-table');
+    if (body) { body.innerHTML = `<div class="browse-list">${browseHeadMarkup()}${rows.length ? rows.map(browseRowMarkup).join('') : `<div class="empty-state"><div><h3>No cards match</h3><p>Try a different search term, domain, or status filter.</p></div></div>`}</div>`; hydrateIcons(body); }
+    const bulkBar = document.getElementById('browse-bulk-bar');
+    if (bulkBar) { bulkBar.innerHTML = browseBulkBarMarkup(); hydrateIcons(bulkBar); }
+    const count = document.getElementById('browse-count');
+    if (count) count.textContent = `${rows.length} card${rows.length === 1 ? '' : 's'}`;
+  }
+
+  function renderBrowse() {
+    main.innerHTML = `<div class="section-head"><div><h2>Browse cards</h2><p>Every concept in ${escapeHtml(CERT.name)}, in one sortable table — see the whole deck's state at once instead of only what Practice or Flashcards hands you next. Suspending a concept keeps it out of Practice, Adaptive, Exams, and Flashcards until you unsuspend it — it still shows up here and in the Glossary.</p></div><span class="tag teal" id="browse-count"></span></div>
+      <div class="builder" style="grid-template-columns:2fr 1fr 1fr">
+        <div class="field"><label for="browse-search">Search</label><input id="browse-search" type="text" placeholder="Search terms…" value="${escapeHtml(browseQuery)}" autocomplete="off"></div>
+        <div class="field"><label for="browse-domain">Domain</label><select id="browse-domain">${browseDomainOptions()}</select></div>
+        <div class="field"><label for="browse-status">Status</label><select id="browse-status">
+          <option value="all" ${browseStatus === 'all' ? 'selected' : ''}>All</option>
+          <option value="due" ${browseStatus === 'due' ? 'selected' : ''}>Due now</option>
+          <option value="new" ${browseStatus === 'new' ? 'selected' : ''}>New</option>
+          <option value="mastered" ${browseStatus === 'mastered' ? 'selected' : ''}>Mastered</option>
+          <option value="suspended" ${browseStatus === 'suspended' ? 'selected' : ''}>Suspended</option>
+        </select></div>
+      </div>
+      <div id="browse-bulk-bar"></div>
+      <section id="browse-table"></section>`;
+    renderBrowseTable();
+  }
+
   function glossaryDomainOptions() {
     const all = Object.values(CERT.cores).flatMap(core => core.domains);
     return `<option value="all" ${glossaryDomain === 'all' ? 'selected' : ''}>All domains</option>${all.map(domain => `<option value="${domain.id}" ${glossaryDomain === domain.id ? 'selected' : ''}>${escapeHtml(domain.name)}</option>`).join('')}`;
@@ -3552,10 +3683,15 @@ import {
       <section id="glossary-results" style="margin-top:20px">${glossaryResultsMarkup()}</section>`;
   }
 
+  // Scenario-type labs (branching troubleshooting tickets) live exclusively under their own
+  // "Case studies" hub now, not mixed into this general grid — hands-on/procedural labs here,
+  // sequential-judgment tickets there.
+  function nonScenarioLabs() { return LABS.filter(lab => lab.type !== 'scenario'); }
+
   function labResultsMarkup() {
     const filterDomain = labDomainFilter && domainById[labDomainFilter] ? labDomainFilter : null;
     const term = labQuery.trim().toLowerCase();
-    const coreFiltered = labCoreFilter !== 'all' && CERT.cores[labCoreFilter] ? LABS.filter(lab => lab.core === labCoreFilter) : LABS;
+    const coreFiltered = labCoreFilter !== 'all' && CERT.cores[labCoreFilter] ? nonScenarioLabs().filter(lab => lab.core === labCoreFilter) : nonScenarioLabs();
     const baseLabs = filterDomain ? coreFiltered.filter(lab => lab.domain === filterDomain) : coreFiltered;
     const matchedLabs = term ? baseLabs.filter(lab => lab.title.toLowerCase().includes(term) || lab.summary.toLowerCase().includes(term) || lab.brief.toLowerCase().includes(term) || domainById[lab.domain].name.toLowerCase().includes(term)) : baseLabs;
     const orderedLabs = [...matchedLabs].sort((a, b) => (state.flaggedLabs[b.id] ? 1 : 0) - (state.flaggedLabs[a.id] ? 1 : 0));
@@ -3576,12 +3712,34 @@ import {
 
   function renderLabs() {
     const flaggedCount = Object.keys(state.flaggedLabs).length;
-    main.innerHTML = `<div class="section-head"><div><h2>Practice the sequence, not just the term</h2><p>These guided simulations develop command selection, troubleshooting order, security judgment, and operational discipline.</p></div><div class="button-row"><span class="tag teal">${Object.keys(state.completedLabs).length}/${LABS.length} complete${flaggedCount ? ` · ${flaggedCount} flagged` : ''}</span><button class="ghost small" type="button" data-route="commands">${icon('terminal')} Command reference</button></div></div>
+    const gridLabs = nonScenarioLabs();
+    const gridCompleted = gridLabs.filter(lab => state.completedLabs[lab.id]).length;
+    main.innerHTML = `<div class="section-head"><div><h2>Practice the sequence, not just the term</h2><p>These guided simulations develop command selection, troubleshooting order, security judgment, and operational discipline.</p></div><div class="button-row"><span class="tag teal">${gridCompleted}/${gridLabs.length} complete${flaggedCount ? ` · ${flaggedCount} flagged` : ''}</span><button class="ghost small" type="button" data-route="casestudies">${icon('alert')} Case studies</button><button class="ghost small" type="button" data-route="commands">${icon('terminal')} Command reference</button></div></div>
       <div class="builder" style="grid-template-columns:2fr 1fr;margin-bottom:18px">
         <div class="field"><label for="lab-search">Search labs</label><input id="lab-search" type="text" placeholder="Search by title, topic, or skill…" value="${escapeHtml(labQuery)}" autocomplete="off"></div>
         <div class="field"><label for="lab-core-filter">Exam core</label><select id="lab-core-filter">${coreSelectOptions(labCoreFilter)}</select></div>
       </div>
       <section id="lab-results">${labResultsMarkup()}</section>`;
+  }
+
+  // ---------- Case studies (branching scenario tickets) ----------
+  // Reuses the exact same engine LABS' "scenario" lab type already runs (startLab, activeLab,
+  // renderScenarioLab, the scenario-choice action) rather than a parallel implementation — this
+  // page just gives that content its own front door, since "work a ticket through a chain of
+  // consequences" is a genuinely different test than any other Labs type (hands-on sequencing,
+  // a terminal, a GUI) and deserves its own place in the nav instead of being buried in the
+  // general Labs grid.
+  function caseStudyCardMarkup(lab) {
+    const completed = !!state.completedLabs[lab.id];
+    const flagged = !!state.flaggedLabs[lab.id];
+    return `<article class="lab-card"><div class="lab-card-top"><span class="lab-type">${icon('alert')}</span><div style="display:flex;align-items:center;gap:8px"><span class="difficulty">${lab.difficulty} · ${lab.minutes} min</span><button class="quiz-button ${flagged ? 'flag-active' : ''}" data-action="toggle-lab-flag" data-lab-id="${lab.id}" title="${flagged ? 'Unflag this case' : 'Flag this case for review'}" aria-label="${flagged ? 'Unflag this case' : 'Flag this case for review'}">${icon('flag')}</button></div></div><h3>${escapeHtml(lab.title)}</h3><p>${escapeHtml(lab.summary)}</p><div class="card-meta"><span>${CERT.cores[lab.core].name}</span><i class="dot"></i><span>${domainById[lab.domain].name}</span>${completed ? `<i class="dot"></i><span style="color:var(--green)">Resolved</span>` : ''}</div><div class="button-row"><button class="secondary" data-action="start-lab" data-lab="${lab.id}">${completed ? 'Work it again' : 'Open ticket'} ${icon('arrow')}</button></div></article>`;
+  }
+
+  function renderCaseStudiesHub() {
+    const cases = LABS.filter(lab => lab.type === 'scenario');
+    const resolved = cases.filter(lab => state.completedLabs[lab.id]).length;
+    main.innerHTML = `<div class="section-head"><div><h2>Case studies</h2><p>Real-feeling help-desk tickets where every choice leads to a consequence and the next question — testing a troubleshooting chain, not one isolated multiple-choice answer. <button class="ghost small" data-route="labs" style="vertical-align:middle">${icon('arrow')} Back to labs</button></p></div>${cases.length ? `<span class="tag teal">${resolved}/${cases.length} resolved</span>` : ''}</div>
+      <section class="lab-grid">${cases.length ? cases.map(caseStudyCardMarkup).join('') : `<div class="empty-state"><div><span class="stat-icon" style="margin:0 auto 12px">${icon('info')}</span><h3>No case studies for ${escapeHtml(CERT.name)} yet</h3><p>This track doesn't have any branching tickets written yet — the regular Labs still cover hands-on practice.</p></div></div>`}</section>`;
   }
 
   // Every command referenced anywhere in this track's terminal-style labs, deduplicated into
@@ -3812,6 +3970,230 @@ import {
     clozeSession = null;
     main.innerHTML = `<section class="results-hero"><span class="stat-icon" style="margin:0 auto 16px">${icon('edit')}</span><h2>Drill complete</h2><p>${correct} of ${total} blank${total === 1 ? '' : 's'} correct in ${formatDuration(seconds)}. Every term you typed — right or wrong — just updated its spaced-review schedule, the same as a flashcard rating would.</p><div class="button-row" style="justify-content:center"><button class="primary" data-route="cloze">Try another domain</button><button class="secondary" data-route="dashboard">Back to dashboard</button></div></section>`;
     hydrateIcons(main);
+  }
+
+  // ---------- Terminal sandbox (free-form command practice) ----------
+  // Distinct from the Labs' scripted terminal type: no task, no accepted-answer list, no
+  // completion state — just a persistent simulated filesystem to build raw command fluency in,
+  // the same way actually having a real shell open and poking around teaches it better than any
+  // single scripted exercise. State lives in a plain nested-object tree, mutated directly by each
+  // command handler; nothing here touches real files or a real network.
+  let sandboxSession = null;
+  const SANDBOX_HOME = ['home', 'tech'];
+  const SANDBOX_BANNER = "Cert Study terminal sandbox — a simulated filesystem. Nothing here is real; nothing you do here can break anything. Type 'help' for a command list.\n\n";
+
+  function buildSandboxFS() {
+    return { type: 'dir', name: '/', children: {
+      home: { type: 'dir', name: 'home', children: {
+        tech: { type: 'dir', name: 'tech', children: {
+          'notes.txt': { type: 'file', name: 'notes.txt', content: 'Ticket queue: 3 open, 1 escalated.\nRemember to check disk space on srv-02 today.' },
+          'readme.md': { type: 'file', name: 'readme.md', content: '# Welcome\nThis is a simulated shell for practicing commands. Explore freely — nothing here is real.' },
+          scripts: { type: 'dir', name: 'scripts', children: {
+            'backup.sh': { type: 'file', name: 'backup.sh', content: '#!/bin/bash\necho "Backing up /home..."' }
+          } }
+        } }
+      } },
+      etc: { type: 'dir', name: 'etc', children: {
+        hosts: { type: 'file', name: 'hosts', content: '127.0.0.1\tlocalhost\n192.168.1.10\tfileserver' },
+        passwd: { type: 'file', name: 'passwd', content: 'root:x:0:0:root:/root:/bin/bash\ntech:x:1000:1000:Tech User:/home/tech:/bin/bash' }
+      } },
+      var: { type: 'dir', name: 'var', children: {
+        log: { type: 'dir', name: 'log', children: {
+          syslog: { type: 'file', name: 'syslog', content: 'Jan 01 00:00:01 host systemd[1]: Started Daily cleanup.\nJan 01 03:12:44 host sshd[812]: Accepted publickey for tech' }
+        } }
+      } }
+    } };
+  }
+
+  function sandboxResolvePath(cwd, input) {
+    const abs = input.startsWith('/');
+    const parts = (abs ? input.slice(1) : input).split('/').filter(Boolean);
+    const segs = abs ? [] : [...cwd];
+    parts.forEach(p => { if (p === '.') return; if (p === '..') segs.pop(); else segs.push(p); });
+    return segs;
+  }
+
+  function sandboxGetNode(fs, segs) {
+    let node = fs;
+    for (const seg of segs) { if (!node || node.type !== 'dir' || !node.children[seg]) return null; node = node.children[seg]; }
+    return node;
+  }
+
+  function sandboxParentAndName(session, pathArg) {
+    const segs = sandboxResolvePath(session.cwd, pathArg);
+    const name = segs[segs.length - 1];
+    const parentNode = sandboxGetNode(session.fs, segs.slice(0, -1));
+    return { parentNode, name, segs };
+  }
+
+  function sandboxDisplayPath(cwd) {
+    if (cwd.length >= SANDBOX_HOME.length && SANDBOX_HOME.every((s, i) => cwd[i] === s)) {
+      const rest = cwd.slice(SANDBOX_HOME.length);
+      return rest.length ? `~/${rest.join('/')}` : '~';
+    }
+    return '/' + cwd.join('/');
+  }
+
+  function sandboxPrompt(session) { return `tech@sandbox:${sandboxDisplayPath(session.cwd)}$ `; }
+
+  const SANDBOX_HELP = `Available commands:
+  ls [path]          list files/directories
+  cd [path]          change directory
+  pwd                print working directory
+  cat <file>         show a file's contents
+  mkdir <name>       create a directory
+  touch <name>       create an empty file
+  rm [-r] <name>     remove a file (or directory with -r)
+  mv <src> <dest>    move or rename
+  cp <src> <dest>    copy
+  echo <text>        print text (supports: echo text > file)
+  ipconfig           show simulated network configuration
+  ping <host>        simulate a ping
+  chmod <mode> <f>   simulated permission change
+  whoami, date       simulated identity/time
+  clear              clear the screen`;
+
+  const SANDBOX_IPCONFIG = `Ethernet adapter Ethernet0:
+   IPv4 Address. . . . . . . . . . . : 192.168.1.42
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Default Gateway . . . . . . . . . : 192.168.1.1`;
+
+  function sandboxPing(host) {
+    if (!host) return 'usage: ping <host>';
+    const lines = [0, 1, 2, 3].map(i => `Reply from ${host}: bytes=32 time=${12 + i * 3}ms TTL=57`);
+    return `Pinging ${host} with 32 bytes of data:\n${lines.join('\n')}\n\nPing statistics: Sent = 4, Received = 4, Lost = 0 (0% loss)`;
+  }
+
+  function sandboxLs(session, pathArg) {
+    const segs = pathArg ? sandboxResolvePath(session.cwd, pathArg) : session.cwd;
+    const node = sandboxGetNode(session.fs, segs);
+    if (!node) return `ls: cannot access '${pathArg}': No such file or directory`;
+    if (node.type === 'file') return node.name;
+    const entries = Object.values(node.children).sort((a, b) => a.name.localeCompare(b.name));
+    return entries.map(e => e.type === 'dir' ? `${e.name}/` : e.name).join('  ');
+  }
+
+  function sandboxCd(session, pathArg) {
+    if (!pathArg || pathArg === '~') { session.cwd = [...SANDBOX_HOME]; return ''; }
+    const segs = sandboxResolvePath(session.cwd, pathArg);
+    const node = sandboxGetNode(session.fs, segs);
+    if (!node) return `cd: ${pathArg}: No such file or directory`;
+    if (node.type !== 'dir') return `cd: ${pathArg}: Not a directory`;
+    session.cwd = segs;
+    return '';
+  }
+
+  function sandboxCat(session, pathArg) {
+    if (!pathArg) return 'usage: cat <file>';
+    const node = sandboxGetNode(session.fs, sandboxResolvePath(session.cwd, pathArg));
+    if (!node) return `cat: ${pathArg}: No such file or directory`;
+    if (node.type !== 'file') return `cat: ${pathArg}: Is a directory`;
+    return node.content;
+  }
+
+  function sandboxMkdir(session, pathArg) {
+    if (!pathArg) return 'usage: mkdir <name>';
+    const { parentNode, name } = sandboxParentAndName(session, pathArg);
+    if (!parentNode || parentNode.type !== 'dir') return `mkdir: cannot create directory '${pathArg}': No such file or directory`;
+    if (parentNode.children[name]) return `mkdir: cannot create directory '${name}': File exists`;
+    parentNode.children[name] = { type: 'dir', name, children: {} };
+    return '';
+  }
+
+  function sandboxTouch(session, pathArg) {
+    if (!pathArg) return 'usage: touch <name>';
+    const { parentNode, name } = sandboxParentAndName(session, pathArg);
+    if (!parentNode || parentNode.type !== 'dir') return `touch: cannot touch '${pathArg}': No such file or directory`;
+    if (!parentNode.children[name]) parentNode.children[name] = { type: 'file', name, content: '' };
+    return '';
+  }
+
+  function sandboxRm(session, args) {
+    const recursive = args.includes('-r') || args.includes('-rf');
+    const targetArg = args.find(a => !a.startsWith('-'));
+    if (!targetArg) return 'usage: rm [-r] <name>';
+    const { parentNode, name } = sandboxParentAndName(session, targetArg);
+    if (!parentNode || !parentNode.children[name]) return `rm: cannot remove '${targetArg}': No such file or directory`;
+    const target = parentNode.children[name];
+    if (target.type === 'dir' && !recursive && Object.keys(target.children).length) return `rm: cannot remove '${targetArg}': Directory not empty (use -r)`;
+    delete parentNode.children[name];
+    return '';
+  }
+
+  function sandboxEcho(session, args) {
+    const redirectIndex = args.indexOf('>');
+    if (redirectIndex === -1) return args.join(' ').replace(/^"|"$/g, '');
+    const text = args.slice(0, redirectIndex).join(' ').replace(/^"|"$/g, '');
+    const targetArg = args[redirectIndex + 1];
+    if (!targetArg) return "echo: syntax error near unexpected token `>'";
+    const { parentNode, name } = sandboxParentAndName(session, targetArg);
+    if (!parentNode || parentNode.type !== 'dir') return `echo: ${targetArg}: No such file or directory`;
+    parentNode.children[name] = { type: 'file', name, content: text };
+    return '';
+  }
+
+  function sandboxMvCp(session, args, isMove) {
+    const label = isMove ? 'mv' : 'cp';
+    if (args.length < 2) return `usage: ${label} <source> <dest>`;
+    const [src, dest] = args;
+    const srcInfo = sandboxParentAndName(session, src);
+    if (!srcInfo.parentNode || !srcInfo.parentNode.children[srcInfo.name]) return `${label}: cannot stat '${src}': No such file or directory`;
+    const srcNode = srcInfo.parentNode.children[srcInfo.name];
+    const destNode = sandboxGetNode(session.fs, sandboxResolvePath(session.cwd, dest));
+    let destParent, destName;
+    if (destNode && destNode.type === 'dir') { destParent = destNode; destName = srcInfo.name; }
+    else { const info = sandboxParentAndName(session, dest); destParent = info.parentNode; destName = info.name; }
+    if (!destParent || destParent.type !== 'dir') return `${label}: cannot create '${dest}': No such file or directory`;
+    destParent.children[destName] = { ...JSON.parse(JSON.stringify(srcNode)), name: destName };
+    if (isMove) delete srcInfo.parentNode.children[srcInfo.name];
+    return '';
+  }
+
+  function sandboxExecute(session, raw) {
+    const [cmd, ...args] = raw.trim().split(/\s+/);
+    switch (cmd) {
+      case 'help': return SANDBOX_HELP;
+      case 'pwd': return '/' + session.cwd.join('/');
+      case 'whoami': return 'tech';
+      case 'date': return 'Thu Jan 01 00:00:00 UTC 2026 (simulated)';
+      case 'ls': return sandboxLs(session, args[0]);
+      case 'cd': return sandboxCd(session, args[0]);
+      case 'cat': return sandboxCat(session, args[0]);
+      case 'mkdir': return sandboxMkdir(session, args[0]);
+      case 'touch': return sandboxTouch(session, args[0]);
+      case 'rm': return sandboxRm(session, args);
+      case 'mv': return sandboxMvCp(session, args, true);
+      case 'cp': return sandboxMvCp(session, args, false);
+      case 'echo': return sandboxEcho(session, args);
+      case 'ipconfig': case 'ifconfig': return SANDBOX_IPCONFIG;
+      case 'ping': return sandboxPing(args[0]);
+      case 'chmod': return args.length >= 2 ? `Permissions for ${args[1]} updated to ${args[0]} (simulated — no real permission model here).` : 'usage: chmod <mode> <file>';
+      default: return `${cmd}: command not found. Type 'help' for a list of available commands.`;
+    }
+  }
+
+  function sandboxRunCommand() {
+    const session = sandboxSession; if (!session) return;
+    const input = document.getElementById('sandbox-command'); if (!input) return;
+    const raw = input.value;
+    if (!raw.trim()) return;
+    session.history.push(raw); session.historyIndex = session.history.length;
+    if (raw.trim() === 'clear') { session.transcript = SANDBOX_BANNER; renderSandbox(); return; }
+    const promptLine = sandboxPrompt(session) + raw;
+    const result = sandboxExecute(session, raw);
+    session.transcript += `${promptLine}\n${result ? result + '\n' : ''}`;
+    renderSandbox();
+  }
+
+  function renderSandbox() {
+    if (!sandboxSession) sandboxSession = { fs: buildSandboxFS(), cwd: [...SANDBOX_HOME], transcript: SANDBOX_BANNER, history: [], historyIndex: 0 };
+    const session = sandboxSession;
+    main.innerHTML = `<div class="section-head"><div><h2>Terminal sandbox</h2><p>A free-form simulated shell — no scripted task, no right answer. Explore the filesystem and build raw command fluency beyond any one lab's script.</p></div><button class="ghost small" data-action="sandbox-reset">${icon('rotate')} Reset filesystem</button></div>
+      <div class="terminal-window"><div class="terminal-bar"><i class="terminal-dot"></i><i class="terminal-dot"></i><i class="terminal-dot"></i></div><div class="terminal-output" id="sandbox-output">${escapeHtml(session.transcript)}</div><form class="terminal-input" id="sandbox-form"><span class="terminal-prompt">${escapeHtml(sandboxPrompt(session))}</span><input id="sandbox-command" autocomplete="off" spellcheck="false" placeholder="Type a command, or 'help'" aria-label="Sandbox command"></form></div>`;
+    hydrateIcons(main);
+    const output = document.getElementById('sandbox-output');
+    if (output) output.scrollTop = output.scrollHeight;
+    document.getElementById('sandbox-command')?.focus();
   }
 
   // ---------- Crossword ----------
@@ -4175,7 +4557,7 @@ import {
     const runtime = activeLab; if (!runtime) return renderLabs();
     const lab = runtime.lab;
     const flagged = !!state.flaggedLabs[lab.id];
-    main.innerHTML = `<section class="lab-shell"><div class="button-row" style="margin-bottom:14px"><button class="ghost small" data-action="exit-lab">← All labs</button><span class="tag teal">${CERT.cores[lab.core].name}</span><span class="tag">${lab.difficulty}</span><button class="ghost small ${flagged ? 'flag-active' : ''}" data-action="toggle-lab-flag" data-lab-id="${lab.id}">${icon('flag')} ${flagged ? 'Flagged for study' : 'Flag for review'}</button></div>
+    main.innerHTML = `<section class="lab-shell"><div class="button-row" style="margin-bottom:14px"><button class="ghost small" data-action="exit-lab">${lab.type === 'scenario' ? '← All case studies' : '← All labs'}</button><span class="tag teal">${CERT.cores[lab.core].name}</span><span class="tag">${lab.difficulty}</span><button class="ghost small ${flagged ? 'flag-active' : ''}" data-action="toggle-lab-flag" data-lab-id="${lab.id}">${icon('flag')} ${flagged ? 'Flagged for study' : 'Flag for review'}</button></div>
       <div class="lab-brief"><span class="eyebrow">Scenario briefing</span><h2>${escapeHtml(lab.title)}</h2><p>${escapeHtml(lab.brief)}</p></div>
       <div class="lab-workbench">${lab.type === 'sequence' ? renderSequenceLab(runtime) : lab.type === 'terminal' ? renderTerminalLab(runtime) : lab.type === 'scenario' ? renderScenarioLab(runtime) : lab.type === 'gui' ? renderGuiLab(runtime) : lab.type === 'visual' ? renderVisualLab(runtime) : renderDecisionLab(runtime)}</div></section>`;
     hydrateIcons(main);
@@ -4226,7 +4608,7 @@ import {
     if (node.end) {
       return `${ticketPanelMarkup(lab)}${scenarioLogMarkup(runtime.log)}
         <div class="empty-state ${node.success ? '' : 'scenario-fail'}"><div><span class="stat-icon" style="margin:0 auto 14px">${icon(node.success ? 'trophy' : 'alert')}</span><h2>${node.success ? 'Ticket resolved' : 'Not quite — dead end'}</h2><p>${escapeHtml(node.prompt)}</p>${node.success ? `<p style="margin-top:10px">${escapeHtml(lab.explanation)}</p>` : ''}
-          <div class="button-row" style="justify-content:center;margin-top:16px">${node.success ? `<button class="primary" data-action="exit-lab">Choose another lab</button><button class="secondary" data-action="reset-lab">Run again</button>` : `<button class="primary" data-action="reset-lab">Try again</button><button class="secondary" data-action="exit-lab">Choose another lab</button>`}</div>
+          <div class="button-row" style="justify-content:center;margin-top:16px">${node.success ? `<button class="primary" data-action="exit-lab">Choose another case</button><button class="secondary" data-action="reset-lab">Run again</button>` : `<button class="primary" data-action="reset-lab">Try again</button><button class="secondary" data-action="exit-lab">Choose another case</button>`}</div>
         </div></div>`;
     }
     return `${ticketPanelMarkup(lab)}${scenarioLogMarkup(runtime.log)}
@@ -5972,9 +6354,16 @@ import {
   function openShortcuts() {
     const groups = [
       ['Global', [['Ctrl / ⌘ + K', 'Open the command palette'], ['/', 'Open the command palette'], ['?', 'Show this shortcuts list'], ['Esc', 'Close a dialog']]],
+      ['Jump to a page (press G, then a letter)', [
+        ['G D', 'Dashboard'], ['G P', 'Practice'], ['G E', 'Mock exams'], ['G F', 'Flashcards'],
+        ['G L', 'Labs'], ['G T', 'Case studies'], ['G X', 'Terminal sandbox'], ['G C', 'Crossword'],
+        ['G K', 'Fill in the blank'], ['G B', 'Browse cards'], ['G G', 'Glossary'], ['G S', 'Study guide'],
+        ['G N', 'My notes'], ['G H', 'Progress'], ['G M', 'Exam map'], ['G A', 'Achievements']
+      ]],
       ['Practice & exams', [['1 – 4', 'Choose answer A–D'], ['N or →', 'Next question'], ['F', 'Flag or unflag the question']]],
       ['Flashcards', [['Space / Enter', 'Flip the card'], ['1 – 4', 'Rate Again / Hard / Good / Easy']]],
       ['Crossword', [['Arrow keys', 'Move between cells'], ['A – Z', 'Type a letter'], ['Backspace', 'Clear a letter'], ['[ or ]', 'Previous / next clue']]],
+      ['Terminal sandbox', [['↑ / ↓', 'Recall previous commands']]],
       ['Study guide', [['Space', 'Pause / resume read-aloud']]]
     ];
     openDialog(`<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="sc-title"><h2 id="sc-title">Keyboard shortcuts</h2><p>Move through the app without reaching for the mouse.</p><div class="shortcut-groups">${groups.map(([name, list]) => `<div class="shortcut-group"><h3>${name}</h3>${list.map(([keys, desc]) => `<div class="shortcut-row"><kbd>${escapeHtml(keys)}</kbd><span>${escapeHtml(desc)}</span></div>`).join('')}</div>`).join('')}</div><div class="button-row" style="margin-top:18px"><button class="secondary" data-action="close-dialog">Close</button></div></div>`);
@@ -6146,7 +6535,7 @@ import {
       if (activeLab && activeLab.lab.id === labId) renderLabWorkbench(); else renderLabs();
       hydrateIcons(main);
     }
-    if (action === 'exit-lab') { activeLab = null; renderLabs(); hydrateIcons(main); }
+    if (action === 'exit-lab') { const wasCase = activeLab?.lab.type === 'scenario'; activeLab = null; wasCase ? renderCaseStudiesHub() : renderLabs(); hydrateIcons(main); }
     if (action === 'move-step') {
       const source = activeLab[button.dataset.from]; const target = button.dataset.from === 'available' ? activeLab.chosen : activeLab.available;
       const moved = source.splice(Number(button.dataset.index), 1)[0]; target.push(moved); activeLab.feedback = '';
@@ -6193,6 +6582,44 @@ import {
     if (action === 'start-cloze') startCloze(button.dataset.domainId);
     if (action === 'exit-cloze') { clozeSession = null; renderClozeHub(); hydrateIcons(main); }
     if (action === 'cloze-next') clozeNext();
+    if (action === 'browse-sort') { browseSort = button.dataset.sort; renderBrowseTable(); }
+    if (action === 'browse-drill') {
+      const concept = conceptById[button.dataset.concept];
+      startPractice({ conceptIds: [button.dataset.concept], count: 1, mode: concept ? `${concept.term} drill` : 'Concept drill' });
+    }
+    if (action === 'browse-drill-selected') {
+      const ids = [...browseSelected].filter(id => conceptById[id]);
+      if (!ids.length) { toast('Nothing quizzable in your selection — custom cards can only be reviewed as flashcards.', 'error'); return; }
+      startPractice({ conceptIds: ids, count: ids.length, mode: 'Browse selection drill' });
+    }
+    if (action === 'browse-reset-selected') {
+      const ids = [...browseSelected];
+      if (!ids.length) return;
+      const previous = {}; ids.forEach(id => { if (state.flashcards[id]) previous[id] = state.flashcards[id]; });
+      ids.forEach(id => delete state.flashcards[id]);
+      saveState();
+      browseSelected.clear(); renderBrowseTable();
+      toast(`Reset schedule for ${ids.length} card${ids.length === 1 ? '' : 's'}.`, 'success', { label: 'Undo', run: () => {
+        Object.entries(previous).forEach(([id, val]) => { state.flashcards[id] = val; });
+        saveState(); renderBrowseTable();
+      } });
+    }
+    if (action === 'browse-suspend-selected') {
+      const ids = [...browseSelected]; if (!ids.length) return;
+      ids.forEach(id => { state.suspendedConcepts[id] = true; });
+      saveState(); browseSelected.clear(); renderBrowseTable();
+      toast(`Suspended ${ids.length} card${ids.length === 1 ? '' : 's'} from Practice, Exams, and Flashcards.`, 'success', { label: 'Undo', run: () => {
+        ids.forEach(id => delete state.suspendedConcepts[id]); saveState(); renderBrowseTable();
+      } });
+    }
+    if (action === 'browse-unsuspend-selected') {
+      const ids = [...browseSelected]; if (!ids.length) return;
+      ids.forEach(id => delete state.suspendedConcepts[id]);
+      saveState(); browseSelected.clear(); renderBrowseTable();
+      toast(`Unsuspended ${ids.length} card${ids.length === 1 ? '' : 's'}.`);
+    }
+    if (action === 'browse-clear-selection') { browseSelected.clear(); renderBrowseTable(); }
+    if (action === 'sandbox-reset') { sandboxSession = null; renderRoute(); }
     if (action === 'crossword-new-puzzle' && activeCrossword) startCrossword(activeCrossword.domainId);
     if (action === 'cw-select' && activeCrossword) {
       const cw = activeCrossword;
@@ -6452,6 +6879,7 @@ import {
     }
     if (event.target.id === 'custom-card-form') saveCustomCard();
     if (event.target.id === 'cloze-check-form') checkClozeAnswers();
+    if (event.target.id === 'sandbox-form') sandboxRunCommand();
     if (event.target.id === 'recall-form' && flashSession) {
       const typed = document.getElementById('recall-input').value;
       flashSession.typed = typed;
@@ -6521,6 +6949,13 @@ import {
     if (event.target.id === 'glossary-domain') { glossaryDomain = event.target.value; renderGlossaryResults(); }
     if (event.target.id === 'packet-domain') { packetDomain = event.target.value; renderStudyPacket(); }
     if (event.target.id === 'lab-core-filter') { labCoreFilter = event.target.value; renderLabResults(); }
+    if (event.target.id === 'browse-domain') { browseDomain = event.target.value; renderBrowseTable(); }
+    if (event.target.id === 'browse-status') { browseStatus = event.target.value; renderBrowseTable(); }
+    if (event.target.matches('.browse-row-check')) {
+      const id = event.target.dataset.concept;
+      event.target.checked ? browseSelected.add(id) : browseSelected.delete(id);
+      renderBrowseTable();
+    }
     if (event.target.matches('.examday-check')) {
       state.examDayChecklist[event.target.dataset.item] = event.target.checked;
       saveState();
@@ -6539,6 +6974,7 @@ import {
     if (event.target.id === 'lab-search') { labQuery = event.target.value; renderLabResults(); }
     if (event.target.id === 'command-search') { commandQuery = event.target.value; renderCommandResults(); }
     if (event.target.id === 'global-search-input') { globalSearchQuery = event.target.value; renderGlobalSearchResults(); }
+    if (event.target.id === 'browse-search') { browseQuery = event.target.value; renderBrowseTable(); }
     if (event.target.id === 'exam-scratchpad' && activeSession) activeSession.scratchpadText = event.target.value;
     if (event.target.id === 'palette-input') { paletteSel = 0; renderPaletteResults(); }
     if (event.target.id === 'setting-font-name') { const sample = document.getElementById('font-preview-sample'); if (sample) sample.style.fontFamily = buildFontStack(event.target.value); }
@@ -6603,9 +7039,41 @@ import {
     renderCrosswordPlay(); hydrateIcons(main);
   }
 
+  // ---------- Leader-key navigation (Gmail/Linear-style "g then <letter>") ----------
+  // A curated set of the most-used destinations, not literally every route — the command
+  // palette ('/' or Ctrl/Cmd+K) already covers everything else. Documented in the Shortcuts
+  // dialog (?) rather than shown as an on-screen hint when armed, matching how Gmail/Linear
+  // themselves work: a screen-reader announcement covers accessibility, sighted power users are
+  // expected to already know the letter from the docs, same as any other muscle-memory shortcut.
+  const LEADER_KEYMAP = {
+    d: 'dashboard', p: 'practice', e: 'exams', f: 'flashcards', l: 'labs', t: 'casestudies', x: 'sandbox',
+    c: 'crossword', k: 'cloze', b: 'browse', g: 'glossary', s: 'guide', n: 'notes',
+    h: 'history', m: 'objectives', a: 'achievements'
+  };
+  let leaderArmed = false;
+  let leaderTimeoutHandle = null;
+  function disarmLeader() { leaderArmed = false; if (leaderTimeoutHandle) { clearTimeout(leaderTimeoutHandle); leaderTimeoutHandle = null; } }
+  function armLeader() {
+    leaderArmed = true;
+    announce('Jump to mode. Press a letter for a page, or Escape to cancel.');
+    clearTimeout(leaderTimeoutHandle);
+    leaderTimeoutHandle = setTimeout(disarmLeader, 1500);
+  }
+
   document.addEventListener('keydown', event => {
     const typing = isTypingTarget(document.activeElement);
     const paletteOpen = !!dialogLayer.querySelector('.palette');
+
+    // Terminal sandbox: Up/Down recalls previous commands, same as a real shell history.
+    if (event.target.id === 'sandbox-command' && sandboxSession && (event.key === 'ArrowUp' || event.key === 'ArrowDown')) {
+      event.preventDefault();
+      const history = sandboxSession.history;
+      if (!history.length) return;
+      sandboxSession.historyIndex = Math.max(0, Math.min(history.length, sandboxSession.historyIndex + (event.key === 'ArrowUp' ? -1 : 1)));
+      event.target.value = history[sandboxSession.historyIndex] || '';
+      requestAnimationFrame(() => event.target.setSelectionRange(event.target.value.length, event.target.value.length));
+      return;
+    }
 
     // Command palette: Ctrl/Cmd+K toggles it from anywhere; while open, arrows + Enter drive it.
     if ((event.key === 'k' || event.key === 'K') && (event.ctrlKey || event.metaKey)) {
@@ -6623,6 +7091,24 @@ import {
     if (event.key === 'Escape' && dialogLayer.innerHTML) { closeDialog(); return; }
     // Any other open dialog swallows the app-level shortcuts (its own Tab-trap still runs).
     if (dialogLayer.innerHTML) return;
+
+    // Letter keys mean something else entirely during an active quiz (f = flag) or a live
+    // crossword (every letter fills the grid) — the leader key stays off in both so "g" never
+    // steals a keystroke those modes actually need.
+    const blockLeaderKey = !!activeSession || (activeCrossword && !activeCrossword.complete && currentRoute() === 'crossword');
+    if (!typing && !blockLeaderKey) {
+      if (leaderArmed) {
+        disarmLeader();
+        if (event.key === 'Escape') { event.preventDefault(); return; }
+        const route = !event.ctrlKey && !event.altKey && !event.metaKey ? LEADER_KEYMAP[event.key.toLowerCase()] : null;
+        if (route) { event.preventDefault(); navigate(route); return; }
+        // No match — silently drop back to normal handling for this same keystroke below.
+      } else if (event.key === 'g' && !event.ctrlKey && !event.altKey && !event.metaKey) {
+        event.preventDefault();
+        armLeader();
+        return;
+      }
+    }
 
     if (!typing && event.key === '/') { event.preventDefault(); openPalette(); return; }
     if (!typing && event.key === '?') { event.preventDefault(); openShortcuts(); return; }
