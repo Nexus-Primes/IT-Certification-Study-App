@@ -588,7 +588,9 @@ svg { width: 19px; height: 19px; display: block; stroke-width: 1.8; }
 .summary-line strong { text-align: right; }
 .summary-line span { color: var(--muted); }
 .objective-list { display: grid; gap: 12px; }
-.objective-card { padding: 19px 21px; border: 1px solid var(--border); border-radius: 13px; background: var(--surface); }
+.objective-card { padding: 19px 21px; border: 1px solid var(--border); border-radius: 13px; background: var(--surface); transition: opacity .15s; }
+.objective-card.completed { opacity: .55; }
+.objective-card.completed:hover, .objective-card.completed:focus-within { opacity: .85; }
 .objective-title { display: flex; justify-content: space-between; gap: 15px; }
 .objective-title h3 { margin-bottom: 3px; }
 .objective-title p { margin: 0; color: var(--muted); font-size: 11px; }

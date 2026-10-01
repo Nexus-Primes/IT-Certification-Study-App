@@ -39,12 +39,17 @@ import {
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v209';
+  const APP_VERSION = 'v210';
   // Shown in the "What's new" panel (Settings, command palette, or automatically once per
   // release). Newest first; keep entries short and user-facing. Entries before v133 predate
   // this app having per-build version numbers at all, so their "version" is the date instead —
   // still real history, just not tagged with a build number the way later entries are.
   const CHANGELOG = [
+    { version: 'v210', date: 'October 2026', title: 'Mark domains and whole tracks as completed', items: [
+      "New: a checkmark button on each domain's card (Exam Map) marks it completed — it greys out, and Practice's automatic modes, Adaptive difficulty, and Flashcards all stop picking it on their own. \"Practice this domain\" still works anytime; this only affects what gets recommended for you.",
+      "New: a track (the whole certification) marks itself completed automatically once every one of its exams has a recorded passing result, or you can mark one manually from Settings — greyed out and tagged \"Completed\" in the track switcher and the All-tracks list, which now sorts finished tracks to the bottom.",
+      "Marking a track completed also marks every domain in it completed, so the Dashboard's \"Focus next\" and Practice's weak-area picks immediately stop pointing at material from a cert you've already passed."
+    ] },
     { version: 'v209', date: 'October 2026', title: 'A much quieter Dashboard', items: [
       "Changed: the Dashboard is now two sections instead of six — a status hero (readiness, accuracy, streak, one primary action) and a single \"Focus next\" panel (your weakest domain plus due/flagged counts). The full domain-by-domain breakdown, the longer recommendation list, the 14-day activity strip, and the all-tracks list are all still one click away (Exam Map, Progress, and the track switcher) — they just don't load by default anymore.",
       "Fits on one screen without scrolling on a normal window size."
@@ -614,6 +619,14 @@ import {
     // paragraph indices buildSpeechSegments() already uses to map read-aloud segments to real
     // DOM nodes (section -1 / para 0 means the chapter's own overview paragraph).
     notes: {}, readinessLog: [], onboardedAt: null, examDate: null, guideResume: {}, customConcepts: {}, guideReadPosition: null, milestonesSeen: {}, guideHighlights: {}, examDayChecklist: {}, examResults: {}, suspendedConcepts: {},
+    // completedDomains: { [domainId]: isoTimestamp } — a manual "I'm done with this domain"
+    // marker, separate from mastery% (which is evidence-based and can't be willed to 100%).
+    // trackCompleted/trackCompletedAt: the same idea one level up, for the whole track — set
+    // automatically once every one of this cert's cores has a recorded passing exam result (see
+    // the exam-result-form handler), or manually from Settings. Both exist purely to keep
+    // recommendations (weak-area picks, Adaptive, due flashcards) from pushing content the
+    // person has already told the app they're finished with — never to block manual access.
+    completedDomains: {}, trackCompleted: false, trackCompletedAt: null,
     // Streak freeze: start with one banked. streakFreezeDates records which specific missed
     // days were already covered (so a freeze is only ever spent once per gap, permanently —
     // see checkStreakFreeze). streakFreezeGrantedAt is the highest real-streak-length a refill
@@ -636,7 +649,7 @@ import {
     // shape can't crash `sessions.unshift` / `Object.entries(questionStats)` downstream.
     if (!Array.isArray(merged.sessions)) merged.sessions = [];
     if (!Array.isArray(merged.readinessLog)) merged.readinessLog = [];
-    for (const key of ['questionStats', 'flashcards', 'activity', 'completedLabs', 'flaggedQuestions', 'flaggedLabs', 'completedCrosswords', 'notes', 'guideResume', 'customConcepts', 'milestonesSeen', 'streakFreezeDates', 'guideHighlights', 'examDayChecklist', 'examResults', 'suspendedConcepts']) {
+    for (const key of ['questionStats', 'flashcards', 'activity', 'completedLabs', 'flaggedQuestions', 'flaggedLabs', 'completedCrosswords', 'notes', 'guideResume', 'customConcepts', 'milestonesSeen', 'streakFreezeDates', 'guideHighlights', 'examDayChecklist', 'examResults', 'suspendedConcepts', 'completedDomains']) {
       if (!merged[key] || typeof merged[key] !== 'object' || Array.isArray(merged[key])) merged[key] = {};
     }
     return merged;
@@ -1292,10 +1305,29 @@ import {
     return { seen, firstCorrect, accuracy, mastery: Math.round(accuracy * (.35 + .65 * confidence)) };
   }
 
-  // Shared by the dashboard's "next best move" list and Practice's weak-area targeting hub,
-  // so both surfaces rank the same way instead of drifting apart.
+  // Shared by the dashboard's "focus next" panel and Practice's weak-area targeting hub, so both
+  // surfaces rank the same way instead of drifting apart. Domains marked completed are excluded
+  // entirely — once you've told the app you're done with one, it should never resurface as a
+  // recommendation, even if its mastery % is technically still the lowest in the track.
   function getWeakDomains(limit = 4) {
-    return Object.values(domainById).map(domain => ({ domain, ...getDomainMetrics(domain.id) })).sort((a, b) => a.mastery - b.mastery).slice(0, limit);
+    return Object.values(domainById).filter(domain => !state.completedDomains[domain.id]).map(domain => ({ domain, ...getDomainMetrics(domain.id) })).sort((a, b) => a.mastery - b.mastery).slice(0, limit);
+  }
+
+  // Marking the whole track complete cascades to every one of its domains too — "I passed the
+  // cert" implies "I'm done with every domain in it," and this is what actually stops the
+  // Dashboard/Practice from still pushing individual domains as a focus area. Reopening the
+  // track deliberately does NOT un-complete domains — someone reopening for a refresher may
+  // still want some domains to stay marked done.
+  function markTrackCompleted(dateKey) {
+    state.trackCompleted = true;
+    state.trackCompletedAt = dateKey;
+    Object.values(CERT.cores).flatMap(c => c.domains).forEach(domain => {
+      if (!state.completedDomains[domain.id]) state.completedDomains[domain.id] = dateKey;
+    });
+  }
+  function markTrackReopened() {
+    state.trackCompleted = false;
+    state.trackCompletedAt = null;
   }
 
   function getCoreReadiness(coreId) {
@@ -1480,7 +1512,7 @@ import {
     });
     const readiness = coreReadiness.length ? Math.round(coreReadiness.reduce((a, b) => a + b, 0) / coreReadiness.length) : 0;
     return {
-      cert, readiness,
+      cert, readiness, completed: !!blob.trackCompleted,
       answered: (blob.stats && blob.stats.answered) || 0,
       sessions: (blob.sessions && blob.sessions.length) || 0,
       labsCompleted: blob.completedLabs ? Object.keys(blob.completedLabs).length : 0,
@@ -1492,18 +1524,19 @@ import {
   // never hides visibility into everything else you're juggling — reuses computeCertSummary,
   // which already reads any track's saved progress without needing to switch to it.
   function allTracksSectionMarkup() {
-    const rows = CERT_REGISTRY.map(entry => {
-      const summary = computeCertSummary(entry);
-      if (!summary) return '';
+    // Completed tracks sink to the bottom — the whole point is seeing what's still open first.
+    const entries = CERT_REGISTRY.map(entry => ({ entry, summary: computeCertSummary(entry) })).filter(row => row.summary);
+    entries.sort((a, b) => (a.summary.completed ? 1 : 0) - (b.summary.completed ? 1 : 0));
+    const rows = entries.map(({ entry, summary }) => {
       const group = CERT_GROUPS.find(g => g.id === entry.group);
       const isProgram = group && group.domain === 'programs';
       const isActive = entry.id === activeCertId;
       const metric = isProgram
         ? `${summary.labsCompleted}/${summary.totalLabs} labs complete`
         : `${summary.readiness}% readiness${summary.answered ? ` · ${summary.answered} answered` : ''}`;
-      return isActive
-        ? `<button class="cert-option" disabled><span class="mini-mark">${escapeHtml(entry.short)}</span><span><strong>${escapeHtml(summary.cert.name)}</strong><small>${metric}</small></span><span class="tag teal">Active now</span></button>`
-        : `<button class="cert-option" data-action="switch-cert" data-cert-id="${entry.id}"><span class="mini-mark">${escapeHtml(entry.short)}</span><span><strong>${escapeHtml(summary.cert.name)}</strong><small>${metric}</small></span><span class="coming-badge">Switch</span></button>`;
+      const style = summary.completed ? ' style="opacity:.6"' : '';
+      if (isActive) return `<button class="cert-option" disabled${style}><span class="mini-mark">${escapeHtml(entry.short)}</span><span><strong>${escapeHtml(summary.cert.name)}</strong><small>${metric}</small></span><span class="tag teal">${summary.completed ? `${icon('check')} Completed` : 'Active now'}</span></button>`;
+      return `<button class="cert-option" data-action="switch-cert" data-cert-id="${entry.id}"${style}><span class="mini-mark">${escapeHtml(entry.short)}</span><span><strong>${escapeHtml(summary.cert.name)}</strong><small>${metric}</small></span>${summary.completed ? `<span class="tag teal">${icon('check')} Completed</span>` : `<span class="coming-badge">Switch</span>`}</button>`;
     }).join('');
     return `<section class="panel" style="margin-top:22px">
       <div class="panel-header"><div><h2>All your tracks</h2><p>Every certification and program at a glance, without leaving what you're working on now.</p></div></div>
@@ -1708,7 +1741,7 @@ import {
 
   function getDueCards(includeNew = true) {
     const now = Date.now();
-    const pool = allConcepts().filter(concept => !state.suspendedConcepts[concept.id]);
+    const pool = allConcepts().filter(concept => !state.suspendedConcepts[concept.id] && !state.completedDomains[concept.domain]);
     const reviewed = pool.filter(concept => state.flashcards[concept.id] && new Date(state.flashcards[concept.id].due).getTime() <= now);
     if (!includeNew) return reviewed;
     const fresh = pool.filter(concept => !state.flashcards[concept.id]);
@@ -2418,8 +2451,8 @@ import {
       ${cramReminderMarkup()}
       <section class="hero">
         <div class="hero-copy">
-          <span class="eyebrow">${escapeHtml(CERT.name)}${countdown ? ` · exam in ${countdown.days} day${countdown.days === 1 ? '' : 's'}` : ''}</span>
-          <h2>${readiness >= 80 ? 'Exam-ready range' : readiness >= 55 ? 'Momentum is building' : 'Build your baseline'}</h2>
+          <span class="eyebrow">${escapeHtml(CERT.name)}${state.trackCompleted ? ' · ✓ Completed' : countdown ? ` · exam in ${countdown.days} day${countdown.days === 1 ? '' : 's'}` : ''}</span>
+          <h2>${state.trackCompleted ? 'Track completed' : readiness >= 80 ? 'Exam-ready range' : readiness >= 55 ? 'Momentum is building' : 'Build your baseline'}</h2>
           <p>${state.stats.answered ? `${pct(state.stats.firstCorrect, state.stats.answered)}% first-try accuracy · ${getMasteredConcepts()} concepts mastered · ${getStreak()}-day streak` : 'Complete a Quick 10 to establish your first mastery signal.'}</p>
           <div class="button-row">
             <button class="primary" data-action="start-today">${icon('play')} ${escapeHtml(todaysSessionLabel(todaysPlan))}</button>
@@ -2433,9 +2466,9 @@ import {
       </section>
 
       <section class="panel">
-        <div class="panel-header"><div><h2>Focus next</h2><p>${weakest ? 'Your lowest-confidence domain right now.' : 'Keep practicing to surface a focus area.'}</p></div><button class="ghost small" data-route="objectives">${icon('arrow')} Full breakdown</button></div>
+        <div class="panel-header"><div><h2>Focus next</h2><p>${weakest ? 'Your lowest-confidence domain right now.' : Object.values(domainById).every(d => state.completedDomains[d.id]) ? 'Every domain is marked completed.' : 'Keep practicing to surface a focus area.'}</p></div><button class="ghost small" data-route="objectives">${icon('arrow')} Full breakdown</button></div>
         <div class="panel-body">
-          ${weakest ? `<div class="weak-row"><div class="weak-row-top"><div class="mastery-label"><strong>${escapeHtml(weakest.domain.name)}</strong><small>${weakest.seen ? `${weakest.accuracy}% across ${weakest.seen} attempts` : 'No baseline yet'}</small></div><div class="progress-track"><div class="progress-bar" style="width:${weakest.mastery}%"></div></div><span class="mastery-value">${weakest.mastery}%</span></div><div class="button-row weak-actions"><button class="ghost small" data-action="domain-drill" data-domain="${weakest.domain.id}">${icon('target')} Drill it</button></div></div>` : ''}
+          ${weakest ? `<div class="weak-row"><div class="weak-row-top"><div class="mastery-label"><strong>${escapeHtml(weakest.domain.name)}</strong><small>${weakest.seen ? `${weakest.accuracy}% across ${weakest.seen} attempts` : 'No baseline yet'}</small></div><div class="progress-track"><div class="progress-bar" style="width:${weakest.mastery}%"></div></div><span class="mastery-value">${weakest.mastery}%</span></div><div class="button-row weak-actions"><button class="ghost small" data-action="domain-drill" data-domain="${weakest.domain.id}">${icon('target')} Drill it</button></div></div>` : `<div class="notice">${icon('check')}<span>Nothing left in the automatic rotation${state.trackCompleted ? ` — ${escapeHtml(CERT.name)} is marked completed` : ''}. Reopen a domain on the Exam Map, or use the Practice builder to drill one manually anytime.</span></div>`}
           <div class="button-row" style="margin-top:16px;flex-wrap:wrap">
             ${dueCount ? `<button class="ghost small" data-action="start-flash">${icon('layers')} ${dueCount} due</button>` : ''}
             ${flaggedCount ? `<button class="ghost small" data-action="review-flagged">${icon('flag')} ${flaggedCount} flagged</button>` : ''}
@@ -2448,7 +2481,7 @@ import {
 
   function domainOptions(coreValue = 'all') {
     const cores = coreValue === 'all' ? Object.values(CERT.cores) : [CERT.cores[coreValue]];
-    return `<option value="all">All domains</option>${cores.flatMap(core => core.domains.map(domain => `<option value="${domain.id}">${core.name} · ${domain.name}</option>`)).join('')}`;
+    return `<option value="all">All domains</option>${cores.flatMap(core => core.domains.map(domain => `<option value="${domain.id}">${core.name} · ${domain.name}${state.completedDomains[domain.id] ? ' ✓ completed' : ''}</option>`)).join('')}`;
   }
 
   function renderPractice() {
@@ -2531,10 +2564,13 @@ import {
   }
 
   function sampleQuestions(filter, count, seed = Date.now()) {
-    // Suspension only excludes a concept from automatic/random selection — an explicit
-    // conceptIds request (e.g. drilling one concept by hand from Browse) bypasses it on
-    // purpose, since that's a deliberate choice to test it anyway, not a random draw.
-    let source = QUESTIONS.filter(question => (filter.conceptIds || !state.suspendedConcepts[question.conceptId]) && (!filter.core || filter.core === 'all' || question.core === filter.core) && (!filter.domain || filter.domain === 'all' || question.domain === filter.domain));
+    // Suspension (per concept) and a completed domain (per domain) both only exclude from
+    // automatic/random selection — an explicit conceptIds request (drilling one concept by hand
+    // from Browse) or an explicit domain request (the domain-drill button, a specific choice in
+    // the Practice builder) bypasses either on purpose, since that's a deliberate choice to
+    // practice it anyway, not a random draw the app picked for you.
+    const domainExplicit = filter.domain && filter.domain !== 'all';
+    let source = QUESTIONS.filter(question => (filter.conceptIds || !state.suspendedConcepts[question.conceptId]) && (domainExplicit || filter.conceptIds || !state.completedDomains[question.domain]) && (!filter.core || filter.core === 'all' || question.core === filter.core) && (!filter.domain || filter.domain === 'all' || question.domain === filter.domain));
     if (filter.conceptIds) {
       const idSet = new Set(filter.conceptIds);
       source = source.filter(question => idSet.has(question.conceptId));
@@ -2628,7 +2664,8 @@ import {
   // most once per session (same rule sampleQuestions already follows elsewhere).
   function startAdaptivePractice(options = {}) {
     const count = Math.min(50, Math.max(5, Number(options.count || 15)));
-    const pool = QUESTIONS.filter(q => !state.suspendedConcepts[q.conceptId] && (!options.core || options.core === 'all' || q.core === options.core) && (!options.domain || options.domain === 'all' || q.domain === options.domain));
+    const adaptiveDomainExplicit = options.domain && options.domain !== 'all';
+    const pool = QUESTIONS.filter(q => !state.suspendedConcepts[q.conceptId] && (adaptiveDomainExplicit || !state.completedDomains[q.domain]) && (!options.core || options.core === 'all' || q.core === options.core) && (!options.domain || options.domain === 'all' || q.domain === options.domain));
     if (!pool.length) { toast('No matching questions are available yet.', 'error'); return; }
     const sessionId = `session-${Date.now()}`;
     const conceptStats = conceptStatsMap();
@@ -2713,7 +2750,7 @@ import {
   // Pass a domainId to scope it to one domain's card on the Exam Map, or omit it to cover every
   // domain in the currently viewed core at once.
   function startGapPractice(domainId) {
-    const domains = domainId ? [domainId] : CERT.cores[objectiveCore].domains.map(domain => domain.id);
+    const domains = domainId ? [domainId] : CERT.cores[objectiveCore].domains.filter(domain => !state.completedDomains[domain.id]).map(domain => domain.id);
     const gaps = domains.flatMap(id => unmasteredConcepts(id));
     if (!gaps.length) { toast('Every concept here is already mastered!'); return; }
     const conceptIds = gaps.map(item => item.concept.id);
@@ -3331,7 +3368,8 @@ import {
 
   function startFlashcards(filter = {}) {
     const now = Date.now();
-    let cards = allConcepts().filter(concept => !state.suspendedConcepts[concept.id] && (!filter.core || filter.core === 'all' || concept.core === filter.core) && (!filter.domain || filter.domain === 'all' || concept.domain === filter.domain));
+    const flashDomainExplicit = filter.domain && filter.domain !== 'all';
+    let cards = allConcepts().filter(concept => !state.suspendedConcepts[concept.id] && (flashDomainExplicit || !state.completedDomains[concept.domain]) && (!filter.core || filter.core === 'all' || concept.core === filter.core) && (!filter.domain || filter.domain === 'all' || concept.domain === filter.domain));
     const due = cards.filter(concept => state.flashcards[concept.id] && new Date(state.flashcards[concept.id].due).getTime() <= now);
     const fresh = cards.filter(concept => !state.flashcards[concept.id]);
     const future = cards.filter(concept => state.flashcards[concept.id] && new Date(state.flashcards[concept.id].due).getTime() > now).sort((a, b) => new Date(state.flashcards[a.id].due) - new Date(state.flashcards[b.id].due));
@@ -5380,7 +5418,7 @@ import {
   function renderObjectives() {
     const core = CERT.cores[objectiveCore];
     const coreEntries = Object.entries(CERT.cores);
-    const domainGaps = Object.fromEntries(core.domains.map(domain => [domain.id, unmasteredConcepts(domain.id)]));
+    const domainGaps = Object.fromEntries(core.domains.map(domain => [domain.id, state.completedDomains[domain.id] ? [] : unmasteredConcepts(domain.id)]));
     const coreGapsTotal = Object.values(domainGaps).reduce((sum, gaps) => sum + gaps.length, 0);
     const effortRows = domainEffortRows(core);
     const totalReps = effortRows.reduce((sum, row) => sum + row.seen, 0);
@@ -5396,20 +5434,21 @@ import {
       <section class="objective-layout"><aside class="exam-summary-card"><span class="exam-code">${core.code}</span><h2>${core.name}</h2><p>${escapeHtml(core.description)}</p><div class="summary-list"><div class="summary-line"><span>Questions</span><strong>Maximum ${core.maxQuestions}</strong></div><div class="summary-line"><span>Time</span><strong>${core.duration} minutes</strong></div><div class="summary-line"><span>Question types</span><strong>${escapeHtml(core.questionTypes || 'Multiple choice')}</strong></div><div class="summary-line"><span>Passing score</span><strong>${core.passingScore}/900</strong></div><div class="summary-line"><span>Recommended</span><strong>${escapeHtml(core.recommendedPrep || 'Hands-on practice recommended')}</strong></div></div><div class="notice" style="margin-top:16px">${icon('info')}<span>Scaled scoring is not a raw percentage. This app uses transparent estimates for learning only.</span></div>
         ${coreGapsTotal ? `<button class="primary" style="width:100%;margin-top:14px" data-action="practice-gaps">${icon('target')} Practice all ${coreGapsTotal} remaining concept${coreGapsTotal === 1 ? '' : 's'}</button>` : `<div class="notice" style="margin-top:14px">${icon('check')}<span>You've hit the mastery bar (3+ attempts, 80%+ accuracy) on every concept in ${escapeHtml(core.name)}. Domain % scores below still climb toward 100% with total rep count, so keep practicing to push those the rest of the way.</span></div>`}
       </aside>
-      <div class="objective-list">${core.domains.map(domain => { const metrics = getDomainMetrics(domain.id); const gaps = domainGaps[domain.id]; const domainLabs = LABS.filter(l => l.domain === domain.id); const openLabs = domainLabs.filter(l => !state.completedLabs[l.id]); const isOpen = expandedDomains.has(domain.id); return `<article class="objective-card">
+      <div class="objective-list">${core.domains.map(domain => { const metrics = getDomainMetrics(domain.id); const gaps = domainGaps[domain.id]; const domainLabs = LABS.filter(l => l.domain === domain.id); const openLabs = domainLabs.filter(l => !state.completedLabs[l.id]); const isOpen = expandedDomains.has(domain.id); const isCompleted = !!state.completedDomains[domain.id]; return `<article class="objective-card${isCompleted ? ' completed' : ''}">
         <div class="objective-title">
           <button type="button" class="objective-toggle" data-action="toggle-domain-card" data-domain="${domain.id}" aria-expanded="${isOpen}">
             <div><span class="eyebrow">Domain ${domain.number}</span><h3>${escapeHtml(domain.name)}</h3><p>${domain.objectives.length} objective groups · ${CONCEPTS.filter(c => c.domain === domain.id).length * CERT.questionVariants} question forms</p></div>
           </button>
           <div class="objective-title-right">
-            <div style="text-align:right"><strong style="font-size:24px;color:${domainAccentColor(domain)}">${domain.weight}%</strong><small style="display:block;color:var(--muted)">${metrics.mastery}% mastery</small></div>
+            <div style="text-align:right">${isCompleted ? `<span class="tag teal">${icon('check')} Done</span>` : `<strong style="font-size:24px;color:${domainAccentColor(domain)}">${domain.weight}%</strong>`}<small style="display:block;color:var(--muted)">${metrics.mastery}% mastery</small></div>
+            <button type="button" class="icon-button ${isCompleted ? 'flag-active' : ''}" data-action="toggle-domain-completed" data-domain="${domain.id}" title="${isCompleted ? 'Reopen this domain' : 'Mark this domain as completed'}" aria-label="${isCompleted ? `Reopen ${escapeHtml(domain.name)}` : `Mark ${escapeHtml(domain.name)} as completed`}">${icon('check')}</button>
             ${gaps.length ? `<button type="button" class="icon-button objective-drill-btn" title="Practice ${gaps.length} remaining in ${escapeHtml(domain.name)}" aria-label="Practice ${gaps.length} remaining concepts in ${escapeHtml(domain.name)}" data-action="practice-gaps" data-domain="${domain.id}">${icon('target')}</button>` : ''}
             <button type="button" class="objective-chevron-btn" data-action="toggle-domain-card" data-domain="${domain.id}" aria-expanded="${isOpen}" aria-label="${isOpen ? 'Collapse' : 'Expand'} ${escapeHtml(domain.name)}"><span class="objective-chevron" data-icon="chevron"></span></button>
           </div>
         </div>
         <div class="progress-track" style="margin-top:14px"><div class="progress-bar" style="width:${metrics.mastery}%"></div></div>
         ${isOpen ? `<div class="objective-detail">${domain.objectives.map(objective => { const om = getObjectiveMetrics(domain.id, objective.code); return `<div class="objective-row"><div class="objective-row-body"><div class="objective-mastery-head"><strong>${objective.code} · ${escapeHtml(objective.title)}</strong><span class="objective-mastery-pct${om.seen ? '' : ' dim'}">${om.seen ? `${om.mastery}%` : 'Not started'}</span></div><div class="progress-track objective-track"><div class="progress-bar" style="width:${om.mastery}%"></div></div><p class="objective-topics-line">${objective.topics.map(topic => escapeHtml(topic)).join(' · ')}</p></div><button type="button" class="icon-button objective-drill-btn" title="Drill ${objective.code}${om.seen ? ` — ${om.accuracy}% over ${om.seen}` : ''}" aria-label="Drill ${objective.code}: ${escapeHtml(objective.title)}" data-action="drill-objective" data-domain="${domain.id}" data-objective="${objective.code}">${icon('target')}</button></div>`; }).join('')}
-          ${gaps.length ? `<details class="gap-details" style="margin-top:16px"><summary>${gaps.length} concept${gaps.length === 1 ? '' : 's'} below the mastery bar (3+ attempts, 80%+)</summary><ul class="gap-list">${gaps.map(item => `<li><span>${escapeHtml(item.concept.term)}</span><span class="tag ${item.status === 'Below 80%' ? 'amber' : ''}">${item.status === 'New' ? 'Not started' : item.status === 'Building' ? `${item.seen}/${MASTERY_MIN_SEEN} attempts` : `${item.accuracy}% so far`}</span></li>`).join('')}</ul></details>` : `<div class="notice" style="margin-top:16px">${icon('check')}<span>Every concept here has hit the mastery bar. The ${metrics.mastery}% score above still climbs toward 100% with more total reps in this domain — it's not a contradiction, just a slower-moving number.</span></div>`}
+          ${gaps.length ? `<details class="gap-details" style="margin-top:16px"><summary>${gaps.length} concept${gaps.length === 1 ? '' : 's'} below the mastery bar (3+ attempts, 80%+)</summary><ul class="gap-list">${gaps.map(item => `<li><span>${escapeHtml(item.concept.term)}</span><span class="tag ${item.status === 'Below 80%' ? 'amber' : ''}">${item.status === 'New' ? 'Not started' : item.status === 'Building' ? `${item.seen}/${MASTERY_MIN_SEEN} attempts` : `${item.accuracy}% so far`}</span></li>`).join('')}</ul></details>` : isCompleted ? `<div class="notice" style="margin-top:16px">${icon('check')}<span>Marked completed — this domain won't be picked by Practice's automatic modes, Adaptive difficulty, or Flashcards, but "Practice this domain" below still works anytime.</span></div>` : `<div class="notice" style="margin-top:16px">${icon('check')}<span>Every concept here has hit the mastery bar. The ${metrics.mastery}% score above still climbs toward 100% with more total reps in this domain — it's not a contradiction, just a slower-moving number.</span></div>`}
           ${openLabs.length ? `<div class="notice" style="margin-top:12px">${icon('terminal')}<span>${openLabs.length} hands-on lab${openLabs.length === 1 ? '' : 's'} still open here — starting with <strong>${escapeHtml(openLabs[0].title)}</strong>${openLabs.length > 1 ? ` (+${openLabs.length - 1} more)` : ''}. Quiz mastery alone won't cover the sequencing and judgment these build.</span></div>` : ''}
           <div class="button-row" style="margin-top:17px"><button class="ghost small" data-action="domain-drill" data-domain="${domain.id}">Practice this domain</button>${gaps.length ? `<button class="secondary small" data-action="practice-gaps" data-domain="${domain.id}">Practice ${gaps.length} remaining</button>` : ''}${openLabs.length ? `<button class="secondary small" data-action="start-lab" data-lab="${openLabs[0].id}">${icon('play')} Start lab</button>` : ''}</div>
         </div>` : ''}
@@ -5781,7 +5820,7 @@ import {
       <article class="settings-card"><h3>Learning preferences</h3><p>Adjust behavior without changing how first-attempt mastery is calculated.</p><div class="setting-row"><div><strong>Second-chance learning</strong><small>One retry in practice; first attempt still drives mastery.</small></div><label class="switch"><input id="setting-second" type="checkbox" ${state.settings.secondChance ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Sound effects</strong><small>A short tone on correct/incorrect answers in Practice.</small></div><label class="switch"><input id="setting-sound" type="checkbox" ${state.settings.soundEffects ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Focus mode</strong><small>Hide the sidebar while a quiz or exam is in progress.</small></div><label class="switch"><input id="setting-focus" type="checkbox" ${state.settings.focusMode ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Fullscreen exams</strong><small>Go fullscreen automatically when starting a mock exam — closer to real testing-center conditions.</small></div><label class="switch"><input id="setting-fullscreen-exam" type="checkbox" ${state.settings.fullscreenExams ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Start page</strong><small>What loads when you open the app.</small></div><select id="setting-start-page">${[['dashboard', 'Dashboard'], ['practice', 'Practice'], ['guide', 'Study guide'], ['history', 'Progress']].map(([id, label]) => `<option value="${id}" ${(state.settings.startPage || 'dashboard') === id ? 'selected' : ''}>${label}</option>`).join('')}</select></div><div class="setting-row"><div><strong>Milestone celebrations</strong><small>What happens when you cross a real milestone.</small></div><div class="domain-tabs" style="margin:0">${[['confetti', 'Confetti'], ['simple', 'Simple'], ['off', 'Off']].map(([id, label]) => `<button class="tab-button ${(state.settings.celebrationStyle || 'confetti') === id ? 'active' : ''}" type="button" data-action="set-celebration-style" data-style="${id}">${label}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Tip of the day</strong><small>A daily study tip on the Dashboard.</small></div><label class="switch"><input id="setting-show-tip" type="checkbox" ${state.settings.showTipOfDay !== false ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>All tracks at a glance</strong><small>Every track's progress, shown on the Dashboard.</small></div><label class="switch"><input id="setting-show-alltracks" type="checkbox" ${state.settings.showAllTracks !== false ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Read-aloud speed</strong><small>Used when you listen to Study guide chapters.</small></div><select id="setting-speech-rate">${[0.75, 1, 1.25, 1.5].map(rate => `<option value="${rate}" ${state.settings.speechRate === rate ? 'selected' : ''}>${rate}×</option>`).join('')}</select></div>${isPrograms ? '' : `<div class="setting-row stacked"><div><strong>Exam date</strong><small>Drives the dashboard countdown and the readiness projection.</small></div><div class="setting-date-group"><input type="date" id="settings-exam-date" class="setting-date-input" value="${state.examDate || ''}"><button class="secondary small" data-action="set-exam-date">Save</button></div></div>`}</article>
       ${isPrograms ? '' : `<article class="settings-card"><h3>Notifications</h3><p>A local browser notification — nothing leaves this machine, and nothing is sent while the app is fully closed.</p><div class="setting-row"><div><strong>Review reminders</strong><small>${!('Notification' in window) ? 'Not supported in this browser.' : Notification.permission === 'denied' ? 'Blocked — enable notifications for this site in your browser settings first.' : "A nudge when spaced-review flashcards are due for whichever track is active — checked once a day when you open or return to the app, not while it's fully closed."}</small></div><label class="switch"><input id="setting-notify-reviews" type="checkbox" ${metaState.notifyReviewsEnabled ? 'checked' : ''} ${(!('Notification' in window) || Notification.permission === 'denied') ? 'disabled' : ''}><span></span></label></div></article>`}
       <article class="settings-card"><h3>Progress backup</h3><p>Export or restore everything in one JSON file — every track's practice history, mastery, flashcards, and labs, plus your study plan. Not just ${escapeHtml(CERT.name)}.</p><div class="button-row" style="margin-top:20px"><button class="secondary" data-action="export-data">${icon('download')} Export data</button><button class="secondary" data-action="save-backup-file">${icon('folder')} Save to backup folder</button><button class="secondary" data-action="choose-import">${icon('upload')} Import data</button><input type="file" id="import-file" accept="application/json" class="hidden"></div><p style="margin-top:10px">${metaState.lastBackupDate ? `Last backup: ${formatDateKey(metaState.lastBackupDate)} (${daysBetween(metaState.lastBackupDate, todayKey()) === 0 ? 'today' : `${daysBetween(metaState.lastBackupDate, todayKey())} day${daysBetween(metaState.lastBackupDate, todayKey()) === 1 ? '' : 's'} ago`}).` : 'No backup yet.'} Saved-to-folder copies land in <code>backup/</code> next to this app, named with the version that made them.</p><div class="setting-row"><div><strong>Automatic daily backup</strong><small>Saves to the backup folder once a day, the first time you open the app.</small></div><label class="switch"><input id="setting-auto-backup" type="checkbox" ${metaState.autoBackupEnabled !== false ? 'checked' : ''}><span></span></label></div><div class="setting-row" style="margin-top:20px"><div><strong>Reset all progress</strong><small>This cannot be undone unless you exported a backup.</small></div><button class="danger-button small" data-action="confirm-reset">${icon('trash')} Reset</button></div></article>
-      <article class="settings-card"><h3>${isPrograms ? 'Content' : 'Content and scoring'}</h3><p>${isPrograms ? `${LABS.length} hands-on labs and ${CONCEPTS.length} reference terms. No quizzes, exams, or flashcards — this is a purely hands-on program.` : `${QUESTIONS.length.toLocaleString()} original question forms from ${CONCEPTS.length} curated concepts, plus ${LABS.length} guided labs. No real exam items or brain dumps.`}</p><div class="setting-row"><div><strong>Current track</strong><small>${escapeHtml(CERT.name)} · ${Object.values(CERT.cores).map(core => escapeHtml(core.code)).join(' · ')}</small></div><button class="secondary small" data-action="open-cert-dialog">${icon('repeat')} Switch ${isPrograms ? 'program' : 'track'}</button></div>${isPrograms ? '' : `<div class="setting-row"><div><strong>Practice scoring</strong><small>Transparent first-attempt percentage; simulations add a clearly labeled scaled estimate.</small></div></div>`}</article>
+      <article class="settings-card"><h3>${isPrograms ? 'Content' : 'Content and scoring'}</h3><p>${isPrograms ? `${LABS.length} hands-on labs and ${CONCEPTS.length} reference terms. No quizzes, exams, or flashcards — this is a purely hands-on program.` : `${QUESTIONS.length.toLocaleString()} original question forms from ${CONCEPTS.length} curated concepts, plus ${LABS.length} guided labs. No real exam items or brain dumps.`}</p><div class="setting-row"><div><strong>Current track</strong><small>${escapeHtml(CERT.name)} · ${Object.values(CERT.cores).map(core => escapeHtml(core.code)).join(' · ')}</small></div><button class="secondary small" data-action="open-cert-dialog">${icon('repeat')} Switch ${isPrograms ? 'program' : 'track'}</button></div>${isPrograms ? '' : `<div class="setting-row"><div><strong>Practice scoring</strong><small>Transparent first-attempt percentage; simulations add a clearly labeled scaled estimate.</small></div></div><div class="setting-row"><div><strong>Track completed</strong><small>${state.trackCompleted ? `Marked completed${state.trackCompletedAt ? ` on ${formatDateKey(state.trackCompletedAt.slice(0, 10))}` : ''}. Greyed out in the track switcher and left out of Practice/Adaptive/Flashcards recommendations here.` : 'Greys this track out in the track switcher and stops its domains being recommended — does not delete progress or block access. Set automatically once every exam here has a recorded passing result.'}</small></div><label class="switch"><input id="setting-track-completed" type="checkbox" ${state.trackCompleted ? 'checked' : ''}><span></span></label></div>`}</article>
       <article class="settings-card"><h3>Primary references</h3><p>${isPrograms ? "Reference material is mapped to the software's own public documentation. Interfaces change between versions — verify against the current release." : 'Exam facts and domain weights are mapped to each vendor\'s public materials. Objectives change—verify before scheduling.'}</p><div class="source-list">${(CERT.sources || []).map(source => `<a class="source-link" href="${source.url}" target="_blank" rel="noopener"><span>${escapeHtml(source.label)}</span>${icon('external')}</a>`).join('')}</div></article>
       <article class="settings-card"><h3>App</h3><p>Running <strong>${APP_VERSION}</strong>. ${CONCEPTS.length} concepts and ${(LABS || []).length} labs loaded for this track.</p><div class="setting-row"><div><strong>Check for updates</strong><small>Reload from within the app instead of closing and reopening it.</small></div><button class="secondary small" data-action="check-for-updates">${icon('rotate')} Check now</button></div>${deferredInstallPrompt ? `<div class="setting-row"><div><strong>Install as an app</strong><small>Opens in its own window, with a taskbar/dock icon — not just a browser tab.</small></div><button class="secondary small" data-action="install-app">${icon('download')} Install</button></div>` : ''}<div class="setting-row stacked"><div><strong>App icon</strong><small>Changes the browser tab icon right away. If you've already installed the app, remove and reinstall it to pick up the new taskbar/dock icon too — that part is cached by your OS, not something a website can refresh on its own.</small></div><div class="avatar-style-row">${ICON_SHAPES.map(shape => `<button type="button" class="avatar-style-btn ${(metaState.appIconShape || 'cap') === shape ? 'active' : ''}" data-action="set-app-icon-shape" data-shape="${shape}" title="${shape}">${icon(shape)}</button>`).join('')}</div><div class="swatch-row">${ICON_COLORS.map(c => `<button type="button" class="swatch-btn ${(metaState.appIconColor || '#2dd4bf') === c ? 'active' : ''}" style="background:${c}" data-action="set-app-icon-color" data-color="${c}" title="${c}"></button>`).join('')}</div></div><div class="setting-row"><div><strong>What's new</strong><small>Recent changes to the app.</small></div><button class="secondary small" data-action="open-whats-new">${icon('sparkles')} View</button></div><div class="setting-row"><div><strong>Keyboard shortcuts</strong><small>Everything you can do without the mouse. Press <kbd>?</kbd> any time.</small></div><button class="secondary small" data-action="open-shortcuts">${icon('keyboard')} View</button></div>${isPrograms ? '' : `<div class="setting-row"><div><strong>Replay the walkthrough</strong><small>The first-run intro and optional diagnostic.</small></div><button class="secondary small" data-action="replay-onboarding">${icon('repeat')} Replay</button></div>`}</article>
     </section>`;
@@ -5841,10 +5880,12 @@ import {
       const labs = window[entry.labsGlobal] || [];
       const questionCount = (dataset?.concepts?.length || 0) * (dataset?.certification?.questionVariants || 0);
       const active = entry.id === activeCertId;
-      const meta = `${isPrograms ? `${labs.length} hands-on labs` : `${questionCount.toLocaleString()} questions · ${labs.length} labs`}${active ? ' · Active' : ''}`;
+      const completed = active ? state.trackCompleted : !!(remoteProgress[entry.progressKey] && remoteProgress[entry.progressKey].trackCompleted);
+      const meta = `${isPrograms ? `${labs.length} hands-on labs` : `${questionCount.toLocaleString()} questions · ${labs.length} labs`}${active ? ' · Active' : ''}${completed ? ' · Completed' : ''}`;
+      const style = completed ? ' style="opacity:.6"' : '';
       return active
-        ? `<button class="cert-option" disabled><span class="mini-mark">${escapeHtml(entry.short)}</span><span><strong>${escapeHtml(entry.label)}</strong><small>${meta}</small></span><span class="tag teal">Selected</span></button>`
-        : `<button class="cert-option" data-action="switch-cert" data-cert-id="${entry.id}"><span class="mini-mark">${escapeHtml(entry.short)}</span><span><strong>${escapeHtml(entry.label)}</strong><small>${meta}</small></span><span class="coming-badge">Switch</span></button>`;
+        ? `<button class="cert-option" disabled${style}><span class="mini-mark">${escapeHtml(entry.short)}</span><span><strong>${escapeHtml(entry.label)}</strong><small>${meta}</small></span><span class="tag teal">Selected</span></button>`
+        : `<button class="cert-option" data-action="switch-cert" data-cert-id="${entry.id}"${style}><span class="mini-mark">${escapeHtml(entry.short)}</span><span><strong>${escapeHtml(entry.label)}</strong><small>${meta}</small></span>${completed ? `<span class="tag teal">${icon('check')} Done</span>` : `<span class="coming-badge">Switch</span>`}</button>`;
     }).join('');
     const noun = isPrograms ? 'program' : 'certification';
     return `<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="track-title"><button class="ghost small" data-action="cert-dialog-back" style="margin-bottom:12px">← Back</button><h2 id="track-title">${escapeHtml(group ? group.label : '')} ${isPrograms ? 'courses' : 'tracks'}</h2><p>Pick which ${escapeHtml(group ? group.label : '')} ${noun} to study.</p>${options}<div class="button-row" style="margin-top:18px"><button class="secondary" data-action="close-dialog">Close</button></div></div>`;
@@ -6671,6 +6712,19 @@ import {
       expandedDomains.has(id) ? expandedDomains.delete(id) : expandedDomains.add(id);
       renderRoute();
     }
+    if (action === 'toggle-domain-completed') {
+      const id = button.dataset.domain;
+      const domain = domainById[id];
+      if (state.completedDomains[id]) {
+        delete state.completedDomains[id];
+        saveState(); renderRoute();
+        toast(`${domain.name} reopened — it can show up in recommendations again.`);
+      } else {
+        state.completedDomains[id] = new Date().toISOString();
+        saveState(); renderRoute();
+        toast(`${domain.name} marked completed — Practice, Adaptive, and Flashcards won't pick it automatically anymore.`, 'success', { label: 'Undo', run: () => { delete state.completedDomains[id]; saveState(); renderRoute(); } });
+      }
+    }
     if (action === 'guide-jump') {
       const domainId = button.dataset.domainId;
       if (currentRoute() === 'guide') document.getElementById(`guide-${domainId}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -6887,10 +6941,14 @@ import {
       const date = document.getElementById('exam-result-date').value;
       if (!core || !score || score < 100 || score > 900 || !date) { toast('Enter a valid score (100–900) and date.', 'error'); return; }
       state.examResults[coreId] = { score, date };
+      const allCoresPassed = Object.entries(CERT.cores).every(([id, c]) => state.examResults[id] && state.examResults[id].score >= c.passingScore);
+      const justCompletedTrack = allCoresPassed && !state.trackCompleted;
+      if (justCompletedTrack) markTrackCompleted(date);
       saveState();
       closeDialog();
       checkMilestones();
-      if (score >= core.passingScore) celebrateMilestone(`🎓 ${core.name} result recorded — passed with ${score}/900.`);
+      if (justCompletedTrack) celebrateMilestone(`🎓 ${CERT.name} complete! Every exam passed — the whole track is marked completed, so it's out of the way of your recommendations. Switch tracks anytime from the sidebar.`);
+      else if (score >= core.passingScore) celebrateMilestone(`🎓 ${core.name} result recorded — passed with ${score}/900.`);
       else toast(`${core.name} result saved.`);
       renderRoute();
     }
@@ -6920,6 +6978,12 @@ import {
     if (event.target.id === 'setting-colorblind') { state.settings.colorblindMode = event.target.checked; saveState(); updateChrome(); toast('Colorblind-safe colors ' + (event.target.checked ? 'on.' : 'off.')); }
     if (event.target.id === 'setting-high-contrast') { state.settings.highContrast = event.target.checked; saveState(); updateChrome(); toast('High contrast ' + (event.target.checked ? 'on.' : 'off.')); }
     if (event.target.id === 'setting-auto-backup') { metaState.autoBackupEnabled = event.target.checked; saveMeta(); toast('Automatic daily backup ' + (event.target.checked ? 'on.' : 'off.')); }
+    if (event.target.id === 'setting-track-completed') {
+      if (event.target.checked) { markTrackCompleted(todayKey()); toast(`${CERT.name} marked completed.`); }
+      else { markTrackReopened(); toast(`${CERT.name} reopened.`); }
+      saveState();
+      renderRoute();
+    }
     if (event.target.id === 'setting-notify-reviews') setNotifyReviews(event.target.checked);
     if (event.target.id === 'setting-start-page') { state.settings.startPage = event.target.value; saveState(); toast('Start page saved.'); }
     if (event.target.id === 'setting-show-tip') { state.settings.showTipOfDay = event.target.checked; saveState(); toast('Dashboard preference saved.'); }
