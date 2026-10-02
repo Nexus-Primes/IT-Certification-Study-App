@@ -8,7 +8,25 @@
   <title>Cert Study — Learn. Practice. Pass.</title>
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" href="/api/app-icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/app/styles.css?v=67">
+  <script>
+    /* Paint the saved theme before anything else renders, so a light-theme user never sees a dark
+       flash while progress is still loading. app.js re-applies the real settings once it has them. */
+    (function () {
+      try {
+        var raw = localStorage.getItem('cert-study-appearance'); if (!raw) return;
+        var a = JSON.parse(raw), root = document.documentElement;
+        var mode = a.mode === 'auto' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : (a.mode === 'light' ? 'light' : 'dark');
+        root.dataset.theme = mode;
+        if (a.preset && a.preset !== 'default') root.dataset.preset = a.preset;
+        var v = a.vars && a.vars[mode];
+        if (v) {
+          root.style.setProperty('--primary', v.primary); root.style.setProperty('--primary-soft', v.soft); root.style.setProperty('--primary-strong', v.strong);
+          if (v.onPrimary) root.style.setProperty('--on-primary', v.onPrimary);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="/app/styles.css?v=68">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -90,10 +108,12 @@
         </div>
       </header>
 
+      <div class="sync-banner hidden" id="sync-banner" role="alert"></div>
       <main id="main-content" tabindex="-1"></main>
       <footer class="app-footer">
         <span id="footer-note">Cert Study uses original practice content mapped to the public CompTIA A+ objectives.</span>
         <span id="footer-disclaimer">Not affiliated with or endorsed by CompTIA.</span>
+        <span class="save-status" id="save-status" data-state="saved" aria-hidden="true"><i class="save-status-dot"></i><span class="save-status-text">Saved</span></span>
         <button id="footer-version" class="footer-version" type="button" data-action="open-whats-new" aria-label="View version history"></button>
       </footer>
     </div>
@@ -135,6 +155,6 @@
   <script src="/data/dp300-guide.js?v=1" defer></script>
   <script src="/data/blender-fundamentals.js?v=2" defer></script>
   <script src="/data/blender-fundamentals-labs.js?v=4" defer></script>
-  <script type="module" src="/app/app.js?v=170"></script>
+  <script type="module" src="/app/app.js?v=171"></script>
 </body>
 </html>

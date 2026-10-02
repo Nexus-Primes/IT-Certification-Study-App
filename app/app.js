@@ -39,12 +39,19 @@ import {
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v210';
+  const APP_VERSION = 'v211';
   // Shown in the "What's new" panel (Settings, command palette, or automatically once per
   // release). Newest first; keep entries short and user-facing. Entries before v133 predate
   // this app having per-build version numbers at all, so their "version" is the date instead —
   // still real history, just not tagged with a build number the way later entries are.
   const CHANGELOG = [
+    { version: 'v211', date: 'October 2026', title: 'Your look follows you, and saving is sturdier', items: [
+      "Changed: theme, accent color, font, text size, density, corner style, and the accessibility toggles now belong to your account, not to whichever track is open — customize once and every track matches. Whatever you'd already set up carries over automatically.",
+      "Changed: the right theme is painted from the very first frame, so light-theme users no longer see a dark flash while the app loads.",
+      "New: a small Saved / Saving… indicator in the footer, and a clear banner if the study server stops responding — with automatic retrying — instead of an easy-to-miss pop-up.",
+      "Fixed: saves are now sent one at a time, in order, and retried if the server is briefly unreachable. Previously, rapid changes could land out of order.",
+      "Fixed: if the study server can't be reached when the app opens, the app now refuses to save anything and keeps retrying, instead of looking like a blank install and risking an overwrite of your real progress once the server returned."
+    ] },
     { version: 'v210', date: 'October 2026', title: 'Mark domains and whole tracks as completed', items: [
       "New: a checkmark button on each domain's card (Exam Map) marks it completed — it greys out, and Practice's automatic modes, Adaptive difficulty, and Flashcards all stop picking it on their own. \"Practice this domain\" still works anytime; this only affects what gets recommended for you.",
       "New: a track (the whole certification) marks itself completed automatically once every one of its exams has a recorded passing result, or you can mark one manually from Settings — greyed out and tagged \"Completed\" in the track switcher and the All-tracks list, which now sorts finished tracks to the bottom.",
@@ -592,7 +599,7 @@ import {
     // themeMode is the actual preference ('dark'|'light'|'auto'); theme is always the resolved
     // dark/light value the rest of the app reads to paint itself — kept as two fields so every
     // existing `state.settings.theme` consumer keeps working untouched.
-    settings: { secondChance: true, theme: 'dark', themeMode: 'dark', questionCount: 10, speechRate: 1, accentColor: 'teal', fontFamily: '', fontSize: 1, cornerStyle: 'rounded', density: 'comfortable', startPage: 'dashboard', celebrationStyle: 'confetti', showTipOfDay: true, showAllTracks: true, soundEffects: false, focusMode: false, focusWorkMinutes: 25, focusBreakMinutes: 5, fullscreenExams: false, readingMode: false, colorblindMode: false, reducedMotion: false, highContrast: false },
+    settings: { secondChance: true, theme: 'dark', themeMode: 'dark', questionCount: 10, speechRate: 1, accentColor: 'teal', fontFamily: '', fontSize: 1, cornerStyle: 'rounded', density: 'comfortable', startPage: 'dashboard', celebrationStyle: 'confetti', showTipOfDay: true, showAllTracks: true, soundEffects: false, focusMode: false, focusWorkMinutes: 25, focusBreakMinutes: 5, fullscreenExams: false, readingMode: false, colorblindMode: false, reducedMotion: false, highContrast: false, themePreset: 'default' },
     stats: { answered: 0, firstCorrect: 0, corrected: 0, bestStreak: 0, labsCompleted: 0 },
     questionStats: {}, flashcards: {}, sessions: [], activity: {}, completedLabs: {},
     flaggedQuestions: {}, flaggedLabs: {}, completedCrosswords: {},
@@ -655,6 +662,103 @@ import {
     return merged;
   }
 
+  // ---------- Persistence ----------
+  // Every write to the local server goes through persist(). Saves are serialized (one request in
+  // flight at a time, so they can never land out of order), coalesced (a newer snapshot of a key
+  // replaces an older one still waiting its turn), retried with backoff when the server stops
+  // answering, and refused outright until progress has actually been loaded — otherwise a failed
+  // first load (an empty in-memory state) could be written right over the real file the moment
+  // the server came back.
+  let progressLoaded = false;
+  const saveQueue = new Map();
+  let saveInFlight = false;
+  let saveStatus = 'saved';
+  let saveRetryMs = 0;
+  let saveRetryTimer = null;
+  let saveWaiters = [];
+
+  function renderSyncBanner() {
+    const banner = document.getElementById('sync-banner');
+    if (!banner) return;
+    const blocked = saveStatus === 'blocked';
+    const failing = saveStatus === 'error';
+    banner.classList.toggle('hidden', !(blocked || failing));
+    if (blocked) banner.innerHTML = `<span class="sync-banner-copy">${icon('alert')}<span><strong>Can't reach the study server.</strong> Your saved progress isn't loaded, so nothing will be saved until it's back. Start the app again (<code>python server.py</code>) — this page keeps retrying on its own.</span></span><button class="secondary small" type="button" data-action="retry-connection">Retry now</button>`;
+    else if (failing) banner.innerHTML = `<span class="sync-banner-copy">${icon('alert')}<span><strong>Your latest changes aren't saved yet.</strong> The study server stopped responding. Retrying automatically — keep this tab open.</span></span><button class="secondary small" type="button" data-action="retry-connection">Retry now</button>`;
+    else banner.innerHTML = '';
+  }
+
+  function setSaveStatus(next) {
+    saveStatus = next;
+    const pill = document.getElementById('save-status');
+    if (pill) {
+      pill.dataset.state = next;
+      pill.querySelector('.save-status-text').textContent = { saved: 'Saved', saving: 'Saving…', error: 'Not saved', blocked: 'Not connected' }[next] || '';
+    }
+    renderSyncBanner();
+  }
+
+  function settleSaveWaiters(ok) { const waiting = saveWaiters; saveWaiters = []; waiting.forEach(resolve => resolve(ok)); }
+
+  // Resolves once everything queued has reached disk (true), or the server refused/failed (false).
+  function flushSaves() {
+    if (!saveInFlight && !saveQueue.size) return Promise.resolve(true);
+    if (!saveInFlight) pumpSaves();
+    return new Promise(resolve => saveWaiters.push(resolve));
+  }
+
+  async function pumpSaves() {
+    if (saveInFlight || !saveQueue.size) return;
+    saveInFlight = true;
+    clearTimeout(saveRetryTimer); saveRetryTimer = null;
+    setSaveStatus('saving');
+    let failed = false;
+    while (saveQueue.size) {
+      const [mapKey, item] = saveQueue.entries().next().value;
+      // Taken out of the queue BEFORE sending, so a newer snapshot of the same key that arrives
+      // mid-flight is queued behind this one instead of being mistaken for it and dropped.
+      saveQueue.delete(mapKey);
+      try {
+        const res = await fetch('/api/progress', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ profile: item.profile, key: item.key, value: item.value }) });
+        if (!res.ok) throw new Error(String(res.status));
+      } catch {
+        if (!saveQueue.has(mapKey)) saveQueue.set(mapKey, item);
+        failed = true;
+        break;
+      }
+    }
+    saveInFlight = false;
+    if (failed) {
+      saveRetryMs = Math.min(15000, saveRetryMs ? saveRetryMs * 2 : 2000);
+      setSaveStatus('error');
+      saveRetryTimer = setTimeout(pumpSaves, saveRetryMs);
+      settleSaveWaiters(false);
+    } else {
+      saveRetryMs = 0;
+      setSaveStatus('saved');
+      settleSaveWaiters(true);
+    }
+  }
+
+  // `value` is held by reference and serialized at send time, so whatever's newest goes out. That
+  // stays safe across a track or account switch: those replace the state object rather than
+  // mutating it, so a queued reference keeps pointing at the data it was queued for.
+  function persist(key, value) {
+    if (!progressLoaded) { setSaveStatus('blocked'); return; }
+    saveQueue.set(`${activeProfileId}::${key}`, { profile: activeProfileId, key, value });
+    pumpSaves();
+  }
+
+  async function retryConnection() {
+    if (progressLoaded) { clearTimeout(saveRetryTimer); pumpSaves(); return; }
+    await reloadStateForActiveCert();
+    if (progressLoaded) {
+      setSaveStatus('saved');
+      updateCertChrome(); updateChrome(); renderRoute();
+      toast('Reconnected — your progress is loaded again.');
+    }
+  }
+
   // ---------- Study plan (cross-cert; stored under its own key, independent of any single track) ----------
   const PLAN_KEY = 'study-plan';
   const defaultPlan = () => ({
@@ -678,11 +782,7 @@ import {
 
   function savePlan() {
     remoteProgress[PLAN_KEY] = planState;
-    fetch('/api/progress', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ profile: activeProfileId, key: PLAN_KEY, value: planState })
-    }).catch(() => toast('Plan could not be saved right now.', 'error'));
+    persist(PLAN_KEY, planState);
   }
 
   // ---------- App-level meta (cross-track; its own top-level key like the study plan) ----------
@@ -693,7 +793,7 @@ import {
   // server tracks — the uploaded photo always overwrites the same file on disk (see avatarUrl
   // below for which one), so nothing about the photo itself is stored in progress.json, only
   // this small pointer.
-  const defaultMeta = () => ({ version: 1, seenVersion: null, lastBackupDate: null, backupSnoozeUntil: null, displayName: '', avatar: { type: 'initials', emoji: '', color: '', photoVersion: 0 }, appIconShape: 'cap', appIconColor: '#2dd4bf', autoBackupEnabled: true, notifyReviewsEnabled: false, lastReviewNotifyDate: null });
+  const defaultMeta = () => ({ version: 1, seenVersion: null, lastBackupDate: null, backupSnoozeUntil: null, displayName: '', avatar: { type: 'initials', emoji: '', color: '', photoVersion: 0 }, appIconShape: 'cap', appIconColor: '#2dd4bf', autoBackupEnabled: true, notifyReviewsEnabled: false, lastReviewNotifyDate: null, appearance: null, perTrackAccent: false, trackAccents: {} });
   const AVATAR_EMOJIS = ['🎓', '💻', '🛠️', '🔒', '📡', '🧠', '⚡', '🎯', '📚', '🖥️'];
   const AVATAR_COLORS = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#ec4899'];
   // Reuses the same 6 icons already defined in iconPaths (no new SVG art to design) and the
@@ -718,11 +818,7 @@ import {
   }
   function saveMeta() {
     remoteProgress[META_KEY] = metaState;
-    fetch('/api/progress', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ profile: activeProfileId, key: META_KEY, value: metaState })
-    }).catch(() => {});
+    persist(META_KEY, metaState);
   }
 
   // The default account's photo keeps living at the original fixed path (data/avatar.jpg) —
@@ -734,24 +830,97 @@ import {
     return `${path}?v=${photoVersion}`;
   }
 
+  // Returns true when fresh data was read. A failed read never replaces data that was already
+  // loaded (that used to blank everything to defaults, and the next save would have written those
+  // defaults over the real file) — it only falls back to an empty, save-blocked state when
+  // nothing has been loaded yet.
   async function refreshRemoteProgress() {
+    await flushSaves(); // read-your-own-writes: don't fetch while a save of ours is still in flight
     try {
       const res = await fetch(`/api/progress?profile=${encodeURIComponent(activeProfileId)}`);
+      if (!res.ok) throw new Error(String(res.status));
       const data = await res.json();
-      remoteProgress = (data && typeof data === 'object') ? data : {};
+      remoteProgress = (data && typeof data === 'object' && !Array.isArray(data)) ? data : {};
+      progressLoaded = true;
+      if (saveStatus === 'blocked') setSaveStatus('saved');
     } catch {
-      remoteProgress = {};
+      if (!progressLoaded) {
+        remoteProgress = {};
+        setSaveStatus('blocked');
+      } else {
+        toast('Could not refresh from the study server just now.', 'error');
+        return false;
+      }
     }
     planState = planFromRemote(remoteProgress[PLAN_KEY]);
     metaState = metaFromRemote(remoteProgress[META_KEY]);
+    return true;
+  }
+
+  // ---------- Account-level appearance ----------
+  // Look-and-feel belongs to the person, not to whichever track happens to be open. Each track's
+  // own progress file still carries a copy of these (it's where they always lived), but the
+  // account-level copy in app-meta is the one that wins — so customizing once applies everywhere.
+  const APPEARANCE_KEYS = ['themeMode', 'themePreset', 'accentColor', 'fontFamily', 'fontSize', 'cornerStyle', 'density', 'readingMode', 'colorblindMode', 'reducedMotion', 'highContrast'];
+  const APPEARANCE_CACHE_KEY = 'cert-study-appearance';
+
+  function appearanceSnapshot(settings) {
+    const out = {};
+    APPEARANCE_KEYS.forEach(key => { out[key] = settings[key]; });
+    return out;
+  }
+
+  // First load after appearance moved to the account level: carry over whatever look was actually
+  // customized, from whichever track it was customized in (the open track first), so nobody's
+  // existing theme or accent resets just because of this change.
+  function seedAppearance() {
+    const defaults = appearanceSnapshot(defaultState().settings);
+    for (const key of [PROGRESS_KEY, ...CERT_REGISTRY.map(entry => entry.progressKey)]) {
+      if (!remoteProgress[key] || typeof remoteProgress[key] !== 'object') continue;
+      const candidate = appearanceSnapshot(stateFromRemote(remoteProgress[key]).settings);
+      if (JSON.stringify(candidate) !== JSON.stringify(defaults)) return candidate;
+    }
+    return defaults;
+  }
+
+  function applyAccountAppearance(settings) {
+    if (!metaState.appearance || typeof metaState.appearance !== 'object') {
+      metaState.appearance = seedAppearance();
+      saveMeta();
+    }
+    APPEARANCE_KEYS.forEach(key => { if (metaState.appearance[key] !== undefined) settings[key] = metaState.appearance[key]; });
+    settings.theme = resolveTheme(settings.themeMode);
+    cacheAppearanceLocally(settings);
+  }
+
+  function syncAppearanceToMeta() {
+    const next = appearanceSnapshot(state.settings);
+    if (JSON.stringify(next) === JSON.stringify(metaState.appearance)) return;
+    metaState.appearance = next;
+    cacheAppearanceLocally();
+    saveMeta();
+  }
+
+  // A tiny snapshot read by the inline script in index.html's <head>, so the right theme is on
+  // screen from the first paint instead of flashing dark until progress finishes loading.
+  function cacheAppearanceLocally(settings = state.settings) {
+    try {
+      localStorage.setItem(APPEARANCE_CACHE_KEY, JSON.stringify({
+        mode: settings.themeMode, preset: settings.themePreset,
+        vars: { dark: accentVarsFor(currentAccentValue(), 'dark'), light: accentVarsFor(currentAccentValue(), 'light') }
+      }));
+    } catch {}
   }
 
   // Re-fetches every time (rather than trusting the in-memory copy) so that switching
   // tracks always reflects the freshest saved state, even if another tab or track wrote
   // to a different key since this page loaded.
   async function reloadStateForActiveCert() {
-    await refreshRemoteProgress();
+    const fresh = await refreshRemoteProgress();
+    // A failed refresh on an already-loaded session keeps the state in memory as-is.
+    if (!fresh && progressLoaded) return;
     state = stateFromRemote(remoteProgress[PROGRESS_KEY]);
+    applyAccountAppearance(state.settings);
     checkStreakFreeze();
   }
 
@@ -761,12 +930,9 @@ import {
 
   function saveState() {
     touchReadinessLog();
+    syncAppearanceToMeta();
     remoteProgress[PROGRESS_KEY] = state;
-    fetch('/api/progress', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ profile: activeProfileId, key: PROGRESS_KEY, value: state })
-    }).catch(() => toast('Progress could not be saved right now.', 'error'));
+    persist(PROGRESS_KEY, state);
     updateChrome();
   }
 
@@ -997,6 +1163,9 @@ import {
     browseQuery = ''; browseDomain = 'all'; browseStatus = 'all'; browseSort = 'term'; browseSelected = new Set();
     activeReview = null; resultsView = null;
     activeProfileId = profileId;
+    // Until the new account's own progress has actually loaded, nothing may be saved: the
+    // in-memory data still belongs to the previous account.
+    progressLoaded = false;
     try { localStorage.setItem(ACTIVE_PROFILE_KEY, profileId); } catch {}
     closeDialog();
     await reloadStateForActiveCert();
@@ -1776,21 +1945,71 @@ import {
     { id: 'rose', label: 'Rose', dark: { primary: '#fb7185', soft: 'rgba(251,113,133,.12)' }, light: { primary: '#c71940', soft: 'rgba(225,29,72,.08)' } }
   ];
 
+  // A track's default accent when "different accent per track" is on and nothing's been picked for
+  // it yet — same vendor, same family, so related tracks read as related at a glance.
+  const TRACK_DEFAULT_ACCENTS = { aplus: 'teal', netplus: 'blue', secplus: 'rose', '3cx-basic': 'amber', '3cx-advanced': 'amber', 'winserver-hybrid': 'green', dp300: 'violet', 'blender-fundamentals': 'amber' };
+
+  // An accent is either a preset id ('teal') or a custom '#rrggbb' string — one field holds both.
+  function currentAccentValue() {
+    if (metaState.perTrackAccent) return (metaState.trackAccents && metaState.trackAccents[activeCertId]) || TRACK_DEFAULT_ACCENTS[activeCertId] || state.settings.accentColor;
+    return state.settings.accentColor;
+  }
+
+  const isHexColor = value => typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value);
+  const hexToRgb = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+  const rgbToHex = ([r, g, b]) => `#${[r, g, b].map(v => Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2, '0')).join('')}`;
+  function rgbToHsl([r, g, b]) {
+    r /= 255; g /= 255; b /= 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b); let h = 0, s = 0; const l = (max + min) / 2;
+    if (max !== min) {
+      const d = max - min; s = l > .5 ? d / (2 - max - min) : d / (max + min);
+      h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6;
+    }
+    return [h, s, l];
+  }
+  function hslToRgb([h, s, l]) {
+    if (s === 0) return [l * 255, l * 255, l * 255];
+    const hue = (p, q, t) => { t = (t + 1) % 1; if (t < 1 / 6) return p + (q - p) * 6 * t; if (t < 1 / 2) return q; if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6; return p; };
+    const q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [hue(p, q, h + 1 / 3) * 255, hue(p, q, h) * 255, hue(p, q, h - 1 / 3) * 255];
+  }
+
+  // A picked color is nudged only as far as needed to stay readable on the theme's own surface
+  // (lightened on dark, darkened on light) — the same "adjust at render time, don't hand-tune"
+  // approach domainAccentColor already takes for the per-domain colors.
+  function accentVarsFor(value, theme) {
+    if (!isHexColor(value)) {
+      const preset = ACCENT_THEMES.find(a => a.id === value);
+      if (!preset || preset.id === 'teal') return null;
+      const { primary, soft } = preset[theme] || preset.dark;
+      return { primary, soft, strong: `color-mix(in srgb, ${primary} 82%, black)`, onPrimary: null };
+    }
+    const bg = theme === 'light' ? [255, 255, 255] : [16, 24, 39];
+    let [h, s, l] = rgbToHsl(hexToRgb(value));
+    let rgb = hexToRgb(value);
+    for (let i = 0; i < 40 && contrastRatio(rgb, bg) < 4.5; i++) {
+      l = Math.max(0.04, Math.min(0.96, l + (theme === 'light' ? -0.02 : 0.02)));
+      rgb = hslToRgb([h, s, l]);
+    }
+    const primary = rgbToHex(rgb);
+    const lightText = contrastRatio(rgb, [255, 255, 255]), darkText = contrastRatio(rgb, [4, 32, 28]);
+    return { primary, soft: `rgba(${rgb.map(Math.round).join(',')},${theme === 'light' ? .1 : .12})`, strong: `color-mix(in srgb, ${primary} 82%, black)`, onPrimary: lightText >= darkText ? '#ffffff' : '#04201c' };
+  }
+
   // 'teal' is the app's own built-in default — clearing the inline overrides entirely (rather
   // than re-setting them to teal's own values) lets styles.css's already-curated --primary-strong
-  // keep driving progress-bar/chart gradients untouched. Any other accent derives its own strong
-  // variant via color-mix so a new hardcoded gradient partner isn't needed per color per theme.
+  // keep driving progress-bar/chart gradients untouched.
   function applyAccentColor() {
     const root = document.documentElement.style;
-    const accent = ACCENT_THEMES.find(a => a.id === state.settings.accentColor);
-    if (!accent || accent.id === 'teal') {
-      root.removeProperty('--primary'); root.removeProperty('--primary-soft'); root.removeProperty('--primary-strong');
+    const vars = accentVarsFor(currentAccentValue(), state.settings.theme);
+    if (!vars) {
+      ['--primary', '--primary-soft', '--primary-strong', '--on-primary'].forEach(name => root.removeProperty(name));
       return;
     }
-    const { primary, soft } = accent[state.settings.theme] || accent.dark;
-    root.setProperty('--primary', primary);
-    root.setProperty('--primary-soft', soft);
-    root.setProperty('--primary-strong', `color-mix(in srgb, ${primary} 82%, black)`);
+    root.setProperty('--primary', vars.primary);
+    root.setProperty('--primary-soft', vars.soft);
+    root.setProperty('--primary-strong', vars.strong);
+    if (vars.onPrimary) root.setProperty('--on-primary', vars.onPrimary); else root.removeProperty('--on-primary');
   }
 
   // Must match styles.css's own :root font-family declaration — used as the fallback tail so
@@ -5904,7 +6123,7 @@ import {
     // Re-fetch fresh (rather than trusting the in-memory copy) so the backup reflects every
     // track's latest saved progress and the study plan — not just whichever track is active
     // right now, and not a possibly-stale snapshot from whenever the page last loaded.
-    await refreshRemoteProgress();
+    if (!(await refreshRemoteProgress()) || !progressLoaded) { toast("Couldn't read your progress from the study server, so nothing was exported.", 'error'); return; }
     const blob = new Blob([JSON.stringify({ app: 'Cert Study', format: 'full', exportedAt: new Date().toISOString(), progress: remoteProgress }, null, 2)], { type: 'application/json' });
     const profileSuffix = activeProfileId === DEFAULT_PROFILE_ID ? '' : `-${activeProfileId}`;
     const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = `cert-study-backup${profileSuffix}-${todayKey()}.json`; link.click(); setTimeout(() => URL.revokeObjectURL(url), 500); toast('Full backup exported — every track and your study plan.');
@@ -5915,7 +6134,7 @@ import {
   // instead of the browser's download folder — lands in a real backup/ folder next to this app,
   // named with the running version so multiple backups sort and identify themselves at a glance.
   async function saveBackupToFolder() {
-    await refreshRemoteProgress();
+    if (!(await refreshRemoteProgress()) || !progressLoaded) { toast("Couldn't read your progress from the study server, so no backup was written.", 'error'); return; }
     const payload = { app: 'Cert Study', format: 'full', exportedAt: new Date().toISOString(), version: APP_VERSION, dateKey: todayKey(), profile: activeProfileId, progress: remoteProgress };
     try {
       const res = await fetch('/api/backup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -6185,7 +6404,7 @@ import {
           // Snapshot every track's CURRENT server-side data before overwriting anything, so an
           // accidental "wrong file" import can be undone exactly — a full restore touches every
           // track at once, so undo has to be able to put all of them back, not just the active one.
-          await refreshRemoteProgress();
+          if (!(await refreshRemoteProgress()) || !progressLoaded) throw new Error('Server unreachable');
           const previousProgress = JSON.parse(JSON.stringify(remoteProgress));
           const writeAll = payload => Promise.all(Object.entries(payload).map(([key, value]) => fetch('/api/progress', {
             method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ profile: activeProfileId, key, value })
@@ -6210,6 +6429,7 @@ import {
         if (!incoming.stats || !incoming.settings) throw new Error('Invalid backup');
         const previousState = state;
         state = { ...defaultState(), ...incoming, settings: { ...defaultState().settings, ...incoming.settings }, stats: { ...defaultState().stats, ...incoming.stats } };
+        applyAccountAppearance(state.settings); // an old backup's look shouldn't override yours
         saveState(); renderRoute();
         toast('Progress restored — this track only (older single-track backup).', 'success', { label: 'Undo', run: () => { state = previousState; saveState(); renderRoute(); } });
       } catch { toast('That file is not a valid backup.', 'error'); }
@@ -6801,10 +7021,12 @@ import {
     if (action === 'reset-data') {
       const previousState = state;
       state = defaultState();
+      applyAccountAppearance(state.settings); // resetting progress shouldn't reset how the app looks
       saveState(); closeDialog(); renderRoute();
       toast('All progress was reset.', 'success', { label: 'Undo', run: () => { state = previousState; saveState(); renderRoute(); } });
     }
     if (action === 'check-for-updates') checkForUpdates();
+    if (action === 'retry-connection') retryConnection();
     if (action === 'open-cert-dialog') openCertDialog();
     if (action === 'open-exam-comparison') openExamComparisonDialog();
     if (action === 'open-custom-card') openCustomCardDialog();
@@ -7230,6 +7452,17 @@ import {
   // not just the boot-time check above (which only fires once, whenever the tab first loaded).
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') checkDueReviewNotification(); });
   window.addEventListener('beforeunload', event => { if (activeSession && activeSession.source === 'exams') { event.preventDefault(); event.returnValue = ''; } });
+  // Best effort on the way out: anything still waiting its turn in the save queue is sent with
+  // keepalive so closing the tab right after an action doesn't strand it (browsers cap keepalive
+  // bodies at 64KB, so a very large snapshot may not make it — normal saves go out immediately).
+  window.addEventListener('pagehide', () => {
+    saveQueue.forEach(item => {
+      try { fetch('/api/progress', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ profile: item.profile, key: item.key, value: item.value }) }); } catch {}
+    });
+  });
+  // While the study server is unreachable at load, quietly keep trying — the moment it's back the
+  // page reloads real progress by itself instead of waiting on a manual refresh.
+  setInterval(() => { if (!progressLoaded && saveStatus === 'blocked') retryConnection(); }, 6000);
 
   // Manual "check for updates" — forces the browser to re-fetch service-worker.js right now
   // instead of waiting for its own periodic check. If the fetched file actually changed, this
@@ -7265,8 +7498,11 @@ import {
     renderRoute();
 
     // First-run walkthrough (only for a genuinely empty install) takes priority; everyone
-    // else gets the "What's new" panel once per release.
-    if (currentDomain() === 'certs' && !state.onboardedAt && !hasAnyProgress()) {
+    // else gets the "What's new" panel once per release. Skipped entirely when progress never
+    // loaded — an unreachable server looks exactly like an empty install, and it isn't one.
+    if (!progressLoaded) {
+      setSaveStatus('blocked');
+    } else if (currentDomain() === 'certs' && !state.onboardedAt && !hasAnyProgress()) {
       openOnboarding();
     } else if (metaState.seenVersion === null) {
       if (hasAnyProgress()) openWhatsNew(true);
