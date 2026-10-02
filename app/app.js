@@ -39,12 +39,22 @@ import {
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v212';
+  const APP_VERSION = 'v213';
   // Shown in the "What's new" panel (Settings, command palette, or automatically once per
   // release). Newest first; keep entries short and user-facing. Entries before v133 predate
   // this app having per-build version numbers at all, so their "version" is the date instead —
   // still real history, just not tagged with a build number the way later entries are.
   const CHANGELOG = [
+    { version: 'v213', date: 'October 2026', title: 'Print-ready pages and a round of polish', items: [
+      "New: everything you print or save as a PDF now gets a clean header (app, track, page, who it's for, and the date), a running title, and \"Page X of Y\" on every sheet. Save as PDF suggests a descriptive file name too.",
+      "Changed: the Glossary prints definitions and scenarios by default — about 40 pages for a full track instead of roughly 250 — with a \"When printing\" choice for the full version with diagrams or a terse three-column cheat sheet.",
+      "Changed: printed pages drop the buttons and search boxes, show checklists as real checkboxes, include the collapsed lists on the Final review sheet, and let long Study guide chapters flow across pages. The Final review sheet and Readiness report are tighter.",
+      "Fixed: the page could scroll sideways on some screens (an invisible dropdown helper was far wider than it should be).",
+      "Fixed: screen readers announced many switches (Settings, Exam day, Practice) as just \"checkbox\" — each is now named for what it controls.",
+      "Changed: the faintest small text (captions, section labels, chart numbers, scenario lines) is a little stronger in every theme and style, so it clears the standard 4.5:1 contrast bar everywhere.",
+      "Changed: \"nothing to do\" messages — nothing due, no cards match, not enough terms yet — use a calm blue notice instead of the red error style.",
+      "Changed: a soft loading placeholder shows while your study data loads, instead of a blank page."
+    ] },
     { version: 'v212', date: 'October 2026', title: 'A sidebar that fits you, theme styles, and organized Settings', items: [
       "New: collapse the sidebar to a slim icon-only rail (the button just above Settings) for more room — hover an icon for its name. Remembered on this device.",
       "New: choose which pages appear in the sidebar and in what order (Settings → Appearance → Sidebar). Hidden pages stay reachable from search and the G shortcuts.",
@@ -959,6 +969,15 @@ import {
   let expandedDomains = new Set();
   let glossaryQuery = '';
   let glossaryDomain = 'all';
+  // How the Glossary prints: scenarios only (the default — about 40 pages for a full track),
+  // with each term's diagram too (much longer), or a terse three-column cheat sheet.
+  const GLOSSARY_PRINT_LAYOUTS = [
+    ['standard', 'Definitions and scenarios'], ['full', 'Everything, with diagrams'], ['compact', 'Cheat sheet — terms and definitions only']
+  ];
+  let glossaryPrintLayout = 'standard';
+  function applyGlossaryPrintLayout() {
+    GLOSSARY_PRINT_LAYOUTS.forEach(([id]) => document.body.classList.toggle(`print-layout-${id}`, id === glossaryPrintLayout));
+  }
   let packetDomain = 'all';
   let globalSearchQuery = '';
   let browseQuery = '';
@@ -1332,7 +1351,7 @@ import {
     await activateCert(certId);
     const count = Math.min(40, QUESTIONS.length);
     const questions = comprehensiveSample(count);
-    if (!questions.length) { toast('No questions available yet.', 'error'); return; }
+    if (!questions.length) { toast('No questions available yet.', 'info'); return; }
     activeSession = {
       id: `comprehensive-${Date.now()}`, source: 'practice', mode: `${CERT.name} comprehensive recap`,
       questions, index: 0, responses: Array(questions.length).fill(null), startedAt: Date.now(),
@@ -1349,10 +1368,10 @@ import {
   async function startDomainQuiz(certId, domainId) {
     await activateCert(certId);
     const domain = domainById[domainId];
-    if (!domain) { toast('That domain is not available yet.', 'error'); return; }
+    if (!domain) { toast('That domain is not available yet.', 'info'); return; }
     const priorityConceptIds = unmasteredConcepts(domainId).map(item => item.concept.id);
     const questions = sampleQuestions({ domain: domainId, priorityConceptIds }, 20, `${Date.now()}-${domainId}`);
-    if (!questions.length) { toast('No questions available yet.', 'error'); return; }
+    if (!questions.length) { toast('No questions available yet.', 'info'); return; }
     activeSession = {
       id: `domain-quiz-${Date.now()}`, source: 'practice', mode: `${domain.name} recap quiz`,
       questions, index: 0, responses: Array(questions.length).fill(null), startedAt: Date.now(),
@@ -1366,7 +1385,7 @@ import {
   function startFlaggedReview() {
     const ids = Object.keys(state.flaggedQuestions);
     const questions = ids.map(id => questionById[id]).filter(Boolean);
-    if (!questions.length) { toast('No flagged questions yet — flag one from any quiz.', 'error'); return; }
+    if (!questions.length) { toast('No flagged questions yet — flag one from any quiz.', 'info'); return; }
     const seed = Date.now();
     activeSession = {
       id: `flagged-${seed}`, source: 'practice', mode: 'Flagged review',
@@ -2363,7 +2382,7 @@ import {
     const region = document.getElementById('toast-region');
     const node = document.createElement('div');
     node.className = `toast ${type}${action ? ' has-action' : ''}`;
-    const iconName = type === 'error' ? 'alert' : type === 'milestone' ? 'trophy' : 'check';
+    const iconName = type === 'error' ? 'alert' : type === 'milestone' ? 'trophy' : type === 'info' ? 'info' : 'check';
     node.innerHTML = `<span>${icon(iconName)}</span><span>${escapeHtml(message)}</span>`;
     if (action) {
       const btn = document.createElement('button');
@@ -2496,6 +2515,68 @@ import {
     syncNavGroups(route);
   }
 
+  // ---------- Accessible names for switch rows ----------
+  // The switch toggles keep their visible label in a sibling element rather than a wrapping
+  // <label>, so a screen reader would announce them as a bare "checkbox". Rather than hand-wire
+  // every row, name each unlabeled control from its own row's text whenever the page changes.
+  let controlNamePass = 0;
+  function nameUnlabeledControls() {
+    controlNamePass = 0;
+    document.querySelectorAll('#main-content input:not([type="hidden"]), #main-content textarea, #dialog-layer input:not([type="hidden"]), #dialog-layer textarea').forEach(el => {
+      if (el.hasAttribute('aria-label') || el.hasAttribute('aria-labelledby') || el.type === 'file') return;
+      if ([...(el.labels || [])].some(label => label.textContent.trim())) return;
+      const row = el.closest('.setting-row, .toggle-line');
+      const source = row && (row.classList.contains('setting-row') ? row.querySelector('strong') : row.querySelector(':scope > span'));
+      const text = ((source && source.textContent) || el.placeholder || '').trim();
+      if (text) el.setAttribute('aria-label', text);
+    });
+  }
+  function watchControlNames() {
+    const schedule = () => { if (!controlNamePass) controlNamePass = setTimeout(nameUnlabeledControls, 40); };
+    [main, dialogLayer].forEach(node => new MutationObserver(schedule).observe(node, { childList: true, subtree: true }));
+    schedule();
+  }
+
+  // ---------- Print ----------
+  // Whatever gets printed or saved as a PDF (the browser's own Ctrl+P works on any page) carries
+  // the same quiet masthead: app, track, page, who it's for, and the date. The report sheets
+  // already open with their own title block, so they skip it rather than say everything twice.
+  // The browser's page-margin boxes (running head, page numbers) read the same text through the
+  // two custom properties set here.
+  function printPageTitle() {
+    const meta = routeMeta[currentRoute()] || routeMeta.dashboard;
+    return meta[0];
+  }
+  function syncPrintHeader() {
+    const header = document.getElementById('print-header'); if (!header) return;
+    const owner = ((metaState.displayName || '').trim() || (currentProfile().name || '').trim());
+    const date = new Intl.DateTimeFormat(undefined, { month: 'long', day: 'numeric', year: 'numeric' }).format(new Date());
+    const set = (key, text) => { const el = header.querySelector(`[data-print="${key}"]`); if (el) el.textContent = text; };
+    set('page', printPageTitle()); set('track', CERT.name); set('owner', owner ? `Prepared for ${owner}` : ''); set('date', date);
+    header.classList.toggle('is-off', !!main.querySelector('.report-head'));
+    const css = text => JSON.stringify(text.replace(/[\u0000-\u001f]/g, ' '));
+    document.documentElement.style.setProperty('--print-running-head', css(`Cert Study · ${CERT.name} · ${printPageTitle()}`));
+    document.documentElement.style.setProperty('--print-running-foot', css(owner ? `${owner} · ${date}` : date));
+  }
+  // "Save as PDF" proposes the page title as the file name, so give it a descriptive one for the
+  // length of the print and put the normal tab title back afterwards.
+  let titleBeforePrint = null;
+  let detailsOpenedForPrint = [];
+  window.addEventListener('beforeprint', () => {
+    syncPrintHeader();
+    titleBeforePrint = document.title;
+    document.title = `${printPageTitle()} — ${CERT.name} — Cert Study`;
+    // A collapsed <details> prints as just its summary line, which would silently drop the lists
+    // inside it — open every one for the print, then put them back as they were.
+    detailsOpenedForPrint = [...document.querySelectorAll('details:not([open])')];
+    detailsOpenedForPrint.forEach(el => { el.open = true; });
+  });
+  window.addEventListener('afterprint', () => {
+    if (titleBeforePrint != null) { document.title = titleBeforePrint; titleBeforePrint = null; }
+    detailsOpenedForPrint.forEach(el => { el.open = false; });
+    detailsOpenedForPrint = [];
+  });
+
   // ---------- Collapsible sidebar sections (independent — any number open at once) ----------
   // Each section header is a disclosure toggle. Opening one no longer closes the others —
   // navigating to a page adds its section to the open set (so you can always see where you
@@ -2566,6 +2647,8 @@ import {
     // could still land here directly, so this is the actual enforcement point, not just the UI.
     if (currentDomain() === 'programs' && CERTS_ONLY_ROUTES.has(route)) route = 'dashboard';
     if (route !== 'history') activeReview = null;
+    // Print layout choices belong to the page that offers them — never leak onto the next page.
+    if (route !== 'glossary') document.body.classList.remove('print-layout-standard', 'print-layout-full', 'print-layout-compact');
     setPageMeta(route);
     if (activeSession && activeSession.source === route) renderQuiz();
     else if (flashSession && route === 'flashcards') renderFlashSession();
@@ -2579,7 +2662,7 @@ import {
       report: renderReadinessReport, 'guide-digest': renderHighlightsDigest, achievements: renderAchievementsPage, examday: renderExamDay, mistakes: renderMistakePatterns, packet: renderStudyPacket,
       finalreview: renderFinalReview, search: renderSearch }[route] || renderDashboard)();
     main.classList.remove('page-enter'); void main.offsetWidth; main.classList.add('page-enter');
-    hydrateIcons(main); updateChrome(); main.focus({ preventScroll: true }); window.scrollTo({ top: 0, behavior: 'smooth' });
+    hydrateIcons(main); updateChrome(); syncPrintHeader(); main.focus({ preventScroll: true }); window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function activityMarkup() {
@@ -3017,7 +3100,7 @@ import {
     const count = Math.min(50, Math.max(5, Number(options.count || 15)));
     const adaptiveDomainExplicit = options.domain && options.domain !== 'all';
     const pool = QUESTIONS.filter(q => !state.suspendedConcepts[q.conceptId] && (adaptiveDomainExplicit || !state.completedDomains[q.domain]) && (!options.core || options.core === 'all' || q.core === options.core) && (!options.domain || options.domain === 'all' || q.domain === options.domain));
-    if (!pool.length) { toast('No matching questions are available yet.', 'error'); return; }
+    if (!pool.length) { toast('No matching questions are available yet.', 'info'); return; }
     const sessionId = `session-${Date.now()}`;
     const conceptStats = conceptStatsMap();
     const startTarget = 0.5;
@@ -3051,14 +3134,14 @@ import {
   // excludes never-scheduled concepts, matching the Dashboard's "today's plan" due check.
   function startSpacedReviewPractice() {
     const due = getDueCards(false);
-    if (!due.length) { toast("Nothing due for review right now — you're caught up.", 'error'); return; }
+    if (!due.length) { toast("Nothing due for review right now — you're caught up.", 'info'); return; }
     startPractice({ count: Math.min(20, due.length), conceptIds: due.map(concept => concept.id), mode: 'Spaced review' });
   }
 
   function startPractice(options = {}) {
     const count = Number(options.count || 10);
     const questions = sampleQuestions(options, count);
-    if (!questions.length) { toast('No matching questions are available yet.', 'error'); return; }
+    if (!questions.length) { toast('No matching questions are available yet.', 'info'); return; }
     activeSession = {
       id: `session-${Date.now()}`, source: 'practice', mode: options.mode || 'Practice', questions,
       index: 0, responses: Array(questions.length).fill(null), startedAt: Date.now(),
@@ -3130,7 +3213,7 @@ import {
     const targetCount = 25;
     const remainingSlots = Math.max(0, targetCount - flaggedQuestions.length);
     const sampled = remainingSlots ? sampleQuestions(priorityConceptIds.length ? { priorityConceptIds } : { weak: true }, remainingSlots, seed) : [];
-    if (!flaggedQuestions.length && !sampled.length) { toast('Nothing to cram yet — flag a question, or come back after a practice session.', 'error'); return; }
+    if (!flaggedQuestions.length && !sampled.length) { toast('Nothing to cram yet — flag a question, or come back after a practice session.', 'info'); return; }
     const questions = seededShuffle([...withFreshOptions(flaggedQuestions, seed), ...sampled], `${seed}-cram`);
     activeSession = {
       id: `cram-${seed}`, source: 'practice', mode: 'Cram session', questions,
@@ -3725,7 +3808,7 @@ import {
     const fresh = cards.filter(concept => !state.flashcards[concept.id]);
     const future = cards.filter(concept => state.flashcards[concept.id] && new Date(state.flashcards[concept.id].due).getTime() > now).sort((a, b) => new Date(state.flashcards[a.id].due) - new Date(state.flashcards[b.id].due));
     cards = [...seededShuffle(due, Date.now()), ...seededShuffle(fresh, `${Date.now()}-new`), ...future].slice(0, Number(filter.count || 20));
-    if (!cards.length) { toast('No cards match that filter.', 'error'); return; }
+    if (!cards.length) { toast('No cards match that filter.', 'info'); return; }
     flashSession = { cards, index: 0, flipped: false, startedAt: Date.now(), mode: filter.mode === 'recall' ? 'recall' : 'flip', typed: '', submitted: false, matchHint: null };
     navigate('flashcards');
   }
@@ -4051,8 +4134,9 @@ import {
         <button class="ghost" type="button" data-action="open-custom-card">${icon('edit')} Add custom card</button>
         <button class="ghost" type="button" data-action="print-page">${icon('download')} Print / save</button>
       </div>
-      <label class="glossary-print-toggle" style="display:flex;align-items:center;gap:7px;margin:10px 2px 0;font-size:11px;color:var(--muted)"><input type="checkbox" id="glossary-compact-print"> Compact for print (hides scenarios &amp; diagrams)</label>
+      <div class="field glossary-print-toggle" style="max-width:340px;margin:10px 0 0"><label for="glossary-print-layout">When printing</label><select id="glossary-print-layout">${GLOSSARY_PRINT_LAYOUTS.map(([id, label]) => `<option value="${id}" ${glossaryPrintLayout === id ? 'selected' : ''}>${label}</option>`).join('')}</select></div>
       <section id="glossary-results" style="margin-top:20px">${glossaryResultsMarkup()}</section>`;
+    applyGlossaryPrintLayout();
   }
 
   // Scenario-type labs (branching troubleshooting tickets) live exclusively under their own
@@ -4142,7 +4226,7 @@ import {
     const items = term ? all.filter(entry => entry.cmd.toLowerCase().includes(term) || entry.desc.toLowerCase().includes(term)) : all;
     if (!all.length) return `<div class="empty-state"><div><span class="stat-icon" style="margin:0 auto 12px">${icon('info')}</span><h3>No commands recorded yet</h3><p>This track doesn't have any terminal-style labs yet.</p></div></div>`;
     if (!items.length) return `<div class="empty-state"><div><h3>No commands match "${escapeHtml(commandQuery.trim())}"</h3><button class="ghost small" data-action="clear-command-search">Clear search</button></div></div>`;
-    return `<div class="glossary-list">${items.map(entry => `<article class="glossary-item"><strong class="command-chip">${escapeHtml(entry.cmd)}</strong><p>${escapeHtml(entry.desc)}</p><div class="button-row" style="margin-top:8px;flex-wrap:wrap">${entry.labs.map(l => `<button class="ghost small" data-action="start-lab" data-lab="${l.id}">${icon('terminal')} ${escapeHtml(l.title)}</button>`).join('')}</div></article>`).join('')}</div>`;
+    return `<div class="glossary-list">${items.map(entry => `<article class="glossary-item"><strong class="command-chip">${escapeHtml(entry.cmd)}</strong><p>${escapeHtml(entry.desc)}</p><div class="button-row" style="margin-top:8px;flex-wrap:wrap">${entry.labs.map(l => `<button class="ghost small print-keep" data-action="start-lab" data-lab="${l.id}">${icon('terminal')} ${escapeHtml(l.title)}</button>`).join('')}</div></article>`).join('')}</div>`;
   }
 
   function renderCommandResults() {
@@ -4171,7 +4255,7 @@ import {
 
   function globalSearchResultsMarkup() {
     const term = globalSearchQuery.trim().toLowerCase();
-    if (term.length < 2) return `<div class="empty-state"><div><span class="stat-icon" style="margin:0 auto 12px">${icon('search')}</span><p>Type at least 2 characters to search the Study guide, Glossary, and Labs for ${escapeHtml(CERT.name)}.</p></div></div>`;
+    if (term.length < 2) return `<div class="empty-state"><div><span class="stat-icon" style="margin:0 auto 12px">${icon('search')}</span><h3>Search everything</h3><p>Type at least 2 characters to search the Study guide, Glossary, and Labs for ${escapeHtml(CERT.name)}.</p></div></div>`;
     const guideHits = [];
     GUIDE.forEach(chapter => {
       const domain = domainById[chapter.domain];
@@ -4265,7 +4349,7 @@ import {
   function startCloze(domainId) {
     const domain = domainById[domainId]; if (!domain) return;
     const pool = buildClozeParagraphs(domainId);
-    if (!pool.length) { toast('Not enough guide content with recognizable terms in this domain yet.', 'error'); return; }
+    if (!pool.length) { toast('Not enough guide content with recognizable terms in this domain yet.', 'info'); return; }
     const items = seededShuffle(pool, Date.now()).slice(0, Math.min(8, pool.length));
     clozeSession = { domainId, items, index: 0, startedAt: Date.now(), correct: 0, total: 0, results: null };
     navigate('cloze');
@@ -4771,7 +4855,7 @@ import {
   function startCrossword(domainId) {
     const domain = domainById[domainId]; if (!domain) return;
     const layout = generateCrosswordLayout(buildCrosswordPool(domainId), Date.now());
-    if (!layout) { toast('Not enough terms in this domain yet for a puzzle.', 'error'); return; }
+    if (!layout) { toast('Not enough terms in this domain yet for a puzzle.', 'info'); return; }
     activeCrossword = {
       domainId, domainName: domain.name, layout, userGrid: {}, checkedCells: null,
       selected: { x: layout.entries[0].x, y: layout.entries[0].y, dir: layout.entries[0].dir },
@@ -6399,7 +6483,7 @@ import {
     // Re-fetch fresh (rather than trusting the in-memory copy) so the backup reflects every
     // track's latest saved progress and the study plan — not just whichever track is active
     // right now, and not a possibly-stale snapshot from whenever the page last loaded.
-    if (!(await refreshRemoteProgress()) || !progressLoaded) { toast("Couldn't read your progress from the study server, so nothing was exported.", 'error'); return; }
+    if (!(await refreshRemoteProgress()) || !progressLoaded) { toast('Could not read your progress from the study server, so nothing was exported.', 'error'); return; }
     const blob = new Blob([JSON.stringify({ app: 'Cert Study', format: 'full', exportedAt: new Date().toISOString(), progress: remoteProgress }, null, 2)], { type: 'application/json' });
     const profileSuffix = activeProfileId === DEFAULT_PROFILE_ID ? '' : `-${activeProfileId}`;
     const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = `cert-study-backup${profileSuffix}-${todayKey()}.json`; link.click(); setTimeout(() => URL.revokeObjectURL(url), 500); toast('Full backup exported — every track and your study plan.');
@@ -6410,7 +6494,7 @@ import {
   // instead of the browser's download folder — lands in a real backup/ folder next to this app,
   // named with the running version so multiple backups sort and identify themselves at a glance.
   async function saveBackupToFolder() {
-    if (!(await refreshRemoteProgress()) || !progressLoaded) { toast("Couldn't read your progress from the study server, so no backup was written.", 'error'); return; }
+    if (!(await refreshRemoteProgress()) || !progressLoaded) { toast('Could not read your progress from the study server, so no backup was written.', 'error'); return; }
     const payload = { app: 'Cert Study', format: 'full', exportedAt: new Date().toISOString(), version: APP_VERSION, dateKey: todayKey(), profile: activeProfileId, progress: remoteProgress };
     try {
       const res = await fetch('/api/backup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -6484,7 +6568,7 @@ import {
   // History table already shows, just all of them (not just the last 8) and in a format a
   // spreadsheet app can sort/chart, for anyone who wants to track progress outside the app.
   function exportStatsCSV() {
-    if (!state.sessions.length) { toast('No sessions to export yet.', 'error'); return; }
+    if (!state.sessions.length) { toast('No sessions to export yet.', 'info'); return; }
     const header = ['Date', 'Track', 'Type', 'Session', 'Core', 'Questions', 'Correct', 'First-try score %', 'Scaled score', 'Time (seconds)', 'Timed out'];
     const rows = state.sessions.map(s => [s.date, CERT.name, s.type, s.label, s.core, s.total, s.correct, s.score, s.scaled ?? '', s.elapsed, s.timedOut ? 'yes' : 'no']);
     const csv = [header, ...rows].map(row => row.map(csvEscape).join(',')).join('\r\n');
@@ -6500,7 +6584,7 @@ import {
   // the exact same buildPhaseSchedule() output the Planner page itself renders, so the exported
   // calendar can never drift out of sync with what the in-app schedule actually shows.
   function exportPlanICS() {
-    if (!planState.phases.length) { toast('No tracks in your plan yet.', 'error'); return; }
+    if (!planState.phases.length) { toast('No tracks in your plan yet.', 'info'); return; }
     const dtstamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
     const events = [];
     let cursorDate = planState.startDate;
@@ -6651,7 +6735,7 @@ import {
   }
   function exportAnkiDeck(filter = {}) {
     const cards = allConcepts().filter(concept => (!filter.core || filter.core === 'all' || concept.core === filter.core) && (!filter.domain || filter.domain === 'all' || concept.domain === filter.domain));
-    if (!cards.length) { toast('No cards match that filter.', 'error'); return; }
+    if (!cards.length) { toast('No cards match that filter.', 'info'); return; }
     const trackTag = ankiTag(CERT.name);
     const lines = ['#separator:tab', '#html:true', '#notetype:Basic', `#deck:${CERT.name}`, '#tags column:3',
       ...cards.map(concept => {
@@ -7109,7 +7193,7 @@ import {
     }
     if (action === 'browse-drill-selected') {
       const ids = [...browseSelected].filter(id => conceptById[id]);
-      if (!ids.length) { toast('Nothing quizzable in your selection — custom cards can only be reviewed as flashcards.', 'error'); return; }
+      if (!ids.length) { toast('Nothing quizzable in your selection — custom cards can only be reviewed as flashcards.', 'info'); return; }
       startPractice({ conceptIds: ids, count: ids.length, mode: 'Browse selection drill' });
     }
     if (action === 'browse-reset-selected') {
@@ -7558,7 +7642,7 @@ import {
       const badge = document.getElementById('examday-checklist-count');
       if (badge) { badge.textContent = `${doneCount}/${EXAM_DAY_CHECKLIST.length}`; badge.classList.toggle('teal', doneCount === EXAM_DAY_CHECKLIST.length); }
     }
-    if (event.target.id === 'glossary-compact-print') document.body.classList.toggle('print-compact', event.target.checked);
+    if (event.target.id === 'glossary-print-layout') { glossaryPrintLayout = event.target.value; applyGlossaryPrintLayout(); }
     if (event.target.id === 'cmp-a') { examComparisonState.aId = event.target.value; renderExamComparisonDialog(); }
     if (event.target.id === 'cmp-b') { examComparisonState.bId = event.target.value; renderExamComparisonDialog(); }
     if (event.target.matches('.gui-select') && activeLab) { activeLab.controlState[event.target.dataset.control] = event.target.value; activeLab.results = null; renderLabWorkbench(); hydrateIcons(main); }
@@ -7821,7 +7905,7 @@ import {
     checkAutoBackup();
     checkDueReviewNotification();
     updateCertChrome();
-    hydrateIcons(); updateChrome();
+    hydrateIcons(); updateChrome(); watchControlNames();
     if (!location.hash) history.replaceState(null, '', `#${state.settings.startPage || 'dashboard'}`);
     renderRoute();
 

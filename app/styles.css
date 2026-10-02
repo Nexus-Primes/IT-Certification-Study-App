@@ -9,7 +9,7 @@
   --border-soft: #1c293b;
   --text: #edf4fb;
   --muted: #91a0b5;
-  --muted-2: #65758b;
+  --muted-2: #828fa1;
   --primary: #2dd4bf;
   --primary-strong: #14b8a6;
   --primary-soft: rgba(45, 212, 191, .12);
@@ -51,12 +51,10 @@
   /* muted/accent colors darkened from their original shade — see comment on the
      prefers-color-scheme twin below for why. */
   --muted: #4d5c6f;
-  /* --muted-2 (the deliberately-dimmer caption/eyebrow color, held to a ~3.0-3.5 bar rather
-     than the 4.5 body-text bar — see the UI-chrome caption note below) measured only
-     ~2.96-3.21:1 against this theme's own near-white surfaces, under even that lenient bar.
-     Darkened 2026-09-11 by a uniform sRGB scale (preserves hue) to clear ≥3.3:1 against
-     --surface/--bg/--surface-2/--surface-3 alike. */
-  --muted-2: #7a8695;
+  /* --muted-2 is the dimmer caption/eyebrow tier (below --muted) but still holds 4.5:1 on every
+     surface in every theme — it carries real information at 8-10px (scenarios, axis labels,
+     "Covers objective" lines), so a decorative-text allowance would not be enough. */
+  --muted-2: #656f7c;
   --primary: #0b7267;
   --primary-strong: #087f74;
   --primary-soft: rgba(15, 159, 144, .1);
@@ -106,7 +104,7 @@
     --border-soft: #e8edf1;
     --text: #142032;
     --muted: #4d5c6f;
-    --muted-2: #7a8695;
+    --muted-2: #656f7c;
     --primary: #0b7267;
     --primary-strong: #087f74;
     --primary-soft: rgba(15, 159, 144, .1);
@@ -146,7 +144,7 @@ svg { width: 19px; height: 19px; display: block; stroke-width: 1.8; }
 .hidden { display: none !important; }
 /* Off-screen but readable by assistive tech — used for the live-region status node and
    for spelling out answer state that is otherwise only shown by colour. */
-.visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.visually-hidden { position: absolute !important; width: 1px !important; height: 1px !important; min-height: 0 !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0 0 0 0); white-space: nowrap; border: 0 !important; }
 .skip-link { position: fixed; left: 16px; top: -60px; z-index: 1000; padding: 10px 14px; border-radius: 8px; background: var(--primary); color: var(--on-primary); font-weight: 800; text-decoration: none; }
 .skip-link:focus { top: 12px; }
 
@@ -219,6 +217,14 @@ svg { width: 19px; height: 19px; display: block; stroke-width: 1.8; }
 .sync-banner-copy svg { width: 18px; height: 18px; flex: 0 0 auto; color: var(--amber); margin-top: 1px; }
 .sync-banner code { padding: 1px 5px; border-radius: 5px; background: var(--surface-2); font-size: 11px; }
 .page-enter { animation: pageIn .28s ease both; }
+/* Shown inside <main> until the first real page renders, so a slow load never flashes empty. */
+.boot-skeleton { display: grid; gap: 14px; padding-top: 4px; }
+.boot-skeleton i { display: block; border-radius: 16px; background: linear-gradient(90deg, var(--surface-2) 25%, var(--surface-3) 50%, var(--surface-2) 75%); background-size: 300% 100%; animation: boot-shimmer 1.5s linear infinite; }
+.boot-skeleton i:nth-child(1) { height: 36px; width: min(320px, 60%); border-radius: 10px; }
+.boot-skeleton i:nth-child(2) { height: 210px; }
+.boot-skeleton i:nth-child(3) { height: 130px; }
+@keyframes boot-shimmer { from { background-position: 100% 0; } to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .boot-skeleton i { animation: none; } }
 @keyframes pageIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
 .primary, .secondary, .ghost, .danger-button { min-height: 42px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 17px; border-radius: 10px; border: 1px solid transparent; font-weight: 800; cursor: pointer; transition: transform .15s ease, background .15s ease, border-color .15s ease; }
@@ -813,6 +819,7 @@ select:disabled { opacity: .55; cursor: not-allowed; }
 .toast { min-width: 260px; max-width: 380px; display: grid; grid-template-columns: 25px 1fr; gap: 9px; align-items: center; padding: 13px 15px; border: 1px solid var(--border); border-radius: 11px; background: var(--surface); box-shadow: var(--shadow); animation: toastIn .25s ease both; }
 .toast.success > span:first-child { color: var(--green); }
 .toast.error > span:first-child { color: var(--red); }
+.toast.info > span:first-child { color: var(--blue); }
 .toast.milestone { border-color: color-mix(in srgb, var(--amber) 35%, var(--border)); background: var(--amber-soft); }
 .toast.milestone > span:first-child { color: var(--amber); }
 @keyframes toastIn { from { opacity: 0; transform: translateY(8px); } }
@@ -976,13 +983,13 @@ kbd { display: inline-flex; align-items: center; justify-content: center; min-wi
    Surface palettes only — status colors (green/red/amber/blue) stay shared so correct/incorrect
    read the same everywhere. Each preset defines a dark set and a light set; "Classic" is the
    base :root blocks above and needs no attribute. muted/muted-2 were chosen to hold the same
-   contrast bars as the base themes (muted ≥ 4.5:1, muted-2 ≥ ~3:1 on every surface). */
-:root[data-preset="slate"] { --bg: #0f1115; --sidebar: #14171c; --surface: #181b21; --surface-2: #1e222a; --surface-3: #262b35; --border: #313744; --border-soft: #232832; --text: #eceef2; --muted: #9aa1ae; --muted-2: #7a8190; }
-:root[data-preset="slate"][data-theme="light"] { --bg: #f2f3f5; --sidebar: #ffffff; --surface: #ffffff; --surface-2: #f6f7f9; --surface-3: #eceef1; --border: #dcdfe5; --border-soft: #e7e9ed; --text: #1a1d23; --muted: #4f5663; --muted-2: #6f7785; }
-:root[data-preset="ink"] { --bg: #000000; --sidebar: #050505; --surface: #0c0c0e; --surface-2: #131316; --surface-3: #1b1b20; --border: #2a2a31; --border-soft: #1b1b21; --text: #f4f4f5; --muted: #a1a1aa; --muted-2: #7c7c86; }
-:root[data-preset="ink"][data-theme="light"] { --bg: #fafafa; --sidebar: #ffffff; --surface: #ffffff; --surface-2: #f6f6f7; --surface-3: #efeff1; --border: #e0e0e4; --border-soft: #ebebee; --text: #09090b; --muted: #52525b; --muted-2: #73737d; }
-:root[data-preset="sand"] { --bg: #14110d; --sidebar: #181510; --surface: #1c1812; --surface-2: #231e17; --surface-3: #2c261d; --border: #3a3226; --border-soft: #2a241b; --text: #f3ece0; --muted: #b0a690; --muted-2: #8a8068; }
-:root[data-preset="sand"][data-theme="light"] { --bg: #f5f1ea; --sidebar: #fbf8f3; --surface: #fffdf9; --surface-2: #f8f4ec; --surface-3: #efe9dd; --border: #e0d8c8; --border-soft: #ebe5d8; --text: #2a241b; --muted: #5c5344; --muted-2: #7d735f; }
+   contrast bar as the base themes (4.5:1 on every surface). */
+:root[data-preset="slate"] { --bg: #0f1115; --sidebar: #14171c; --surface: #181b21; --surface-2: #1e222a; --surface-3: #262b35; --border: #313744; --border-soft: #232832; --text: #eceef2; --muted: #9aa1ae; --muted-2: #8d93a0; }
+:root[data-preset="slate"][data-theme="light"] { --bg: #f2f3f5; --sidebar: #ffffff; --surface: #ffffff; --surface-2: #f6f7f9; --surface-3: #eceef1; --border: #dcdfe5; --border-soft: #e7e9ed; --text: #1a1d23; --muted: #4f5663; --muted-2: #646b78; }
+:root[data-preset="ink"] { --bg: #000000; --sidebar: #050505; --surface: #0c0c0e; --surface-2: #131316; --surface-3: #1b1b20; --border: #2a2a31; --border-soft: #1b1b21; --text: #f4f4f5; --muted: #a1a1aa; --muted-2: #83838c; }
+:root[data-preset="ink"][data-theme="light"] { --bg: #fafafa; --sidebar: #ffffff; --surface: #ffffff; --surface-2: #f6f6f7; --surface-3: #efeff1; --border: #e0e0e4; --border-soft: #ebebee; --text: #09090b; --muted: #52525b; --muted-2: #6b6b74; }
+:root[data-preset="sand"] { --bg: #14110d; --sidebar: #181510; --surface: #1c1812; --surface-2: #231e17; --surface-3: #2c261d; --border: #3a3226; --border-soft: #2a241b; --text: #f3ece0; --muted: #b0a690; --muted-2: #978e79; }
+:root[data-preset="sand"][data-theme="light"] { --bg: #f5f1ea; --sidebar: #fbf8f3; --surface: #fffdf9; --surface-2: #f8f4ec; --surface-3: #efe9dd; --border: #e0d8c8; --border-soft: #ebe5d8; --text: #2a241b; --muted: #5c5344; --muted-2: #706856; }
 
 /* ---------- Sidebar: icon rail (desktop only — below 900px the sidebar is already a drawer) ---------- */
 .nav-user-hidden { display: none !important; }
@@ -1043,6 +1050,19 @@ html[data-rail="on"] .rail-toggle [data-icon] svg { transform: none; }
 .settings-search { width: min(280px, 100%); }
 .settings-search input { width: 100%; }
 
+/* ---------- Print / save as PDF ----------
+   The masthead is in the page (so every browser shows it, once, on the first sheet); the
+   running head and "Page X of Y" use page-margin boxes, which Chromium browsers draw and others
+   quietly ignore. The head text comes from custom properties app.js keeps current. */
+.print-header { display: none; }
+@page {
+  size: auto; margin: 18mm 15mm 18mm;
+  @top-left { content: var(--print-running-head, "Cert Study"); font: 600 8pt/1 "Segoe UI", system-ui, sans-serif; color: #5b6674; vertical-align: bottom; padding-bottom: 3mm; }
+  @bottom-left { content: var(--print-running-foot, ""); font: 8pt/1 "Segoe UI", system-ui, sans-serif; color: #5b6674; vertical-align: top; padding-top: 3mm; }
+  @bottom-right { content: "Page " counter(page) " of " counter(pages); font: 8pt/1 "Segoe UI", system-ui, sans-serif; color: #5b6674; vertical-align: top; padding-top: 3mm; }
+}
+@page :first { @top-left { content: none; } }
+
 @media print {
   /* Always print as the light theme — a dark-theme page prints dark panels with the
      forced-black body text sitting invisibly on top of them, and the dark-theme accent
@@ -1063,27 +1083,85 @@ html[data-rail="on"] .rail-toggle [data-icon] svg { transform: none; }
     --green: #0f6b31; --green-soft: rgba(15,107,49,.1);
     --shadow: none;
   }
-  .sidebar, .topbar, .app-footer, .toast-region, .dialog-layer, .mobile-backdrop, .builder { display: none !important; }
+  .boot-skeleton, .sidebar, .topbar, .app-footer, .toast-region, .dialog-layer, .mobile-backdrop, .builder, .skip-link, .sync-banner, .focus-timer-bar, .guide-highlight-popover, #a11y-status, .hero-greeting { display: none !important; }
   .app-shell { display: block; }
   .app-main { min-height: 0; }
-  #main-content { max-width: none; padding: 0; }
-  .glossary-list { grid-template-columns: 1fr 1fr; }
+  #main-content { max-width: none; padding: 0; outline: none !important; }
+  /* A report that opens with its own title block doesn't need the page heading above it too. */
+  .section-head:has(+ .report-page) { display: none; }
+  /* Colored bars, tags, and diagrams are part of the content — keep them even when the print
+     dialog's "Background graphics" box is unticked (its default). */
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  /* The page-change animation starts at opacity 0; never let a print catch it mid-fade. */
+  .page-enter { animation: none !important; transform: none !important; }
+  /* Controls do nothing on paper. A few buttons are really content (the labs that teach a
+     command), so those opt back in with .print-keep and print as plain text. */
+  #main-content button:not(.print-keep), #main-content .field:has(> input, > select) { display: none !important; }
+  .print-keep { display: inline-flex !important; min-height: 0; padding: 0 !important; border: 0 !important; background: none !important; box-shadow: none !important; color: var(--muted) !important; font-size: 10px; font-weight: 600; }
+  /* Switches become real checkboxes so a printed checklist still shows what is ticked. */
+  .switch { width: 18px; height: 18px; }
+  .switch span { border-radius: 4px; background: #fff; border: 1.5px solid var(--muted); }
+  .switch span::after { display: none; }
+  .switch input:checked + span { background: var(--primary); border-color: var(--primary); }
+  .switch input:checked + span::after { display: block; content: ""; left: 5px; top: 1.5px; width: 5px; height: 10px; border-radius: 0; background: none; border: solid var(--on-primary); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  .print-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin: 0 0 16px; padding-bottom: 9px; border-bottom: 2px solid var(--primary); break-after: avoid; }
+  .print-header.is-off { display: none !important; }
+  .print-header-brand { display: flex; align-items: center; gap: 10px; }
+  .print-mark { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; background: var(--primary); color: var(--on-primary); }
+  .print-mark svg { width: 16px; height: 16px; }
+  .print-header-brand strong { display: block; font-size: 13pt; line-height: 1.1; letter-spacing: -.01em; }
+  .print-header-brand small { display: block; margin-top: 2px; color: var(--muted); font-size: 8.5pt; font-weight: 600; }
+  .print-header-meta { display: grid; gap: 1px; text-align: right; color: var(--muted); font-size: 8.5pt; line-height: 1.4; }
+  .print-header-meta strong { color: var(--text); font-size: 10pt; }
+  h1, h2, h3, h4, .section-head { break-after: avoid; }
+  p, li, .gap-list li { orphans: 3; widows: 3; }
+  /* Scrolling lists on screen must show everything on paper. */
+  .gap-list, .changelog { max-height: none !important; overflow: visible !important; }
+  /* Report sheets: tighter spacing so a "snapshot" reads as one or two sheets, not three. */
+  /* Block flow, not grid: sheets split across pages far more predictably that way. */
+  .report-page { display: block; }
+  .report-page > * + * { margin-top: 10px; }
+  .report-page > .panel { margin-bottom: 0 !important; }
+  .report-head { padding: 14px 18px; }
+  .report-page .stat-grid { gap: 8px; margin-top: 0; }
+  .report-page .stat-card { min-height: 0; padding: 10px 12px; grid-template-columns: 34px 1fr; gap: 10px; }
+  .report-page .panel-header { padding: 13px 18px 9px; }
+  .report-page .panel-body { padding: 0 18px 14px; }
+  /* Panels that hold long lists may run across sheets (their rows still never split); short
+     ones stay whole. */
+  .report-page .panel:has(.gap-details, .glossary-list) { break-inside: auto; }
+  .report-page .panel-header, .gap-details summary { break-after: avoid; }
+  .gap-list li, .gap-details { break-inside: avoid; }
+  .gap-list { gap: 0; }
+  .gap-list li { padding: 4px 2px; }
+  .report-page .mastery-list { gap: 7px; }
+  .glossary-list { grid-template-columns: 1fr 1fr; gap: 8px 12px; }
+  .glossary-item { padding: 8px 11px; }
+  .glossary-item.has-diagram { grid-column: auto; }
+  .glossary-item .concept-diagram { padding: 6px; margin: 5px 0; }
+  .glossary-group h3 { margin-bottom: 8px; }
+  .glossary-item small { display: block; line-height: 1.4; }
   body { background: #fff; }
   .panel, .glossary-item, .guide-chapter, .concept-diagram, article, .lab-card { box-shadow: none !important; break-inside: avoid; }
   .glossary-item, .guide-chapter { border-color: #ccc; }
+  /* Chapters are long: let them run across pages (paragraphs and headings still behave) instead
+     of jumping each whole chapter to a fresh sheet and leaving the one before it mostly blank. */
+  .guide-chapter { break-inside: auto; padding: 14px 18px; }
+  .guide-section { margin-top: 14px; padding-top: 12px; }
+  .guide-section h4, .guide-section-meta { break-after: avoid; }
+  .notice:has(button) { display: none !important; }
   [data-action="print-page"], [data-action="guide-speak"], [data-action="guide-speak-toggle"], [data-action="guide-speak-stop"], .guide-audio-bar, .domain-tabs, .guide-practice-actions, .report-actions { display: none !important; }
   .guide-audio-read { background: none !important; color: inherit !important; }
   .glossary-print-toggle, .note-chip { display: none !important; }
-  /* Compact cheat-sheet mode: term + definition only, denser columns — checked via the
-     Glossary's own "Compact for print" toggle, which just adds this class to <body>. */
-  .print-compact .concept-diagram, .print-compact .glossary-item > small, .print-compact .note-zone { display: none !important; }
-  .print-compact .glossary-list { grid-template-columns: repeat(3, 1fr); gap: 4px 16px; }
-  .print-compact .glossary-item { padding: 6px 0; }
-  /* .has-diagram forces a full-width span so a wide diagram never gets squeezed into one
-     grid column — but the diagram itself is hidden in compact mode, and since nearly every
-     concept in this app has one, leaving the span rule in place would make every single card
-     full-width and silently defeat the 3-column layout above for almost the whole page. */
-  .print-compact .glossary-item.has-diagram { grid-column: auto; }
+  /* Glossary print layouts (chosen with the "When printing" select, which sets one of these
+     classes on <body>). Standard drops the diagrams, which carry most of the length; "full"
+     brings them back at full width so their text stays legible; compact is a terse cheat sheet. */
+  .print-layout-standard .glossary-item .concept-diagram { display: none !important; }
+  .print-layout-full .glossary-item.has-diagram { grid-column: 1 / -1; }
+  .print-layout-full .glossary-item .concept-diagram { padding: 10px; }
+  .print-layout-compact .concept-diagram, .print-layout-compact .glossary-item > small, .print-layout-compact .note-zone { display: none !important; }
+  .print-layout-compact .glossary-list { grid-template-columns: repeat(3, 1fr); gap: 4px 16px; }
+  .print-layout-compact .glossary-item { padding: 6px 0; }
 }
 
 @media (max-width: 1180px) {

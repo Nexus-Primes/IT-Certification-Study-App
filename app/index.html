@@ -28,7 +28,7 @@
       } catch (e) {}
     })();
   </script>
-  <link rel="stylesheet" href="/app/styles.css?v=69">
+  <link rel="stylesheet" href="/app/styles.css?v=70">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -112,7 +112,11 @@
       </header>
 
       <div class="sync-banner hidden" id="sync-banner" role="alert"></div>
-      <main id="main-content" tabindex="-1"></main>
+      <div class="print-header" id="print-header" aria-hidden="true">
+        <div class="print-header-brand"><span class="print-mark" data-icon="cap"></span><div><strong>Cert Study</strong><small data-print="page"></small></div></div>
+        <div class="print-header-meta"><strong data-print="track"></strong><span data-print="owner"></span><span data-print="date"></span></div>
+      </div>
+      <main id="main-content" tabindex="-1"><div class="boot-skeleton" role="status" aria-label="Loading your study data"><i></i><i></i><i></i></div></main>
       <footer class="app-footer">
         <span id="footer-note">Cert Study uses original practice content mapped to the public CompTIA A+ objectives.</span>
         <span id="footer-disclaimer">Not affiliated with or endorsed by CompTIA.</span>
@@ -158,6 +162,6 @@
   <script src="/data/dp300-guide.js?v=1" defer></script>
   <script src="/data/blender-fundamentals.js?v=2" defer></script>
   <script src="/data/blender-fundamentals-labs.js?v=4" defer></script>
-  <script type="module" src="/app/app.js?v=172"></script>
+  <script type="module" src="/app/app.js?v=173"></script>
 </body>
 </html>
