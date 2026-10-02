@@ -64,6 +64,48 @@ def run(ctx):
     t.check(units["customDark"] != "#101040" and units["customLight"] != "#ffee00", "a custom accent that is too dark (or too light) for the theme is nudged for contrast", f"{units['customDark']} / {units['customLight']}")
     t.check(units["presets"] == ["default", "slate", "ink", "sand"] and units["fallback"] == "default", "four surface styles; unknown ones fall back to Classic")
 
+    # ---------------------------------------------------------------- themed controls
+    t.suite("themed dropdowns, dates, fonts, and the crossword")
+    go(browser, "practice", wait=0.8)
+    t.check(browser.eval("document.querySelectorAll('.xselect').length") >= 2, "dropdowns are replaced by themed ones")
+    browser.eval("document.querySelector('#practice-domain').parentElement.querySelector('.xselect-trigger').click()")
+    time.sleep(0.3)
+    options = browser.eval("document.querySelectorAll('.xselect-menu:not(.hidden) .xselect-option').length")
+    t.check(options > 3, "opening a dropdown lists its options", str(options))
+    browser.eval("document.querySelectorAll('.xselect-menu:not(.hidden) .xselect-option')[2].click()")
+    time.sleep(0.3)
+    t.check(browser.eval("document.getElementById('practice-domain').value") != "all", "choosing an option changes the real value underneath")
+    browser.eval("document.querySelector('#practice-core').parentElement.querySelector('.xselect-trigger').click()")
+    time.sleep(0.2)
+    browser.eval("document.querySelector('#practice-domain').parentElement.querySelector('.xselect-trigger').click()")
+    time.sleep(0.2)
+    t.check(browser.eval("document.querySelectorAll('.xselect-menu:not(.hidden)').length") == 1, "only one dropdown is open at a time")
+    browser.eval("document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))")
+    time.sleep(0.2)
+    t.check(browser.eval("document.querySelectorAll('.xselect-menu:not(.hidden)').length") == 0, "Escape closes an open dropdown")
+
+    _open_settings(browser, "study")
+    browser.eval("document.querySelector('#settings-exam-date').parentElement.querySelector('.xdate-trigger').click()")
+    time.sleep(0.3)
+    days = browser.eval("document.querySelectorAll('.xdate-popover:not(.hidden) .xdate-day[data-date]').length")
+    t.check(days >= 28, "the date picker shows a month of days", str(days))
+    browser.eval("document.querySelector('.xdate-popover:not(.hidden) .xdate-day[data-date]:not(.muted)').click()")
+    time.sleep(0.3)
+    t.check(bool(browser.eval("document.getElementById('settings-exam-date').value")), "picking a day fills the real date field")
+
+    _open_settings(browser, "appearance")
+    browser.eval("document.getElementById('setting-font-name').dispatchEvent(new FocusEvent('focus'))")  # a headless page has no window focus, so send the event itself
+    time.sleep(0.3)
+    fonts = browser.eval("document.querySelectorAll('.xselect-menu:not(.hidden) .xselect-option').length")
+    t.check(fonts > 5, "focusing the font box suggests fonts", str(fonts))
+
+    go(browser, "crossword", wait=0.8)
+    browser.eval("document.querySelector('[data-action=\"start-crossword\"]').click()")
+    time.sleep(0.8)
+    cells = browser.eval("document.querySelectorAll('[data-cw-cell], .cw-cell').length")
+    t.check(cells >= 20, "a crossword puzzle is generated and drawn", f"{cells} cells")
+    t.check(not browser.errors(), "no JavaScript errors from the controls or crossword", "; ".join(browser.errors()[:3]))
+
     # ---------------------------------------------------------------- color picker
     t.suite("color picker")
     _open_settings(browser, "appearance")
