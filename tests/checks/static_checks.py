@@ -19,7 +19,8 @@ def run(ctx):
     t.check(bool(version and cache and version.group(1) == cache.group(1)), "APP_VERSION matches the service worker cache name",
             f"{version and version.group(1)} vs {cache and cache.group(1)}")
 
-    changelog_top = re.search(r"const CHANGELOG = \[\s*\{ version: '(v\d+)'", app_js)
+    changelog_js = (APP_ROOT / "app" / "changelog.js").read_text(encoding="utf-8")
+    changelog_top = re.search(r"const CHANGELOG = \[\s*\{ version: '(v\d+)'", changelog_js)
     if not (changelog_top and version and changelog_top.group(1) == version.group(1)):
         t.warn("newest CHANGELOG entry is not the current version",
                f"{changelog_top and changelog_top.group(1)} vs {version and version.group(1)} (fine for an internal-only bump)")

@@ -33,6 +33,37 @@ def run(ctx):
     open_app(browser, sandbox)
     set_theme(browser, "dark")
 
+    # ---------------------------------------------------------------- pure color/theme modules
+    t.suite("color and theme modules")
+    units = browser.eval("""(async () => {
+      const c = await import('/app/color.js?v=1'); const th = await import('/app/themes.js?v=1');
+      const near = (a, b, e = 1) => a.every((v, i) => Math.abs(v - b[i]) <= e);
+      return {
+        normalize: [c.normalizeHex('abc'), c.normalizeHex('#AABBCC'), c.normalizeHex('zz'), c.normalizeHex('#12345')],
+        rgb: c.hexToRgb('#ff6600'), hex: c.rgbToHex([255, 102, 0]),
+        hsvRoundTrip: near(c.hsvToRgb(c.rgbToHsv([34, 211, 238])), [34, 211, 238]),
+        hslRoundTrip: near(c.hslToRgb(c.rgbToHsl([200, 30, 90])), [200, 30, 90]),
+        contrast: +c.contrastRatio([0, 0, 0], [255, 255, 255]).toFixed(1),
+        names: ['#e11d48', '#2dd4bf', '#000000', '#ffffff', '#808080', '#fde047'].map(c.colorNameFor),
+        readable: [c.readableTextOn('#fde047'), c.readableTextOn('#1e3a8a')],
+        mix: [c.highlightMixFor('#ffff00', 'dark'), c.highlightMixFor('#ffff00', 'light'), c.highlightMixFor('#000080', 'light'), c.highlightMixFor('#ff0000', 'dark')],
+        tealIsDefault: th.accentVarsFor('teal', 'dark') === null,
+        presetAccent: th.accentVarsFor('blue', 'light').primary,
+        customDark: th.accentVarsFor('#101040', 'dark').primary, customLight: th.accentVarsFor('#ffee00', 'light').primary,
+        presets: th.THEME_PRESETS.map(p => p.id), fallback: th.presetById('nope').id
+      };
+    })()""")
+    t.check(units["normalize"] == ["#aabbcc", "#aabbcc", None, None], "hex normalizing accepts 3 and 6 digits and rejects junk", str(units["normalize"]))
+    t.check(units["rgb"] == [255, 102, 0] and units["hex"] == "#ff6600", "hex and RGB convert both ways")
+    t.check(units["hsvRoundTrip"] and units["hslRoundTrip"], "HSV and HSL conversions round-trip")
+    t.check(units["contrast"] == 21.0, "black on white measures 21:1")
+    t.check(units["names"] == ["red", "teal", "black", "white", "gray", "yellow"], "colors get plain-language names", str(units["names"]))
+    t.check(units["readable"] == ["#0b1220", "#ffffff"], "readable text flips between dark and white", str(units["readable"]))
+    t.check(units["mix"] == [14, 40, 24, 40], "highlight wash strengths are unchanged", str(units["mix"]))
+    t.check(units["tealIsDefault"] and units["presetAccent"] == "#026ba1", "the built-in teal is the default and presets keep their light values")
+    t.check(units["customDark"] != "#101040" and units["customLight"] != "#ffee00", "a custom accent that is too dark (or too light) for the theme is nudged for contrast", f"{units['customDark']} / {units['customLight']}")
+    t.check(units["presets"] == ["default", "slate", "ink", "sand"] and units["fallback"] == "default", "four surface styles; unknown ones fall back to Classic")
+
     # ---------------------------------------------------------------- color picker
     t.suite("color picker")
     _open_settings(browser, "appearance")

@@ -4,6 +4,12 @@ import {
   daysBetween, formatDate, formatDateKey, formatPlanDate, formatDuration, hashNumber,
   seededShuffle, recallMatchHint
 } from './utils.js?v=4';
+import { CHANGELOG } from './changelog.js?v=1';
+import {
+  isHexColor, hexToRgb, rgbToHex, rgbToHsl, hslToRgb, rgbToHsv, hsvToRgb, normalizeHex, clamp01,
+  relLuminance, contrastRatio, readableTextOn, colorNameFor, highlightMixFor
+} from './color.js?v=1';
+import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accentVarsFor } from './themes.js?v=1';
 
 (function () {
   'use strict';
@@ -39,328 +45,7 @@ import {
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v215';
-  // Shown in the "What's new" panel (Settings, command palette, or automatically once per
-  // release). Newest first; keep entries short and user-facing. Entries before v133 predate
-  // this app having per-build version numbers at all, so their "version" is the date instead —
-  // still real history, just not tagged with a build number the way later entries are.
-  const CHANGELOG = [
-    { version: 'v215', date: 'October 2026', title: 'Your own highlight colors', items: [
-      "New: choose your own highlighter colors (Settings → Appearance → Highlight colors). Each of the four slots opens the color picker and shows a live sample, so you can see exactly how highlighted text will look.",
-      "Changed: recoloring a slot recolors the highlights you've already made with it, so color-coding by topic or confidence stays consistent. \"Reset\" puts the originals back.",
-      "Changed: very dark or very strong colors are drawn as a lighter wash automatically, so highlighted words stay readable in every theme and in print.",
-      "Changed: the four swatches in the Highlight pop-up are now numbered 1–4 instead of Y/G/B/P, since the colors are yours to define — and each is announced by color name (\"Highlight in dark teal\")."
-    ] },
-    { version: 'v214', date: 'October 2026', title: 'A color picker that matches the app', items: [
-      "New: choosing a custom color now opens the app's own picker — a saturation and brightness field, a hue slider, hex and RGB boxes, and an eyedropper — instead of the browser's plain system popup. It follows your theme, style, and corner settings.",
-      "New: the app icon color and your avatar color now have the same \"pick any color\" option as the accent, next to their quick swatches.",
-      "Changed: the picker previews as you drag and only saves when you press Done, hit Enter, or click away; Cancel or Escape puts everything back.",
-      "Changed: your avatar's initials switch between white and dark automatically so they stay readable on whatever color you pick.",
-      "Fixed: choosing an avatar or app icon color no longer jumps the Settings page back to the top."
-    ] },
-    { version: 'v213', date: 'October 2026', title: 'Print-ready pages and a round of polish', items: [
-      "New: everything you print or save as a PDF now gets a clean header (app, track, page, who it's for, and the date), a running title, and \"Page X of Y\" on every sheet. Save as PDF suggests a descriptive file name too.",
-      "Changed: the Glossary prints definitions and scenarios by default — about 40 pages for a full track instead of roughly 250 — with a \"When printing\" choice for the full version with diagrams or a terse three-column cheat sheet.",
-      "Changed: printed pages drop the buttons and search boxes, show checklists as real checkboxes, include the collapsed lists on the Final review sheet, and let long Study guide chapters flow across pages. The Final review sheet and Readiness report are tighter.",
-      "Fixed: the page could scroll sideways on some screens (an invisible dropdown helper was far wider than it should be).",
-      "Fixed: screen readers announced many switches (Settings, Exam day, Practice) as just \"checkbox\" — each is now named for what it controls.",
-      "Changed: the faintest small text (captions, section labels, chart numbers, scenario lines) is a little stronger in every theme and style, so it clears the standard 4.5:1 contrast bar everywhere.",
-      "Changed: \"nothing to do\" messages — nothing due, no cards match, not enough terms yet — use a calm blue notice instead of the red error style.",
-      "Changed: a soft loading placeholder shows while your study data loads, instead of a blank page."
-    ] },
-    { version: 'v212', date: 'October 2026', title: 'A sidebar that fits you, theme styles, and organized Settings', items: [
-      "New: collapse the sidebar to a slim icon-only rail (the button just above Settings) for more room — hover an icon for its name. Remembered on this device.",
-      "New: choose which pages appear in the sidebar and in what order (Settings → Appearance → Sidebar). Hidden pages stay reachable from search and the G shortcuts.",
-      "New: four theme styles — Classic, Slate, Ink (true black), and Sand (warm, paper-like) — each with its own dark and light version.",
-      "New: pick any accent color, not just the six swatches (or type a hex code). Custom colors are adjusted automatically so text stays readable in both themes. There's also an option to give every track its own accent.",
-      "Changed: Settings is now split into sections — Appearance, Study, Account, Data, About — with a search box that finds a setting by name or by what it does.",
-      "New: the Dashboard greets you by name and time of day, and you can choose what its main button does (the daily recommendation, Quick 10, due flashcards, or continuing the study guide).",
-      "Changed: removed the \"Tip of the day\" and \"All tracks at a glance\" switches for certification tracks — the simplified Dashboard no longer shows either, so they did nothing there.",
-      "Fixed: printing now always uses the plain light palette with the standard accent, even if you've chosen a dark style or a custom accent color."
-    ] },
-    { version: 'v211', date: 'October 2026', title: 'Your look follows you, and saving is sturdier', items: [
-      "Changed: theme, accent color, font, text size, density, corner style, and the accessibility toggles now belong to your account, not to whichever track is open — customize once and every track matches. Whatever you'd already set up carries over automatically.",
-      "Changed: the right theme is painted from the very first frame, so light-theme users no longer see a dark flash while the app loads.",
-      "New: a small Saved / Saving… indicator in the footer, and a clear banner if the study server stops responding — with automatic retrying — instead of an easy-to-miss pop-up.",
-      "Fixed: saves are now sent one at a time, in order, and retried if the server is briefly unreachable. Previously, rapid changes could land out of order.",
-      "Fixed: if the study server can't be reached when the app opens, the app now refuses to save anything and keeps retrying, instead of looking like a blank install and risking an overwrite of your real progress once the server returned."
-    ] },
-    { version: 'v210', date: 'October 2026', title: 'Mark domains and whole tracks as completed', items: [
-      "New: a checkmark button on each domain's card (Exam Map) marks it completed — it greys out, and Practice's automatic modes, Adaptive difficulty, and Flashcards all stop picking it on their own. \"Practice this domain\" still works anytime; this only affects what gets recommended for you.",
-      "New: a track (the whole certification) marks itself completed automatically once every one of its exams has a recorded passing result, or you can mark one manually from Settings — greyed out and tagged \"Completed\" in the track switcher and the All-tracks list, which now sorts finished tracks to the bottom.",
-      "Marking a track completed also marks every domain in it completed, so the Dashboard's \"Focus next\" and Practice's weak-area picks immediately stop pointing at material from a cert you've already passed."
-    ] },
-    { version: 'v209', date: 'October 2026', title: 'A much quieter Dashboard', items: [
-      "Changed: the Dashboard is now two sections instead of six — a status hero (readiness, accuracy, streak, one primary action) and a single \"Focus next\" panel (your weakest domain plus due/flagged counts). The full domain-by-domain breakdown, the longer recommendation list, the 14-day activity strip, and the all-tracks list are all still one click away (Exam Map, Progress, and the track switcher) — they just don't load by default anymore.",
-      "Fits on one screen without scrolling on a normal window size."
-    ] },
-    { version: 'v208', date: 'October 2026', title: 'Browse cards, case studies, a terminal sandbox, and jump-to-page shortcuts', items: [
-      "New: \"Browse cards\" (Study nav) — every concept in one sortable, filterable table: accuracy, review interval, and due date at a glance. Select any rows to drill them, reset their schedule, or suspend them out of Practice, Adaptive, Exams, and Flashcards until you unsuspend them.",
-      "New: \"Case studies\" (Practice nav) — branching help-desk tickets where each choice leads to a consequence and the next question, testing a troubleshooting chain instead of one isolated multiple-choice answer. Launches with 3 new original tickets (a ransomware response, a dead network jack, and an unstable desktop) alongside the 2 that already existed as Labs.",
-      "New: \"Terminal sandbox\" (Practice nav) — a free-form simulated shell with its own filesystem and no scripted task: ls, cd, cat, mkdir, rm, mv, cp, echo, ipconfig, ping, and more, for building raw command fluency beyond any single lab's script. Up/Down recalls command history.",
-      "New: press G then a letter to jump straight to any of 16 common pages (G D for Dashboard, G P for Practice, G L for Labs, and more) — see the Shortcuts dialog (press ?) for the full list."
-    ] },
-    { version: 'v207', date: 'September 2026', title: 'Fill in the blank', items: [
-      "New: \"Fill in the blank\" (Study nav, next to Crossword) — real Study guide paragraphs with the key terms blanked out, one domain at a time. Type the term back into its actual sentence instead of picking it from four multiple-choice options or recalling it in isolation on a flashcard.",
-      "Every blank — right or wrong — reschedules that concept the same spaced-review way a flashcard rating does, so this feeds the same due-card queue rather than starting a separate one."
-    ] },
-    { version: 'v206', date: 'September 2026', title: 'Search, review reminders, a final review sheet, and effort-vs-weight', items: [
-      "New: \"Search\" (topbar icon, next to the command palette) — one search box across the Study guide, Glossary, and Labs for whichever track is active, with a jump-straight-there button on every result.",
-      "New: \"Final review sheet\" (linked from Mistake patterns) — a one-page printable pulled entirely from your own recent performance: terms you keep confusing, your most-missed concepts with their definitions, and remaining gaps by domain.",
-      "New: \"Practice effort vs. exam weight\" (Exam Map) — shows how your answered questions are actually split across domains next to what the blueprint says each domain is worth, so a domain worth 20% of the exam can't quietly get 5% of your practice without it showing.",
-      "New: session results now show a per-domain trend — how your accuracy on each domain you just practiced moved since the last time you touched it, not just this attempt's number in isolation.",
-      "New: opt-in review reminders (Settings → Notifications) — a browser notification when spaced-review flashcards are due, checked once a day when you open or return to the app."
-    ] },
-    { version: 'v205', date: 'September 2026', title: 'Mistake patterns, keyboard accessibility, and study packets', items: [
-      "New: \"Mistake patterns\" (linked from the Readiness report) — mines your last 25 sessions' actual wrong answers for real patterns: specific answer pairs you keep confusing, and which question phrasing styles (negative wording, \"BEST fit\", etc.) trip you up most, not just which domains.",
-      "New: \"Study packet\" (linked from Study guide) — bundles one domain's guide chapter, key terms, and related labs into a single page, for printing or saving as a PDF to study somewhere this app isn't open.",
-      "Fixed: the custom dropdown and date-picker menus (used throughout Practice, Settings, and Study plan) now support real keyboard navigation — arrow keys, Home/End, and type-ahead in dropdowns; arrow-key day-by-day browsing in the date picker, plus full spoken dates instead of a bare number for screen readers."
-    ] },
-    { version: 'v204', date: 'September 2026', title: 'Under-the-hood cleanup', items: [
-      "Changed: moved every pure helper (icons, date formatting, shuffling) out of app.js into its own module — no visible change, just a safer foundation to build on. Also removed two accidental duplicate functions found along the way."
-    ] },
-    { version: 'v203', date: 'September 2026', title: 'Spaced repetition everywhere, and a real exam review screen', items: [
-      "New: \"Spaced review\" (Practice page) — a multiple-choice session built from whatever's actually due, using the exact same review schedule Flashcards already tracks. A concept you nail in a quiz now reschedules the same way a flashcard rating does, instead of two separate, disconnected systems.",
-      "New: a scratchpad during mock exams (icon-button next to fullscreen) — scratch notes that stay with you through the whole exam and are wiped when it ends, same as the real thing.",
-      "Changed: the \"submit this exam?\" screen now shows a real, clickable question grid — jump straight to anything unanswered or flagged instead of a plain answered/blank count."
-    ] },
-    { version: 'v202', date: 'September 2026', title: 'Adaptive difficulty, achievements, exam day, and pass cards', items: [
-      "New: \"Adaptive difficulty\" practice mode (Practice page) — the next question gets harder every time you're right and easier every time you're not, instead of a fixed random mix.",
-      "New: Achievements (Plan & progress) — 12 real milestones computed from your own practice, labs, streaks, and exam history, with a toast the moment one's earned.",
-      "New: \"Exam day\" — a checklist based on Pearson OnVUE's actual requirements, your exam-day readiness score, and one-tap drills into your weakest objectives, all in one place for the final stretch. Linked from the pre-exam banner and the Readiness report.",
-      "New: record your real, official exam result (once you've actually taken it) to generate a downloadable, shareable pass card with your score and date — editable or clearable later if you need to fix it."
-    ] },
-    { version: 'v201', date: 'September 2026', title: 'Fixed two Core 2 labs rejecting correct commands', items: [
-      "Fixed: \"Fix ownership and permissions on a shared Linux script\" only accepted one exact phrasing per step — it now also takes ls -l/-la without the filename, a sudo-prefixed chown (realistic, since chown normally needs it), and a plain chmod +x.",
-      "Fixed: \"Securely erase leftover data before reissuing a laptop\" rejected the dir command with a trailing backslash or quotes around the path — both now work, along with a wildcard form."
-    ] },
-    { version: 'v200', date: 'September 2026', title: 'Command reference, exam-day readiness, and labs in the study plan', items: [
-      "New: \"Command reference\" (linked from Labs) collects every command taught across the interactive labs into one searchable, printable cheat sheet, with a jump-back button to each source lab.",
-      "New: the Readiness report now has an \"Exam-day readiness\" score blending content mastery, mock exam performance, and hands-on lab completion into one read — with a callout on whichever of the three is holding it back most.",
-      "New: the Study plan's week-by-week schedule now shows a labs button on every domain row, jumping straight to that domain's hands-on labs, alongside the existing recap-quiz button."
-    ] },
-    { version: 'v199', date: 'September 2026', title: 'Exam core filter on Labs', items: [
-      "New: the Labs page has an \"Exam core\" filter next to search, so you can narrow the list to just Core 1 or just Core 2 (or both) instead of scrolling through everything."
-    ] },
-    { version: 'v198', date: 'September 2026', title: 'More Core 2 labs and a terminal help command', items: [
-      "New: 7 additional Core 2 labs — Linux/macOS terminal practice, workstation hardening, BYOD mobile security, secure data wipe, mobile app troubleshooting, and a cloud-access scenario — closing gaps in Security and Software Troubleshooting coverage.",
-      "New: terminal-style labs now have a \"Command list\" button (or just type \"help\" at the prompt) that lists every command available for that task, matching the real A+ exam's performance-based questions — including a few you won't actually need, so it's a reference, not an answer key."
-    ] },
-    { version: 'v197', date: 'September 2026', title: 'More accessibility options', items: [
-      "New: Settings → Accessibility — a dedicated home for Reading mode plus three new toggles: Reduce motion (independent of Reading mode), Colorblind-safe colors (swaps correct/incorrect from green/red to blue/amber), and High contrast (solid backgrounds, stronger text contrast).",
-      "New: incorrect quiz answers now always show an X icon, not just a color change — correct already had a checkmark.",
-      "New: a read-aloud button on quiz questions and flashcards — reads the question and every option, or the card's term/definition, out loud.",
-      "The app now also respects your system's \"reduce motion\" accessibility setting automatically, regardless of either in-app toggle."
-    ] },
-    { version: 'v196', date: 'September 2026', title: 'Highlighter colors', items: [
-      "New: choosing \"Highlight\" on any selected Study guide text now offers 4 colors (yellow, green, blue, pink) instead of one fixed color — pick whichever fits, e.g. color-coding by topic or by how confident you are in it. Shows up in both the chapter and the highlights digest."
-    ] },
-    { version: 'v195', date: 'September 2026', title: 'Reading mode, fullscreen exams, and a highlights digest', items: [
-      "New: Reading mode (Settings → Look & feel) — wider line/letter/word spacing, a plainer font, and calmer motion for the Study guide, notes, and quiz text.",
-      "New: Fullscreen exams (Settings → Learning preferences) — go fullscreen automatically when starting a mock exam, closer to real testing-center conditions; also toggleable manually from the quiz header.",
-      "New: \"View highlights\" on the Study guide pulls every highlighted snippet across every chapter into one condensed, printable digest — good for a final pass before an exam."
-    ] },
-    { version: 'v194', date: 'September 2026', title: 'Cram mode, textbook highlighting, and a focus timer', items: [
-      "New: \"Cram session\" (Practice, and a banner on the Dashboard in the last 3 days before your exam) builds one set from your flagged questions, weakest objectives, and recent misses — for the day before a real attempt, not a random practice set.",
-      "New: select any text in a Study guide chapter to highlight it, like a real textbook — click a highlight to remove it. Saved with your progress, per track.",
-      "New: a focus timer (Study guide page) — a work/break Pomodoro-style timer that keeps running in a small bar at the bottom of the screen even if you switch pages."
-    ] },
-    { version: 'v193', date: 'September 2026', title: 'PIN-lock accounts and an in-app update check', items: [
-      "New: the account switcher can now require a PIN before switching into another account — set one from \"Switch account.\"",
-      "Fixed: the \"New person's name\" field now matches the rest of the app's styling instead of a bare default text box.",
-      "New: a \"Check for updates\" button (topbar and Settings → App) reloads the app from within itself instead of needing a full close-and-reopen."
-    ] },
-    { version: 'v192', date: 'September 2026', title: 'Multiple accounts', items: [
-      "New: Settings → Your profile (and the sidebar name chip) now has \"Switch account\" — create a separate account for each person who uses this app, each with its own completely independent progress, mastery, settings, and avatar. Your existing progress is untouched and now lives under your own account."
-    ] },
-    { version: 'v191', date: 'September 2026', title: 'Missed-question review and a study activity heatmap', items: [
-      "New: \"Review misses\" on a results screen and every past session in Progress opens a read-only pass through exactly what you got wrong — grouped by objective, weakest first — without generating a fresh quiz.",
-      "New: Progress now shows a 26-week study activity heatmap, like a contribution graph, so gaps and streaks are visible at a glance instead of just the current streak count."
-    ] },
-    { version: 'v190', date: 'September 2026', title: 'Auto-backup, broader undo, and global search', items: [
-      "New: automatic daily backup — Settings → Progress backup can save to the backup folder once a day on its own, the first time you open the app (on by default, toggle it off any time).",
-      "New: \"Reset all progress\" and \"Import data\" both now offer an \"Undo\" on their confirmation toast — the two most destructive actions in the app finally have a safety net, not just a confirm dialog.",
-      "New: removing your avatar photo can now be undone too.",
-      "New: the command palette (Ctrl/Cmd+K) now searches inside term definitions, full study guide chapter text, and your own notes — not just titles — showing a snippet of the actual matching text."
-    ] },
-    { version: 'v189', date: 'September 2026', title: 'Fully custom dropdowns, font picker, and calendar', items: [
-      "Changed: every dropdown, the font picker, and every date field (Exam date, Study plan dates) now use a fully custom-built menu/calendar styled to match the app exactly, instead of the browser's own native popup — which no amount of CSS could ever fully restyle."
-    ] },
-    { version: 'v188', date: 'September 2026', title: 'Native-feeling dropdowns and a custom app icon', items: [
-      "Fixed: Start page, Read-aloud speed, and every other dropdown across the app now match its own dark/light styling instead of the browser's plain default box.",
-      "Renamed: \"Check what's really installed\" is now \"Check Installed Fonts.\"",
-      "New: Settings → App has an \"App icon\" picker — 6 icon shapes × 7 colors. Updates your browser tab icon immediately; an already-installed app needs a reinstall to pick up a new taskbar/dock icon, since that part is cached by the OS."
-    ] },
-    { version: 'v187', date: 'September 2026', title: 'Install, streak freeze, sound, focus mode, CSV export', items: [
-      "New: install Cert Study as an app (Settings → App) in browsers that support it — opens in its own window instead of a browser tab.",
-      "New: streak freeze — you start with one banked; missing a single day now uses it automatically to keep your streak alive, and you earn another every 7-day streak (up to 2 banked).",
-      "New: optional sound effects — a short tone on correct/incorrect answers in Practice (Settings → Learning preferences, off by default).",
-      "New: Focus mode hides the sidebar while a quiz or exam is in progress, for fewer distractions.",
-      "New: \"Export stats (CSV)\" on the Progress page downloads your full session history for use in a spreadsheet."
-    ] },
-    { version: 'v186', date: 'September 2026', title: 'Five more ways to make it yours', items: [
-      "New: a \"Look & feel\" settings card groups Color theme, Accent color, App font, Text size, and two new options — Corner style (Rounded/Sharp) and Density (Comfortable/Compact) — all pure visual preferences, nothing about scoring.",
-      "New: \"Start page\" in Settings → Learning preferences picks what loads when you open the app, instead of always Dashboard.",
-      "New: \"Milestone celebrations\" can be set to Confetti (default), a plain Simple toast, or Off.",
-      "New: the Dashboard's \"Tip of the day\" and \"All tracks at a glance\" panels can each be turned off from Settings → Learning preferences."
-    ] },
-    { version: 'v185', date: 'September 2026', title: 'Text size control', items: [
-      "New: Settings → Learning preferences has a \"Text size\" option (Small/Default/Large/Extra large) that scales the whole app, not just body text — buttons, cards, and layout all resize together."
-    ] },
-    { version: 'v184', date: 'September 2026', title: 'Font autocomplete that works everywhere', items: [
-      "Fixed: the app font field now suggests a real list of common Windows/Mac fonts as you type, instead of relying only on the browser's \"installed fonts\" permission — which several browsers silently refuse to grant. \"Check what's really installed\" is still there as a bonus when your browser supports it."
-    ] },
-    { version: 'v183', date: 'September 2026', title: 'Type or browse for any font', items: [
-      "Changed: the \"App font\" picker in Settings is no longer limited to 4 presets — type any font name, or (in browsers that support it) click \"Browse installed fonts\" to search everything actually installed on this computer."
-    ] },
-    { version: 'v182', date: 'September 2026', title: 'Choose your app font', items: [
-      "New: Settings → Learning preferences has an \"App font\" picker — Default, Serif, Mono, or Rounded — all system fonts, so nothing is downloaded and the app stays fully offline."
-    ] },
-    { version: 'v181', date: 'September 2026', title: 'Accent color and a personal greeting', items: [
-      "New: Settings → Learning preferences has an \"Accent color\" picker — six options that retint buttons, progress bars, and highlights across the whole app, not just the avatar.",
-      "New: the Dashboard now greets you by name (\"Welcome back, [name]\") once you've set a display name in Settings → Your profile."
-    ] },
-    { version: 'v180', date: 'September 2026', title: 'Customize your avatar', items: [
-      "New: Settings → Your profile now lets you pick an emoji + color for your avatar, or upload your own photo — auto-cropped and shrunk to a small square so it never bloats your saved progress file."
-    ] },
-    { version: 'v179', date: 'September 2026', title: 'Undo, milestones, auto theme, and your name', items: [
-      "New: deleting a note, a custom flashcard, or a track from your study plan now shows an \"Undo\" button on the confirmation toast instead of being instantly permanent.",
-      "New: a small celebration (plus confetti, unless you have reduced motion set) the first time you cross a real milestone — streaks, total questions answered, or percent of a track mastered.",
-      "New: color theme now has a third option, \"Auto,\" which follows your system's light/dark setting and updates live if it changes.",
-      "New: set your display name in Settings → Your profile. Shows in the sidebar (replacing the default \"Future technician\") and on the printed Readiness Report."
-    ] },
-    { version: 'v178', date: 'September 2026', title: 'Study guide remembers where you were reading', items: [
-      "New: the Study guide now tracks which chapter you were reading (by scroll position, not just for read-aloud) and shows a \"Continue reading\" banner with a jump-there button next time you come back — the reading equivalent of what read-aloud's resume already does.",
-      "Fixed: jumping to a chapter from the command palette's search results silently failed to scroll there at all — found while building the jump-there button above, since it turned out to share the same underlying bug."
-    ] },
-    { version: 'v177', date: 'September 2026', title: 'Export your study plan to a calendar', items: [
-      "New: \"Export to calendar\" on the Study plan page downloads a .ics file with every domain block, review phase, and exam target date from your plan — import it into Google Calendar, Outlook, or Apple Calendar to see it alongside your real schedule instead of only inside the app."
-    ] },
-    { version: 'v176', date: 'September 2026', title: 'Custom flashcards and a compact print mode', items: [
-      "New: add your own flashcard — term, domain, definition, and an optional scenario — from the Glossary, Flashcards page, or command palette. It reviews alongside the built-in deck with the same spaced repetition, shows up in the Glossary tagged \"Custom,\" and exports to Anki too. Not used in quizzes or exams, since there's no reliable way to auto-generate wrong-answer choices for it.",
-      "New: a \"Compact for print\" toggle on the Glossary strips scenarios and diagrams for a denser, term-and-definition-only cheat sheet — filter to one domain first for a focused pre-exam skim."
-    ] },
-    { version: 'v175', date: 'September 2026', title: 'Exam comparison, daily session picker, tip of the day, mastery refresh', items: [
-      "New: \"Compare mock exams\" on Progress lets you pick two past attempts and see a domain-by-domain diff — where the score actually moved, not just the overall number.",
-      "The dashboard's main button is now \"Start today's session\" — it picks due flashcards, your Planner's block for today, or your weakest domain automatically instead of making you choose.",
-      "A daily tip pulled from a random concept now shows on the dashboard for some light passive variety.",
-      "New \"Needs a refresher\" panel on the Readiness report: concepts you mastered a while ago but haven't seen in 30+ days — quiz mastery doesn't decay on its own the way flashcard scheduling does, so this catches quiet knowledge fade."
-    ] },
-    { version: 'v174', date: 'September 2026', title: 'Resume read-aloud, quick speed control, spacebar', items: [
-      "Pausing or stopping a Study guide chapter now remembers exactly where you left off — the chapter's button switches to \"Resume\" and picks back up from that paragraph instead of starting over.",
-      "A playback-speed button is now right on the floating now-reading bar, so changing speed mid-chapter doesn't require a trip to Settings.",
-      "Spacebar now pauses/resumes read-aloud, same as it already does for flashcards."
-    ] },
-    { version: 'v173', date: 'September 2026', title: 'Read-along highlighting moved onto the page', items: [
-      "The word-highlighting from last version moved out of the floating overlay and onto the actual chapter text — the paragraph being read now highlights right on the page as it's spoken, so you can follow along, pause, and see exactly where to pick back up without a separate caption box. The floating bar is back to just chapter/section/progress and controls."
-    ] },
-    { version: 'v172', date: 'September 2026', title: 'Word-by-word highlighting in the read-aloud overlay', items: [
-      "The now-reading overlay added last time now shows a caption of the current line, with the exact word being spoken highlighted live — karaoke-style — so you can follow along visually as well as by ear. Falls back to plain (unhighlighted) text if your voice doesn't report word timing."
-    ] },
-    { version: 'v171', date: 'September 2026', title: 'Now-reading overlay for read-aloud', items: [
-      "A small floating bar now shows while a Study guide chapter is being read aloud — which chapter, which section, and a progress bar for the chapter, plus quick pause/stop controls. Stays visible no matter where you've scrolled, including across the automatic hand-off to the next chapter."
-    ] },
-    { version: 'v170', date: 'September 2026', title: 'Listen to Study guide chapters', items: [
-      "New: a \"Listen\" button on every Study guide chapter reads it aloud using your browser's built-in text-to-speech — no download needed. Finishing a chapter automatically moves on to the next one, so a whole track can play hands-free.",
-      "Read-aloud speed (0.75×–1.5×) is set once in Settings and applies everywhere you use it."
-    ] },
-    { version: 'v169', date: 'September 2026', title: 'Backup reminders and one-click folder backup', items: [
-      "A quiet banner now shows up on the dashboard if it's been 2+ weeks since your last backup (or you've never made one) — this app's only copy of your progress lives on this machine, with nothing tracking changes to it.",
-      "New: \"Save to backup folder\" writes a full backup straight to a backup/ folder next to the app — no download-folder hunting — named with the date and the exact app version that made it. Available from the reminder banner or Settings."
-    ] },
-    { version: 'v168', date: 'September 2026', title: 'Version number opens the changelog', items: [
-      "Clicking the version pill in the footer now opens the What's new panel with the full release history, instead of being purely decorative."
-    ] },
-    { version: 'v167', date: 'September 2026', title: 'Confidence tagging on quiz answers', items: [
-      "After a correct answer in Practice, a quick optional prompt asks whether you actually knew it or guessed — mastery already counts a right answer as a right answer, but this catches the specific case of a domain looking solid on accuracy alone while some of those wins were lucky. Concepts tagged as guessed-right show up in a new \"Correct, but not confident\" section on the readiness report."
-    ] },
-    { version: 'v166', date: 'September 2026', title: 'Export flashcards to Anki', items: [
-      "New: export any set of flashcards (filtered by core/domain, same as the review-deck builder) as a plain-text file Anki's own Import File dialog reads directly — term on the front, definition plus the applied scenario on the back, tagged by track and domain. No new dependencies added; this uses Anki's documented plain-text import format rather than building a real .apkg. Reachable from the Flashcards page or the command palette."
-    ] },
-    { version: 'v165', date: 'September 2026', title: 'A printable readiness report', items: [
-      "New: a one-page readiness report — overall score, first-try accuracy, streak, minutes practiced, exam countdown with a pace projection, every domain's mastery against its exam weight, and the objectives most worth focusing on next. Reachable from Progress, or via the command palette (\"Readiness report\"), and printable/savable with one click."
-    ] },
-    { version: 'v164', date: 'September 2026', title: 'Sidebar sections stay open', items: [
-      "The Study / Practice / Plan & progress sidebar sections used to act like an accordion — opening one closed whichever you had open before, and navigating to a page (even just starting Quick 10) would silently collapse a section you'd opened yourself. Each section is now independent: opening one leaves the others alone, and moving around the app only ever adds sections, never closes one you opened."
-    ] },
-    { version: 'v163', date: 'September 2026', title: 'Collapsible, decluttered Exam Map', items: [
-      "Each domain on the Exam Map now collapses to just its name, weight, and mastery bar — click to expand the objective breakdown, so the page reads as a scannable list first instead of showing every objective, topic tag, and drill button for all domains at once.",
-      "Each objective row is now a single compact line (title, %, progress bar, topics) with a small icon button to drill it, replacing the old stacked title/topic-chips/full-width-button layout that made the expanded view feel busy.",
-      "A domain with concepts still due for practice shows a quick practice button right on its collapsed header, so going in to answer questions doesn't require expanding the card first."
-    ] },
-    { version: 'v162', date: 'September 2026', title: 'Clearer book icon', items: [
-      'Checked every other sidebar icon for the same small-size legibility problem the logo and crossword icon had. Most held up fine, but the book icon (Glossary, reference-term cards, "Open the glossary" buttons) read as a chat bubble at its actual render size — replaced with an open-book (two-page) shape that reads clearly at every size.'
-    ] },
-    { version: 'v161', date: 'September 2026', title: 'Clearer crossword icon', items: [
-      'The crossword icon (sidebar nav and the crossword hub cards) was a busy 3x3 grid that turned into an illegible dark smudge at the small size it actually renders at — simplified to a bold 2x2 checkerboard pattern that reads clearly at every size it\'s used.'
-    ] },
-    { version: 'v160', date: 'September 2026', title: 'A more fitting logo', items: [
-      'Replaced the sidebar\'s open-book brand mark with a graduation cap — the book icon stays in place everywhere else (Glossary, reference-term cards) since it fits those better.'
-    ] },
-    { version: 'v159', date: 'September 2026', title: 'Crossword answer-color contrast fix', items: [
-      "Fixed the crossword's correct/incorrect cell coloring, which was still hard to read in light theme at the puzzle's smaller cell sizes — missed by an earlier pass because of a gap in how that check measured certain CSS colors."
-    ] },
-    { version: 'v158', date: 'September 2026', title: 'More specific release notes', items: [
-      "The previous release's notes below now call out each individual fix instead of grouping them into one or two lines."
-    ] },
-    { version: 'v157', date: 'September 2026', title: "Full history in What's new", items: [
-      "This panel now covers the app's whole history, all the way back to the first tracks, instead of starting a few weeks in."
-    ] },
-    { version: 'v156', date: 'September 2026', title: 'Light theme accessibility fixes', items: [
-      'Every primary button and quiz answer badge (the A/B/C/D letters, correct/incorrect) was using text colors tuned only for dark theme, making them hard to read in light mode. Fixed app-wide.',
-      "The terminal lab's command prompt and the Exam Map's per-domain colored percentages had the same problem — fixed both, along with the small caption/label color used throughout the app.",
-      "Fixed the crossword's clue-number label staying a fixed dim color instead of matching whether that cell is right, wrong, or untouched.",
-      'Fixed a Settings page layout bug where the exam-date field crowded out its own label.'
-    ] },
-    { version: 'v147', date: 'September 2026', title: 'AZ-802 domain weights corrected', items: [
-      "The 7 AZ-802 domain weights now sum to 100% (they previously summed to 106%), re-derived from Microsoft's official published skills-measured ranges. Readiness and mock-exam question counts for that track are more accurate as a result."
-    ] },
-    { version: 'v146', date: 'September 2026', title: 'Collapsible navigation', items: [
-      'The sidebar sections (Study, Practice, Plan & progress) now collapse and expand — click a heading to open it. The section for the page you\'re on stays open, and your choices are remembered.'
-    ] },
-    { version: 'v145', date: 'September 2026', title: 'Grouped navigation', items: [
-      'The sidebar is now organised into Study, Practice, and Plan & progress sections so related tools sit together.'
-    ] },
-    { version: 'v144', date: 'September 2026', title: 'Study tools & polish', items: [
-      'Reopenable answer sheets — every mock exam and practice set keeps a full per-question review you can revisit from Progress, filter to just what you missed, and flag or annotate.',
-      'Per-objective mastery on the Exam Map, each objective group with its own drill button.',
-      'A readiness trend chart on Progress with a projected exam-ready date, plus an optional exam date.',
-      'A command palette — press Ctrl / ⌘ + K (or /) to jump to any page, track, term, lab, or action.',
-      'Personal notes — attach your own explanation to any concept, collected on the new My notes page.',
-      'A first-run walkthrough with an optional diagnostic, a keyboard-shortcuts sheet (press ?), and this changelog.'
-    ] },
-    { version: 'v143', date: 'September 2026', title: 'Offline reliability, print & a content fix', items: [
-      'The offline cache now actually works — reloading the app with no network connection loads it correctly instead of silently failing to update.',
-      "Printing now forces a readable light layout even when you're using dark theme.",
-      'Found and corrected a domain-weight bug on the AZ-802 track that was inflating its readiness score and overshooting mock-exam question counts.'
-    ] },
-    { version: 'v140', date: 'September 2026', title: 'Accessibility pass', items: [
-      "Fixed a keyboard trap in the crossword puzzle, added proper focus handling to every dialog (including returning focus to where you were when you close one), and gave the flashcard flip control a visible focus ring plus full keyboard support.",
-      'Added screen-reader announcements for quiz results, lab feedback, and other actions that previously only showed as a color change.'
-    ] },
-    { version: 'v137', date: 'September 2026', title: 'Full content verification', items: [
-      'Verified flashcards, mock exams, every lab type, the Exam Map, and the Glossary across all tracks — fixed a handful of layout bugs found along the way, including an overflowing flashcard and a hidden domain-accuracy value on the Dashboard.'
-    ] },
-    { version: 'Sep 9, 2026', date: 'September 2026', title: 'Diagram accuracy pass', items: [
-      'Reviewed every diagram in the app (1,000+, across every track) for real-world accuracy, layout, and text or shape collisions — redesigned the ones that had crowded or overlapping elements and built new checks to catch that class of issue going forward.'
-    ] },
-    { version: 'Sep 4, 2026', date: 'September 2026', title: 'Study guide, smarter dashboard, and a major light-theme fix', items: [
-      'Added a Study Guide — plain-language chapters on the why behind each domain, not just quiz-style facts — across every certification track, linked directly into practice, flashcards, and labs from each chapter.',
-      'Added print/export support, an all-tracks-at-a-glance section on the Dashboard, and a Study Plan that can add or remove any track with its own target date.',
-      "Fixed a significant light-theme readability issue affecting most diagrams in the app — colored text on its own tinted background, the most common diagram style used, was hard to read in light mode."
-    ] },
-    { version: 'Sep 3, 2026', date: 'September 2026', title: 'Windows Server & Azure SQL tracks added', items: [
-      'Added two new certification tracks — Windows Server Administrator (AZ-802) and Azure Database Administrator (DP-300) — each with full diagram and hands-on lab coverage.',
-      "AZ-802 was built directly from Microsoft's official skills-measured outline after AZ-800/AZ-801 were retired."
-    ] },
-    { version: 'Sep 2, 2026', date: 'September 2026', title: 'Illustrated concepts', items: [
-      'Every concept across CompTIA A+, Network+, Security+, and both 3CX tracks got its own diagram, and a version indicator was added to the footer.'
-    ] },
-    { version: 'Aug 2026', date: 'August 2026', title: 'Core study system', items: [
-      'Quizzes, flashcards, hands-on labs, and a study planner across CompTIA A+, Network+, Security+, and 3CX.',
-      'A searchable glossary, a type-your-own-answer flashcard mode, a weak-area targeting hub, and branching scenario-style labs.'
-    ] }
-  ];
+  const APP_VERSION = 'v216';
   const DIAGNOSTIC_LEN = 15;
   let certDialogGroup = null;
   let certDialogEntryDomain = null; // domain ('certs'|'programs') the bottom "Current track" switcher is scoped to
@@ -1560,14 +1245,6 @@ import {
   // than hand-tune every domain color in every track's data file, darken it at render time —
   // only as much as needed, and only when the color as-authored doesn't already clear the
   // bar (dark theme's bright colors pass through unchanged; nothing here changes there).
-  function relLuminance([r, g, b]) {
-    const f = c => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
-    return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
-  }
-  function contrastRatio(rgb1, rgb2) {
-    const l1 = relLuminance(rgb1), l2 = relLuminance(rgb2);
-    return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
-  }
   function domainAccentColor(domain, targetRatio = 3.3) {
     const hex = domain.color;
     const rgb = hex.replace('#', '').match(/.{2}/g).map(h => parseInt(h, 16));
@@ -2049,32 +1726,6 @@ import {
     renderRoute();
   }
 
-  // Reuses the exact primary/soft pairs styles.css already defines for --blue/--violet/--green/
-  // --amber/--red — those were individually contrast-tuned against both themes' surfaces during
-  // the project's big light-theme accessibility pass, so borrowing them here for --primary (used
-  // in the same "colored text/icon on its own soft background" pattern in ~60 places across the
-  // app) is already known-safe, rather than needing that whole calibration exercise redone for a
-  // fresh set of colors just for this picker.
-  const ACCENT_THEMES = [
-    { id: 'teal', label: 'Teal', dark: { primary: '#2dd4bf', soft: 'rgba(45,212,191,.12)' }, light: { primary: '#0b7267', soft: 'rgba(15,159,144,.1)' } },
-    { id: 'blue', label: 'Blue', dark: { primary: '#38bdf8', soft: 'rgba(56,189,248,.12)' }, light: { primary: '#026ba1', soft: 'rgba(2,132,199,.09)' } },
-    { id: 'violet', label: 'Violet', dark: { primary: '#a78bfa', soft: 'rgba(167,139,250,.12)' }, light: { primary: '#7c3aed', soft: 'rgba(124,58,237,.1)' } },
-    { id: 'green', label: 'Green', dark: { primary: '#4ade80', soft: 'rgba(74,222,128,.12)' }, light: { primary: '#107535', soft: 'rgba(22,163,74,.1)' } },
-    { id: 'amber', label: 'Amber', dark: { primary: '#fbbf24', soft: 'rgba(251,191,36,.12)' }, light: { primary: '#9b5505', soft: 'rgba(217,119,6,.1)' } },
-    { id: 'rose', label: 'Rose', dark: { primary: '#fb7185', soft: 'rgba(251,113,133,.12)' }, light: { primary: '#c71940', soft: 'rgba(225,29,72,.08)' } }
-  ];
-
-  // Surface palettes — they restyle backgrounds, borders, and text only; the status colors
-  // (green/red/amber/blue) are shared across all of them so correct/incorrect always read the
-  // same. The actual variable values live in styles.css under :root[data-preset="…"]; `surface`
-  // here is just the main card color, which custom accents are contrast-checked against.
-  const THEME_PRESETS = [
-    { id: 'default', label: 'Classic', blurb: 'The original', swatch: { dark: ['#080d17', '#101827'], light: ['#f3f6f9', '#ffffff'] }, surface: { dark: [16, 24, 39], light: [255, 255, 255] } },
-    { id: 'slate', label: 'Slate', blurb: 'Cool grays', swatch: { dark: ['#0f1115', '#181b21'], light: ['#f2f3f5', '#ffffff'] }, surface: { dark: [24, 27, 33], light: [255, 255, 255] } },
-    { id: 'ink', label: 'Ink', blurb: 'True black', swatch: { dark: ['#000000', '#0c0c0e'], light: ['#fafafa', '#ffffff'] }, surface: { dark: [12, 12, 14], light: [255, 255, 255] } },
-    { id: 'sand', label: 'Sand', blurb: 'Warm paper', swatch: { dark: ['#14110d', '#1c1812'], light: ['#f5f1ea', '#fffdf9'] }, surface: { dark: [28, 24, 18], light: [255, 253, 249] } }
-  ];
-  const presetById = id => THEME_PRESETS.find(p => p.id === id) || THEME_PRESETS[0];
 
   function applyThemePreset() {
     const preset = presetById(state.settings.themePreset).id;
@@ -2082,55 +1733,11 @@ import {
     else document.documentElement.dataset.preset = preset;
   }
 
-  // A track's default accent when "different accent per track" is on and nothing's been picked for
-  // it yet — same vendor, same family, so related tracks read as related at a glance.
-  const TRACK_DEFAULT_ACCENTS = { aplus: 'teal', netplus: 'blue', secplus: 'rose', '3cx-basic': 'amber', '3cx-advanced': 'amber', 'winserver-hybrid': 'green', dp300: 'violet', 'blender-fundamentals': 'amber' };
 
   // An accent is either a preset id ('teal') or a custom '#rrggbb' string — one field holds both.
   function currentAccentValue() {
     if (metaState.perTrackAccent) return (metaState.trackAccents && metaState.trackAccents[activeCertId]) || TRACK_DEFAULT_ACCENTS[activeCertId] || state.settings.accentColor;
     return state.settings.accentColor;
-  }
-
-  const isHexColor = value => typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value);
-  const hexToRgb = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
-  const rgbToHex = ([r, g, b]) => `#${[r, g, b].map(v => Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2, '0')).join('')}`;
-  function rgbToHsl([r, g, b]) {
-    r /= 255; g /= 255; b /= 255;
-    const max = Math.max(r, g, b), min = Math.min(r, g, b); let h = 0, s = 0; const l = (max + min) / 2;
-    if (max !== min) {
-      const d = max - min; s = l > .5 ? d / (2 - max - min) : d / (max + min);
-      h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6;
-    }
-    return [h, s, l];
-  }
-  function hslToRgb([h, s, l]) {
-    if (s === 0) return [l * 255, l * 255, l * 255];
-    const hue = (p, q, t) => { t = (t + 1) % 1; if (t < 1 / 6) return p + (q - p) * 6 * t; if (t < 1 / 2) return q; if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6; return p; };
-    const q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
-    return [hue(p, q, h + 1 / 3) * 255, hue(p, q, h) * 255, hue(p, q, h - 1 / 3) * 255];
-  }
-
-  // A picked color is nudged only as far as needed to stay readable on the theme's own surface
-  // (lightened on dark, darkened on light) — the same "adjust at render time, don't hand-tune"
-  // approach domainAccentColor already takes for the per-domain colors.
-  function accentVarsFor(value, theme, themePreset = 'default') {
-    if (!isHexColor(value)) {
-      const preset = ACCENT_THEMES.find(a => a.id === value);
-      if (!preset || preset.id === 'teal') return null;
-      const { primary, soft } = preset[theme] || preset.dark;
-      return { primary, soft, strong: `color-mix(in srgb, ${primary} 82%, black)`, onPrimary: null };
-    }
-    const bg = presetById(themePreset).surface[theme === 'light' ? 'light' : 'dark'];
-    let [h, s, l] = rgbToHsl(hexToRgb(value));
-    let rgb = hexToRgb(value);
-    for (let i = 0; i < 40 && contrastRatio(rgb, bg) < 4.5; i++) {
-      l = Math.max(0.04, Math.min(0.96, l + (theme === 'light' ? -0.02 : 0.02)));
-      rgb = hslToRgb([h, s, l]);
-    }
-    const primary = rgbToHex(rgb);
-    const lightText = contrastRatio(rgb, [255, 255, 255]), darkText = contrastRatio(rgb, [4, 32, 28]);
-    return { primary, soft: `rgba(${rgb.map(Math.round).join(',')},${theme === 'light' ? .1 : .12})`, strong: `color-mix(in srgb, ${primary} 82%, black)`, onPrimary: lightText >= darkText ? '#ffffff' : '#04201c' };
   }
 
   // 'teal' is the app's own built-in default — clearing the inline overrides entirely (rather
@@ -2156,30 +1763,6 @@ import {
   // RGB entry, and an eyedropper where the browser offers one. It previews live while you drag and
   // only saves when you finish: Done, a click elsewhere, or Enter in the hex box keeps the color;
   // Cancel or Escape puts everything back.
-  const clamp01 = n => Math.max(0, Math.min(1, n));
-  function rgbToHsv([r, g, b]) {
-    r /= 255; g /= 255; b /= 255;
-    const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min; let h = 0;
-    if (d) { h = max === r ? ((g - b) / d) % 6 : max === g ? (b - r) / d + 2 : (r - g) / d + 4; h *= 60; if (h < 0) h += 360; }
-    return [h, max ? d / max : 0, max];
-  }
-  function hsvToRgb([h, s, v]) {
-    const c = v * s, x = c * (1 - Math.abs(((h / 60) % 2) - 1)), m = v - c;
-    const [r, g, b] = h < 60 ? [c, x, 0] : h < 120 ? [x, c, 0] : h < 180 ? [0, c, x] : h < 240 ? [0, x, c] : h < 300 ? [x, 0, c] : [c, 0, x];
-    return [(r + m) * 255, (g + m) * 255, (b + m) * 255];
-  }
-  // '#abc', 'abc', '#aabbcc' → '#aabbcc' (lowercase), or null when it is not a color.
-  function normalizeHex(raw) {
-    const text = String(raw || '').trim().replace(/^#/, '').toLowerCase();
-    if (/^[0-9a-f]{3}$/.test(text)) return `#${text[0]}${text[0]}${text[1]}${text[1]}${text[2]}${text[2]}`;
-    return /^[0-9a-f]{6}$/.test(text) ? `#${text}` : null;
-  }
-  // White or near-black, whichever reads better on the given color (avatar initials, etc.).
-  function readableTextOn(hex) {
-    const rgb = hexToRgb(hex);
-    return contrastRatio(rgb, [255, 255, 255]) >= contrastRatio(rgb, [11, 18, 32]) ? '#ffffff' : '#0b1220';
-  }
-
   // The hex value a built-in theme token (--amber etc.) currently resolves to, as a starting point
   // when someone first customizes a slot.
   function tokenHex(name) {
@@ -2259,7 +1842,9 @@ import {
     q('.cp-old').style.background = original;
 
     const currentHex = () => rgbToHex(hsvToRgb([h, s, v]));
-    // `skip` is the field being typed in, so its text is not rewritten under the cursor.
+    // `skip` is the field being typed in, so its text is not rewritten under the cursor. Nothing is
+    // previewed until the first real change, so merely opening the picker never alters the page.
+    let interacted = false;
     const paint = skip => {
       const rgb = hsvToRgb([h, s, v]).map(Math.round); const hex = rgbToHex(rgb);
       pop.style.setProperty('--cp-hue', String(Math.round(h)));
@@ -2272,7 +1857,7 @@ import {
       if (skip !== rgbInputs.r) rgbInputs.r.value = rgb[0];
       if (skip !== rgbInputs.g) rgbInputs.g.value = rgb[1];
       if (skip !== rgbInputs.b) rgbInputs.b.value = rgb[2];
-      live(hex);
+      if (interacted) live(hex);
     };
     // Gray and black have no meaningful hue — keep the one already chosen so the slider does not jump.
     const setFromRgb = (rgb, skip) => { const [nh, ns, nv] = rgbToHsv(rgb); s = ns; v = nv; if (ns > 0 && nv > 0) h = nh; paint(skip); };
@@ -2330,6 +1915,7 @@ import {
     openCustomPopover = closer;
     colorPickerTrigger = trigger;
     paint();
+    interacted = true;
     sv.focus({ preventScroll: true });
     pop.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
@@ -5779,21 +5365,6 @@ import {
     return isHexColor(value) ? value.toLowerCase() : null;
   }
   function highlightColorValue(slot) { return highlightCustomHex(slot) || `var(--${slot})`; }
-  // A custom color is drawn as a translucent wash over the text, so a very dark or very strong
-  // color could swallow the words. Pick the strongest wash (up to 40%) that keeps body text at
-  // 4.5:1 — worked out separately for dark and light, against the darkest/lightest surfaces the
-  // style presets use. Light is also what printing uses, so paper stays readable too.
-  const HIGHLIGHT_CONTRAST_CASES = {
-    dark: [{ surface: [12, 12, 14], text: [232, 238, 247] }, { surface: [30, 34, 44], text: [232, 238, 247] }],
-    light: [{ surface: [255, 255, 255], text: [20, 32, 50] }, { surface: [245, 241, 234], text: [42, 36, 27] }]
-  };
-  function highlightMixFor(hex, theme) {
-    const rgb = hexToRgb(hex); const cases = HIGHLIGHT_CONTRAST_CASES[theme];
-    const passes = mix => cases.every(c => contrastRatio(c.text, c.surface.map((v, i) => v * (1 - mix / 100) + rgb[i] * (mix / 100))) >= 4.5);
-    let mix = 40;
-    while (mix > 6 && !(passes(mix) && passes(Math.min(mix + 20, 60)))) mix -= 2;
-    return mix;
-  }
   function highlightCustomVars(hex) {
     const d = highlightMixFor(hex, 'dark'), l = highlightMixFor(hex, 'light');
     return `--hl-color:${hex};--hl-mix-d:${d}%;--hl-mix-hover-d:${Math.min(d + 20, 60)}%;--hl-mix-l:${l}%;--hl-mix-hover-l:${Math.min(l + 20, 60)}%`;
@@ -5801,16 +5372,6 @@ import {
   function highlightStyleVars(slot) {
     const hex = highlightCustomHex(slot);
     return hex ? highlightCustomVars(hex) : `--hl-color:var(--${guideHighlightColor(slot)})`;
-  }
-  // A plain-language name for a color, for screen readers and tooltips ("dark teal", "light pink").
-  function colorNameFor(hex) {
-    const [hue, sat, light] = rgbToHsl(hexToRgb(hex)); const deg = hue * 360;
-    if (light < 0.1) return 'black';
-    if (light > 0.93) return 'white';
-    if (sat < 0.12) return light < 0.35 ? 'dark gray' : light > 0.7 ? 'light gray' : 'gray';
-    let base = deg < 15 || deg >= 345 ? 'red' : deg < 40 ? 'orange' : deg < 65 ? 'yellow' : deg < 160 ? 'green' : deg < 195 ? 'teal' : deg < 255 ? 'blue' : deg < 290 ? 'purple' : 'pink';
-    if (base === 'orange' && light < 0.4) base = 'brown';
-    return `${light < 0.3 && base !== 'brown' ? 'dark ' : light > 0.78 ? 'light ' : ''}${base}`;
   }
   function highlightSlotName(slot) { const hex = highlightCustomHex(slot); return hex ? colorNameFor(hex) : HIGHLIGHT_DEFAULT_NAMES[slot]; }
   // Keeps the floating Highlight popover's four swatches in step with the palette. Numbers, not
