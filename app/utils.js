@@ -30,6 +30,7 @@ export const iconPaths = {
   arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>', flag: '<path d="M5 22V4M5 4h11l-2 4 2 4H5"/>',
   x: '<path d="m6 6 12 12M18 6 6 18"/>', download: '<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>',
   upload: '<path d="M12 16V4M7 9l5-5 5 5M5 21h14"/>', trash: '<path d="M4 7h16M9 7V4h6v3M7 7l1 14h8l1-14M10 11v6M14 11v6"/>',
+  eyedropper: '<path d="m2 22 1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/>',
   external: '<path d="M14 3h7v7M21 3l-9 9M18 13v7H4V6h7"/>', info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/>',
   rotate: '<path d="M20 11a8 8 0 1 0-2 6M20 5v6h-6"/>', bolt: '<path d="m13 2-9 12h7l-1 8 9-12h-7l1-8Z"/>',
   filter: '<path d="M4 5h16M7 12h10M10 19h4"/>', spark: '<path d="m12 3 1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3ZM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16Z"/>',

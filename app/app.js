@@ -3,7 +3,7 @@ import {
   letters, iconPaths, icon, hydrateIcons, escapeHtml, pct, localDateKey, todayKey, addDays,
   daysBetween, formatDate, formatDateKey, formatPlanDate, formatDuration, hashNumber,
   seededShuffle, recallMatchHint
-} from './utils.js?v=3';
+} from './utils.js?v=4';
 
 (function () {
   'use strict';
@@ -39,12 +39,19 @@ import {
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v213';
+  const APP_VERSION = 'v214';
   // Shown in the "What's new" panel (Settings, command palette, or automatically once per
   // release). Newest first; keep entries short and user-facing. Entries before v133 predate
   // this app having per-build version numbers at all, so their "version" is the date instead —
   // still real history, just not tagged with a build number the way later entries are.
   const CHANGELOG = [
+    { version: 'v214', date: 'October 2026', title: 'A color picker that matches the app', items: [
+      "New: choosing a custom color now opens the app's own picker — a saturation and brightness field, a hue slider, hex and RGB boxes, and an eyedropper — instead of the browser's plain system popup. It follows your theme, style, and corner settings.",
+      "New: the app icon color and your avatar color now have the same \"pick any color\" option as the accent, next to their quick swatches.",
+      "Changed: the picker previews as you drag and only saves when you press Done, hit Enter, or click away; Cancel or Escape puts everything back.",
+      "Changed: your avatar's initials switch between white and dark automatically so they stay readable on whatever color you pick.",
+      "Fixed: choosing an avatar or app icon color no longer jumps the Settings page back to the top."
+    ] },
     { version: 'v213', date: 'October 2026', title: 'Print-ready pages and a round of polish', items: [
       "New: everything you print or save as a PDF now gets a clean header (app, track, page, who it's for, and the date), a running title, and \"Page X of Y\" on every sheet. Save as PDF suggests a descriptive file name too.",
       "Changed: the Glossary prints definitions and scenarios by default — about 40 pages for a full track instead of roughly 250 — with a \"When printing\" choice for the full version with diagrams or a terse three-column cheat sheet.",
@@ -410,9 +417,11 @@ import {
   // completely unchanged, since the enhancement just drives the same element and re-dispatches
   // a real `change` event on it.
   let openCustomPopover = null;
-  function closeAnyCustomPopover() { if (openCustomPopover) { openCustomPopover(); openCustomPopover = null; } }
-  document.addEventListener('click', event => { if (openCustomPopover && !event.target.closest('.xselect, .xdate')) closeAnyCustomPopover(); });
-  document.addEventListener('keydown', event => { if (event.key === 'Escape') closeAnyCustomPopover(); });
+  // A closer is told how it was dismissed ('cancel' for Escape, undefined for a click elsewhere);
+  // only the color picker cares — every other popover just closes.
+  function closeAnyCustomPopover(how) { if (openCustomPopover) { const close = openCustomPopover; openCustomPopover = null; close(how); } }
+  document.addEventListener('click', event => { if (openCustomPopover && !event.target.closest('.xselect, .xdate, .cp-pop, .swatch-custom')) closeAnyCustomPopover(); });
+  document.addEventListener('keydown', event => { if (event.key === 'Escape') closeAnyCustomPopover('cancel'); });
 
   function hideNativeControl(el) {
     el.classList.add('visually-hidden');
@@ -2121,9 +2130,9 @@ import {
   // 'teal' is the app's own built-in default — clearing the inline overrides entirely (rather
   // than re-setting them to teal's own values) lets styles.css's already-curated --primary-strong
   // keep driving progress-bar/chart gradients untouched.
-  function applyAccentColor() {
+  function applyAccentColor(value = currentAccentValue()) {
     const root = document.documentElement.style;
-    const vars = accentVarsFor(currentAccentValue(), state.settings.theme, state.settings.themePreset);
+    const vars = accentVarsFor(value, state.settings.theme, state.settings.themePreset);
     if (!vars) {
       ['--primary', '--primary-soft', '--primary-strong', '--on-primary'].forEach(name => root.removeProperty(name));
       return;
@@ -2132,6 +2141,175 @@ import {
     root.setProperty('--primary-soft', vars.soft);
     root.setProperty('--primary-strong', vars.strong);
     if (vars.onPrimary) root.setProperty('--on-primary', vars.onPrimary); else root.removeProperty('--on-primary');
+  }
+
+  // ---------- Color picker ----------
+  // The browser's own <input type="color"> popup can't be themed at all (it is OS chrome), so every
+  // place that lets you choose a color opens this one instead — built from the app's own tokens,
+  // with the same pieces as the native one: a saturation/brightness field, a hue slider, hex and
+  // RGB entry, and an eyedropper where the browser offers one. It previews live while you drag and
+  // only saves when you finish: Done, a click elsewhere, or Enter in the hex box keeps the color;
+  // Cancel or Escape puts everything back.
+  const clamp01 = n => Math.max(0, Math.min(1, n));
+  function rgbToHsv([r, g, b]) {
+    r /= 255; g /= 255; b /= 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min; let h = 0;
+    if (d) { h = max === r ? ((g - b) / d) % 6 : max === g ? (b - r) / d + 2 : (r - g) / d + 4; h *= 60; if (h < 0) h += 360; }
+    return [h, max ? d / max : 0, max];
+  }
+  function hsvToRgb([h, s, v]) {
+    const c = v * s, x = c * (1 - Math.abs(((h / 60) % 2) - 1)), m = v - c;
+    const [r, g, b] = h < 60 ? [c, x, 0] : h < 120 ? [x, c, 0] : h < 180 ? [0, c, x] : h < 240 ? [0, x, c] : h < 300 ? [x, 0, c] : [c, 0, x];
+    return [(r + m) * 255, (g + m) * 255, (b + m) * 255];
+  }
+  // '#abc', 'abc', '#aabbcc' → '#aabbcc' (lowercase), or null when it is not a color.
+  function normalizeHex(raw) {
+    const text = String(raw || '').trim().replace(/^#/, '').toLowerCase();
+    if (/^[0-9a-f]{3}$/.test(text)) return `#${text[0]}${text[0]}${text[1]}${text[1]}${text[2]}${text[2]}`;
+    return /^[0-9a-f]{6}$/.test(text) ? `#${text}` : null;
+  }
+  // White or near-black, whichever reads better on the given color (avatar initials, etc.).
+  function readableTextOn(hex) {
+    const rgb = hexToRgb(hex);
+    return contrastRatio(rgb, [255, 255, 255]) >= contrastRatio(rgb, [11, 18, 32]) ? '#ffffff' : '#0b1220';
+  }
+
+  let colorPickerTrigger = null;
+  function toggleColorPicker(trigger) {
+    if (colorPickerTrigger === trigger) { closeAnyCustomPopover(); return; }
+    closeAnyCustomPopover();
+    const kind = trigger.dataset.picker;
+    const theme = state.settings.theme === 'light' ? 'light' : 'dark';
+    const accentPreset = ACCENT_THEMES.find(a => a.id === currentAccentValue());
+    const config = {
+      accent: {
+        label: 'Accent color',
+        start: isHexColor(currentAccentValue()) ? currentAccentValue() : (accentPreset || ACCENT_THEMES[0])[theme].primary,
+        live: hex => { applyAccentColor(hex); const field = document.getElementById('setting-accent-hex'); if (field) field.value = hex; },
+        cancel: () => applyAccentColor(),
+        commit: hex => setAccent(hex)
+      },
+      avatar: {
+        label: 'Avatar color',
+        start: metaState.avatar.color || AVATAR_COLORS[0],
+        live: hex => { const el = document.getElementById('profile-avatar'); if (el && !el.classList.contains('has-photo')) { el.style.background = hex; el.style.color = readableTextOn(hex); } },
+        cancel: () => updateChrome(),
+        commit: hex => { metaState.avatar = { ...metaState.avatar, color: hex }; saveMeta(); updateChrome(); }
+      },
+      icon: {
+        label: 'App icon color',
+        start: metaState.appIconColor || ICON_COLORS[0],
+        live: hex => { const link = document.querySelector('link[rel="icon"]'); if (link) link.href = 'data:image/svg+xml,' + encodeURIComponent(buildAppIconSVG(metaState.appIconShape || 'cap', hex)); },
+        cancel: () => updateFavicon(),
+        commit: hex => { metaState.appIconColor = hex; saveMeta(); updateFavicon(); }
+      }
+    }[kind];
+    if (config) openColorPicker({ trigger, kind, ...config });
+  }
+
+  function openColorPicker({ trigger, kind, label, start, live, cancel, commit }) {
+    const original = normalizeHex(start) || '#2dd4bf';
+    let [h, s, v] = rgbToHsv(hexToRgb(original));
+    const pop = document.createElement('div');
+    pop.className = 'cp-pop';
+    pop.setAttribute('role', 'dialog');
+    pop.setAttribute('aria-label', `${label} picker`);
+    const eyedropper = 'EyeDropper' in window
+      ? `<button type="button" class="icon-button small cp-eyedropper" aria-label="Pick a color from the screen" title="Pick a color from the screen">${icon('eyedropper')}</button>` : '';
+    pop.innerHTML = `
+      <div class="cp-sv" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-label="Color saturation and brightness. Arrow keys adjust; hold Shift for bigger steps."><i class="cp-sv-thumb"></i></div>
+      <div class="cp-controls">
+        <span class="cp-preview" title="Original and new color"><i class="cp-old"></i><i class="cp-new"></i></span>
+        <input class="cp-hue" type="range" min="0" max="360" step="1" aria-label="Hue">
+        ${eyedropper}
+      </div>
+      <div class="cp-fields">
+        <label>Hex<input class="cp-hex" type="text" maxlength="7" spellcheck="false" autocomplete="off"></label>
+        <label>R<input class="cp-r" type="number" min="0" max="255" inputmode="numeric"></label>
+        <label>G<input class="cp-g" type="number" min="0" max="255" inputmode="numeric"></label>
+        <label>B<input class="cp-b" type="number" min="0" max="255" inputmode="numeric"></label>
+      </div>
+      <div class="cp-actions"><button type="button" class="ghost small" data-cp="cancel">Cancel</button><button type="button" class="primary small" data-cp="done">Done</button></div>`;
+    (trigger.closest('.swatch-row') || trigger.parentElement).appendChild(pop);
+    const q = sel => pop.querySelector(sel);
+    const sv = q('.cp-sv'), hue = q('.cp-hue'), hexInput = q('.cp-hex');
+    const rgbInputs = { r: q('.cp-r'), g: q('.cp-g'), b: q('.cp-b') };
+    q('.cp-old').style.background = original;
+
+    const currentHex = () => rgbToHex(hsvToRgb([h, s, v]));
+    // `skip` is the field being typed in, so its text is not rewritten under the cursor.
+    const paint = skip => {
+      const rgb = hsvToRgb([h, s, v]).map(Math.round); const hex = rgbToHex(rgb);
+      pop.style.setProperty('--cp-hue', String(Math.round(h)));
+      pop.style.setProperty('--cp-color', hex);
+      sv.style.setProperty('--cp-x', `${s * 100}%`); sv.style.setProperty('--cp-y', `${(1 - v) * 100}%`);
+      sv.setAttribute('aria-valuenow', String(Math.round(s * 100)));
+      sv.setAttribute('aria-valuetext', `Saturation ${Math.round(s * 100)} percent, brightness ${Math.round(v * 100)} percent`);
+      if (skip !== hue) hue.value = String(Math.round(h));
+      if (skip !== hexInput) hexInput.value = hex;
+      if (skip !== rgbInputs.r) rgbInputs.r.value = rgb[0];
+      if (skip !== rgbInputs.g) rgbInputs.g.value = rgb[1];
+      if (skip !== rgbInputs.b) rgbInputs.b.value = rgb[2];
+      live(hex);
+    };
+    // Gray and black have no meaningful hue — keep the one already chosen so the slider does not jump.
+    const setFromRgb = (rgb, skip) => { const [nh, ns, nv] = rgbToHsv(rgb); s = ns; v = nv; if (ns > 0 && nv > 0) h = nh; paint(skip); };
+
+    const fromPointer = event => { const r = sv.getBoundingClientRect(); s = clamp01((event.clientX - r.left) / r.width); v = 1 - clamp01((event.clientY - r.top) / r.height); paint(); };
+    sv.addEventListener('pointerdown', event => { sv.setPointerCapture(event.pointerId); sv.focus(); fromPointer(event); event.preventDefault(); });
+    sv.addEventListener('pointermove', event => { if (sv.hasPointerCapture(event.pointerId)) fromPointer(event); });
+    sv.addEventListener('keydown', event => {
+      const step = event.shiftKey ? 0.1 : 0.01; let used = true;
+      if (event.key === 'ArrowLeft') s = clamp01(s - step); else if (event.key === 'ArrowRight') s = clamp01(s + step);
+      else if (event.key === 'ArrowUp') v = clamp01(v + step); else if (event.key === 'ArrowDown') v = clamp01(v - step);
+      else used = false;
+      if (used) { event.preventDefault(); paint(); }
+    });
+    hue.addEventListener('input', () => { h = Number(hue.value); paint(hue); });
+    hexInput.addEventListener('input', () => { const hex = normalizeHex(hexInput.value); if (hex) setFromRgb(hexToRgb(hex), hexInput); });
+    hexInput.addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); finish('commit'); } });
+    hexInput.addEventListener('blur', () => { hexInput.value = currentHex(); });
+    Object.values(rgbInputs).forEach(input => {
+      input.addEventListener('input', () => {
+        const parts = ['r', 'g', 'b'].map(k => rgbInputs[k].value.trim());
+        if (parts.every(p => /^\d{1,3}$/.test(p) && Number(p) <= 255)) setFromRgb(parts.map(Number), input);
+      });
+      input.addEventListener('blur', () => paint());
+    });
+    q('.cp-eyedropper')?.addEventListener('click', async () => {
+      try { const picked = await new window.EyeDropper().open(); const hex = normalizeHex(picked.sRGBHex); if (hex) setFromRgb(hexToRgb(hex)); } catch { /* dismissed with Escape */ }
+    });
+    q('[data-cp="done"]').addEventListener('click', () => finish('commit'));
+    q('[data-cp="cancel"]').addEventListener('click', () => finish('cancel'));
+
+    // Keep Tab inside the picker while it is open, and let Escape mean "put it back".
+    pop.addEventListener('keydown', event => {
+      if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); finish('cancel'); return; }
+      if (event.key !== 'Tab') return;
+      const stops = [...pop.querySelectorAll('.cp-sv, input, button')].filter(el => !el.disabled);
+      const first = stops[0], last = stops[stops.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    });
+
+    // how: 'commit' (Done / Enter), 'cancel' (Cancel / Escape), or 'outside' (clicked elsewhere —
+    // keeps the color like the native picker does, but never steals focus back).
+    let finished = false;
+    const closer = how => finish(how === 'cancel' ? 'cancel' : 'outside');
+    function finish(how) {
+      if (finished) return; finished = true;
+      const chosen = currentHex();
+      pop.remove(); colorPickerTrigger = null;
+      if (openCustomPopover === closer) openCustomPopover = null;
+      if (how === 'cancel' || chosen === original) cancel();
+      else { commit(chosen); if (document.querySelector('#main-content .settings-grid')) refreshSettingsInPlace(); }
+      if (how !== 'outside') document.querySelector(`[data-action="open-color-picker"][data-picker="${kind}"]`)?.focus();
+    }
+    openCustomPopover = closer;
+    colorPickerTrigger = trigger;
+    paint();
+    sv.focus({ preventScroll: true });
+    pop.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 
   // Must match styles.css's own :root font-family declaration — used as the fallback tail so
@@ -2350,6 +2528,7 @@ import {
       const isPhoto = avatar.type === 'photo' && avatar.photoVersion;
       profileAvatarEl.classList.toggle('has-photo', !!isPhoto);
       profileAvatarEl.style.background = isPhoto ? '' : (avatar.color || '');
+      profileAvatarEl.style.color = !isPhoto && isHexColor(avatar.color) ? readableTextOn(avatar.color) : '';
       if (isPhoto) profileAvatarEl.innerHTML = `<img src="${avatarUrl(avatar.photoVersion)}" alt="">`;
       else profileAvatarEl.textContent = avatar.type === 'emoji' && avatar.emoji ? avatar.emoji : (displayName ? displayNameInitials(displayName) : 'IT');
     }
@@ -6252,27 +6431,35 @@ import {
     return `<div class="setting-row stacked"><div><strong>Theme style</strong><small>The surface palette — each one has a dark and a light version.</small></div><div class="preset-grid">${THEME_PRESETS.map(p => `<button type="button" class="preset-card ${activeId === p.id ? 'active' : ''}" data-action="set-theme-preset" data-preset="${p.id}" aria-pressed="${activeId === p.id}"><span class="preset-preview" style="color:${theme === 'light' ? '#142032' : '#edf4fb'};background:${p.swatch[theme][0]}"><i style="background:${p.swatch[theme][1]}"></i><b></b></span><span><strong>${p.label}</strong><small>${p.blurb}</small></span></button>`).join('')}</div></div>`;
   }
 
+  // The rainbow swatch that opens the color picker. It shows as chosen (with its own color in the
+  // middle) whenever the current color is not one of the quick swatches beside it.
+  function customSwatchMarkup(picker, label, currentHex, presetHexes) {
+    const custom = isHexColor(currentHex) && !presetHexes.some(c => c.toLowerCase() === currentHex.toLowerCase());
+    return `<button type="button" class="swatch-btn swatch-custom ${custom ? 'active' : ''}" data-action="open-color-picker" data-picker="${picker}" aria-haspopup="dialog" aria-label="${label}" title="Pick any color"${custom ? ` style="--swatch-custom:${currentHex}"` : ''}></button>`;
+  }
+
   function accentRowMarkup() {
     const current = currentAccentValue();
     const custom = isHexColor(current);
-    const customHex = custom ? current.toLowerCase() : '#2dd4bf';
+    const customHex = custom ? current.toLowerCase() : '';
     const theme = state.settings.theme === 'light' ? 'light' : 'dark';
     const scope = metaState.perTrackAccent ? `Accent for ${CERT.name} — every track keeps its own.` : 'Retints buttons, progress bars, and highlights across the app.';
     return `<div class="setting-row stacked"><div><strong>Accent color</strong><small>${escapeHtml(scope)}</small></div>
-      <div class="swatch-row">${ACCENT_THEMES.map(a => `<button type="button" class="swatch-btn ${current === a.id ? 'active' : ''}" style="background:${a[theme].primary}" data-action="set-accent-color" data-accent="${a.id}" title="${a.label}" aria-label="${a.label} accent" aria-pressed="${current === a.id}"></button>`).join('')}<label class="swatch-btn swatch-custom ${custom ? 'active' : ''}" title="Pick any color"><input type="color" id="setting-accent-color" value="${customHex}" aria-label="Custom accent color"></label></div>
+      <div class="swatch-row">${ACCENT_THEMES.map(a => `<button type="button" class="swatch-btn ${current === a.id ? 'active' : ''}" style="background:${a[theme].primary}" data-action="set-accent-color" data-accent="${a.id}" title="${a.label}" aria-label="${a.label} accent" aria-pressed="${current === a.id}"></button>`).join('')}${customSwatchMarkup('accent', 'Choose a custom accent color', current, [])}</div>
       <div class="button-row" style="align-items:center;gap:12px"><input type="text" id="setting-accent-hex" class="setting-date-input hex-field" value="${custom ? customHex : ''}" placeholder="#2dd4bf" maxlength="7" spellcheck="false" autocomplete="off" aria-label="Accent color hex code"><p class="setting-note">${custom ? 'Adjusted automatically so text stays readable in both themes.' : 'Pick a swatch, or choose any color.'}</p></div></div>
       <div class="setting-row"><div><strong>Different accent per track</strong><small>Each track gets its own color, so you can tell at a glance which one you're in.</small></div><label class="switch"><input id="setting-per-track-accent" type="checkbox" ${metaState.perTrackAccent ? 'checked' : ''}><span></span></label></div>`;
   }
 
-  // Sets the accent for wherever it currently applies (everywhere, or just this track). `live`
-  // previews without saving, for the color picker's continuous input events.
-  function setAccent(value, { live = false } = {}) {
+  // Sets the accent for wherever it currently applies (everywhere, or just this track). The color
+  // picker's live preview goes through applyAccentColor(value) instead, so nothing is saved until
+  // you finish.
+  function setAccent(value) {
     if (metaState.perTrackAccent) {
       metaState.trackAccents = { ...(metaState.trackAccents || {}), [activeCertId]: value };
-      if (!live) { saveMeta(); cacheAppearanceLocally(); }
+      saveMeta(); cacheAppearanceLocally();
     } else {
       state.settings.accentColor = value;
-      if (!live) saveState();
+      saveState();
     }
     applyAccentColor();
   }
@@ -6294,7 +6481,7 @@ import {
   }
 
   function settingsCardProfile(isPrograms) {
-    return `<article class="settings-card" data-section="account" data-card="profile"><h3>Your profile</h3><p>Shown in the sidebar and on your printed readiness report — not shared anywhere, just for you.</p><div class="setting-row"><div><strong>Account</strong><small>Each account has its own completely separate progress and settings.</small></div><button class="secondary small" data-action="open-account-dialog">${icon('repeat')} Switch (${escapeHtml(currentProfile().name || 'this account')})</button></div><div class="setting-row"><div><strong>Display name</strong><small>Leave blank to keep the default.</small></div><input type="text" id="setting-display-name" class="setting-date-input" style="width:180px" placeholder="Future technician" value="${escapeHtml(metaState.displayName || '')}" autocomplete="off" maxlength="40"></div><div class="setting-row stacked"><div><strong>Avatar</strong><small>Pick a style and color, or upload your own photo.</small></div><div class="avatar-style-row"><button type="button" class="avatar-style-btn ${metaState.avatar.type === 'initials' ? 'active' : ''}" data-action="set-avatar-style" data-style="initials" title="Initials">Aa</button>${AVATAR_EMOJIS.map(e => `<button type="button" class="avatar-style-btn ${metaState.avatar.type === 'emoji' && metaState.avatar.emoji === e ? 'active' : ''}" data-action="set-avatar-style" data-style="emoji" data-emoji="${e}" title="${e}">${e}</button>`).join('')}</div><div class="swatch-row"><button type="button" class="swatch-btn none ${!metaState.avatar.color ? 'active' : ''}" data-action="set-avatar-color" data-color="" title="Default"></button>${AVATAR_COLORS.map(c => `<button type="button" class="swatch-btn ${metaState.avatar.color === c ? 'active' : ''}" style="background:${c}" data-action="set-avatar-color" data-color="${c}" title="${c}"></button>`).join('')}</div><div class="button-row" style="margin-top:2px"><button class="secondary small" data-action="choose-avatar-photo" type="button">${icon('image')} Upload photo</button>${metaState.avatar.type === 'photo' && metaState.avatar.photoVersion ? `<button class="secondary small" data-action="remove-avatar-photo" type="button">${icon('trash')} Remove photo</button>` : ''}<input type="file" id="avatar-photo-input" accept="image/*" class="hidden"></div></div></article>`;
+    return `<article class="settings-card" data-section="account" data-card="profile"><h3>Your profile</h3><p>Shown in the sidebar and on your printed readiness report — not shared anywhere, just for you.</p><div class="setting-row"><div><strong>Account</strong><small>Each account has its own completely separate progress and settings.</small></div><button class="secondary small" data-action="open-account-dialog">${icon('repeat')} Switch (${escapeHtml(currentProfile().name || 'this account')})</button></div><div class="setting-row"><div><strong>Display name</strong><small>Leave blank to keep the default.</small></div><input type="text" id="setting-display-name" class="setting-date-input" style="width:180px" placeholder="Future technician" value="${escapeHtml(metaState.displayName || '')}" autocomplete="off" maxlength="40"></div><div class="setting-row stacked"><div><strong>Avatar</strong><small>Pick a style and color, or upload your own photo.</small></div><div class="avatar-style-row"><button type="button" class="avatar-style-btn ${metaState.avatar.type === 'initials' ? 'active' : ''}" data-action="set-avatar-style" data-style="initials" title="Initials">Aa</button>${AVATAR_EMOJIS.map(e => `<button type="button" class="avatar-style-btn ${metaState.avatar.type === 'emoji' && metaState.avatar.emoji === e ? 'active' : ''}" data-action="set-avatar-style" data-style="emoji" data-emoji="${e}" title="${e}">${e}</button>`).join('')}</div><div class="swatch-row"><button type="button" class="swatch-btn none ${!metaState.avatar.color ? 'active' : ''}" data-action="set-avatar-color" data-color="" title="Default"></button>${AVATAR_COLORS.map(c => `<button type="button" class="swatch-btn ${metaState.avatar.color === c ? 'active' : ''}" style="background:${c}" data-action="set-avatar-color" data-color="${c}" title="${c}"></button>`).join('')}${customSwatchMarkup('avatar', 'Choose a custom avatar color', metaState.avatar.color, AVATAR_COLORS)}</div><div class="button-row" style="margin-top:2px"><button class="secondary small" data-action="choose-avatar-photo" type="button">${icon('image')} Upload photo</button>${metaState.avatar.type === 'photo' && metaState.avatar.photoVersion ? `<button class="secondary small" data-action="remove-avatar-photo" type="button">${icon('trash')} Remove photo</button>` : ''}<input type="file" id="avatar-photo-input" accept="image/*" class="hidden"></div></div></article>`;
   }
 
   function settingsCardLook(isPrograms) {
@@ -6326,7 +6513,7 @@ import {
   }
 
   function settingsCardApp(isPrograms) {
-    return `<article class="settings-card" data-section="about" data-card="app"><h3>App</h3><p>Running <strong>${APP_VERSION}</strong>. ${CONCEPTS.length} concepts and ${(LABS || []).length} labs loaded for this track.</p><div class="setting-row"><div><strong>Check for updates</strong><small>Reload from within the app instead of closing and reopening it.</small></div><button class="secondary small" data-action="check-for-updates">${icon('rotate')} Check now</button></div>${deferredInstallPrompt ? `<div class="setting-row"><div><strong>Install as an app</strong><small>Opens in its own window, with a taskbar/dock icon — not just a browser tab.</small></div><button class="secondary small" data-action="install-app">${icon('download')} Install</button></div>` : ''}<div class="setting-row stacked"><div><strong>App icon</strong><small>Changes the browser tab icon right away. If you've already installed the app, remove and reinstall it to pick up the new taskbar/dock icon too — that part is cached by your OS, not something a website can refresh on its own.</small></div><div class="avatar-style-row">${ICON_SHAPES.map(shape => `<button type="button" class="avatar-style-btn ${(metaState.appIconShape || 'cap') === shape ? 'active' : ''}" data-action="set-app-icon-shape" data-shape="${shape}" title="${shape}">${icon(shape)}</button>`).join('')}</div><div class="swatch-row">${ICON_COLORS.map(c => `<button type="button" class="swatch-btn ${(metaState.appIconColor || '#2dd4bf') === c ? 'active' : ''}" style="background:${c}" data-action="set-app-icon-color" data-color="${c}" title="${c}"></button>`).join('')}</div></div><div class="setting-row"><div><strong>What's new</strong><small>Recent changes to the app.</small></div><button class="secondary small" data-action="open-whats-new">${icon('sparkles')} View</button></div><div class="setting-row"><div><strong>Keyboard shortcuts</strong><small>Everything you can do without the mouse. Press <kbd>?</kbd> any time.</small></div><button class="secondary small" data-action="open-shortcuts">${icon('keyboard')} View</button></div>${isPrograms ? '' : `<div class="setting-row"><div><strong>Replay the walkthrough</strong><small>The first-run intro and optional diagnostic.</small></div><button class="secondary small" data-action="replay-onboarding">${icon('repeat')} Replay</button></div>`}</article>`;
+    return `<article class="settings-card" data-section="about" data-card="app"><h3>App</h3><p>Running <strong>${APP_VERSION}</strong>. ${CONCEPTS.length} concepts and ${(LABS || []).length} labs loaded for this track.</p><div class="setting-row"><div><strong>Check for updates</strong><small>Reload from within the app instead of closing and reopening it.</small></div><button class="secondary small" data-action="check-for-updates">${icon('rotate')} Check now</button></div>${deferredInstallPrompt ? `<div class="setting-row"><div><strong>Install as an app</strong><small>Opens in its own window, with a taskbar/dock icon — not just a browser tab.</small></div><button class="secondary small" data-action="install-app">${icon('download')} Install</button></div>` : ''}<div class="setting-row stacked"><div><strong>App icon</strong><small>Changes the browser tab icon right away. If you've already installed the app, remove and reinstall it to pick up the new taskbar/dock icon too — that part is cached by your OS, not something a website can refresh on its own.</small></div><div class="avatar-style-row">${ICON_SHAPES.map(shape => `<button type="button" class="avatar-style-btn ${(metaState.appIconShape || 'cap') === shape ? 'active' : ''}" data-action="set-app-icon-shape" data-shape="${shape}" title="${shape}">${icon(shape)}</button>`).join('')}</div><div class="swatch-row">${ICON_COLORS.map(c => `<button type="button" class="swatch-btn ${(metaState.appIconColor || '#2dd4bf') === c ? 'active' : ''}" style="background:${c}" data-action="set-app-icon-color" data-color="${c}" title="${c}"></button>`).join('')}${customSwatchMarkup('icon', 'Choose a custom app icon color', metaState.appIconColor || '#2dd4bf', ICON_COLORS)}</div></div><div class="setting-row"><div><strong>What's new</strong><small>Recent changes to the app.</small></div><button class="secondary small" data-action="open-whats-new">${icon('sparkles')} View</button></div><div class="setting-row"><div><strong>Keyboard shortcuts</strong><small>Everything you can do without the mouse. Press <kbd>?</kbd> any time.</small></div><button class="secondary small" data-action="open-shortcuts">${icon('keyboard')} View</button></div>${isPrograms ? '' : `<div class="setting-row"><div><strong>Replay the walkthrough</strong><small>The first-run intro and optional diagnostic.</small></div><button class="secondary small" data-action="replay-onboarding">${icon('repeat')} Replay</button></div>`}</article>`;
   }
 
   const SETTINGS_SECTIONS = [
@@ -7370,9 +7557,10 @@ import {
       saveMeta(); updateDomainNav(); refreshSettingsInPlace();
       toast('Sidebar reset to the default order.');
     }
+    if (action === 'open-color-picker') toggleColorPicker(button);
     if (action === 'browse-local-fonts') browseLocalFonts();
     if (action === 'set-app-icon-shape') { metaState.appIconShape = button.dataset.shape; saveMeta(); renderRoute(); }
-    if (action === 'set-app-icon-color') { metaState.appIconColor = button.dataset.color; saveMeta(); renderRoute(); }
+    if (action === 'set-app-icon-color') { metaState.appIconColor = button.dataset.color; saveMeta(); updateFavicon(); refreshSettingsInPlace(); }
     if (action === 'set-font-size') { state.settings.fontSize = Number(button.dataset.size); saveState(); renderRoute(); }
     if (action === 'set-corner-style') { state.settings.cornerStyle = button.dataset.corners; saveState(); renderRoute(); }
     if (action === 'set-density') { state.settings.density = button.dataset.density; saveState(); renderRoute(); }
@@ -7384,7 +7572,7 @@ import {
       saveMeta();
       renderRoute();
     }
-    if (action === 'set-avatar-color') { metaState.avatar = { ...metaState.avatar, color: button.dataset.color || '' }; saveMeta(); renderRoute(); }
+    if (action === 'set-avatar-color') { metaState.avatar = { ...metaState.avatar, color: button.dataset.color || '' }; saveMeta(); updateChrome(); refreshSettingsInPlace(); }
     if (action === 'choose-avatar-photo') document.getElementById('avatar-photo-input').click();
     if (action === 'remove-avatar-photo') removeAvatarPhoto();
     if (action === 'tag-confidence') tagConfidence(button.dataset.value);
@@ -7593,7 +7781,6 @@ import {
       renderRoute();
     }
     if (event.target.id === 'setting-notify-reviews') setNotifyReviews(event.target.checked);
-    if (event.target.id === 'setting-accent-color') { setAccent(event.target.value); refreshSettingsInPlace(); }
     if (event.target.id === 'setting-accent-hex') {
       const raw = event.target.value.trim().replace(/^#?/, '#').toLowerCase();
       const expanded = /^#[0-9a-f]{3}$/.test(raw) ? `#${raw[1]}${raw[1]}${raw[2]}${raw[2]}${raw[3]}${raw[3]}` : raw;
@@ -7655,7 +7842,6 @@ import {
     if (event.target.id === 'global-search-input') { globalSearchQuery = event.target.value; renderGlobalSearchResults(); }
     if (event.target.id === 'browse-search') { browseQuery = event.target.value; renderBrowseTable(); }
     if (event.target.id === 'settings-search') { settingsQuery = event.target.value; applySettingsFilter(); }
-    if (event.target.id === 'setting-accent-color') { setAccent(event.target.value, { live: true }); const hex = document.getElementById('setting-accent-hex'); if (hex) hex.value = event.target.value; }
     if (event.target.id === 'exam-scratchpad' && activeSession) activeSession.scratchpadText = event.target.value;
     if (event.target.id === 'palette-input') { paletteSel = 0; renderPaletteResults(); }
     if (event.target.id === 'setting-font-name') { const sample = document.getElementById('font-preview-sample'); if (sample) sample.style.fontFamily = buildFontStack(event.target.value); }
