@@ -6,6 +6,16 @@
 // this app having per-build version numbers at all, so their "version" is the date instead —
 // still real history, just not tagged with a build number the way later entries are.
 export const CHANGELOG = [
+  { version: 'v219', date: 'October 2026', title: 'Restore from a saved backup', items: [
+    "New: Settings → Data → \"Restore a saved backup\" lists the backups kept in your backup folder and puts one back. Your current data is saved first, a click-twice step prevents accidents, and an Undo follows. It's also in the command palette.",
+    "Changed: old automatic backups are now thinned instead of piling up forever — everything is kept for 30 days, then one a week for about six months, then one a month. Nothing newer than 30 days is ever removed.",
+    "Note: restoring and thinning need the study server to be restarted once after this update (close its window and start it again). Until then the Restore window says so."
+  ] },
+  { version: 'v218', date: 'October 2026', title: 'Undo, settings search, and exam dates', items: [
+    "New: removing a Study guide highlight now offers Undo. A single click on a highlighted passage used to delete it with no way back.",
+    "New: the command palette (Ctrl/Cmd+K) finds individual settings — type \"accent\", \"exam date\", or \"font\" and jump straight to it, scrolled into view and briefly flashed. There's also a palette action to collapse or expand the sidebar.",
+    "New: when no exam date is set, the Dashboard shows a \"Set exam date\" link that takes you to the field. The date drives the countdown, the projected ready-by date, and cram reminders."
+  ] },
   { version: 'v215', date: 'October 2026', title: 'Your own highlight colors', items: [
     "New: choose your own highlighter colors (Settings → Appearance → Highlight colors). Each of the four slots opens the color picker and shows a live sample, so you can see exactly how highlighted text will look.",
     "Changed: recoloring a slot recolors the highlights you've already made with it, so color-coding by topic or confidence stays consistent. \"Reset\" puts the originals back.",

@@ -208,4 +208,108 @@ def run(ctx):
             worst[theme] = min(worst[theme], ratio)
     t.check(worst["dark"] >= 4.5, "highlighted text stays at 4.5:1 or better in the dark theme for black, navy, white, yellow, red, cyan, gray", f"worst {worst['dark']:.2f}")
     t.check(worst["light"] >= 4.5, "...and in the light theme", f"worst {worst['light']:.2f}")
+    # ---------------------------------------------------------------- highlight undo
+    t.suite("highlight undo")
+    set_theme(browser, "dark")
+    go(browser, "guide", wait=1.4)
+    made = browser.eval("""(async () => {
+      const sleep = ms => new Promise(r => setTimeout(r, ms));
+      const p = [...document.querySelectorAll('[data-hl-domain]')].find(p => p.firstChild && p.firstChild.nodeType === 3 && p.firstChild.length > 90);
+      p.scrollIntoView({ block: 'center' }); await sleep(250);
+      const range = document.createRange(); range.setStart(p.firstChild, 10); range.setEnd(p.firstChild, 60);
+      const sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      document.dispatchEvent(new MouseEvent('mouseup', { bubbles: true })); await sleep(250);
+      document.querySelector('#guide-highlight-popover [data-color="amber"]').click(); await sleep(700);
+      return document.querySelectorAll('mark.guide-user-highlight').length; })()""")
+    t.check(made == 1, "selecting text and choosing a color creates a highlight", str(made))
+    time.sleep(0.8)
+    stored = [h for hs in sandbox.progress()["comptia-a-plus"].get("guideHighlights", {}).values() for h in hs]
+    t.check(len(stored) == 1, "...and it is saved", str(len(stored)))
+    browser.eval("document.querySelector('mark.guide-user-highlight').click()")
+    time.sleep(0.6)
+    t.check(browser.eval("document.querySelectorAll('mark.guide-user-highlight').length") == 0, "clicking a highlight removes it")
+    t.check(browser.eval("!!document.querySelector('.toast-action') && document.querySelector('.toast-action').textContent") == "Undo", "...and offers Undo")
+    browser.eval("document.querySelector('.toast-action').click()")
+    time.sleep(1.0)
+    t.check(browser.eval("document.querySelectorAll('mark.guide-user-highlight').length") == 1, "Undo puts the highlight back on the page")
+    restored = [h for hs in sandbox.progress()["comptia-a-plus"].get("guideHighlights", {}).values() for h in hs]
+    t.check([h["id"] for h in restored] == [h["id"] for h in stored], "...exactly as it was, and saved again", str(restored))
+
+    # ---------------------------------------------------------------- settings in the command palette
+    t.suite("command palette finds settings")
+
+    def palette(query):
+        browser.eval("document.querySelector('[data-action=\"open-palette\"]').click()")
+        time.sleep(0.4)
+        browser.eval(f"(() => {{ const i = document.getElementById('palette-input'); i.value = {query!r}; i.dispatchEvent(new Event('input', {{ bubbles: true }})); }})()")
+        time.sleep(0.3)
+        return browser.eval("[...document.querySelectorAll('.palette-opt')].map(o => o.querySelector('strong').textContent + '|' + o.querySelector('.palette-opt-type').textContent)")
+
+    results = palette("accent color")
+    t.check(results and results[0] == "Accent color|Setting", "typing 'accent color' lists that setting first", str(results[:3]))
+    browser.eval("document.querySelector('.palette-opt').click()")
+    time.sleep(1.2)
+    where = browser.eval("""({ hash: location.hash, tab: document.querySelector('[data-action="settings-tab"].active')?.dataset.section,
+      flashed: document.querySelector('.setting-flash strong')?.textContent,
+      onScreen: (() => { const r = document.querySelector('.setting-flash')?.getBoundingClientRect(); return !!r && r.top >= 0 && r.bottom <= innerHeight; })() })""")
+    t.check(where["hash"] == "#settings" and where["tab"] == "appearance", "choosing it opens Settings on the right tab", str(where))
+    t.check(where["flashed"] == "Accent color" and where["onScreen"], "...scrolls to the row and flashes it", str(where))
+
+    results = palette("font")
+    t.check(results and results[0].startswith("App font|Setting") and not any(r.startswith("Color theme") for r in results), "a search only lists settings that actually match it", str(results[:4]))
+    browser.eval("document.querySelector('#dialog-layer [data-action=\"close-dialog\"]')?.click(); document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))")
+    time.sleep(0.3)
+    results = palette("exam date")
+    t.check(any(r == "Exam date|Setting" for r in results), "'exam date' finds that setting too", str(results[:4]))
+    browser.eval("document.querySelector('.palette-opt').click()")
+    time.sleep(1.2)
+    t.check(browser.eval("document.querySelector('[data-action=\"settings-tab\"].active')?.dataset.section") == "study", "...on the Study tab")
+    results = palette("collapse")
+    t.check(any(r.endswith("|Action") and "sidebar" in r.lower() for r in results), "the palette can collapse the sidebar", str(results[:3]))
+    browser.eval("document.querySelector('.dialog-layer .dialog, #dialog-layer .dialog') && document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))")
+    time.sleep(0.3)
+    browser.eval("document.querySelector('#dialog-layer [data-action=\"close-dialog\"]')?.click()")
+
+    # ---------------------------------------------------------------- exam date nudge
+    t.suite("exam date nudge")
+    go(browser, "dashboard", wait=0.8)
+    t.check(browser.eval("!!document.querySelector('.hero .eyebrow-link')"), "the Dashboard offers 'Set exam date' while none is set")
+    browser.eval("document.querySelector('.hero .eyebrow-link').click()")
+    time.sleep(1.2)
+    t.check(browser.eval("document.querySelector('.setting-flash strong')?.textContent") == "Exam date", "...and it jumps straight to the Exam date setting")
+    future = time.strftime("%Y-%m-%d", time.localtime(time.time() + 86400 * 40))
+    browser.eval(f"(() => {{ const i = document.getElementById('settings-exam-date'); i.value = {future!r}; i.dispatchEvent(new Event('change', {{ bubbles: true }})); document.querySelector('[data-action=\"set-exam-date\"]').click(); }})()")
+    time.sleep(0.8)
+    go(browser, "dashboard", wait=0.8)
+    t.check(not browser.eval("!!document.querySelector('.hero .eyebrow-link')") and "exam in 40 days" in browser.eval("document.querySelector('.hero .eyebrow').textContent"),
+            "once a date is set the link gives way to the countdown")
+
+    # ---------------------------------------------------------------- restore a saved backup
+    t.suite("restore a saved backup")
+    import datetime
+    when = (datetime.date.today() - datetime.timedelta(days=2)).isoformat()
+    sandbox.post_json("/api/backup", {"format": "full", "app": "Cert Study", "version": "v9", "dateKey": when, "profile": "default", "progress": {"zz-test": {"v": 1}}})
+    sandbox.post_json("/api/progress", {"profile": "default", "key": "zz-test", "value": {"v": 2}})
+    _open_settings(browser, "data")
+    browser.eval("document.querySelector('[data-action=\"open-restore-dialog\"]').click()")
+    time.sleep(1.0)
+    rows = browser.eval("document.querySelectorAll('#dialog-layer [data-action=\"restore-backup\"]').length")
+    t.check(rows >= 1, "Settings → Data → Restore lists the saved backups", str(rows))
+    t.check(browser.eval("document.querySelector('#dialog-layer .dialog').innerText.includes('thinned to one a week')"), "...and explains how old backups are thinned")
+    browser.eval("document.querySelector('#dialog-layer [data-action=\"restore-backup\"]').click()")
+    time.sleep(0.3)
+    t.check(sandbox.progress()["zz-test"] == {"v": 2}, "one click only arms the button; nothing is restored yet")
+    t.check("again" in browser.eval("document.querySelector('#dialog-layer [data-action=\"restore-backup\"]').textContent"), "...and it asks you to click again")
+    browser.eval("document.querySelector('#dialog-layer [data-action=\"restore-backup\"]').click()")
+    time.sleep(2.0)
+    t.check(sandbox.progress()["zz-test"] == {"v": 1}, "the second click puts the backup's data back")
+    names = [b["name"] for b in sandbox.get_json("/api/backups?profile=default")["backups"]]
+    t.check(any("prerestore" in n for n in names), "a safety copy of the replaced data was saved first", str(names))
+    safety = next(n for n in names if "prerestore" in n)
+    t.check(sandbox.get_json(f"/api/backup-file?profile=default&name={safety}")["progress"]["zz-test"] == {"v": 2}, "...and it holds what was there before")
+    t.check(browser.eval("document.querySelector('.toast-action')?.textContent") == "Undo", "an Undo is offered")
+    browser.eval("document.querySelector('.toast-action').click()")
+    time.sleep(1.5)
+    t.check(sandbox.progress()["zz-test"] == {"v": 2}, "Undo brings back exactly what was replaced")
+
     t.check(not browser.errors(), "no JavaScript errors during interactions", "; ".join(browser.errors()[:3]))

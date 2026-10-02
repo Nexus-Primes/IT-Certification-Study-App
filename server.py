@@ -8,6 +8,7 @@ No internet connection is used; everything is served from this machine.
 
 import base64
 import binascii
+import datetime
 import hashlib
 import http.server
 import json
@@ -32,6 +33,7 @@ PROFILES_FILE = os.path.join(DATA_DIR, "profiles.json")
 # or migrated.
 DEFAULT_PROFILE_ID = "default"
 progress_lock = threading.Lock()
+backup_lock = threading.Lock()
 
 # Mirrors a handful of app.js's own iconPaths entries — kept as a small, deliberately-duplicated
 # copy rather than a shared file, since it's just 6 path strings and this is a different runtime
@@ -120,6 +122,87 @@ def avatar_path_for(profile_id):
     return os.path.join(DATA_DIR, f"avatar-{profile_id}.jpg")
 
 
+# ---- Saved backups: naming, listing, and thinning ------------------------------------------
+# Files in backup/ are named  cert-study-backup-[<account id>-]<version>-<YYYY-MM-DD>.json  (the
+# default account has no id segment, exactly as it always has). A snapshot the app takes just before
+# restoring an older backup is  cert-study-prerestore-[<account id>-]<version>-<date>-<HHMMSS>.json.
+# Anything else in the folder (e.g. the one-off pre-multiuser safety copy) is never listed, read,
+# or deleted by this code.
+BACKUP_NAME = re.compile(
+    r"^cert-study-(?P<kind>backup|prerestore)-(?:(?P<pid>p[0-9a-f]{12})-)?"
+    r"(?P<version>[A-Za-z0-9.]+(?:-[A-Za-z0-9.]+)*?)-(?P<date>\d{4}-\d{2}-\d{2})(?:-(?P<stamp>\d{6}))?\.json$"
+)
+# Everything is kept for 30 days; after that one backup per week until ~6 months, then one per month.
+BACKUP_KEEP_ALL_DAYS = 30
+BACKUP_KEEP_WEEKLY_DAYS = 180
+
+
+def parse_backup_name(name):
+    match = BACKUP_NAME.match(name or "")
+    if not match:
+        return None
+    try:
+        datetime.date.fromisoformat(match["date"])
+    except ValueError:
+        return None
+    return {"kind": match["kind"], "profile": match["pid"] or DEFAULT_PROFILE_ID, "version": match["version"],
+            "date": match["date"], "stamp": match["stamp"]}
+
+
+def list_backups(profile_id):
+    found = []
+    try:
+        names = os.listdir(BACKUP_DIR)
+    except OSError:
+        return found
+    for name in names:
+        info = parse_backup_name(name)
+        if not info or info["profile"] != profile_id:
+            continue
+        try:
+            stat = os.stat(os.path.join(BACKUP_DIR, name))
+        except OSError:
+            continue
+        found.append({"name": name, "kind": "pre-restore" if info["kind"] == "prerestore" else "daily", "version": info["version"],
+                      "date": info["date"], "stamp": info["stamp"] or "", "size": stat.st_size, "modified": stat.st_mtime})
+    found.sort(key=lambda b: (b["date"], b["stamp"], b["modified"]), reverse=True)
+    return found
+
+
+def plan_backup_pruning(entries, today):
+    """Which of these daily backups (dicts with name/date/modified) should be deleted as of `today`?
+
+    Newest first, so the newest backup in each week (or month) is the one that survives."""
+    seen_weeks, seen_months, doomed = set(), set(), []
+    for entry in sorted(entries, key=lambda e: (e["date"], e["modified"]), reverse=True):
+        day = datetime.date.fromisoformat(entry["date"])
+        age = (today - day).days
+        if age <= BACKUP_KEEP_ALL_DAYS:
+            continue
+        if age <= BACKUP_KEEP_WEEKLY_DAYS:
+            bucket, seen = day.isocalendar()[:2], seen_weeks
+        else:
+            bucket, seen = (day.year, day.month), seen_months
+        if bucket in seen:
+            doomed.append(entry["name"])
+        else:
+            seen.add(bucket)
+    return doomed
+
+
+def prune_backups(profile_id, today=None):
+    today = today or datetime.date.today()
+    daily = [b for b in list_backups(profile_id) if b["kind"] == "daily"]
+    removed = []
+    for name in plan_backup_pruning(daily, today):
+        try:
+            os.remove(os.path.join(BACKUP_DIR, name))
+            removed.append(name)
+        except OSError:
+            pass
+    return removed
+
+
 class Handler(http.server.SimpleHTTPRequestHandler):
     # A cold page load fires ~15 concurrent requests (every deferred <script>, the
     # stylesheet, the manifest) and the service worker's install-time cache.addAll()
@@ -162,6 +245,30 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             # The hash itself never leaves the server — the client only ever needs to know
             # whether switching is currently PIN-gated at all.
             return self._send_json({"profiles": registry["profiles"], "defaultId": DEFAULT_PROFILE_ID, "hasPin": bool(registry.get("pinHash"))})
+        if path == "/api/backups":
+            profile_id = resolve_profile_id((query.get("profile") or [None])[0])
+            with backup_lock:
+                backups = list_backups(profile_id)
+            return self._send_json({"backups": backups, "keepAllDays": BACKUP_KEEP_ALL_DAYS, "keepWeeklyDays": BACKUP_KEEP_WEEKLY_DAYS})
+        if path == "/api/backup-file":
+            profile_id = resolve_profile_id((query.get("profile") or [None])[0])
+            name = (query.get("name") or [""])[0]
+            info = parse_backup_name(name)
+            # Only a file this account's own backup naming could have produced — never a path.
+            if not info or info["profile"] != profile_id:
+                return self._send_json({"error": "no such backup"}, 404)
+            full = os.path.join(BACKUP_DIR, name)
+            if os.path.dirname(os.path.realpath(full)) != os.path.realpath(BACKUP_DIR) or not os.path.isfile(full):
+                return self._send_json({"error": "no such backup"}, 404)
+            with backup_lock:
+                with open(full, "rb") as f:
+                    body = f.read()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
         if path == "/api/app-icon.svg":
             profile_id = resolve_profile_id((query.get("profile") or [None])[0])
             # Read-only, no lock contention concerns worth guarding here the way writes need —
@@ -344,15 +451,22 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             # The default account's backup filename is unchanged from before multi-account
             # support existed — only a non-default account gets an extra id segment, so existing
             # backups and any tooling around their naming keep working exactly as before.
-            filename = (
-                f"cert-study-backup-{version}-{date_key}.json"
-                if profile_id == DEFAULT_PROFILE_ID
-                else f"cert-study-backup-{profile_id}-{version}-{date_key}.json"
-            )
+            pre_restore = incoming.get("kind") == "pre-restore"
+            stem = "prerestore" if pre_restore else "backup"
+            who = "" if profile_id == DEFAULT_PROFILE_ID else f"{profile_id}-"
+            stamp = f"-{time.strftime('%H%M%S')}" if pre_restore else ""
+            filename = f"cert-study-{stem}-{who}{version}-{date_key}{stamp}.json"
             os.makedirs(BACKUP_DIR, exist_ok=True)
-            with open(os.path.join(BACKUP_DIR, filename), "w") as f:
-                json.dump(incoming, f, indent=2)
-            return self._send_json({"ok": True, "filename": filename})
+            with backup_lock:
+                with open(os.path.join(BACKUP_DIR, filename), "w") as f:
+                    json.dump(incoming, f, indent=2)
+                # Thin out old daily backups for this account (see BACKUP_KEEP_* above); a failure
+                # to prune must never fail the backup that was just written.
+                try:
+                    pruned = prune_backups(profile_id) if not pre_restore else []
+                except Exception:
+                    pruned = []
+            return self._send_json({"ok": True, "filename": filename, "pruned": len(pruned)})
         if path == "/api/avatar":
             length = int(self.headers.get("Content-Length", 0))
             raw = self.rfile.read(length)

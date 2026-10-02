@@ -4,7 +4,7 @@ import {
   daysBetween, formatDate, formatDateKey, formatPlanDate, formatDuration, hashNumber,
   seededShuffle, recallMatchHint
 } from './utils.js?v=4';
-import { CHANGELOG } from './changelog.js?v=1';
+import { CHANGELOG } from './changelog.js?v=3';
 import { closeAnyCustomPopover, registerCustomPopover, releaseCustomPopover, setFontSuggestions, setDefaultFonts } from './controls.js?v=1';
 import { generateCrosswordLayout } from './crossword.js?v=1';
 import {
@@ -47,7 +47,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v217';
+  const APP_VERSION = 'v219';
   const DIAGNOSTIC_LEN = 15;
   let certDialogGroup = null;
   let certDialogEntryDomain = null; // domain ('certs'|'programs') the bottom "Current track" switcher is scoped to
@@ -2461,7 +2461,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
       <section class="hero">
         <div class="hero-copy">
           ${metaState.dashboardGreeting !== false ? `<span class="hero-greeting">${escapeHtml(greetingLine())}</span>` : ''}
-          <span class="eyebrow">${escapeHtml(CERT.name)}${state.trackCompleted ? ' · ✓ Completed' : countdown ? ` · exam in ${countdown.days} day${countdown.days === 1 ? '' : 's'}` : ''}</span>
+          <span class="eyebrow">${escapeHtml(CERT.name)}${state.trackCompleted ? ' · ✓ Completed' : countdown ? ` · exam in ${countdown.days} day${countdown.days === 1 ? '' : 's'}` : ''}</span>${!state.trackCompleted && !countdown ? ` <button type="button" class="eyebrow-link" data-action="goto-exam-date">· Set exam date</button>` : ''}
           <h2>${state.trackCompleted ? 'Track completed' : readiness >= 80 ? 'Exam-ready range' : readiness >= 55 ? 'Momentum is building' : 'Build your baseline'}</h2>
           <p>${state.stats.answered ? `${pct(state.stats.firstCorrect, state.stats.answered)}% first-try accuracy · ${getMasteredConcepts()} concepts mastered · ${getStreak()}-day streak` : 'Complete a Quick 10 to establish your first mastery signal.'}</p>
           <div class="button-row">
@@ -5088,13 +5088,38 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
     renderStudyGuide();
   }
 
+  // Clicking a highlighted passage removes it on the spot — easy to do by accident while reading,
+  // so every removal offers an Undo. It remembers which track it came from: highlights live in
+  // each track's own data, so it can only be put back while that track is open.
   function removeGuideHighlight(domainId, highlightId) {
+    const removed = (state.guideHighlights[domainId] || []).find(h => h.id === highlightId);
     state.guideHighlights[domainId] = (state.guideHighlights[domainId] || []).filter(h => h.id !== highlightId);
     saveState();
-    // Removing from the digest should refresh the digest in place, not bounce back to the full
-    // chapter list — mirrors how review-filter/review-flag re-render whichever view is active.
+    refreshHighlightViews();
+    if (!removed) return;
+    const certId = activeCertId;
+    toast('Highlight removed.', 'success', { label: 'Undo', run: () => restoreGuideHighlight(certId, domainId, removed) });
+  }
+
+  function restoreGuideHighlight(certId, domainId, highlight) {
+    if (certId !== activeCertId) {
+      const entry = CERT_REGISTRY.find(item => item.id === certId);
+      toast(`Switch back to ${entry ? entry.label : 'that track'} to restore this highlight.`, 'info');
+      return;
+    }
+    if (!Array.isArray(state.guideHighlights[domainId])) state.guideHighlights[domainId] = [];
+    if (state.guideHighlights[domainId].some(h => h.id === highlight.id)) return;
+    state.guideHighlights[domainId] = mergeGuideHighlights([...state.guideHighlights[domainId], highlight], highlight.section, highlight.para);
+    saveState();
+    refreshHighlightViews();
+    toast('Highlight restored.');
+  }
+
+  // Removing from the digest should refresh the digest in place, not bounce back to the full
+  // chapter list — mirrors how review-filter/review-flag re-render whichever view is active.
+  function refreshHighlightViews() {
     if (currentRoute() === 'guide-digest') renderHighlightsDigest();
-    else renderStudyGuide();
+    else if (currentRoute() === 'guide') renderStudyGuide();
   }
 
   // Character offset of (node, nodeOffset) counted across ALL text in root, in document order —
@@ -5810,7 +5835,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
   }
 
   function settingsCardBackup(isPrograms) {
-    return `<article class="settings-card" data-section="data" data-card="backup"><h3>Progress backup</h3><p>Export or restore everything in one JSON file — every track's practice history, mastery, flashcards, and labs, plus your study plan. Not just ${escapeHtml(CERT.name)}.</p><div class="button-row" style="margin-top:20px"><button class="secondary" data-action="export-data">${icon('download')} Export data</button><button class="secondary" data-action="save-backup-file">${icon('folder')} Save to backup folder</button><button class="secondary" data-action="choose-import">${icon('upload')} Import data</button><input type="file" id="import-file" accept="application/json" class="hidden"></div><p style="margin-top:10px">${metaState.lastBackupDate ? `Last backup: ${formatDateKey(metaState.lastBackupDate)} (${daysBetween(metaState.lastBackupDate, todayKey()) === 0 ? 'today' : `${daysBetween(metaState.lastBackupDate, todayKey())} day${daysBetween(metaState.lastBackupDate, todayKey()) === 1 ? '' : 's'} ago`}).` : 'No backup yet.'} Saved-to-folder copies land in <code>backup/</code> next to this app, named with the version that made them.</p><div class="setting-row"><div><strong>Automatic daily backup</strong><small>Saves to the backup folder once a day, the first time you open the app.</small></div><label class="switch"><input id="setting-auto-backup" type="checkbox" ${metaState.autoBackupEnabled !== false ? 'checked' : ''}><span></span></label></div><div class="setting-row" style="margin-top:20px"><div><strong>Reset all progress</strong><small>This cannot be undone unless you exported a backup.</small></div><button class="danger-button small" data-action="confirm-reset">${icon('trash')} Reset</button></div></article>`;
+    return `<article class="settings-card" data-section="data" data-card="backup"><h3>Progress backup</h3><p>Export or restore everything in one JSON file — every track's practice history, mastery, flashcards, and labs, plus your study plan. Not just ${escapeHtml(CERT.name)}.</p><div class="button-row" style="margin-top:20px"><button class="secondary" data-action="export-data">${icon('download')} Export data</button><button class="secondary" data-action="save-backup-file">${icon('folder')} Save to backup folder</button><button class="secondary" data-action="open-restore-dialog">${icon('rotate')} Restore a saved backup</button><button class="secondary" data-action="choose-import">${icon('upload')} Import data</button><input type="file" id="import-file" accept="application/json" class="hidden"></div><p style="margin-top:10px">${metaState.lastBackupDate ? `Last backup: ${formatDateKey(metaState.lastBackupDate)} (${daysBetween(metaState.lastBackupDate, todayKey()) === 0 ? 'today' : `${daysBetween(metaState.lastBackupDate, todayKey())} day${daysBetween(metaState.lastBackupDate, todayKey()) === 1 ? '' : 's'} ago`}).` : 'No backup yet.'} Saved-to-folder copies land in <code>backup/</code> next to this app, named with the version that made them.</p><div class="setting-row"><div><strong>Automatic daily backup</strong><small>Saves to the backup folder once a day, the first time you open the app.</small></div><label class="switch"><input id="setting-auto-backup" type="checkbox" ${metaState.autoBackupEnabled !== false ? 'checked' : ''}><span></span></label></div><div class="setting-row" style="margin-top:20px"><div><strong>Reset all progress</strong><small>This cannot be undone unless you exported a backup.</small></div><button class="danger-button small" data-action="confirm-reset">${icon('trash')} Reset</button></div></article>`;
   }
 
   function settingsCardContent(isPrograms) {
@@ -5843,13 +5868,57 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
   let settingsSection = (() => { try { return localStorage.getItem('cert-study-settings-tab') || 'appearance'; } catch { return 'appearance'; } })();
   let settingsQuery = '';
 
-  function renderSettings() {
+  function settingsCards() {
     const isPrograms = currentDomain() === 'programs';
-    const cards = [
+    return [
       settingsCardProfile(isPrograms), settingsCardLook(isPrograms), settingsCardSidebar(), settingsCardDashboard(isPrograms),
       settingsCardAccessibility(isPrograms), settingsCardLearning(isPrograms), settingsCardNotifications(isPrograms),
       settingsCardContent(isPrograms), settingsCardBackup(isPrograms), settingsCardReferences(isPrograms), settingsCardApp(isPrograms)
     ];
+  }
+
+  // Every setting row, found by reading the same cards the Settings page draws, so the command
+  // palette can never list a setting that does not exist (or miss a new one).
+  function settingsPaletteItems() {
+    const template = document.createElement('template');
+    template.innerHTML = settingsCards().join('');
+    const sectionLabel = Object.fromEntries(SETTINGS_SECTIONS.map(section => [section.id, section.label]));
+    const items = [];
+    template.content.querySelectorAll('.settings-card').forEach(card => {
+      const section = card.dataset.section; const title = card.querySelector('h3')?.textContent.trim() || '';
+      card.querySelectorAll('.setting-row').forEach(row => {
+        const label = row.querySelector('strong')?.textContent.trim(); if (!label) return;
+        const hint = row.querySelector('small')?.textContent.trim() || '';
+        items.push({ type: 'Setting', label, sub: `${sectionLabel[section] || 'Settings'} · ${title}`, icon: 'settings', body: hint, run: () => openSettingAt(section, label) });
+      });
+    });
+    return items;
+  }
+
+  // Jumps to one setting: right tab, scrolled into view, briefly flashed, first control focused.
+  let pendingSettingFlash = null;
+  function openSettingAt(section, label) {
+    settingsSection = section; settingsQuery = '';
+    try { localStorage.setItem('cert-study-settings-tab', section); } catch {}
+    pendingSettingFlash = label;
+    if (currentRoute() === 'settings') renderRoute(); else navigate('settings');
+  }
+  function flashPendingSetting() {
+    if (!pendingSettingFlash) return;
+    const label = pendingSettingFlash; pendingSettingFlash = null;
+    const row = [...document.querySelectorAll('.settings-grid .setting-row')].find(r => !r.closest('.hidden') && r.querySelector('strong')?.textContent.trim() === label);
+    if (!row) return;
+    // renderRoute() ends with its own smooth scroll to the top; jump after it, as the guide jumps do.
+    setTimeout(() => {
+      row.scrollIntoView({ block: 'center', behavior: 'instant' });
+      row.classList.add('setting-flash');
+      row.querySelector('input:not([type="hidden"]), select, button, textarea')?.focus({ preventScroll: true });
+      setTimeout(() => row.classList.remove('setting-flash'), 2000);
+    }, 180);
+  }
+
+  function renderSettings() {
+    const cards = settingsCards();
     main.innerHTML = `<div class="section-head"><div><h2>Settings and local data</h2><p>Your progress is saved locally on this machine by the local server, in its own file per account. Export a backup before wiping that file or moving to another computer.</p></div></div>
       <div class="settings-toolbar">
         <div class="domain-tabs" role="tablist" aria-label="Settings sections" style="margin:0">${[{ id: 'all', label: 'All' }, ...SETTINGS_SECTIONS].map(s => `<button class="tab-button" type="button" role="tab" data-action="settings-tab" data-section="${s.id}" aria-selected="false">${s.label}</button>`).join('')}</div>
@@ -5858,6 +5927,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
       <section class="settings-grid">${cards.join('')}</section>
       <div class="empty-state hidden" id="settings-empty"><div><span class="stat-icon" style="margin:0 auto 12px">${icon('search')}</span><h3>No settings match</h3><p>Try a different word, or clear the search to browse by section.</p></div></div>`;
     applySettingsFilter();
+    flashPendingSetting();
   }
 
   // Tabs and search only show/hide what's already on the page, so typing never rebuilds the form
@@ -5989,18 +6059,63 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
   // Writes the same full-backup payload exportData() downloads, but through the local server
   // instead of the browser's download folder — lands in a real backup/ folder next to this app,
   // named with the running version so multiple backups sort and identify themselves at a glance.
-  async function saveBackupToFolder() {
-    if (!(await refreshRemoteProgress()) || !progressLoaded) { toast('Could not read your progress from the study server, so no backup was written.', 'error'); return; }
+  // `kind: 'pre-restore'` is the safety copy taken just before an older backup replaces your data:
+  // it is saved under its own name, never counts as "today's backup", and says nothing unless it fails.
+  async function saveBackupToFolder({ kind = 'daily', quiet = false } = {}) {
+    if (!(await refreshRemoteProgress()) || !progressLoaded) { toast('Could not read your progress from the study server, so no backup was written.', 'error'); return false; }
     const payload = { app: 'Cert Study', format: 'full', exportedAt: new Date().toISOString(), version: APP_VERSION, dateKey: todayKey(), profile: activeProfileId, progress: remoteProgress };
+    if (kind === 'pre-restore') payload.kind = 'pre-restore';
     try {
       const res = await fetch('/api/backup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || 'save failed');
-      metaState.lastBackupDate = todayKey(); metaState.backupSnoozeUntil = null; saveMeta();
-      renderRoute();
-      toast(`Backup saved to backup/${data.filename}`);
+      if (kind !== 'pre-restore') { metaState.lastBackupDate = todayKey(); metaState.backupSnoozeUntil = null; saveMeta(); }
+      if (!quiet) { renderRoute(); toast(`Backup saved to backup/${data.filename}`); }
+      return true;
     } catch {
       toast('Could not save the backup file — is the local server still running?', 'error');
+      return false;
+    }
+  }
+
+  // ---------- Restore from a saved backup ----------
+  // Lists the files the server has kept in backup/ for this account (see server.py for how old ones
+  // are thinned) and puts one back. A safety copy of the current data is written first, and the same
+  // Undo toast the file import gives follows the restore.
+  async function openRestoreDialog() {
+    openDialog(`<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="restore-title"><h2 id="restore-title">Restore a saved backup</h2><p>Looking for saved backups…</p></div>`);
+    const dialog = dialogLayer.querySelector('.dialog');
+    const show = inner => { if (!dialog.isConnected) return; dialog.innerHTML = inner; hydrateIcons(dialog); dialog.querySelector('button')?.focus(); };
+    const close = `<div class="button-row" style="margin-top:18px"><button class="secondary" data-action="close-dialog">Close</button></div>`;
+    try {
+      const res = await fetch(`/api/backups?profile=${encodeURIComponent(activeProfileId)}`);
+      if (!res.ok) throw new Error('old server');
+      const { backups, keepAllDays, keepWeeklyDays } = await res.json();
+      if (!backups.length) { show(`<h2 id="restore-title">Restore a saved backup</h2><p>No saved backups yet. Use <strong>Save to backup folder</strong> (or leave the automatic daily backup on) and they will show up here.</p>${close}`); return; }
+      const rows = backups.map(b => {
+        const kb = Math.max(1, Math.round(b.size / 1024));
+        const tag = b.kind === 'pre-restore' ? ` <span class="tag">Taken before a restore</span>` : '';
+        return `<div class="schedule-row" style="grid-template-columns:1fr auto"><div class="mastery-label"><strong>${escapeHtml(formatDateKey(b.date))}${tag}</strong><small>${escapeHtml(b.version)} · ${kb.toLocaleString()} KB · ${escapeHtml(b.name)}</small></div><button class="secondary small" data-action="restore-backup" data-name="${escapeHtml(b.name)}">${icon('rotate')} Restore</button></div>`;
+      }).join('');
+      show(`<h2 id="restore-title">Restore a saved backup</h2><p>Replaces every track and your study plan with what was in the backup. Your current data is saved first, and you can undo right afterward.</p><div class="mastery-list" style="max-height:340px;overflow-y:auto;margin:14px 0">${rows}</div><p style="color:var(--muted);font-size:11px">Backups are kept for ${keepAllDays} days, then thinned to one a week for about six months, then one a month.</p>${close}`);
+    } catch {
+      show(`<h2 id="restore-title">Restore a saved backup</h2><p>Could not list your backups. If the study server was started before this update, close its window and start it again, then try once more.</p>${close}`);
+    }
+  }
+
+  async function restoreFromServerBackup(name) {
+    try {
+      const res = await fetch(`/api/backup-file?profile=${encodeURIComponent(activeProfileId)}&name=${encodeURIComponent(name)}`);
+      if (!res.ok) throw new Error('missing');
+      const parsed = await res.json();
+      if (!(parsed.format === 'full' && parsed.progress && typeof parsed.progress === 'object' && Object.keys(parsed.progress).length)) throw new Error('invalid');
+      closeDialog();
+      // Never replace data without first keeping a copy of it.
+      if (!(await saveBackupToFolder({ kind: 'pre-restore', quiet: true }))) return;
+      const date = (name.match(/(\d{4}-\d{2}-\d{2})/) || [])[1];
+      await applyFullBackup(parsed, `Restored the ${date ? formatDateKey(date) : 'selected'} backup — every track and your study plan.`);
+    } catch {
+      toast('Could not restore that backup. Nothing was changed.', 'error');
     }
   }
 
@@ -6249,34 +6364,36 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
     toast(`Exported ${cards.length} card${cards.length === 1 ? '' : 's'} — in Anki, use File > Import and pick this file.`);
   }
 
+  // Puts a full backup's data back, key by key (each track's progress plus the study plan), after
+  // snapshotting what is there now so the Undo in the toast can put every track back exactly.
+  async function applyFullBackup(parsed, message = 'Full backup restored — every track and your study plan.') {
+    const entries = Object.entries(parsed.progress);
+    if (!entries.length) throw new Error('Empty backup');
+    if (!(await refreshRemoteProgress()) || !progressLoaded) throw new Error('Server unreachable');
+    const previousProgress = JSON.parse(JSON.stringify(remoteProgress));
+    const writeAll = payload => Promise.all(Object.entries(payload).map(([key, value]) => fetch('/api/progress', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ profile: activeProfileId, key, value })
+    })));
+    // Every top-level key restored as its own write through the same endpoint saveState/savePlan
+    // already use, and each key's write is independently safe even run in parallel.
+    await writeAll(parsed.progress);
+    await reloadStateForActiveCert();
+    renderRoute();
+    toast(message, 'success', { label: 'Undo', run: async () => {
+      await writeAll(previousProgress);
+      await reloadStateForActiveCert();
+      renderRoute();
+      toast('Restore undone.');
+    } });
+  }
+
   function importData(file) {
     const reader = new FileReader();
     reader.onload = async () => {
       try {
         const parsed = JSON.parse(reader.result);
         if (parsed.format === 'full' && parsed.progress && typeof parsed.progress === 'object') {
-          const entries = Object.entries(parsed.progress);
-          if (!entries.length) throw new Error('Empty backup');
-          // Snapshot every track's CURRENT server-side data before overwriting anything, so an
-          // accidental "wrong file" import can be undone exactly — a full restore touches every
-          // track at once, so undo has to be able to put all of them back, not just the active one.
-          if (!(await refreshRemoteProgress()) || !progressLoaded) throw new Error('Server unreachable');
-          const previousProgress = JSON.parse(JSON.stringify(remoteProgress));
-          const writeAll = payload => Promise.all(Object.entries(payload).map(([key, value]) => fetch('/api/progress', {
-            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ profile: activeProfileId, key, value })
-          })));
-          // Every top-level key (each track's progress, plus the study plan) restored as its
-          // own write through the same endpoint saveState/savePlan already use — no server
-          // change needed, and each key's write is independently safe even run in parallel.
-          await writeAll(parsed.progress);
-          await reloadStateForActiveCert();
-          renderRoute();
-          toast('Full backup restored — every track and your study plan.', 'success', { label: 'Undo', run: async () => {
-            await writeAll(previousProgress);
-            await reloadStateForActiveCert();
-            renderRoute();
-            toast('Import undone.');
-          } });
+          await applyFullBackup(parsed);
           return;
         }
         // Older single-track export, from before full-backup export existed — restore just
@@ -6328,8 +6445,11 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
     // above (the latter isn't certs-only, same as Study guide itself) — no need to duplicate them here.
     items.push({ type: 'Action', label: `Switch to ${state.settings.theme === 'dark' ? 'light' : 'dark'} theme`, icon: state.settings.theme === 'dark' ? 'sun' : 'moon', run: () => setThemeMode(state.settings.theme === 'dark' ? 'light' : 'dark') });
     items.push({ type: 'Action', label: 'Keyboard shortcuts', sub: 'Every shortcut in one place', icon: 'keyboard', run: () => openShortcuts() });
+    items.push({ type: 'Action', label: sidebarRailOn() ? 'Expand the sidebar' : 'Collapse the sidebar to icons', sub: 'Icon-only sidebar', icon: 'sidebar', run: () => toggleSidebarRail() });
+    items.push(...settingsPaletteItems());
     items.push({ type: 'Action', label: "What's new", sub: `Changelog · ${APP_VERSION}`, icon: 'sparkles', run: () => openWhatsNew(true) });
     items.push({ type: 'Action', label: 'Export a full backup', sub: 'Download every track as JSON', icon: 'download', run: () => exportData() });
+    items.push({ type: 'Action', label: 'Restore a saved backup', sub: 'Pick one from the backup folder', icon: 'rotate', run: () => openRestoreDialog() });
     CERT_REGISTRY.forEach(entry => {
       if (entry.id === activeCertId) return;
       items.push({ type: 'Track', label: entry.label, sub: 'Switch to this track', icon: 'repeat', run: () => switchCert(entry.id) });
@@ -6867,6 +6987,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
       toast('Sidebar reset to the default order.');
     }
     if (action === 'open-color-picker') toggleColorPicker(button);
+    if (action === 'goto-exam-date') openSettingAt('study', 'Exam date');
     if (action === 'reset-highlight-colors') { metaState.highlightColors = {}; saveMeta(); applyHighlightPalette(); refreshSettingsInPlace(); toast('Highlight colors reset.'); }
     if (action === 'browse-local-fonts') browseLocalFonts();
     if (action === 'set-app-icon-shape') { metaState.appIconShape = button.dataset.shape; saveMeta(); renderRoute(); }
@@ -6898,6 +7019,15 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
       });
     }
     if (action === 'save-backup-file') saveBackupToFolder();
+    if (action === 'open-restore-dialog') openRestoreDialog();
+    if (action === 'restore-backup') {
+      // Two clicks: the first arms the button, so one stray click can never swap your data.
+      if (button.dataset.armed !== '1') {
+        const original = button.innerHTML;
+        button.dataset.armed = '1'; button.textContent = 'Click again to restore';
+        setTimeout(() => { if (button.isConnected) { button.dataset.armed = ''; button.innerHTML = original; } }, 5000);
+      } else restoreFromServerBackup(button.dataset.name);
+    }
     if (action === 'dismiss-backup-reminder') { metaState.backupSnoozeUntil = todayKey(7); saveMeta(); renderRoute(); }
     if (action === 'export-anki') exportAnkiDeck({ core: document.getElementById('flash-core')?.value, domain: document.getElementById('flash-domain')?.value });
     if (action === 'choose-import') document.getElementById('import-file').click();

@@ -1109,7 +1109,7 @@ html[data-rail="on"] .rail-toggle [data-icon] svg { transform: none; }
     --green: #0f6b31; --green-soft: rgba(15,107,49,.1);
     --shadow: none;
   }
-  .cp-pop, .boot-skeleton, .sidebar, .topbar, .app-footer, .toast-region, .dialog-layer, .mobile-backdrop, .builder, .skip-link, .sync-banner, .focus-timer-bar, .guide-highlight-popover, #a11y-status, .hero-greeting { display: none !important; }
+  .eyebrow-link, .cp-pop, .boot-skeleton, .sidebar, .topbar, .app-footer, .toast-region, .dialog-layer, .mobile-backdrop, .builder, .skip-link, .sync-banner, .focus-timer-bar, .guide-highlight-popover, #a11y-status, .hero-greeting { display: none !important; }
   .app-shell { display: block; }
   .app-main { min-height: 0; }
   #main-content { max-width: none; padding: 0; outline: none !important; }
@@ -1387,3 +1387,11 @@ body.focus-active .app-shell { grid-template-columns: minmax(0, 1fr); }
 .hl-slot:hover { background: var(--surface-2); }
 .hl-slot:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 .hl-slot mark { pointer-events: none; padding: 2px 8px; }
+
+/* A setting reached from the command palette or a "Set it" link flashes once so the eye finds it. */
+.setting-row.setting-flash { animation: setting-flash 2s ease; border-radius: 10px; }
+@keyframes setting-flash { 0%, 55% { background: color-mix(in srgb, var(--primary) 18%, transparent); box-shadow: 0 0 0 6px color-mix(in srgb, var(--primary) 18%, transparent); } 100% { background: transparent; box-shadow: 0 0 0 6px transparent; } }
+@media (prefers-reduced-motion: reduce) { .setting-row.setting-flash { animation: none; background: color-mix(in srgb, var(--primary) 18%, transparent); } }
+.eyebrow-link { padding: 0; border: 0; background: none; color: var(--primary); font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; }
+.eyebrow-link:hover { text-decoration: underline; }
+.eyebrow-link:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 3px; }
