@@ -663,8 +663,9 @@ svg { width: 19px; height: 19px; display: block; stroke-width: 1.8; }
    read-aloud only, overwrites innerHTML) — this one is real saved data (state.guideHighlights). */
 /* --hl-color is set inline per <mark> (renderGuideParagraph) to whichever of the 4 highlighter
    colors was picked at creation time — defaults to amber for safety if it's ever missing. */
-.guide-user-highlight { background: color-mix(in srgb, var(--hl-color, var(--amber)) 40%, transparent); color: inherit; border-radius: 2px; padding: 0 1px; cursor: pointer; }
-.guide-user-highlight:hover { background: color-mix(in srgb, var(--hl-color, var(--amber)) 60%, transparent); }
+.guide-user-highlight { --hl-mix: var(--hl-mix-d, 40%); --hl-mix-hover: var(--hl-mix-hover-d, 60%); background: color-mix(in srgb, var(--hl-color, var(--amber)) var(--hl-mix), transparent); color: inherit; border-radius: 2px; padding: 0 1px; cursor: pointer; }
+.guide-user-highlight:hover { background: color-mix(in srgb, var(--hl-color, var(--amber)) var(--hl-mix-hover), transparent); }
+:root[data-theme="light"] .guide-user-highlight { --hl-mix: var(--hl-mix-l, 40%); --hl-mix-hover: var(--hl-mix-hover-l, 60%); }
 .guide-highlight-popover { position: absolute; z-index: 70; transform: translateX(-50%); display: flex; align-items: center; gap: 7px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); box-shadow: 0 12px 28px rgba(0, 0, 0, .3); }
 .highlight-swatch { width: 22px; height: 22px; padding: 0; border: 2px solid var(--border); border-radius: 50%; cursor: pointer; }
 .highlight-swatch:hover { border-color: var(--text); transform: scale(1.12); }
@@ -1178,6 +1179,7 @@ html[data-rail="on"] .rail-toggle [data-icon] svg { transform: none; }
   [data-action="print-page"], [data-action="guide-speak"], [data-action="guide-speak-toggle"], [data-action="guide-speak-stop"], .guide-audio-bar, .domain-tabs, .guide-practice-actions, .report-actions { display: none !important; }
   .guide-audio-read { background: none !important; color: inherit !important; }
   .glossary-print-toggle, .note-chip { display: none !important; }
+  .guide-user-highlight { --hl-mix: var(--hl-mix-l, 40%) !important; --hl-mix-hover: var(--hl-mix-hover-l, 60%) !important; }
   /* Glossary print layouts (chosen with the "When printing" select, which sets one of these
      classes on <body>). Standard drops the diagrams, which carry most of the length; "full"
      brings them back at full width so their text stays legible; compact is a terse cheat sheet. */
@@ -1373,7 +1375,15 @@ body.focus-active .app-shell { grid-template-columns: minmax(0, 1fr); }
 [data-contrast="high"] .guide-user-highlight,
 [data-contrast="high"] .digest-quote { background: var(--surface-3, var(--surface-2)) !important; border: 1px solid var(--hl-color, var(--amber)); }
 
-/* Small letter on each highlighter swatch (Y/G/B/P) so the choice doesn't rely on hue alone —
-   same reasoning as the colorblind-mode block above, just for the highlight-color picker. */
+/* A small number on each highlighter swatch so the choice doesn't rely on hue alone — same
+   reasoning as the colorblind-mode block above. Numbers (not letters) because the colors are
+   user-defined and no letter would stay true. --swatch-ink is set per swatch for contrast. */
 .highlight-swatch { position: relative; color: transparent; font-size: 10px; font-weight: 900; }
-.highlight-swatch::after { content: attr(data-letter); position: absolute; inset: 0; display: grid; place-items: center; color: rgba(0, 0, 0, .55); }
+.highlight-swatch::after { content: attr(data-letter); position: absolute; inset: 0; display: grid; place-items: center; color: var(--swatch-ink, rgba(0, 0, 0, .55)); }
+
+/* Settings → Highlight colors: each slot is a sample highlight you click to recolor. */
+.hl-slots { align-items: center; gap: 10px; }
+.hl-slot { padding: 6px 4px; border: 0; border-radius: 8px; background: transparent; color: var(--text); font-size: 13px; cursor: pointer; }
+.hl-slot:hover { background: var(--surface-2); }
+.hl-slot:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.hl-slot mark { pointer-events: none; padding: 2px 8px; }

@@ -39,12 +39,18 @@ import {
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v214';
+  const APP_VERSION = 'v215';
   // Shown in the "What's new" panel (Settings, command palette, or automatically once per
   // release). Newest first; keep entries short and user-facing. Entries before v133 predate
   // this app having per-build version numbers at all, so their "version" is the date instead —
   // still real history, just not tagged with a build number the way later entries are.
   const CHANGELOG = [
+    { version: 'v215', date: 'October 2026', title: 'Your own highlight colors', items: [
+      "New: choose your own highlighter colors (Settings → Appearance → Highlight colors). Each of the four slots opens the color picker and shows a live sample, so you can see exactly how highlighted text will look.",
+      "Changed: recoloring a slot recolors the highlights you've already made with it, so color-coding by topic or confidence stays consistent. \"Reset\" puts the originals back.",
+      "Changed: very dark or very strong colors are drawn as a lighter wash automatically, so highlighted words stay readable in every theme and in print.",
+      "Changed: the four swatches in the Highlight pop-up are now numbered 1–4 instead of Y/G/B/P, since the colors are yours to define — and each is announced by color name (\"Highlight in dark teal\")."
+    ] },
     { version: 'v214', date: 'October 2026', title: 'A color picker that matches the app', items: [
       "New: choosing a custom color now opens the app's own picker — a saturation and brightness field, a hue slider, hex and RGB boxes, and an eyedropper — instead of the browser's plain system popup. It follows your theme, style, and corner settings.",
       "New: the app icon color and your avatar color now have the same \"pick any color\" option as the accent, next to their quick swatches.",
@@ -822,7 +828,7 @@ import {
   // server tracks — the uploaded photo always overwrites the same file on disk (see avatarUrl
   // below for which one), so nothing about the photo itself is stored in progress.json, only
   // this small pointer.
-  const defaultMeta = () => ({ version: 1, seenVersion: null, lastBackupDate: null, backupSnoozeUntil: null, displayName: '', avatar: { type: 'initials', emoji: '', color: '', photoVersion: 0 }, appIconShape: 'cap', appIconColor: '#2dd4bf', autoBackupEnabled: true, notifyReviewsEnabled: false, lastReviewNotifyDate: null, appearance: null, perTrackAccent: false, trackAccents: {}, navHidden: {}, navOrder: {}, dashboardGreeting: true, dashboardPrimary: 'smart' });
+  const defaultMeta = () => ({ version: 1, seenVersion: null, lastBackupDate: null, backupSnoozeUntil: null, displayName: '', avatar: { type: 'initials', emoji: '', color: '', photoVersion: 0 }, appIconShape: 'cap', appIconColor: '#2dd4bf', autoBackupEnabled: true, notifyReviewsEnabled: false, lastReviewNotifyDate: null, appearance: null, perTrackAccent: false, trackAccents: {}, navHidden: {}, navOrder: {}, dashboardGreeting: true, dashboardPrimary: 'smart', highlightColors: {} });
   const AVATAR_EMOJIS = ['🎓', '💻', '🛠️', '🔒', '📡', '🧠', '⚡', '🎯', '📚', '🖥️'];
   const AVATAR_COLORS = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#ec4899'];
   // Reuses the same 6 icons already defined in iconPaths (no new SVG art to design) and the
@@ -2174,6 +2180,14 @@ import {
     return contrastRatio(rgb, [255, 255, 255]) >= contrastRatio(rgb, [11, 18, 32]) ? '#ffffff' : '#0b1220';
   }
 
+  // The hex value a built-in theme token (--amber etc.) currently resolves to, as a starting point
+  // when someone first customizes a slot.
+  function tokenHex(name) {
+    const probe = document.createElement('i'); probe.style.color = `var(--${name})`; document.body.appendChild(probe);
+    const [r, g, b] = (getComputedStyle(probe).color.match(/[\d.]+/g) || [45, 212, 191]).slice(0, 3).map(Number); probe.remove();
+    return rgbToHex([r, g, b]);
+  }
+
   let colorPickerTrigger = null;
   function toggleColorPicker(trigger) {
     if (colorPickerTrigger === trigger) { closeAnyCustomPopover(); return; }
@@ -2196,6 +2210,14 @@ import {
         cancel: () => updateChrome(),
         commit: hex => { metaState.avatar = { ...metaState.avatar, color: hex }; saveMeta(); updateChrome(); }
       },
+      highlight: {
+        label: `Highlight color ${HIGHLIGHT_COLORS.indexOf(trigger.dataset.slot) + 1}`,
+        slot: trigger.dataset.slot,
+        start: highlightCustomHex(trigger.dataset.slot) || tokenHex(trigger.dataset.slot),
+        live: hex => { const mark = trigger.querySelector('mark'); if (mark) mark.style.cssText = highlightCustomVars(hex); },
+        cancel: () => { const mark = trigger.querySelector('mark'); if (mark) mark.style.cssText = highlightStyleVars(trigger.dataset.slot); },
+        commit: hex => { metaState.highlightColors = { ...(metaState.highlightColors || {}), [trigger.dataset.slot]: hex }; saveMeta(); applyHighlightPalette(); }
+      },
       icon: {
         label: 'App icon color',
         start: metaState.appIconColor || ICON_COLORS[0],
@@ -2207,7 +2229,7 @@ import {
     if (config) openColorPicker({ trigger, kind, ...config });
   }
 
-  function openColorPicker({ trigger, kind, label, start, live, cancel, commit }) {
+  function openColorPicker({ trigger, kind, slot, label, start, live, cancel, commit }) {
     const original = normalizeHex(start) || '#2dd4bf';
     let [h, s, v] = rgbToHsv(hexToRgb(original));
     const pop = document.createElement('div');
@@ -2303,7 +2325,7 @@ import {
       if (openCustomPopover === closer) openCustomPopover = null;
       if (how === 'cancel' || chosen === original) cancel();
       else { commit(chosen); if (document.querySelector('#main-content .settings-grid')) refreshSettingsInPlace(); }
-      if (how !== 'outside') document.querySelector(`[data-action="open-color-picker"][data-picker="${kind}"]`)?.focus();
+      if (how !== 'outside') document.querySelector(`[data-action="open-color-picker"][data-picker="${kind}"]${slot ? `[data-slot="${slot}"]` : ''}`)?.focus();
     }
     openCustomPopover = closer;
     colorPickerTrigger = trigger;
@@ -2517,6 +2539,7 @@ import {
     applyHighContrast();
     applySidebarRail();
     updateFavicon();
+    applyHighlightPalette();
     const theme = document.getElementById('theme-toggle');
     if (theme) theme.innerHTML = icon(state.settings.theme === 'dark' ? 'sun' : 'moon');
     const displayName = (metaState.displayName || '').trim();
@@ -5745,7 +5768,62 @@ import {
   // A small real-highlighter-style pack — each name is also the exact CSS custom-property token
   // (var(--amber) etc.), already contrast-tuned for both themes, so no new color tokens needed.
   const HIGHLIGHT_COLORS = ['amber', 'green', 'blue', 'violet'];
+  const HIGHLIGHT_DEFAULT_NAMES = { amber: 'yellow', green: 'green', blue: 'blue', violet: 'pink' };
   function guideHighlightColor(color) { return HIGHLIGHT_COLORS.includes(color) ? color : 'amber'; }
+
+  // Each of the four highlighter slots can be recolored (Settings → Appearance → Highlight colors).
+  // A highlight remembers only its slot, so a recolor carries through every highlight already made
+  // with it — color-coding by topic stays consistent. An unset slot keeps its built-in theme token.
+  function highlightCustomHex(slot) {
+    const value = (metaState.highlightColors || {})[slot];
+    return isHexColor(value) ? value.toLowerCase() : null;
+  }
+  function highlightColorValue(slot) { return highlightCustomHex(slot) || `var(--${slot})`; }
+  // A custom color is drawn as a translucent wash over the text, so a very dark or very strong
+  // color could swallow the words. Pick the strongest wash (up to 40%) that keeps body text at
+  // 4.5:1 — worked out separately for dark and light, against the darkest/lightest surfaces the
+  // style presets use. Light is also what printing uses, so paper stays readable too.
+  const HIGHLIGHT_CONTRAST_CASES = {
+    dark: [{ surface: [12, 12, 14], text: [232, 238, 247] }, { surface: [30, 34, 44], text: [232, 238, 247] }],
+    light: [{ surface: [255, 255, 255], text: [20, 32, 50] }, { surface: [245, 241, 234], text: [42, 36, 27] }]
+  };
+  function highlightMixFor(hex, theme) {
+    const rgb = hexToRgb(hex); const cases = HIGHLIGHT_CONTRAST_CASES[theme];
+    const passes = mix => cases.every(c => contrastRatio(c.text, c.surface.map((v, i) => v * (1 - mix / 100) + rgb[i] * (mix / 100))) >= 4.5);
+    let mix = 40;
+    while (mix > 6 && !(passes(mix) && passes(Math.min(mix + 20, 60)))) mix -= 2;
+    return mix;
+  }
+  function highlightCustomVars(hex) {
+    const d = highlightMixFor(hex, 'dark'), l = highlightMixFor(hex, 'light');
+    return `--hl-color:${hex};--hl-mix-d:${d}%;--hl-mix-hover-d:${Math.min(d + 20, 60)}%;--hl-mix-l:${l}%;--hl-mix-hover-l:${Math.min(l + 20, 60)}%`;
+  }
+  function highlightStyleVars(slot) {
+    const hex = highlightCustomHex(slot);
+    return hex ? highlightCustomVars(hex) : `--hl-color:var(--${guideHighlightColor(slot)})`;
+  }
+  // A plain-language name for a color, for screen readers and tooltips ("dark teal", "light pink").
+  function colorNameFor(hex) {
+    const [hue, sat, light] = rgbToHsl(hexToRgb(hex)); const deg = hue * 360;
+    if (light < 0.1) return 'black';
+    if (light > 0.93) return 'white';
+    if (sat < 0.12) return light < 0.35 ? 'dark gray' : light > 0.7 ? 'light gray' : 'gray';
+    let base = deg < 15 || deg >= 345 ? 'red' : deg < 40 ? 'orange' : deg < 65 ? 'yellow' : deg < 160 ? 'green' : deg < 195 ? 'teal' : deg < 255 ? 'blue' : deg < 290 ? 'purple' : 'pink';
+    if (base === 'orange' && light < 0.4) base = 'brown';
+    return `${light < 0.3 && base !== 'brown' ? 'dark ' : light > 0.78 ? 'light ' : ''}${base}`;
+  }
+  function highlightSlotName(slot) { const hex = highlightCustomHex(slot); return hex ? colorNameFor(hex) : HIGHLIGHT_DEFAULT_NAMES[slot]; }
+  // Keeps the floating Highlight popover's four swatches in step with the palette. Numbers, not
+  // letters, mark each swatch so a choice never depends on hue alone and never mislabels a recolor.
+  function applyHighlightPalette() {
+    document.querySelectorAll('#guide-highlight-popover .highlight-swatch').forEach((el, index) => {
+      const slot = el.dataset.color; const hex = highlightCustomHex(slot); const name = highlightSlotName(slot);
+      el.style.background = highlightColorValue(slot);
+      el.style.setProperty('--swatch-ink', hex ? readableTextOn(hex) : 'rgba(0,0,0,.55)');
+      el.dataset.letter = String(index + 1);
+      el.setAttribute('aria-label', `Highlight in ${name}`); el.title = `Highlight in ${name}`;
+    });
+  }
 
   // Injects <mark> spans around highlighted substrings of a paragraph's plain text. Ranges are
   // clamped and walked in order so out-of-date offsets (e.g. from hand-edited content) can't
@@ -5758,7 +5836,7 @@ import {
       const start = Math.max(cursor, Math.min(r.start, text.length));
       const end = Math.max(start, Math.min(r.end, text.length));
       if (start > cursor) html += escapeHtml(text.slice(cursor, start));
-      if (end > start) html += `<mark class="guide-user-highlight" style="--hl-color:var(--${guideHighlightColor(r.color)})" data-action="remove-guide-highlight" data-domain-id="${domainId}" data-highlight-id="${r.id}" title="Click to remove this highlight">${escapeHtml(text.slice(start, end))}</mark>`;
+      if (end > start) html += `<mark class="guide-user-highlight" style="${highlightStyleVars(r.color)}" data-action="remove-guide-highlight" data-domain-id="${domainId}" data-highlight-id="${r.id}" title="Click to remove this highlight">${escapeHtml(text.slice(start, end))}</mark>`;
       cursor = Math.max(cursor, end);
     });
     if (cursor < text.length) html += escapeHtml(text.slice(cursor));
@@ -6014,7 +6092,7 @@ import {
     main.innerHTML = `<div class="section-head"><div><h2>Highlights digest</h2><p>Every snippet you've marked across the Study guide, pulled into one condensed review — good for a final pass before an exam.</p></div><div class="button-row"><button class="ghost small" type="button" data-route="guide">${icon('arrow')} Back to Study guide</button>${total ? `<button class="ghost small" type="button" data-action="print-page">${icon('download')} Print / save</button>` : ''}</div></div>
       ${total ? groups.map(group => `<section class="panel" style="margin-bottom:16px"><div class="panel-header"><div><h2>${escapeHtml(group.domain.name)}</h2><p>${group.items.length} highlight${group.items.length === 1 ? '' : 's'}</p></div></div><div class="panel-body"><div class="note-list">${group.items.map(item => `<article class="note-item">
           <div class="note-item-head"><strong>${escapeHtml(item.sectionLabel)}</strong></div>
-          <blockquote class="digest-quote" style="--hl-color:var(--${item.color})">${escapeHtml(item.snippet)}</blockquote>
+          <blockquote class="digest-quote" style="--hl-color:${highlightColorValue(item.color)}">${escapeHtml(item.snippet)}</blockquote>
           <div class="button-row"><button class="ghost small" data-action="guide-jump" data-domain-id="${group.domain.id}">${icon('arrow')} Jump to chapter</button><button class="ghost small" data-action="remove-guide-highlight" data-domain-id="${group.domain.id}" data-highlight-id="${item.id}">${icon('trash')} Remove</button></div>
         </article>`).join('')}</div></div></section>`).join('')
         : `<div class="empty-state"><div><span class="stat-icon" style="margin:0 auto 12px">${icon('spark')}</span><h3>No highlights yet</h3><p>Select any text in a Study guide chapter and choose "Highlight" to start building this digest.</p><button class="primary" data-route="guide">${icon('book')} Open Study guide</button></div></div>`}`;
@@ -6431,6 +6509,14 @@ import {
     return `<div class="setting-row stacked"><div><strong>Theme style</strong><small>The surface palette — each one has a dark and a light version.</small></div><div class="preset-grid">${THEME_PRESETS.map(p => `<button type="button" class="preset-card ${activeId === p.id ? 'active' : ''}" data-action="set-theme-preset" data-preset="${p.id}" aria-pressed="${activeId === p.id}"><span class="preset-preview" style="color:${theme === 'light' ? '#142032' : '#edf4fb'};background:${p.swatch[theme][0]}"><i style="background:${p.swatch[theme][1]}"></i><b></b></span><span><strong>${p.label}</strong><small>${p.blurb}</small></span></button>`).join('')}</div></div>`;
   }
 
+  // Each slot is drawn as a real highlight on a sample word, so the swatch shows exactly how text
+  // will look (including the automatic readability wash for strong colors).
+  function highlightColorsRowMarkup() {
+    const anyCustom = HIGHLIGHT_COLORS.some(slot => highlightCustomHex(slot));
+    return `<div class="setting-row stacked"><div><strong>Highlight colors</strong><small>The four colors offered when you highlight Study guide text. Changing one recolors the highlights you have already made with it, so any color-coding stays consistent.</small></div>
+      <div class="swatch-row hl-slots">${HIGHLIGHT_COLORS.map((slot, index) => `<button type="button" class="hl-slot" data-action="open-color-picker" data-picker="highlight" data-slot="${slot}" aria-haspopup="dialog" aria-label="Highlight color ${index + 1}, currently ${highlightSlotName(slot)}. Change it." title="Pick any color"><mark class="guide-user-highlight" style="${highlightStyleVars(slot)}">Highlight ${index + 1}</mark></button>`).join('')}${anyCustom ? `<button type="button" class="ghost small" data-action="reset-highlight-colors">${icon('rotate')} Reset</button>` : ''}</div></div>`;
+  }
+
   // The rainbow swatch that opens the color picker. It shows as chosen (with its own color in the
   // middle) whenever the current color is not one of the quick swatches beside it.
   function customSwatchMarkup(picker, label, currentHex, presetHexes) {
@@ -6485,7 +6571,7 @@ import {
   }
 
   function settingsCardLook(isPrograms) {
-    return `<article class="settings-card" data-section="appearance" data-card="look"><h3>Look &amp; feel</h3><p>Purely cosmetic — none of this changes how mastery or scoring works.</p><div class="setting-row"><div><strong>Color theme</strong><small>Dark, light, or follow your system setting automatically.</small></div><div class="domain-tabs" style="margin:0">${['dark', 'light', 'auto'].map(mode => `<button class="tab-button ${state.settings.themeMode === mode ? 'active' : ''}" type="button" data-action="set-theme-mode" data-mode="${mode}">${mode === 'auto' ? 'Auto' : mode === 'dark' ? 'Dark' : 'Light'}</button>`).join('')}</div></div>${themePresetRowMarkup()}${accentRowMarkup()}<div class="setting-row stacked"><div><strong>App font</strong><small>Start typing to see common fonts, or type any exact name of your own.</small></div><div class="button-row" style="width:100%;align-items:center"><input type="text" id="setting-font-name" class="setting-date-input" style="flex:1;min-width:200px" placeholder="e.g. Calibri, Comic Sans MS" value="${escapeHtml(state.settings.fontFamily || '')}" autocomplete="off">${'queryLocalFonts' in window ? `<button class="secondary small" type="button" data-action="browse-local-fonts">Check Installed Fonts</button>` : ''}${state.settings.fontFamily ? `<button class="secondary small" type="button" data-action="reset-font-family">Reset</button>` : ''}</div><p id="font-preview-sample" style="margin:8px 0 0;font-family:${escapeHtml(buildFontStack(state.settings.fontFamily))};font-size:13px;color:var(--muted)">The quick brown fox jumps over the lazy dog.</p></div><div class="setting-row stacked"><div><strong>Text size</strong><small>Scales the whole app, not just body text.</small></div><div class="domain-tabs" style="margin:0">${[['0.9', 'Small'], ['1', 'Default'], ['1.15', 'Large'], ['1.3', 'Extra large']].map(([size, label]) => `<button class="tab-button ${Number(state.settings.fontSize) === Number(size) ? 'active' : ''}" type="button" data-action="set-font-size" data-size="${size}">${label}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Corner style</strong><small>Rounded or sharp corners across the app.</small></div><div class="domain-tabs" style="margin:0">${[['rounded', 'Rounded'], ['sharp', 'Sharp']].map(([id, label]) => `<button class="tab-button ${(state.settings.cornerStyle || 'rounded') === id ? 'active' : ''}" type="button" data-action="set-corner-style" data-corners="${id}">${label}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Density</strong><small>How much breathing room cards and lists get.</small></div><div class="domain-tabs" style="margin:0">${[['comfortable', 'Comfortable'], ['compact', 'Compact']].map(([id, label]) => `<button class="tab-button ${(state.settings.density || 'comfortable') === id ? 'active' : ''}" type="button" data-action="set-density" data-density="${id}">${label}</button>`).join('')}</div></div></article>`;
+    return `<article class="settings-card" data-section="appearance" data-card="look"><h3>Look &amp; feel</h3><p>Purely cosmetic — none of this changes how mastery or scoring works.</p><div class="setting-row"><div><strong>Color theme</strong><small>Dark, light, or follow your system setting automatically.</small></div><div class="domain-tabs" style="margin:0">${['dark', 'light', 'auto'].map(mode => `<button class="tab-button ${state.settings.themeMode === mode ? 'active' : ''}" type="button" data-action="set-theme-mode" data-mode="${mode}">${mode === 'auto' ? 'Auto' : mode === 'dark' ? 'Dark' : 'Light'}</button>`).join('')}</div></div>${themePresetRowMarkup()}${accentRowMarkup()}${highlightColorsRowMarkup()}<div class="setting-row stacked"><div><strong>App font</strong><small>Start typing to see common fonts, or type any exact name of your own.</small></div><div class="button-row" style="width:100%;align-items:center"><input type="text" id="setting-font-name" class="setting-date-input" style="flex:1;min-width:200px" placeholder="e.g. Calibri, Comic Sans MS" value="${escapeHtml(state.settings.fontFamily || '')}" autocomplete="off">${'queryLocalFonts' in window ? `<button class="secondary small" type="button" data-action="browse-local-fonts">Check Installed Fonts</button>` : ''}${state.settings.fontFamily ? `<button class="secondary small" type="button" data-action="reset-font-family">Reset</button>` : ''}</div><p id="font-preview-sample" style="margin:8px 0 0;font-family:${escapeHtml(buildFontStack(state.settings.fontFamily))};font-size:13px;color:var(--muted)">The quick brown fox jumps over the lazy dog.</p></div><div class="setting-row stacked"><div><strong>Text size</strong><small>Scales the whole app, not just body text.</small></div><div class="domain-tabs" style="margin:0">${[['0.9', 'Small'], ['1', 'Default'], ['1.15', 'Large'], ['1.3', 'Extra large']].map(([size, label]) => `<button class="tab-button ${Number(state.settings.fontSize) === Number(size) ? 'active' : ''}" type="button" data-action="set-font-size" data-size="${size}">${label}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Corner style</strong><small>Rounded or sharp corners across the app.</small></div><div class="domain-tabs" style="margin:0">${[['rounded', 'Rounded'], ['sharp', 'Sharp']].map(([id, label]) => `<button class="tab-button ${(state.settings.cornerStyle || 'rounded') === id ? 'active' : ''}" type="button" data-action="set-corner-style" data-corners="${id}">${label}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Density</strong><small>How much breathing room cards and lists get.</small></div><div class="domain-tabs" style="margin:0">${[['comfortable', 'Comfortable'], ['compact', 'Compact']].map(([id, label]) => `<button class="tab-button ${(state.settings.density || 'comfortable') === id ? 'active' : ''}" type="button" data-action="set-density" data-density="${id}">${label}</button>`).join('')}</div></div></article>`;
   }
 
   function settingsCardAccessibility(isPrograms) {
@@ -6525,7 +6611,7 @@ import {
   ];
   // Extra words each card should be findable by, beyond its own visible title and description.
   const SETTINGS_KEYWORDS = {
-    profile: 'name avatar photo account switch pin', look: 'theme dark light color accent font size density corners style preset palette',
+    profile: 'name avatar photo account switch pin', look: 'theme dark light color accent highlight highlighter marker font size density corners style preset palette',
     sidebar: 'sidebar navigation menu collapse icons order hide', dashboard: 'home greeting primary action start',
     accessibility: 'contrast colorblind motion reading dyslexia', learning: 'second chance sound focus fullscreen start page speed exam date celebrations',
     notifications: 'reminders alerts due', backup: 'export import restore reset download json', content: 'track scoring completed finished passed',
@@ -7558,6 +7644,7 @@ import {
       toast('Sidebar reset to the default order.');
     }
     if (action === 'open-color-picker') toggleColorPicker(button);
+    if (action === 'reset-highlight-colors') { metaState.highlightColors = {}; saveMeta(); applyHighlightPalette(); refreshSettingsInPlace(); toast('Highlight colors reset.'); }
     if (action === 'browse-local-fonts') browseLocalFonts();
     if (action === 'set-app-icon-shape') { metaState.appIconShape = button.dataset.shape; saveMeta(); renderRoute(); }
     if (action === 'set-app-icon-color') { metaState.appIconColor = button.dataset.color; saveMeta(); updateFavicon(); refreshSettingsInPlace(); }
