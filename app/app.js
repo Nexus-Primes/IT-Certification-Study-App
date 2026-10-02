@@ -3,7 +3,7 @@ import {
   letters, iconPaths, icon, hydrateIcons, escapeHtml, pct, localDateKey, todayKey, addDays,
   daysBetween, formatDate, formatDateKey, formatPlanDate, formatDuration, hashNumber,
   seededShuffle, recallMatchHint
-} from './utils.js?v=2';
+} from './utils.js?v=3';
 
 (function () {
   'use strict';
@@ -39,12 +39,22 @@ import {
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v211';
+  const APP_VERSION = 'v212';
   // Shown in the "What's new" panel (Settings, command palette, or automatically once per
   // release). Newest first; keep entries short and user-facing. Entries before v133 predate
   // this app having per-build version numbers at all, so their "version" is the date instead —
   // still real history, just not tagged with a build number the way later entries are.
   const CHANGELOG = [
+    { version: 'v212', date: 'October 2026', title: 'A sidebar that fits you, theme styles, and organized Settings', items: [
+      "New: collapse the sidebar to a slim icon-only rail (the button just above Settings) for more room — hover an icon for its name. Remembered on this device.",
+      "New: choose which pages appear in the sidebar and in what order (Settings → Appearance → Sidebar). Hidden pages stay reachable from search and the G shortcuts.",
+      "New: four theme styles — Classic, Slate, Ink (true black), and Sand (warm, paper-like) — each with its own dark and light version.",
+      "New: pick any accent color, not just the six swatches (or type a hex code). Custom colors are adjusted automatically so text stays readable in both themes. There's also an option to give every track its own accent.",
+      "Changed: Settings is now split into sections — Appearance, Study, Account, Data, About — with a search box that finds a setting by name or by what it does.",
+      "New: the Dashboard greets you by name and time of day, and you can choose what its main button does (the daily recommendation, Quick 10, due flashcards, or continuing the study guide).",
+      "Changed: removed the \"Tip of the day\" and \"All tracks at a glance\" switches for certification tracks — the simplified Dashboard no longer shows either, so they did nothing there.",
+      "Fixed: printing now always uses the plain light palette with the standard accent, even if you've chosen a dark style or a custom accent color."
+    ] },
     { version: 'v211', date: 'October 2026', title: 'Your look follows you, and saving is sturdier', items: [
       "Changed: theme, accent color, font, text size, density, corner style, and the accessibility toggles now belong to your account, not to whichever track is open — customize once and every track matches. Whatever you'd already set up carries over automatically.",
       "Changed: the right theme is painted from the very first frame, so light-theme users no longer see a dark flash while the app loads.",
@@ -793,7 +803,7 @@ import {
   // server tracks — the uploaded photo always overwrites the same file on disk (see avatarUrl
   // below for which one), so nothing about the photo itself is stored in progress.json, only
   // this small pointer.
-  const defaultMeta = () => ({ version: 1, seenVersion: null, lastBackupDate: null, backupSnoozeUntil: null, displayName: '', avatar: { type: 'initials', emoji: '', color: '', photoVersion: 0 }, appIconShape: 'cap', appIconColor: '#2dd4bf', autoBackupEnabled: true, notifyReviewsEnabled: false, lastReviewNotifyDate: null, appearance: null, perTrackAccent: false, trackAccents: {} });
+  const defaultMeta = () => ({ version: 1, seenVersion: null, lastBackupDate: null, backupSnoozeUntil: null, displayName: '', avatar: { type: 'initials', emoji: '', color: '', photoVersion: 0 }, appIconShape: 'cap', appIconColor: '#2dd4bf', autoBackupEnabled: true, notifyReviewsEnabled: false, lastReviewNotifyDate: null, appearance: null, perTrackAccent: false, trackAccents: {}, navHidden: {}, navOrder: {}, dashboardGreeting: true, dashboardPrimary: 'smart' });
   const AVATAR_EMOJIS = ['🎓', '💻', '🛠️', '🔒', '📡', '🧠', '⚡', '🎯', '📚', '🖥️'];
   const AVATAR_COLORS = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#ec4899'];
   // Reuses the same 6 icons already defined in iconPaths (no new SVG art to design) and the
@@ -907,7 +917,7 @@ import {
     try {
       localStorage.setItem(APPEARANCE_CACHE_KEY, JSON.stringify({
         mode: settings.themeMode, preset: settings.themePreset,
-        vars: { dark: accentVarsFor(currentAccentValue(), 'dark'), light: accentVarsFor(currentAccentValue(), 'light') }
+        vars: { dark: accentVarsFor(currentAccentValue(), 'dark', settings.themePreset), light: accentVarsFor(currentAccentValue(), 'light', settings.themePreset) }
       }));
     } catch {}
   }
@@ -1386,13 +1396,88 @@ import {
   // Programs are purely hands-on: no quiz/exam/flashcard surfaces exist for them anywhere in
   // the app, not just hidden from the nav — this is what actually enforces that at the chrome
   // level. Certs keep every nav item; Programs only ever sees Dashboard/Glossary/Labs/Progress.
+  // ---------- Sidebar: icon rail + your own order/visibility ----------
+  // The nav items themselves are static HTML in index.html; "customizing" just reorders those
+  // nodes and tags hidden ones with a class, so every route, shortcut, and the command palette
+  // keep working exactly as before — a hidden page is hidden from the sidebar only.
+  const RAIL_KEY = 'cert-study-sidebar-rail';
+  let navDefaultCache = null;
+
+  function navItemLabel(button) {
+    const span = button.querySelector('span:not([data-icon]):not(.nav-badge)');
+    return span ? span.textContent.trim() : button.dataset.route;
+  }
+
+  // Captured from the untouched HTML the first time it's asked for (before any reordering).
+  function navDefaults() {
+    if (!navDefaultCache) {
+      navDefaultCache = [...document.querySelectorAll('.nav-group')].map(group => ({
+        id: group.dataset.group,
+        label: (group.querySelector('.nav-group-toggle span')?.textContent || group.dataset.group).trim(),
+        items: [...group.querySelectorAll('.nav-item[data-route]')].map(button => ({ route: button.dataset.route, label: navItemLabel(button), icon: button.querySelector('[data-icon]')?.dataset.icon || 'arrow' }))
+      }));
+    }
+    return navDefaultCache;
+  }
+
+  function navOrderFor(group) {
+    const known = group.items.map(item => item.route);
+    const saved = ((metaState.navOrder || {})[group.id] || []).filter(route => known.includes(route));
+    return [...saved, ...known.filter(route => !saved.includes(route))];
+  }
+
+  function applyNavCustomization() {
+    navDefaults().forEach(group => {
+      const container = document.querySelector(`.nav-group[data-group="${group.id}"] .nav-group-items`);
+      if (!container) return;
+      navOrderFor(group).forEach(route => {
+        const button = container.querySelector(`.nav-item[data-route="${route}"]`);
+        if (!button) return;
+        container.appendChild(button);
+        button.classList.toggle('nav-user-hidden', !!(metaState.navHidden || {})[route]);
+      });
+    });
+  }
+
+  function sidebarRailOn() { try { return localStorage.getItem(RAIL_KEY) === '1'; } catch { return false; } }
+
+  // Icon-only mode drops the visible labels (kept readable to assistive tech) — so every
+  // control gets a tooltip with its name instead.
+  function applySidebarRail() {
+    const on = sidebarRailOn();
+    document.documentElement.dataset.rail = on ? 'on' : 'off';
+    document.querySelectorAll('.sidebar .nav-item').forEach(button => {
+      if (button.classList.contains('rail-toggle')) return;
+      if (on) button.title = navItemLabel(button); else button.removeAttribute('title');
+    });
+    const toggle = document.querySelector('.rail-toggle');
+    if (toggle) {
+      toggle.setAttribute('aria-pressed', String(on));
+      toggle.title = on ? 'Expand sidebar' : '';
+      const label = toggle.querySelector('span:not([data-icon])');
+      if (label) label.textContent = on ? 'Expand sidebar' : 'Collapse sidebar';
+    }
+    const certButton = document.getElementById('cert-button');
+    if (certButton) { if (on && typeof CERT !== 'undefined' && CERT) certButton.title = `Current track: ${CERT.name} — click to switch`; else certButton.removeAttribute('title'); }
+    const profileButton = document.getElementById('profile-chip-btn');
+    if (profileButton) { if (on) profileButton.title = `Switch account (${(metaState.displayName || '').trim() || 'this account'})`; else profileButton.removeAttribute('title'); }
+  }
+
+  function toggleSidebarRail(force) {
+    const next = typeof force === 'boolean' ? force : !sidebarRailOn();
+    try { localStorage.setItem(RAIL_KEY, next ? '1' : '0'); } catch {}
+    applySidebarRail();
+  }
+
   function updateDomainNav() {
     const domain = currentDomain();
     document.querySelectorAll('.nav-item[data-domain]').forEach(item => { item.classList.toggle('hidden', item.dataset.domain !== domain); });
+    applyNavCustomization();
     // Hide a whole nav group (and its label) once every item in it is hidden — for Programs
     // that collapses "Practice" down to just Labs and drops "Plan & progress" to Progress only.
+    // Items you've hidden yourself count too, so an emptied group doesn't leave a bare heading.
     document.querySelectorAll('.nav-group').forEach(group => {
-      const anyVisible = [...group.querySelectorAll('.nav-item')].some(item => !item.classList.contains('hidden'));
+      const anyVisible = [...group.querySelectorAll('.nav-item')].some(item => !item.classList.contains('hidden') && !item.classList.contains('nav-user-hidden'));
       group.classList.toggle('hidden', !anyVisible);
     });
     const quickBtn = document.getElementById('quick-practice-btn');
@@ -1945,6 +2030,24 @@ import {
     { id: 'rose', label: 'Rose', dark: { primary: '#fb7185', soft: 'rgba(251,113,133,.12)' }, light: { primary: '#c71940', soft: 'rgba(225,29,72,.08)' } }
   ];
 
+  // Surface palettes — they restyle backgrounds, borders, and text only; the status colors
+  // (green/red/amber/blue) are shared across all of them so correct/incorrect always read the
+  // same. The actual variable values live in styles.css under :root[data-preset="…"]; `surface`
+  // here is just the main card color, which custom accents are contrast-checked against.
+  const THEME_PRESETS = [
+    { id: 'default', label: 'Classic', blurb: 'The original', swatch: { dark: ['#080d17', '#101827'], light: ['#f3f6f9', '#ffffff'] }, surface: { dark: [16, 24, 39], light: [255, 255, 255] } },
+    { id: 'slate', label: 'Slate', blurb: 'Cool grays', swatch: { dark: ['#0f1115', '#181b21'], light: ['#f2f3f5', '#ffffff'] }, surface: { dark: [24, 27, 33], light: [255, 255, 255] } },
+    { id: 'ink', label: 'Ink', blurb: 'True black', swatch: { dark: ['#000000', '#0c0c0e'], light: ['#fafafa', '#ffffff'] }, surface: { dark: [12, 12, 14], light: [255, 255, 255] } },
+    { id: 'sand', label: 'Sand', blurb: 'Warm paper', swatch: { dark: ['#14110d', '#1c1812'], light: ['#f5f1ea', '#fffdf9'] }, surface: { dark: [28, 24, 18], light: [255, 253, 249] } }
+  ];
+  const presetById = id => THEME_PRESETS.find(p => p.id === id) || THEME_PRESETS[0];
+
+  function applyThemePreset() {
+    const preset = presetById(state.settings.themePreset).id;
+    if (preset === 'default') document.documentElement.removeAttribute('data-preset');
+    else document.documentElement.dataset.preset = preset;
+  }
+
   // A track's default accent when "different accent per track" is on and nothing's been picked for
   // it yet — same vendor, same family, so related tracks read as related at a glance.
   const TRACK_DEFAULT_ACCENTS = { aplus: 'teal', netplus: 'blue', secplus: 'rose', '3cx-basic': 'amber', '3cx-advanced': 'amber', 'winserver-hybrid': 'green', dp300: 'violet', 'blender-fundamentals': 'amber' };
@@ -1977,14 +2080,14 @@ import {
   // A picked color is nudged only as far as needed to stay readable on the theme's own surface
   // (lightened on dark, darkened on light) — the same "adjust at render time, don't hand-tune"
   // approach domainAccentColor already takes for the per-domain colors.
-  function accentVarsFor(value, theme) {
+  function accentVarsFor(value, theme, themePreset = 'default') {
     if (!isHexColor(value)) {
       const preset = ACCENT_THEMES.find(a => a.id === value);
       if (!preset || preset.id === 'teal') return null;
       const { primary, soft } = preset[theme] || preset.dark;
       return { primary, soft, strong: `color-mix(in srgb, ${primary} 82%, black)`, onPrimary: null };
     }
-    const bg = theme === 'light' ? [255, 255, 255] : [16, 24, 39];
+    const bg = presetById(themePreset).surface[theme === 'light' ? 'light' : 'dark'];
     let [h, s, l] = rgbToHsl(hexToRgb(value));
     let rgb = hexToRgb(value);
     for (let i = 0; i < 40 && contrastRatio(rgb, bg) < 4.5; i++) {
@@ -2001,7 +2104,7 @@ import {
   // keep driving progress-bar/chart gradients untouched.
   function applyAccentColor() {
     const root = document.documentElement.style;
-    const vars = accentVarsFor(currentAccentValue(), state.settings.theme);
+    const vars = accentVarsFor(currentAccentValue(), state.settings.theme, state.settings.themePreset);
     if (!vars) {
       ['--primary', '--primary-soft', '--primary-strong', '--on-primary'].forEach(name => root.removeProperty(name));
       return;
@@ -2204,6 +2307,7 @@ import {
 
   function updateChrome() {
     document.documentElement.dataset.theme = state.settings.theme;
+    applyThemePreset();
     applyAccentColor();
     applyFontChoice();
     applyFontSize();
@@ -2214,6 +2318,7 @@ import {
     applyReducedMotion();
     applyColorblindMode();
     applyHighContrast();
+    applySidebarRail();
     updateFavicon();
     const theme = document.getElementById('theme-toggle');
     if (theme) theme.innerHTML = icon(state.settings.theme === 'dark' ? 'sun' : 'moon');
@@ -2649,6 +2754,31 @@ import {
       ${state.settings.showAllTracks !== false ? allTracksSectionMarkup() : ''}`;
   }
 
+  // "Good evening, Chandler" — the name is whatever's set as the display name, else the account's
+  // own name; with neither, just the time-of-day greeting.
+  function greetingLine() {
+    const hour = new Date().getHours();
+    const part = hour < 5 ? 'Up late' : hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+    const name = ((metaState.displayName || '').trim() || (currentProfile().name || '').trim()).split(/\s+/)[0];
+    return name ? `${part}, ${name}` : part;
+  }
+
+  // The Dashboard's big button is yours to choose. A choice that can't apply right now (no due
+  // cards, nothing in the guide to resume) quietly falls back to the daily recommendation rather
+  // than showing a dead button. If the main button is already Quick 10, the side button offers
+  // the recommendation instead of repeating it.
+  function dashboardActions(todaysPlan, dueCount) {
+    const smart = { action: 'start-today', label: todaysSessionLabel(todaysPlan), icon: 'play' };
+    const quick = { action: 'quick-practice', label: 'Quick 10', icon: 'bolt' };
+    const choice = metaState.dashboardPrimary || 'smart';
+    const resume = state.guideReadPosition && domainById[state.guideReadPosition.domain] ? state.guideReadPosition : null;
+    let main = smart;
+    if (choice === 'quick10') main = { ...quick, label: 'Start Quick 10' };
+    else if (choice === 'due' && dueCount) main = { action: 'start-flash', label: `Review ${dueCount} due card${dueCount === 1 ? '' : 's'}`, icon: 'layers' };
+    else if (choice === 'guide' && resume) main = { action: 'guide-resume-position', label: `Continue ${domainById[resume.domain].name}`, icon: 'book' };
+    return { mainAction: main, sideAction: main.action === 'quick-practice' ? smart : quick };
+  }
+
   // Kept deliberately to one hero + one focus panel so the whole page reads in one glance
   // without scrolling — the full domain-by-domain breakdown, the longer recommendation list,
   // the activity history, tip of the day, and the all-tracks list all still exist (Exam Map,
@@ -2665,17 +2795,19 @@ import {
     const todaysPlan = getTodaysSessionPlan();
     const dueCount = getDueCards(false).length;
     const flaggedCount = Object.keys(state.flaggedQuestions).length;
+    const { mainAction, sideAction } = dashboardActions(todaysPlan, dueCount);
     main.innerHTML = `
       ${backupReminderMarkup()}
       ${cramReminderMarkup()}
       <section class="hero">
         <div class="hero-copy">
+          ${metaState.dashboardGreeting !== false ? `<span class="hero-greeting">${escapeHtml(greetingLine())}</span>` : ''}
           <span class="eyebrow">${escapeHtml(CERT.name)}${state.trackCompleted ? ' · ✓ Completed' : countdown ? ` · exam in ${countdown.days} day${countdown.days === 1 ? '' : 's'}` : ''}</span>
           <h2>${state.trackCompleted ? 'Track completed' : readiness >= 80 ? 'Exam-ready range' : readiness >= 55 ? 'Momentum is building' : 'Build your baseline'}</h2>
           <p>${state.stats.answered ? `${pct(state.stats.firstCorrect, state.stats.answered)}% first-try accuracy · ${getMasteredConcepts()} concepts mastered · ${getStreak()}-day streak` : 'Complete a Quick 10 to establish your first mastery signal.'}</p>
           <div class="button-row">
-            <button class="primary" data-action="start-today">${icon('play')} ${escapeHtml(todaysSessionLabel(todaysPlan))}</button>
-            <button class="secondary" data-action="quick-practice">${icon('bolt')} Quick 10</button>
+            <button class="primary" data-action="${mainAction.action}">${icon(mainAction.icon)} ${escapeHtml(mainAction.label)}</button>
+            <button class="secondary" data-action="${sideAction.action}">${icon(sideAction.icon)} ${escapeHtml(sideAction.label)}</button>
           </div>
         </div>
         <div class="readiness-card">
@@ -6030,19 +6162,163 @@ import {
       </section>`;
   }
 
+  function themePresetRowMarkup() {
+    const theme = state.settings.theme === 'light' ? 'light' : 'dark';
+    const activeId = presetById(state.settings.themePreset).id;
+    return `<div class="setting-row stacked"><div><strong>Theme style</strong><small>The surface palette — each one has a dark and a light version.</small></div><div class="preset-grid">${THEME_PRESETS.map(p => `<button type="button" class="preset-card ${activeId === p.id ? 'active' : ''}" data-action="set-theme-preset" data-preset="${p.id}" aria-pressed="${activeId === p.id}"><span class="preset-preview" style="color:${theme === 'light' ? '#142032' : '#edf4fb'};background:${p.swatch[theme][0]}"><i style="background:${p.swatch[theme][1]}"></i><b></b></span><span><strong>${p.label}</strong><small>${p.blurb}</small></span></button>`).join('')}</div></div>`;
+  }
+
+  function accentRowMarkup() {
+    const current = currentAccentValue();
+    const custom = isHexColor(current);
+    const customHex = custom ? current.toLowerCase() : '#2dd4bf';
+    const theme = state.settings.theme === 'light' ? 'light' : 'dark';
+    const scope = metaState.perTrackAccent ? `Accent for ${CERT.name} — every track keeps its own.` : 'Retints buttons, progress bars, and highlights across the app.';
+    return `<div class="setting-row stacked"><div><strong>Accent color</strong><small>${escapeHtml(scope)}</small></div>
+      <div class="swatch-row">${ACCENT_THEMES.map(a => `<button type="button" class="swatch-btn ${current === a.id ? 'active' : ''}" style="background:${a[theme].primary}" data-action="set-accent-color" data-accent="${a.id}" title="${a.label}" aria-label="${a.label} accent" aria-pressed="${current === a.id}"></button>`).join('')}<label class="swatch-btn swatch-custom ${custom ? 'active' : ''}" title="Pick any color"><input type="color" id="setting-accent-color" value="${customHex}" aria-label="Custom accent color"></label></div>
+      <div class="button-row" style="align-items:center;gap:12px"><input type="text" id="setting-accent-hex" class="setting-date-input hex-field" value="${custom ? customHex : ''}" placeholder="#2dd4bf" maxlength="7" spellcheck="false" autocomplete="off" aria-label="Accent color hex code"><p class="setting-note">${custom ? 'Adjusted automatically so text stays readable in both themes.' : 'Pick a swatch, or choose any color.'}</p></div></div>
+      <div class="setting-row"><div><strong>Different accent per track</strong><small>Each track gets its own color, so you can tell at a glance which one you're in.</small></div><label class="switch"><input id="setting-per-track-accent" type="checkbox" ${metaState.perTrackAccent ? 'checked' : ''}><span></span></label></div>`;
+  }
+
+  // Sets the accent for wherever it currently applies (everywhere, or just this track). `live`
+  // previews without saving, for the color picker's continuous input events.
+  function setAccent(value, { live = false } = {}) {
+    if (metaState.perTrackAccent) {
+      metaState.trackAccents = { ...(metaState.trackAccents || {}), [activeCertId]: value };
+      if (!live) { saveMeta(); cacheAppearanceLocally(); }
+    } else {
+      state.settings.accentColor = value;
+      if (!live) saveState();
+    }
+    applyAccentColor();
+  }
+
+  function settingsCardSidebar() {
+    const groups = navDefaults();
+    return `<article class="settings-card" data-section="appearance" data-card="sidebar"><h3>Sidebar</h3><p>Collapse it to icons, and choose which pages appear and in what order. Hidden pages stay reachable from search (press /) and the G shortcuts.</p>
+      <div class="setting-row"><div><strong>Icon-only sidebar</strong><small>More room for content; hover an icon for its name.</small></div><label class="switch"><input id="setting-sidebar-rail" type="checkbox" ${sidebarRailOn() ? 'checked' : ''}><span></span></label></div>
+      ${groups.map(group => { const order = navOrderFor(group); return `<div class="nav-edit-group"><span class="eyebrow">${escapeHtml(group.label)}</span>${order.map((route, index) => { const item = group.items.find(i => i.route === route); const hidden = !!(metaState.navHidden || {})[route]; return `<div class="nav-edit-row${hidden ? ' is-hidden' : ''}"><span>${icon(item.icon)}${escapeHtml(item.label)}</span><div class="nav-edit-actions"><button type="button" class="icon-button small" data-action="nav-move" data-nav-route="${route}" data-dir="-1" ${index === 0 ? 'disabled' : ''} aria-label="Move ${escapeHtml(item.label)} up">${icon('up')}</button><button type="button" class="icon-button small" data-action="nav-move" data-nav-route="${route}" data-dir="1" ${index === order.length - 1 ? 'disabled' : ''} aria-label="Move ${escapeHtml(item.label)} down">${icon('down')}</button><label class="switch"><input type="checkbox" class="nav-visible-toggle" data-nav-route="${route}" ${hidden ? '' : 'checked'} aria-label="Show ${escapeHtml(item.label)} in the sidebar"><span></span></label></div></div>`; }).join('')}</div>`; }).join('')}
+      <div class="button-row" style="margin-top:14px"><button class="secondary small" type="button" data-action="nav-reset">${icon('rotate')} Reset sidebar</button></div></article>`;
+  }
+
+  const DASH_PRIMARY_OPTIONS = [['smart', 'Recommended for today'], ['quick10', 'Quick 10'], ['due', 'Review due flashcards'], ['guide', 'Continue the study guide']];
+  function settingsCardDashboard(isPrograms) {
+    if (isPrograms) return '';
+    return `<article class="settings-card" data-section="appearance" data-card="dashboard"><h3>Dashboard</h3><p>What greets you when you open the app.</p>
+      <div class="setting-row"><div><strong>Greeting</strong><small>A friendly line with your name and the time of day.</small></div><label class="switch"><input id="setting-dash-greeting" type="checkbox" ${metaState.dashboardGreeting !== false ? 'checked' : ''}><span></span></label></div>
+      <div class="setting-row"><div><strong>Main button</strong><small>The big button at the top of the Dashboard. "Recommended" picks for you each day.</small></div><select id="setting-dash-primary">${DASH_PRIMARY_OPTIONS.map(([id, label]) => `<option value="${id}" ${(metaState.dashboardPrimary || 'smart') === id ? 'selected' : ''}>${label}</option>`).join('')}</select></div></article>`;
+  }
+
+  function settingsCardProfile(isPrograms) {
+    return `<article class="settings-card" data-section="account" data-card="profile"><h3>Your profile</h3><p>Shown in the sidebar and on your printed readiness report — not shared anywhere, just for you.</p><div class="setting-row"><div><strong>Account</strong><small>Each account has its own completely separate progress and settings.</small></div><button class="secondary small" data-action="open-account-dialog">${icon('repeat')} Switch (${escapeHtml(currentProfile().name || 'this account')})</button></div><div class="setting-row"><div><strong>Display name</strong><small>Leave blank to keep the default.</small></div><input type="text" id="setting-display-name" class="setting-date-input" style="width:180px" placeholder="Future technician" value="${escapeHtml(metaState.displayName || '')}" autocomplete="off" maxlength="40"></div><div class="setting-row stacked"><div><strong>Avatar</strong><small>Pick a style and color, or upload your own photo.</small></div><div class="avatar-style-row"><button type="button" class="avatar-style-btn ${metaState.avatar.type === 'initials' ? 'active' : ''}" data-action="set-avatar-style" data-style="initials" title="Initials">Aa</button>${AVATAR_EMOJIS.map(e => `<button type="button" class="avatar-style-btn ${metaState.avatar.type === 'emoji' && metaState.avatar.emoji === e ? 'active' : ''}" data-action="set-avatar-style" data-style="emoji" data-emoji="${e}" title="${e}">${e}</button>`).join('')}</div><div class="swatch-row"><button type="button" class="swatch-btn none ${!metaState.avatar.color ? 'active' : ''}" data-action="set-avatar-color" data-color="" title="Default"></button>${AVATAR_COLORS.map(c => `<button type="button" class="swatch-btn ${metaState.avatar.color === c ? 'active' : ''}" style="background:${c}" data-action="set-avatar-color" data-color="${c}" title="${c}"></button>`).join('')}</div><div class="button-row" style="margin-top:2px"><button class="secondary small" data-action="choose-avatar-photo" type="button">${icon('image')} Upload photo</button>${metaState.avatar.type === 'photo' && metaState.avatar.photoVersion ? `<button class="secondary small" data-action="remove-avatar-photo" type="button">${icon('trash')} Remove photo</button>` : ''}<input type="file" id="avatar-photo-input" accept="image/*" class="hidden"></div></div></article>`;
+  }
+
+  function settingsCardLook(isPrograms) {
+    return `<article class="settings-card" data-section="appearance" data-card="look"><h3>Look &amp; feel</h3><p>Purely cosmetic — none of this changes how mastery or scoring works.</p><div class="setting-row"><div><strong>Color theme</strong><small>Dark, light, or follow your system setting automatically.</small></div><div class="domain-tabs" style="margin:0">${['dark', 'light', 'auto'].map(mode => `<button class="tab-button ${state.settings.themeMode === mode ? 'active' : ''}" type="button" data-action="set-theme-mode" data-mode="${mode}">${mode === 'auto' ? 'Auto' : mode === 'dark' ? 'Dark' : 'Light'}</button>`).join('')}</div></div>${themePresetRowMarkup()}${accentRowMarkup()}<div class="setting-row stacked"><div><strong>App font</strong><small>Start typing to see common fonts, or type any exact name of your own.</small></div><div class="button-row" style="width:100%;align-items:center"><input type="text" id="setting-font-name" class="setting-date-input" style="flex:1;min-width:200px" placeholder="e.g. Calibri, Comic Sans MS" value="${escapeHtml(state.settings.fontFamily || '')}" autocomplete="off">${'queryLocalFonts' in window ? `<button class="secondary small" type="button" data-action="browse-local-fonts">Check Installed Fonts</button>` : ''}${state.settings.fontFamily ? `<button class="secondary small" type="button" data-action="reset-font-family">Reset</button>` : ''}</div><p id="font-preview-sample" style="margin:8px 0 0;font-family:${escapeHtml(buildFontStack(state.settings.fontFamily))};font-size:13px;color:var(--muted)">The quick brown fox jumps over the lazy dog.</p></div><div class="setting-row stacked"><div><strong>Text size</strong><small>Scales the whole app, not just body text.</small></div><div class="domain-tabs" style="margin:0">${[['0.9', 'Small'], ['1', 'Default'], ['1.15', 'Large'], ['1.3', 'Extra large']].map(([size, label]) => `<button class="tab-button ${Number(state.settings.fontSize) === Number(size) ? 'active' : ''}" type="button" data-action="set-font-size" data-size="${size}">${label}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Corner style</strong><small>Rounded or sharp corners across the app.</small></div><div class="domain-tabs" style="margin:0">${[['rounded', 'Rounded'], ['sharp', 'Sharp']].map(([id, label]) => `<button class="tab-button ${(state.settings.cornerStyle || 'rounded') === id ? 'active' : ''}" type="button" data-action="set-corner-style" data-corners="${id}">${label}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Density</strong><small>How much breathing room cards and lists get.</small></div><div class="domain-tabs" style="margin:0">${[['comfortable', 'Comfortable'], ['compact', 'Compact']].map(([id, label]) => `<button class="tab-button ${(state.settings.density || 'comfortable') === id ? 'active' : ''}" type="button" data-action="set-density" data-density="${id}">${label}</button>`).join('')}</div></div></article>`;
+  }
+
+  function settingsCardAccessibility(isPrograms) {
+    return `<article class="settings-card" data-section="appearance" data-card="accessibility"><h3>Accessibility</h3><p>None of this changes how mastery or scoring works.</p><div class="setting-row"><div><strong>Reading mode</strong><small>Wider line, letter, and word spacing, a plainer font, and calmer motion — for the Study guide, notes, and quiz text.</small></div><label class="switch"><input id="setting-reading-mode" type="checkbox" ${state.settings.readingMode ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Reduce motion</strong><small>Turns off animations and transitions app-wide — independent of Reading mode, for anyone sensitive to motion who doesn't want the other changes.</small></div><label class="switch"><input id="setting-reduced-motion" type="checkbox" ${state.settings.reducedMotion ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Colorblind-safe colors</strong><small>Swaps correct/incorrect from green/red to blue/amber — one of the hardest pairs to tell apart with red-green colorblindness.</small></div><label class="switch"><input id="setting-colorblind" type="checkbox" ${state.settings.colorblindMode ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>High contrast</strong><small>Solid backgrounds instead of soft tints, and darker muted text — for low-vision readability.</small></div><label class="switch"><input id="setting-high-contrast" type="checkbox" ${state.settings.highContrast ? 'checked' : ''}><span></span></label></div></article>`;
+  }
+
+  function settingsCardLearning(isPrograms) {
+    return `<article class="settings-card" data-section="study" data-card="learning"><h3>Learning preferences</h3><p>Adjust behavior without changing how first-attempt mastery is calculated.</p><div class="setting-row"><div><strong>Second-chance learning</strong><small>One retry in practice; first attempt still drives mastery.</small></div><label class="switch"><input id="setting-second" type="checkbox" ${state.settings.secondChance ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Sound effects</strong><small>A short tone on correct/incorrect answers in Practice.</small></div><label class="switch"><input id="setting-sound" type="checkbox" ${state.settings.soundEffects ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Focus mode</strong><small>Hide the sidebar while a quiz or exam is in progress.</small></div><label class="switch"><input id="setting-focus" type="checkbox" ${state.settings.focusMode ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Fullscreen exams</strong><small>Go fullscreen automatically when starting a mock exam — closer to real testing-center conditions.</small></div><label class="switch"><input id="setting-fullscreen-exam" type="checkbox" ${state.settings.fullscreenExams ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Start page</strong><small>What loads when you open the app.</small></div><select id="setting-start-page">${[['dashboard', 'Dashboard'], ['practice', 'Practice'], ['guide', 'Study guide'], ['history', 'Progress']].map(([id, label]) => `<option value="${id}" ${(state.settings.startPage || 'dashboard') === id ? 'selected' : ''}>${label}</option>`).join('')}</select></div><div class="setting-row"><div><strong>Milestone celebrations</strong><small>What happens when you cross a real milestone.</small></div><div class="domain-tabs" style="margin:0">${[['confetti', 'Confetti'], ['simple', 'Simple'], ['off', 'Off']].map(([id, label]) => `<button class="tab-button ${(state.settings.celebrationStyle || 'confetti') === id ? 'active' : ''}" type="button" data-action="set-celebration-style" data-style="${id}">${label}</button>`).join('')}</div></div>${isPrograms ? `<div class="setting-row"><div><strong>Tip of the day</strong><small>A daily study tip on the Dashboard.</small></div><label class="switch"><input id="setting-show-tip" type="checkbox" ${state.settings.showTipOfDay !== false ? 'checked' : ''}><span></span></label></div>` : ''}${isPrograms ? `<div class="setting-row"><div><strong>All tracks at a glance</strong><small>Every track's progress, shown on the Dashboard.</small></div><label class="switch"><input id="setting-show-alltracks" type="checkbox" ${state.settings.showAllTracks !== false ? 'checked' : ''}><span></span></label></div>` : ''}<div class="setting-row"><div><strong>Read-aloud speed</strong><small>Used when you listen to Study guide chapters.</small></div><select id="setting-speech-rate">${[0.75, 1, 1.25, 1.5].map(rate => `<option value="${rate}" ${state.settings.speechRate === rate ? 'selected' : ''}>${rate}×</option>`).join('')}</select></div>${isPrograms ? '' : `<div class="setting-row stacked"><div><strong>Exam date</strong><small>Drives the dashboard countdown and the readiness projection.</small></div><div class="setting-date-group"><input type="date" id="settings-exam-date" class="setting-date-input" value="${state.examDate || ''}"><button class="secondary small" data-action="set-exam-date">Save</button></div></div>`}</article>`;
+  }
+
+  function settingsCardNotifications(isPrograms) {
+    return `${isPrograms ? '' : `<article class="settings-card" data-section="study" data-card="notifications"><h3>Notifications</h3><p>A local browser notification — nothing leaves this machine, and nothing is sent while the app is fully closed.</p><div class="setting-row"><div><strong>Review reminders</strong><small>${!('Notification' in window) ? 'Not supported in this browser.' : Notification.permission === 'denied' ? 'Blocked — enable notifications for this site in your browser settings first.' : "A nudge when spaced-review flashcards are due for whichever track is active — checked once a day when you open or return to the app, not while it's fully closed."}</small></div><label class="switch"><input id="setting-notify-reviews" type="checkbox" ${metaState.notifyReviewsEnabled ? 'checked' : ''} ${(!('Notification' in window) || Notification.permission === 'denied') ? 'disabled' : ''}><span></span></label></div></article>`}`;
+  }
+
+  function settingsCardBackup(isPrograms) {
+    return `<article class="settings-card" data-section="data" data-card="backup"><h3>Progress backup</h3><p>Export or restore everything in one JSON file — every track's practice history, mastery, flashcards, and labs, plus your study plan. Not just ${escapeHtml(CERT.name)}.</p><div class="button-row" style="margin-top:20px"><button class="secondary" data-action="export-data">${icon('download')} Export data</button><button class="secondary" data-action="save-backup-file">${icon('folder')} Save to backup folder</button><button class="secondary" data-action="choose-import">${icon('upload')} Import data</button><input type="file" id="import-file" accept="application/json" class="hidden"></div><p style="margin-top:10px">${metaState.lastBackupDate ? `Last backup: ${formatDateKey(metaState.lastBackupDate)} (${daysBetween(metaState.lastBackupDate, todayKey()) === 0 ? 'today' : `${daysBetween(metaState.lastBackupDate, todayKey())} day${daysBetween(metaState.lastBackupDate, todayKey()) === 1 ? '' : 's'} ago`}).` : 'No backup yet.'} Saved-to-folder copies land in <code>backup/</code> next to this app, named with the version that made them.</p><div class="setting-row"><div><strong>Automatic daily backup</strong><small>Saves to the backup folder once a day, the first time you open the app.</small></div><label class="switch"><input id="setting-auto-backup" type="checkbox" ${metaState.autoBackupEnabled !== false ? 'checked' : ''}><span></span></label></div><div class="setting-row" style="margin-top:20px"><div><strong>Reset all progress</strong><small>This cannot be undone unless you exported a backup.</small></div><button class="danger-button small" data-action="confirm-reset">${icon('trash')} Reset</button></div></article>`;
+  }
+
+  function settingsCardContent(isPrograms) {
+    return `<article class="settings-card" data-section="study" data-card="content"><h3>${isPrograms ? 'Content' : 'Content and scoring'}</h3><p>${isPrograms ? `${LABS.length} hands-on labs and ${CONCEPTS.length} reference terms. No quizzes, exams, or flashcards — this is a purely hands-on program.` : `${QUESTIONS.length.toLocaleString()} original question forms from ${CONCEPTS.length} curated concepts, plus ${LABS.length} guided labs. No real exam items or brain dumps.`}</p><div class="setting-row"><div><strong>Current track</strong><small>${escapeHtml(CERT.name)} · ${Object.values(CERT.cores).map(core => escapeHtml(core.code)).join(' · ')}</small></div><button class="secondary small" data-action="open-cert-dialog">${icon('repeat')} Switch ${isPrograms ? 'program' : 'track'}</button></div>${isPrograms ? '' : `<div class="setting-row"><div><strong>Practice scoring</strong><small>Transparent first-attempt percentage; simulations add a clearly labeled scaled estimate.</small></div></div><div class="setting-row"><div><strong>Track completed</strong><small>${state.trackCompleted ? `Marked completed${state.trackCompletedAt ? ` on ${formatDateKey(state.trackCompletedAt.slice(0, 10))}` : ''}. Greyed out in the track switcher and left out of Practice/Adaptive/Flashcards recommendations here.` : 'Greys this track out in the track switcher and stops its domains being recommended — does not delete progress or block access. Set automatically once every exam here has a recorded passing result.'}</small></div><label class="switch"><input id="setting-track-completed" type="checkbox" ${state.trackCompleted ? 'checked' : ''}><span></span></label></div>`}</article>`;
+  }
+
+  function settingsCardReferences(isPrograms) {
+    return `<article class="settings-card" data-section="about" data-card="references"><h3>Primary references</h3><p>${isPrograms ? "Reference material is mapped to the software's own public documentation. Interfaces change between versions — verify against the current release." : 'Exam facts and domain weights are mapped to each vendor\'s public materials. Objectives change—verify before scheduling.'}</p><div class="source-list">${(CERT.sources || []).map(source => `<a class="source-link" href="${source.url}" target="_blank" rel="noopener"><span>${escapeHtml(source.label)}</span>${icon('external')}</a>`).join('')}</div></article>`;
+  }
+
+  function settingsCardApp(isPrograms) {
+    return `<article class="settings-card" data-section="about" data-card="app"><h3>App</h3><p>Running <strong>${APP_VERSION}</strong>. ${CONCEPTS.length} concepts and ${(LABS || []).length} labs loaded for this track.</p><div class="setting-row"><div><strong>Check for updates</strong><small>Reload from within the app instead of closing and reopening it.</small></div><button class="secondary small" data-action="check-for-updates">${icon('rotate')} Check now</button></div>${deferredInstallPrompt ? `<div class="setting-row"><div><strong>Install as an app</strong><small>Opens in its own window, with a taskbar/dock icon — not just a browser tab.</small></div><button class="secondary small" data-action="install-app">${icon('download')} Install</button></div>` : ''}<div class="setting-row stacked"><div><strong>App icon</strong><small>Changes the browser tab icon right away. If you've already installed the app, remove and reinstall it to pick up the new taskbar/dock icon too — that part is cached by your OS, not something a website can refresh on its own.</small></div><div class="avatar-style-row">${ICON_SHAPES.map(shape => `<button type="button" class="avatar-style-btn ${(metaState.appIconShape || 'cap') === shape ? 'active' : ''}" data-action="set-app-icon-shape" data-shape="${shape}" title="${shape}">${icon(shape)}</button>`).join('')}</div><div class="swatch-row">${ICON_COLORS.map(c => `<button type="button" class="swatch-btn ${(metaState.appIconColor || '#2dd4bf') === c ? 'active' : ''}" style="background:${c}" data-action="set-app-icon-color" data-color="${c}" title="${c}"></button>`).join('')}</div></div><div class="setting-row"><div><strong>What's new</strong><small>Recent changes to the app.</small></div><button class="secondary small" data-action="open-whats-new">${icon('sparkles')} View</button></div><div class="setting-row"><div><strong>Keyboard shortcuts</strong><small>Everything you can do without the mouse. Press <kbd>?</kbd> any time.</small></div><button class="secondary small" data-action="open-shortcuts">${icon('keyboard')} View</button></div>${isPrograms ? '' : `<div class="setting-row"><div><strong>Replay the walkthrough</strong><small>The first-run intro and optional diagnostic.</small></div><button class="secondary small" data-action="replay-onboarding">${icon('repeat')} Replay</button></div>`}</article>`;
+  }
+
+  const SETTINGS_SECTIONS = [
+    { id: 'appearance', label: 'Appearance' },
+    { id: 'study', label: 'Study' },
+    { id: 'account', label: 'Account' },
+    { id: 'data', label: 'Data' },
+    { id: 'about', label: 'About' }
+  ];
+  // Extra words each card should be findable by, beyond its own visible title and description.
+  const SETTINGS_KEYWORDS = {
+    profile: 'name avatar photo account switch pin', look: 'theme dark light color accent font size density corners style preset palette',
+    sidebar: 'sidebar navigation menu collapse icons order hide', dashboard: 'home greeting primary action start',
+    accessibility: 'contrast colorblind motion reading dyslexia', learning: 'second chance sound focus fullscreen start page speed exam date celebrations',
+    notifications: 'reminders alerts due', backup: 'export import restore reset download json', content: 'track scoring completed finished passed',
+    references: 'sources links objectives', app: 'version update install icon shortcuts onboarding walkthrough'
+  };
+  let settingsSection = (() => { try { return localStorage.getItem('cert-study-settings-tab') || 'appearance'; } catch { return 'appearance'; } })();
+  let settingsQuery = '';
+
   function renderSettings() {
     const isPrograms = currentDomain() === 'programs';
-    main.innerHTML = `<div class="section-head"><div><h2>Settings and local data</h2><p>Your progress is saved locally on this machine by the local server, in its own file per account. Export a backup before wiping that file or moving to another computer.</p></div></div><section class="settings-grid">
-      <article class="settings-card"><h3>Your profile</h3><p>Shown in the sidebar and on your printed readiness report — not shared anywhere, just for you.</p><div class="setting-row"><div><strong>Account</strong><small>Each account has its own completely separate progress and settings.</small></div><button class="secondary small" data-action="open-account-dialog">${icon('repeat')} Switch (${escapeHtml(currentProfile().name || 'this account')})</button></div><div class="setting-row"><div><strong>Display name</strong><small>Leave blank to keep the default.</small></div><input type="text" id="setting-display-name" class="setting-date-input" style="width:180px" placeholder="Future technician" value="${escapeHtml(metaState.displayName || '')}" autocomplete="off" maxlength="40"></div><div class="setting-row stacked"><div><strong>Avatar</strong><small>Pick a style and color, or upload your own photo.</small></div><div class="avatar-style-row"><button type="button" class="avatar-style-btn ${metaState.avatar.type === 'initials' ? 'active' : ''}" data-action="set-avatar-style" data-style="initials" title="Initials">Aa</button>${AVATAR_EMOJIS.map(e => `<button type="button" class="avatar-style-btn ${metaState.avatar.type === 'emoji' && metaState.avatar.emoji === e ? 'active' : ''}" data-action="set-avatar-style" data-style="emoji" data-emoji="${e}" title="${e}">${e}</button>`).join('')}</div><div class="swatch-row"><button type="button" class="swatch-btn none ${!metaState.avatar.color ? 'active' : ''}" data-action="set-avatar-color" data-color="" title="Default"></button>${AVATAR_COLORS.map(c => `<button type="button" class="swatch-btn ${metaState.avatar.color === c ? 'active' : ''}" style="background:${c}" data-action="set-avatar-color" data-color="${c}" title="${c}"></button>`).join('')}</div><div class="button-row" style="margin-top:2px"><button class="secondary small" data-action="choose-avatar-photo" type="button">${icon('image')} Upload photo</button>${metaState.avatar.type === 'photo' && metaState.avatar.photoVersion ? `<button class="secondary small" data-action="remove-avatar-photo" type="button">${icon('trash')} Remove photo</button>` : ''}<input type="file" id="avatar-photo-input" accept="image/*" class="hidden"></div></div></article>
-      <article class="settings-card"><h3>Look &amp; feel</h3><p>Purely cosmetic — none of this changes how mastery or scoring works.</p><div class="setting-row"><div><strong>Color theme</strong><small>Dark, light, or follow your system setting automatically.</small></div><div class="domain-tabs" style="margin:0">${['dark', 'light', 'auto'].map(mode => `<button class="tab-button ${state.settings.themeMode === mode ? 'active' : ''}" type="button" data-action="set-theme-mode" data-mode="${mode}">${mode === 'auto' ? 'Auto' : mode === 'dark' ? 'Dark' : 'Light'}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Accent color</strong><small>Retints buttons, progress bars, and highlights across the app.</small></div><div class="swatch-row">${ACCENT_THEMES.map(a => `<button type="button" class="swatch-btn ${state.settings.accentColor === a.id ? 'active' : ''}" style="background:${a[state.settings.theme].primary}" data-action="set-accent-color" data-accent="${a.id}" title="${a.label}"></button>`).join('')}</div></div><div class="setting-row stacked"><div><strong>App font</strong><small>Start typing to see common fonts, or type any exact name of your own.</small></div><div class="button-row" style="width:100%;align-items:center"><input type="text" id="setting-font-name" class="setting-date-input" style="flex:1;min-width:200px" placeholder="e.g. Calibri, Comic Sans MS" value="${escapeHtml(state.settings.fontFamily || '')}" autocomplete="off">${'queryLocalFonts' in window ? `<button class="secondary small" type="button" data-action="browse-local-fonts">Check Installed Fonts</button>` : ''}${state.settings.fontFamily ? `<button class="secondary small" type="button" data-action="reset-font-family">Reset</button>` : ''}</div><p id="font-preview-sample" style="margin:8px 0 0;font-family:${escapeHtml(buildFontStack(state.settings.fontFamily))};font-size:13px;color:var(--muted)">The quick brown fox jumps over the lazy dog.</p></div><div class="setting-row stacked"><div><strong>Text size</strong><small>Scales the whole app, not just body text.</small></div><div class="domain-tabs" style="margin:0">${[['0.9', 'Small'], ['1', 'Default'], ['1.15', 'Large'], ['1.3', 'Extra large']].map(([size, label]) => `<button class="tab-button ${Number(state.settings.fontSize) === Number(size) ? 'active' : ''}" type="button" data-action="set-font-size" data-size="${size}">${label}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Corner style</strong><small>Rounded or sharp corners across the app.</small></div><div class="domain-tabs" style="margin:0">${[['rounded', 'Rounded'], ['sharp', 'Sharp']].map(([id, label]) => `<button class="tab-button ${(state.settings.cornerStyle || 'rounded') === id ? 'active' : ''}" type="button" data-action="set-corner-style" data-corners="${id}">${label}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Density</strong><small>How much breathing room cards and lists get.</small></div><div class="domain-tabs" style="margin:0">${[['comfortable', 'Comfortable'], ['compact', 'Compact']].map(([id, label]) => `<button class="tab-button ${(state.settings.density || 'comfortable') === id ? 'active' : ''}" type="button" data-action="set-density" data-density="${id}">${label}</button>`).join('')}</div></div></article>
-      <article class="settings-card"><h3>Accessibility</h3><p>None of this changes how mastery or scoring works.</p><div class="setting-row"><div><strong>Reading mode</strong><small>Wider line, letter, and word spacing, a plainer font, and calmer motion — for the Study guide, notes, and quiz text.</small></div><label class="switch"><input id="setting-reading-mode" type="checkbox" ${state.settings.readingMode ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Reduce motion</strong><small>Turns off animations and transitions app-wide — independent of Reading mode, for anyone sensitive to motion who doesn't want the other changes.</small></div><label class="switch"><input id="setting-reduced-motion" type="checkbox" ${state.settings.reducedMotion ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Colorblind-safe colors</strong><small>Swaps correct/incorrect from green/red to blue/amber — one of the hardest pairs to tell apart with red-green colorblindness.</small></div><label class="switch"><input id="setting-colorblind" type="checkbox" ${state.settings.colorblindMode ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>High contrast</strong><small>Solid backgrounds instead of soft tints, and darker muted text — for low-vision readability.</small></div><label class="switch"><input id="setting-high-contrast" type="checkbox" ${state.settings.highContrast ? 'checked' : ''}><span></span></label></div></article>
-      <article class="settings-card"><h3>Learning preferences</h3><p>Adjust behavior without changing how first-attempt mastery is calculated.</p><div class="setting-row"><div><strong>Second-chance learning</strong><small>One retry in practice; first attempt still drives mastery.</small></div><label class="switch"><input id="setting-second" type="checkbox" ${state.settings.secondChance ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Sound effects</strong><small>A short tone on correct/incorrect answers in Practice.</small></div><label class="switch"><input id="setting-sound" type="checkbox" ${state.settings.soundEffects ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Focus mode</strong><small>Hide the sidebar while a quiz or exam is in progress.</small></div><label class="switch"><input id="setting-focus" type="checkbox" ${state.settings.focusMode ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Fullscreen exams</strong><small>Go fullscreen automatically when starting a mock exam — closer to real testing-center conditions.</small></div><label class="switch"><input id="setting-fullscreen-exam" type="checkbox" ${state.settings.fullscreenExams ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Start page</strong><small>What loads when you open the app.</small></div><select id="setting-start-page">${[['dashboard', 'Dashboard'], ['practice', 'Practice'], ['guide', 'Study guide'], ['history', 'Progress']].map(([id, label]) => `<option value="${id}" ${(state.settings.startPage || 'dashboard') === id ? 'selected' : ''}>${label}</option>`).join('')}</select></div><div class="setting-row"><div><strong>Milestone celebrations</strong><small>What happens when you cross a real milestone.</small></div><div class="domain-tabs" style="margin:0">${[['confetti', 'Confetti'], ['simple', 'Simple'], ['off', 'Off']].map(([id, label]) => `<button class="tab-button ${(state.settings.celebrationStyle || 'confetti') === id ? 'active' : ''}" type="button" data-action="set-celebration-style" data-style="${id}">${label}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Tip of the day</strong><small>A daily study tip on the Dashboard.</small></div><label class="switch"><input id="setting-show-tip" type="checkbox" ${state.settings.showTipOfDay !== false ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>All tracks at a glance</strong><small>Every track's progress, shown on the Dashboard.</small></div><label class="switch"><input id="setting-show-alltracks" type="checkbox" ${state.settings.showAllTracks !== false ? 'checked' : ''}><span></span></label></div><div class="setting-row"><div><strong>Read-aloud speed</strong><small>Used when you listen to Study guide chapters.</small></div><select id="setting-speech-rate">${[0.75, 1, 1.25, 1.5].map(rate => `<option value="${rate}" ${state.settings.speechRate === rate ? 'selected' : ''}>${rate}×</option>`).join('')}</select></div>${isPrograms ? '' : `<div class="setting-row stacked"><div><strong>Exam date</strong><small>Drives the dashboard countdown and the readiness projection.</small></div><div class="setting-date-group"><input type="date" id="settings-exam-date" class="setting-date-input" value="${state.examDate || ''}"><button class="secondary small" data-action="set-exam-date">Save</button></div></div>`}</article>
-      ${isPrograms ? '' : `<article class="settings-card"><h3>Notifications</h3><p>A local browser notification — nothing leaves this machine, and nothing is sent while the app is fully closed.</p><div class="setting-row"><div><strong>Review reminders</strong><small>${!('Notification' in window) ? 'Not supported in this browser.' : Notification.permission === 'denied' ? 'Blocked — enable notifications for this site in your browser settings first.' : "A nudge when spaced-review flashcards are due for whichever track is active — checked once a day when you open or return to the app, not while it's fully closed."}</small></div><label class="switch"><input id="setting-notify-reviews" type="checkbox" ${metaState.notifyReviewsEnabled ? 'checked' : ''} ${(!('Notification' in window) || Notification.permission === 'denied') ? 'disabled' : ''}><span></span></label></div></article>`}
-      <article class="settings-card"><h3>Progress backup</h3><p>Export or restore everything in one JSON file — every track's practice history, mastery, flashcards, and labs, plus your study plan. Not just ${escapeHtml(CERT.name)}.</p><div class="button-row" style="margin-top:20px"><button class="secondary" data-action="export-data">${icon('download')} Export data</button><button class="secondary" data-action="save-backup-file">${icon('folder')} Save to backup folder</button><button class="secondary" data-action="choose-import">${icon('upload')} Import data</button><input type="file" id="import-file" accept="application/json" class="hidden"></div><p style="margin-top:10px">${metaState.lastBackupDate ? `Last backup: ${formatDateKey(metaState.lastBackupDate)} (${daysBetween(metaState.lastBackupDate, todayKey()) === 0 ? 'today' : `${daysBetween(metaState.lastBackupDate, todayKey())} day${daysBetween(metaState.lastBackupDate, todayKey()) === 1 ? '' : 's'} ago`}).` : 'No backup yet.'} Saved-to-folder copies land in <code>backup/</code> next to this app, named with the version that made them.</p><div class="setting-row"><div><strong>Automatic daily backup</strong><small>Saves to the backup folder once a day, the first time you open the app.</small></div><label class="switch"><input id="setting-auto-backup" type="checkbox" ${metaState.autoBackupEnabled !== false ? 'checked' : ''}><span></span></label></div><div class="setting-row" style="margin-top:20px"><div><strong>Reset all progress</strong><small>This cannot be undone unless you exported a backup.</small></div><button class="danger-button small" data-action="confirm-reset">${icon('trash')} Reset</button></div></article>
-      <article class="settings-card"><h3>${isPrograms ? 'Content' : 'Content and scoring'}</h3><p>${isPrograms ? `${LABS.length} hands-on labs and ${CONCEPTS.length} reference terms. No quizzes, exams, or flashcards — this is a purely hands-on program.` : `${QUESTIONS.length.toLocaleString()} original question forms from ${CONCEPTS.length} curated concepts, plus ${LABS.length} guided labs. No real exam items or brain dumps.`}</p><div class="setting-row"><div><strong>Current track</strong><small>${escapeHtml(CERT.name)} · ${Object.values(CERT.cores).map(core => escapeHtml(core.code)).join(' · ')}</small></div><button class="secondary small" data-action="open-cert-dialog">${icon('repeat')} Switch ${isPrograms ? 'program' : 'track'}</button></div>${isPrograms ? '' : `<div class="setting-row"><div><strong>Practice scoring</strong><small>Transparent first-attempt percentage; simulations add a clearly labeled scaled estimate.</small></div></div><div class="setting-row"><div><strong>Track completed</strong><small>${state.trackCompleted ? `Marked completed${state.trackCompletedAt ? ` on ${formatDateKey(state.trackCompletedAt.slice(0, 10))}` : ''}. Greyed out in the track switcher and left out of Practice/Adaptive/Flashcards recommendations here.` : 'Greys this track out in the track switcher and stops its domains being recommended — does not delete progress or block access. Set automatically once every exam here has a recorded passing result.'}</small></div><label class="switch"><input id="setting-track-completed" type="checkbox" ${state.trackCompleted ? 'checked' : ''}><span></span></label></div>`}</article>
-      <article class="settings-card"><h3>Primary references</h3><p>${isPrograms ? "Reference material is mapped to the software's own public documentation. Interfaces change between versions — verify against the current release." : 'Exam facts and domain weights are mapped to each vendor\'s public materials. Objectives change—verify before scheduling.'}</p><div class="source-list">${(CERT.sources || []).map(source => `<a class="source-link" href="${source.url}" target="_blank" rel="noopener"><span>${escapeHtml(source.label)}</span>${icon('external')}</a>`).join('')}</div></article>
-      <article class="settings-card"><h3>App</h3><p>Running <strong>${APP_VERSION}</strong>. ${CONCEPTS.length} concepts and ${(LABS || []).length} labs loaded for this track.</p><div class="setting-row"><div><strong>Check for updates</strong><small>Reload from within the app instead of closing and reopening it.</small></div><button class="secondary small" data-action="check-for-updates">${icon('rotate')} Check now</button></div>${deferredInstallPrompt ? `<div class="setting-row"><div><strong>Install as an app</strong><small>Opens in its own window, with a taskbar/dock icon — not just a browser tab.</small></div><button class="secondary small" data-action="install-app">${icon('download')} Install</button></div>` : ''}<div class="setting-row stacked"><div><strong>App icon</strong><small>Changes the browser tab icon right away. If you've already installed the app, remove and reinstall it to pick up the new taskbar/dock icon too — that part is cached by your OS, not something a website can refresh on its own.</small></div><div class="avatar-style-row">${ICON_SHAPES.map(shape => `<button type="button" class="avatar-style-btn ${(metaState.appIconShape || 'cap') === shape ? 'active' : ''}" data-action="set-app-icon-shape" data-shape="${shape}" title="${shape}">${icon(shape)}</button>`).join('')}</div><div class="swatch-row">${ICON_COLORS.map(c => `<button type="button" class="swatch-btn ${(metaState.appIconColor || '#2dd4bf') === c ? 'active' : ''}" style="background:${c}" data-action="set-app-icon-color" data-color="${c}" title="${c}"></button>`).join('')}</div></div><div class="setting-row"><div><strong>What's new</strong><small>Recent changes to the app.</small></div><button class="secondary small" data-action="open-whats-new">${icon('sparkles')} View</button></div><div class="setting-row"><div><strong>Keyboard shortcuts</strong><small>Everything you can do without the mouse. Press <kbd>?</kbd> any time.</small></div><button class="secondary small" data-action="open-shortcuts">${icon('keyboard')} View</button></div>${isPrograms ? '' : `<div class="setting-row"><div><strong>Replay the walkthrough</strong><small>The first-run intro and optional diagnostic.</small></div><button class="secondary small" data-action="replay-onboarding">${icon('repeat')} Replay</button></div>`}</article>
-    </section>`;
+    const cards = [
+      settingsCardProfile(isPrograms), settingsCardLook(isPrograms), settingsCardSidebar(), settingsCardDashboard(isPrograms),
+      settingsCardAccessibility(isPrograms), settingsCardLearning(isPrograms), settingsCardNotifications(isPrograms),
+      settingsCardContent(isPrograms), settingsCardBackup(isPrograms), settingsCardReferences(isPrograms), settingsCardApp(isPrograms)
+    ];
+    main.innerHTML = `<div class="section-head"><div><h2>Settings and local data</h2><p>Your progress is saved locally on this machine by the local server, in its own file per account. Export a backup before wiping that file or moving to another computer.</p></div></div>
+      <div class="settings-toolbar">
+        <div class="domain-tabs" role="tablist" aria-label="Settings sections" style="margin:0">${[{ id: 'all', label: 'All' }, ...SETTINGS_SECTIONS].map(s => `<button class="tab-button" type="button" role="tab" data-action="settings-tab" data-section="${s.id}" aria-selected="false">${s.label}</button>`).join('')}</div>
+        <div class="field settings-search"><label class="visually-hidden" for="settings-search">Search settings</label><input id="settings-search" type="search" placeholder="Search settings…" value="${escapeHtml(settingsQuery)}" autocomplete="off"></div>
+      </div>
+      <section class="settings-grid">${cards.join('')}</section>
+      <div class="empty-state hidden" id="settings-empty"><div><span class="stat-icon" style="margin:0 auto 12px">${icon('search')}</span><h3>No settings match</h3><p>Try a different word, or clear the search to browse by section.</p></div></div>`;
+    applySettingsFilter();
+  }
+
+  // Tabs and search only show/hide what's already on the page, so typing never rebuilds the form
+  // (which would drop focus, scroll position, and any half-finished input).
+  function applySettingsFilter() {
+    const q = settingsQuery.trim().toLowerCase();
+    const cards = [...document.querySelectorAll('.settings-grid .settings-card')];
+    let visible = 0;
+    cards.forEach(card => {
+      let show;
+      if (!q) {
+        show = settingsSection === 'all' || card.dataset.section === settingsSection;
+        card.querySelectorAll('.setting-row').forEach(row => row.classList.remove('hidden'));
+      } else {
+        const head = `${card.querySelector('h3')?.textContent || ''} ${card.querySelector(':scope > p')?.textContent || ''} ${SETTINGS_KEYWORDS[card.dataset.card] || ''}`.toLowerCase();
+        const wholeCard = head.includes(q);
+        let rowHits = 0;
+        card.querySelectorAll('.setting-row').forEach(row => {
+          const hit = wholeCard || row.textContent.toLowerCase().includes(q);
+          row.classList.toggle('hidden', !hit);
+          if (hit) rowHits++;
+        });
+        show = wholeCard || rowHits > 0;
+      }
+      card.classList.toggle('hidden', !show);
+      if (show) visible++;
+    });
+    document.querySelectorAll('[data-action="settings-tab"]').forEach(tab => {
+      const active = !q && tab.dataset.section === settingsSection;
+      tab.classList.toggle('active', active);
+      tab.setAttribute('aria-selected', String(active));
+    });
+    document.getElementById('settings-empty')?.classList.toggle('hidden', visible > 0);
+  }
+
+  // Re-render in place (keeping scroll) for settings whose own controls change what's on screen.
+  function refreshSettingsInPlace() {
+    const y = window.scrollY;
+    renderSettings();
+    hydrateIcons(main);
+    window.scrollTo({ top: y });
   }
 
   // The bottom "Current track" switcher only ever lists groups within whichever domain is
@@ -6983,7 +7259,33 @@ import {
     if (action === 'start-cram') startCramSession();
     if (action === 'toggle-theme') setThemeMode(state.settings.theme === 'dark' ? 'light' : 'dark');
     if (action === 'set-theme-mode') setThemeMode(button.dataset.mode);
-    if (action === 'set-accent-color') { state.settings.accentColor = button.dataset.accent; saveState(); renderRoute(); }
+    if (action === 'set-accent-color') { setAccent(button.dataset.accent); refreshSettingsInPlace(); }
+    if (action === 'set-theme-preset') { state.settings.themePreset = button.dataset.preset; saveState(); refreshSettingsInPlace(); }
+    if (action === 'settings-tab') {
+      settingsSection = button.dataset.section; settingsQuery = '';
+      try { localStorage.setItem('cert-study-settings-tab', settingsSection); } catch {}
+      const search = document.getElementById('settings-search'); if (search) search.value = '';
+      applySettingsFilter();
+    }
+    if (action === 'toggle-sidebar-rail') {
+      toggleSidebarRail();
+      const box = document.getElementById('setting-sidebar-rail'); if (box) box.checked = sidebarRailOn();
+    }
+    if (action === 'nav-move') {
+      const route = button.dataset.navRoute, dir = Number(button.dataset.dir);
+      const group = navDefaults().find(g => g.items.some(item => item.route === route));
+      if (!group) return;
+      const order = navOrderFor(group); const from = order.indexOf(route); const to = from + dir;
+      if (to < 0 || to >= order.length) return;
+      [order[from], order[to]] = [order[to], order[from]];
+      metaState.navOrder = { ...(metaState.navOrder || {}), [group.id]: order };
+      saveMeta(); updateDomainNav(); refreshSettingsInPlace();
+    }
+    if (action === 'nav-reset') {
+      metaState.navHidden = {}; metaState.navOrder = {};
+      saveMeta(); updateDomainNav(); refreshSettingsInPlace();
+      toast('Sidebar reset to the default order.');
+    }
     if (action === 'browse-local-fonts') browseLocalFonts();
     if (action === 'set-app-icon-shape') { metaState.appIconShape = button.dataset.shape; saveMeta(); renderRoute(); }
     if (action === 'set-app-icon-color') { metaState.appIconColor = button.dataset.color; saveMeta(); renderRoute(); }
@@ -7207,6 +7509,30 @@ import {
       renderRoute();
     }
     if (event.target.id === 'setting-notify-reviews') setNotifyReviews(event.target.checked);
+    if (event.target.id === 'setting-accent-color') { setAccent(event.target.value); refreshSettingsInPlace(); }
+    if (event.target.id === 'setting-accent-hex') {
+      const raw = event.target.value.trim().replace(/^#?/, '#').toLowerCase();
+      const expanded = /^#[0-9a-f]{3}$/.test(raw) ? `#${raw[1]}${raw[1]}${raw[2]}${raw[2]}${raw[3]}${raw[3]}` : raw;
+      if (isHexColor(expanded)) { setAccent(expanded); refreshSettingsInPlace(); }
+      else { toast('Enter a color like #2dd4bf.', 'error'); refreshSettingsInPlace(); }
+    }
+    if (event.target.id === 'setting-per-track-accent') {
+      metaState.perTrackAccent = event.target.checked;
+      // Turning it on keeps this track looking exactly as it does now; the others start from
+      // their own defaults until you pick something for them.
+      if (event.target.checked && !(metaState.trackAccents || {})[activeCertId]) metaState.trackAccents = { ...(metaState.trackAccents || {}), [activeCertId]: state.settings.accentColor };
+      saveMeta(); cacheAppearanceLocally(); applyAccentColor(); refreshSettingsInPlace();
+      toast(event.target.checked ? 'Each track now keeps its own accent color.' : 'One accent color for every track again.');
+    }
+    if (event.target.id === 'setting-sidebar-rail') toggleSidebarRail(event.target.checked);
+    if (event.target.matches('.nav-visible-toggle')) {
+      metaState.navHidden = { ...(metaState.navHidden || {}), [event.target.dataset.navRoute]: !event.target.checked };
+      if (event.target.checked) delete metaState.navHidden[event.target.dataset.navRoute];
+      event.target.closest('.nav-edit-row')?.classList.toggle('is-hidden', !event.target.checked);
+      saveMeta(); updateDomainNav();
+    }
+    if (event.target.id === 'setting-dash-greeting') { metaState.dashboardGreeting = event.target.checked; saveMeta(); toast('Dashboard greeting ' + (event.target.checked ? 'on.' : 'off.')); }
+    if (event.target.id === 'setting-dash-primary') { metaState.dashboardPrimary = event.target.value; saveMeta(); toast('Dashboard main button saved.'); }
     if (event.target.id === 'setting-start-page') { state.settings.startPage = event.target.value; saveState(); toast('Start page saved.'); }
     if (event.target.id === 'setting-show-tip') { state.settings.showTipOfDay = event.target.checked; saveState(); toast('Dashboard preference saved.'); }
     if (event.target.id === 'setting-show-alltracks') { state.settings.showAllTracks = event.target.checked; saveState(); toast('Dashboard preference saved.'); }
@@ -7244,6 +7570,8 @@ import {
     if (event.target.id === 'command-search') { commandQuery = event.target.value; renderCommandResults(); }
     if (event.target.id === 'global-search-input') { globalSearchQuery = event.target.value; renderGlobalSearchResults(); }
     if (event.target.id === 'browse-search') { browseQuery = event.target.value; renderBrowseTable(); }
+    if (event.target.id === 'settings-search') { settingsQuery = event.target.value; applySettingsFilter(); }
+    if (event.target.id === 'setting-accent-color') { setAccent(event.target.value, { live: true }); const hex = document.getElementById('setting-accent-hex'); if (hex) hex.value = event.target.value; }
     if (event.target.id === 'exam-scratchpad' && activeSession) activeSession.scratchpadText = event.target.value;
     if (event.target.id === 'palette-input') { paletteSel = 0; renderPaletteResults(); }
     if (event.target.id === 'setting-font-name') { const sample = document.getElementById('font-preview-sample'); if (sample) sample.style.fontFamily = buildFontStack(event.target.value); }

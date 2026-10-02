@@ -13,8 +13,10 @@
        flash while progress is still loading. app.js re-applies the real settings once it has them. */
     (function () {
       try {
+        var root = document.documentElement;
+        if (localStorage.getItem('cert-study-sidebar-rail') === '1') root.dataset.rail = 'on';
         var raw = localStorage.getItem('cert-study-appearance'); if (!raw) return;
-        var a = JSON.parse(raw), root = document.documentElement;
+        var a = JSON.parse(raw);
         var mode = a.mode === 'auto' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : (a.mode === 'light' ? 'light' : 'dark');
         root.dataset.theme = mode;
         if (a.preset && a.preset !== 'default') root.dataset.preset = a.preset;
@@ -26,7 +28,7 @@
       } catch (e) {}
     })();
   </script>
-  <link rel="stylesheet" href="/app/styles.css?v=68">
+  <link rel="stylesheet" href="/app/styles.css?v=69">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -84,6 +86,7 @@
           <span data-icon="chevron"></span>
         </button>
       </div>
+      <button class="nav-item rail-toggle" type="button" data-action="toggle-sidebar-rail" aria-pressed="false"><span data-icon="chevron"></span><span>Collapse sidebar</span></button>
       <button class="nav-item settings-link" data-route="settings"><span data-icon="settings"></span><span>Settings & data</span></button>
       <button class="profile-chip" type="button" id="profile-chip-btn" data-action="open-account-dialog" aria-haspopup="dialog" aria-label="Switch account">
         <div class="avatar" id="profile-avatar">IT</div>
@@ -155,6 +158,6 @@
   <script src="/data/dp300-guide.js?v=1" defer></script>
   <script src="/data/blender-fundamentals.js?v=2" defer></script>
   <script src="/data/blender-fundamentals-labs.js?v=4" defer></script>
-  <script type="module" src="/app/app.js?v=171"></script>
+  <script type="module" src="/app/app.js?v=172"></script>
 </body>
 </html>

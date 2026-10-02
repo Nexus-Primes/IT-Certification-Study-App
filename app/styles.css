@@ -344,7 +344,7 @@ svg { width: 19px; height: 19px; display: block; stroke-width: 1.8; }
 .builder { display: grid; grid-template-columns: repeat(4, 1fr) auto; gap: 12px; align-items: end; padding: 20px; margin-top: 18px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
 .field { display: grid; gap: 7px; }
 .field label { color: var(--muted); font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
-.field select, .field input[type="number"], .field input[type="text"], .field input[type="date"], .field textarea { width: 100%; min-height: 42px; padding: 0 12px; border: 1px solid var(--border); border-radius: 9px; background-color: var(--surface-2); color: var(--text); }
+.field select, .field input[type="number"], .field input[type="text"], .field input[type="search"], .field input[type="date"], .field textarea { width: 100%; min-height: 42px; padding: 0 12px; border: 1px solid var(--border); border-radius: 9px; background-color: var(--surface-2); color: var(--text); }
 .field select { padding-right: 32px; }
 .field textarea { min-height: 100px; padding-top: 10px; resize: vertical; }
 .toggle-line { min-height: 42px; display: flex; align-items: center; gap: 10px; }
@@ -972,17 +972,90 @@ kbd { display: inline-flex; align-items: center; justify-content: center; min-wi
   .cw-board-wrap { max-height: 60vh; }
 }
 
+/* ---------- Theme presets ----------
+   Surface palettes only — status colors (green/red/amber/blue) stay shared so correct/incorrect
+   read the same everywhere. Each preset defines a dark set and a light set; "Classic" is the
+   base :root blocks above and needs no attribute. muted/muted-2 were chosen to hold the same
+   contrast bars as the base themes (muted ≥ 4.5:1, muted-2 ≥ ~3:1 on every surface). */
+:root[data-preset="slate"] { --bg: #0f1115; --sidebar: #14171c; --surface: #181b21; --surface-2: #1e222a; --surface-3: #262b35; --border: #313744; --border-soft: #232832; --text: #eceef2; --muted: #9aa1ae; --muted-2: #7a8190; }
+:root[data-preset="slate"][data-theme="light"] { --bg: #f2f3f5; --sidebar: #ffffff; --surface: #ffffff; --surface-2: #f6f7f9; --surface-3: #eceef1; --border: #dcdfe5; --border-soft: #e7e9ed; --text: #1a1d23; --muted: #4f5663; --muted-2: #6f7785; }
+:root[data-preset="ink"] { --bg: #000000; --sidebar: #050505; --surface: #0c0c0e; --surface-2: #131316; --surface-3: #1b1b20; --border: #2a2a31; --border-soft: #1b1b21; --text: #f4f4f5; --muted: #a1a1aa; --muted-2: #7c7c86; }
+:root[data-preset="ink"][data-theme="light"] { --bg: #fafafa; --sidebar: #ffffff; --surface: #ffffff; --surface-2: #f6f6f7; --surface-3: #efeff1; --border: #e0e0e4; --border-soft: #ebebee; --text: #09090b; --muted: #52525b; --muted-2: #73737d; }
+:root[data-preset="sand"] { --bg: #14110d; --sidebar: #181510; --surface: #1c1812; --surface-2: #231e17; --surface-3: #2c261d; --border: #3a3226; --border-soft: #2a241b; --text: #f3ece0; --muted: #b0a690; --muted-2: #8a8068; }
+:root[data-preset="sand"][data-theme="light"] { --bg: #f5f1ea; --sidebar: #fbf8f3; --surface: #fffdf9; --surface-2: #f8f4ec; --surface-3: #efe9dd; --border: #e0d8c8; --border-soft: #ebe5d8; --text: #2a241b; --muted: #5c5344; --muted-2: #7d735f; }
+
+/* ---------- Sidebar: icon rail (desktop only — below 900px the sidebar is already a drawer) ---------- */
+.nav-user-hidden { display: none !important; }
+.rail-toggle [data-icon] svg { transition: transform .18s ease; transform: rotate(180deg); }
+html[data-rail="on"] .rail-toggle [data-icon] svg { transform: none; }
+@media (max-width: 900px) { .rail-toggle { display: none; } }
+@media (min-width: 901px) {
+  .app-shell, .sidebar { transition: grid-template-columns .2s ease, width .2s ease; }
+  html[data-rail="on"] { --sidebar-width: 76px; }
+  html[data-rail="on"] .sidebar { padding: 20px 10px 14px; overflow-x: hidden; }
+  html[data-rail="on"] .brand { justify-content: center; padding: 0; }
+  html[data-rail="on"] .brand-copy { display: none; }
+  html[data-rail="on"] .nav-group { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-soft); }
+  html[data-rail="on"] .nav-group-toggle { display: none; }
+  html[data-rail="on"] .nav-group-items { display: flex !important; padding-top: 0; }
+  html[data-rail="on"] .nav-item { position: relative; justify-content: center; padding: 0; }
+  /* Labels stay in the DOM (they're the buttons' accessible names) but are clipped out of sight. */
+  html[data-rail="on"] .nav-item > span:not([data-icon]):not(.nav-badge),
+  html[data-rail="on"] .cert-button > span:nth-child(n+2),
+  html[data-rail="on"] .profile-chip > div:last-child { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  html[data-rail="on"] .nav-badge { position: absolute; top: 3px; right: 6px; margin: 0; min-width: 16px; height: 16px; padding: 0 4px; font-size: 9px; }
+  html[data-rail="on"] .cert-switcher { padding: 0 0 8px; }
+  html[data-rail="on"] .cert-switcher .eyebrow { display: none; }
+  html[data-rail="on"] .cert-button { position: relative; grid-template-columns: 1fr; justify-items: center; padding: 6px; min-height: 46px; }
+  html[data-rail="on"] .profile-chip { justify-content: center; padding: 8px 0; }
+}
+
+/* ---------- Settings: custom accent swatch + sidebar editor ---------- */
+.swatch-custom { position: relative; display: inline-grid; place-items: center; overflow: hidden; background: conic-gradient(#ef4444, #f59e0b, #84cc16, #06b6d4, #6366f1, #d946ef, #ef4444); cursor: pointer; }
+.swatch-custom input[type="color"] { position: absolute; inset: -6px; width: 40px; height: 40px; padding: 0; border: 0; opacity: 0; cursor: pointer; }
+.swatch-custom::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--surface); pointer-events: none; }
+.swatch-custom:focus-within { outline: 2px solid var(--primary); outline-offset: 2px; }
+.hex-field { width: 92px; font-family: "Cascadia Code", Consolas, monospace; font-size: 12px; text-transform: lowercase; }
+.setting-note { margin: 0; color: var(--muted); font-size: 10px; }
+.preset-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 10px; width: 100%; }
+.preset-card { display: grid; gap: 8px; padding: 8px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); text-align: left; cursor: pointer; }
+.preset-card:hover { border-color: var(--muted-2); }
+.preset-card.active { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
+.preset-preview { display: grid; grid-template-columns: 22px 1fr; height: 44px; overflow: hidden; border-radius: 8px; border: 1px solid rgba(128, 128, 128, .25); }
+.preset-preview i { display: block; }
+.preset-preview b { display: flex; flex-direction: column; justify-content: center; gap: 5px; padding: 0 9px; }
+.preset-preview b::before, .preset-preview b::after { content: ""; display: block; height: 4px; border-radius: 2px; background: currentColor; opacity: .6; }
+.preset-preview b::before { width: 72%; }
+.preset-preview b::after { width: 44%; opacity: .32; }
+.preset-card strong { display: block; font-size: 12px; }
+.preset-card small { color: var(--muted); font-size: 10px; }
+.nav-edit-group { width: 100%; }
+.nav-edit-group > .eyebrow { display: block; margin: 12px 0 6px; }
+.nav-edit-row { display: flex; align-items: center; gap: 10px; min-height: 40px; padding: 4px 0; border-top: 1px solid var(--border-soft); }
+.nav-edit-row > span { display: flex; align-items: center; flex: 1; min-width: 0; gap: 10px; font-size: 12px; font-weight: 650; }
+.nav-edit-row > span svg { width: 16px; height: 16px; color: var(--muted); }
+.nav-edit-row.is-hidden > span { color: var(--muted-2); }
+.nav-edit-actions { display: flex; align-items: center; gap: 6px; }
+.icon-button:disabled { opacity: .35; cursor: default; }
+.icon-button:disabled:hover { color: var(--muted); border-color: var(--border); }
+.hero-greeting { display: block; margin-bottom: 6px; color: var(--muted); font-size: 14px; font-weight: 600; }
+.settings-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin: 4px 0 18px; }
+.settings-search { width: min(280px, 100%); }
+.settings-search input { width: 100%; }
+
 @media print {
   /* Always print as the light theme — a dark-theme page prints dark panels with the
      forced-black body text sitting invisibly on top of them, and the dark-theme accent
      colours are near-white so they vanish on paper too. Redeclaring the tokens here (on
      both :root and the explicit dark override) neutralises that regardless of screen theme. */
-  :root, :root[data-theme="dark"] {
+  :root, :root[data-theme="dark"], :root[data-preset], :root[data-preset][data-theme] {
     color-scheme: light;
     --bg: #ffffff; --sidebar: #ffffff; --surface: #ffffff; --surface-2: #f7f9fb; --surface-3: #eef3f6;
     --border: #cbd3da; --border-soft: #dce4ea; --text: #111827;
     --muted: #3f4b5b; --muted-2: #5b6674;
-    --primary: #0b7267; --primary-strong: #087f74; --primary-soft: rgba(11,114,103,.1);
+    /* !important because the accent is set as an inline style on <html> (a chosen accent or a
+       custom color), which would otherwise win and could print a screen-tuned color on white. */
+    --primary: #0b7267 !important; --primary-strong: #087f74 !important; --primary-soft: rgba(11,114,103,.1) !important; --on-primary: #ffffff !important;
     --blue: #026ba1; --blue-soft: rgba(2,107,161,.09);
     --amber: #8a4b04; --amber-soft: rgba(138,75,4,.1);
     --red: #b3163a; --red-soft: rgba(179,22,58,.08);
