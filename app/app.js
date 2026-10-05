@@ -7,6 +7,12 @@ import {
 import { CHANGELOG } from './changelog.js?v=4';
 import { closeAnyCustomPopover, registerCustomPopover, releaseCustomPopover, setFontSuggestions, setDefaultFonts } from './controls.js?v=1';
 import { generateCrosswordLayout } from './crossword.js?v=1';
+import { createHighlightPalette, HIGHLIGHT_COLORS, HIGHLIGHT_DEFAULT_NAMES, guideHighlightColor, highlightCustomVars } from './highlights.js?v=1';
+import { openColorPicker, activeColorPickerTrigger } from './colorpicker.js?v=1';
+import { syncPrintHeader, initPrint } from './print.js?v=1';
+import { rankPaletteItems } from './palette.js?v=1';
+import { chartMarkup } from './charts.js?v=1';
+import { downloadText, buildCsv, buildIcs, buildAnkiTsv } from './exports.js?v=1';
 import {
   isHexColor, hexToRgb, rgbToHex, rgbToHsl, hslToRgb, rgbToHsv, hsvToRgb, normalizeHex, clamp01,
   relLuminance, contrastRatio, readableTextOn, colorNameFor, highlightMixFor
@@ -47,7 +53,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v220';
+  const APP_VERSION = 'v221';
   const DIAGNOSTIC_LEN = 15;
   let certDialogGroup = null;
   let certDialogEntryDomain = null; // domain ('certs'|'programs') the bottom "Current track" switcher is scoped to
@@ -1568,9 +1574,8 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
     return rgbToHex([r, g, b]);
   }
 
-  let colorPickerTrigger = null;
   function toggleColorPicker(trigger) {
-    if (colorPickerTrigger === trigger) { closeAnyCustomPopover(); return; }
+    if (activeColorPickerTrigger() === trigger) { closeAnyCustomPopover(); return; }
     closeAnyCustomPopover();
     const kind = trigger.dataset.picker;
     const theme = state.settings.theme === 'light' ? 'light' : 'dark';
@@ -1606,115 +1611,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
         commit: hex => { metaState.appIconColor = hex; saveMeta(); updateFavicon(); }
       }
     }[kind];
-    if (config) openColorPicker({ trigger, kind, ...config });
-  }
-
-  function openColorPicker({ trigger, kind, slot, label, start, live, cancel, commit }) {
-    const original = normalizeHex(start) || '#2dd4bf';
-    let [h, s, v] = rgbToHsv(hexToRgb(original));
-    const pop = document.createElement('div');
-    pop.className = 'cp-pop';
-    pop.setAttribute('role', 'dialog');
-    pop.setAttribute('aria-label', `${label} picker`);
-    const eyedropper = 'EyeDropper' in window
-      ? `<button type="button" class="icon-button small cp-eyedropper" aria-label="Pick a color from the screen" title="Pick a color from the screen">${icon('eyedropper')}</button>` : '';
-    pop.innerHTML = `
-      <div class="cp-sv" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-label="Color saturation and brightness. Arrow keys adjust; hold Shift for bigger steps."><i class="cp-sv-thumb"></i></div>
-      <div class="cp-controls">
-        <span class="cp-preview" title="Original and new color"><i class="cp-old"></i><i class="cp-new"></i></span>
-        <input class="cp-hue" type="range" min="0" max="360" step="1" aria-label="Hue">
-        ${eyedropper}
-      </div>
-      <div class="cp-fields">
-        <label>Hex<input class="cp-hex" type="text" maxlength="7" spellcheck="false" autocomplete="off"></label>
-        <label>R<input class="cp-r" type="number" min="0" max="255" inputmode="numeric"></label>
-        <label>G<input class="cp-g" type="number" min="0" max="255" inputmode="numeric"></label>
-        <label>B<input class="cp-b" type="number" min="0" max="255" inputmode="numeric"></label>
-      </div>
-      <div class="cp-actions"><button type="button" class="ghost small" data-cp="cancel">Cancel</button><button type="button" class="primary small" data-cp="done">Done</button></div>`;
-    (trigger.closest('.swatch-row') || trigger.parentElement).appendChild(pop);
-    const q = sel => pop.querySelector(sel);
-    const sv = q('.cp-sv'), hue = q('.cp-hue'), hexInput = q('.cp-hex');
-    const rgbInputs = { r: q('.cp-r'), g: q('.cp-g'), b: q('.cp-b') };
-    q('.cp-old').style.background = original;
-
-    const currentHex = () => rgbToHex(hsvToRgb([h, s, v]));
-    // `skip` is the field being typed in, so its text is not rewritten under the cursor. Nothing is
-    // previewed until the first real change, so merely opening the picker never alters the page.
-    let interacted = false;
-    const paint = skip => {
-      const rgb = hsvToRgb([h, s, v]).map(Math.round); const hex = rgbToHex(rgb);
-      pop.style.setProperty('--cp-hue', String(Math.round(h)));
-      pop.style.setProperty('--cp-color', hex);
-      sv.style.setProperty('--cp-x', `${s * 100}%`); sv.style.setProperty('--cp-y', `${(1 - v) * 100}%`);
-      sv.setAttribute('aria-valuenow', String(Math.round(s * 100)));
-      sv.setAttribute('aria-valuetext', `Saturation ${Math.round(s * 100)} percent, brightness ${Math.round(v * 100)} percent`);
-      if (skip !== hue) hue.value = String(Math.round(h));
-      if (skip !== hexInput) hexInput.value = hex;
-      if (skip !== rgbInputs.r) rgbInputs.r.value = rgb[0];
-      if (skip !== rgbInputs.g) rgbInputs.g.value = rgb[1];
-      if (skip !== rgbInputs.b) rgbInputs.b.value = rgb[2];
-      if (interacted) live(hex);
-    };
-    // Gray and black have no meaningful hue — keep the one already chosen so the slider does not jump.
-    const setFromRgb = (rgb, skip) => { const [nh, ns, nv] = rgbToHsv(rgb); s = ns; v = nv; if (ns > 0 && nv > 0) h = nh; paint(skip); };
-
-    const fromPointer = event => { const r = sv.getBoundingClientRect(); s = clamp01((event.clientX - r.left) / r.width); v = 1 - clamp01((event.clientY - r.top) / r.height); paint(); };
-    sv.addEventListener('pointerdown', event => { sv.setPointerCapture(event.pointerId); sv.focus(); fromPointer(event); event.preventDefault(); });
-    sv.addEventListener('pointermove', event => { if (sv.hasPointerCapture(event.pointerId)) fromPointer(event); });
-    sv.addEventListener('keydown', event => {
-      const step = event.shiftKey ? 0.1 : 0.01; let used = true;
-      if (event.key === 'ArrowLeft') s = clamp01(s - step); else if (event.key === 'ArrowRight') s = clamp01(s + step);
-      else if (event.key === 'ArrowUp') v = clamp01(v + step); else if (event.key === 'ArrowDown') v = clamp01(v - step);
-      else used = false;
-      if (used) { event.preventDefault(); paint(); }
-    });
-    hue.addEventListener('input', () => { h = Number(hue.value); paint(hue); });
-    hexInput.addEventListener('input', () => { const hex = normalizeHex(hexInput.value); if (hex) setFromRgb(hexToRgb(hex), hexInput); });
-    hexInput.addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); finish('commit'); } });
-    hexInput.addEventListener('blur', () => { hexInput.value = currentHex(); });
-    Object.values(rgbInputs).forEach(input => {
-      input.addEventListener('input', () => {
-        const parts = ['r', 'g', 'b'].map(k => rgbInputs[k].value.trim());
-        if (parts.every(p => /^\d{1,3}$/.test(p) && Number(p) <= 255)) setFromRgb(parts.map(Number), input);
-      });
-      input.addEventListener('blur', () => paint());
-    });
-    q('.cp-eyedropper')?.addEventListener('click', async () => {
-      try { const picked = await new window.EyeDropper().open(); const hex = normalizeHex(picked.sRGBHex); if (hex) setFromRgb(hexToRgb(hex)); } catch { /* dismissed with Escape */ }
-    });
-    q('[data-cp="done"]').addEventListener('click', () => finish('commit'));
-    q('[data-cp="cancel"]').addEventListener('click', () => finish('cancel'));
-
-    // Keep Tab inside the picker while it is open, and let Escape mean "put it back".
-    pop.addEventListener('keydown', event => {
-      if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); finish('cancel'); return; }
-      if (event.key !== 'Tab') return;
-      const stops = [...pop.querySelectorAll('.cp-sv, input, button')].filter(el => !el.disabled);
-      const first = stops[0], last = stops[stops.length - 1];
-      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
-    });
-
-    // how: 'commit' (Done / Enter), 'cancel' (Cancel / Escape), or 'outside' (clicked elsewhere —
-    // keeps the color like the native picker does, but never steals focus back).
-    let finished = false;
-    const closer = how => finish(how === 'cancel' ? 'cancel' : 'outside');
-    function finish(how) {
-      if (finished) return; finished = true;
-      const chosen = currentHex();
-      pop.remove(); colorPickerTrigger = null;
-      releaseCustomPopover(closer);
-      if (how === 'cancel' || chosen === original) cancel();
-      else { commit(chosen); if (document.querySelector('#main-content .settings-grid')) refreshSettingsInPlace(); }
-      if (how !== 'outside') document.querySelector(`[data-action="open-color-picker"][data-picker="${kind}"]${slot ? `[data-slot="${slot}"]` : ''}`)?.focus();
-    }
-    registerCustomPopover(closer);
-    colorPickerTrigger = trigger;
-    paint();
-    interacted = true;
-    sv.focus({ preventScroll: true });
-    pop.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    if (config) openColorPicker({ trigger, kind, ...config, onCommitted: () => { if (document.querySelector('#main-content .settings-grid')) refreshSettingsInPlace(); } });
   }
 
   // Must match styles.css's own :root font-family declaration — used as the fallback tail so
@@ -2123,44 +2020,12 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
   }
 
   // ---------- Print ----------
-  // Whatever gets printed or saved as a PDF (the browser's own Ctrl+P works on any page) carries
-  // the same quiet masthead: app, track, page, who it's for, and the date. The report sheets
-  // already open with their own title block, so they skip it rather than say everything twice.
-  // The browser's page-margin boxes (running head, page numbers) read the same text through the
-  // two custom properties set here.
-  function printPageTitle() {
-    const meta = routeMeta[currentRoute()] || routeMeta.dashboard;
-    return meta[0];
-  }
-  function syncPrintHeader() {
-    const header = document.getElementById('print-header'); if (!header) return;
-    const owner = ((metaState.displayName || '').trim() || (currentProfile().name || '').trim());
-    const date = new Intl.DateTimeFormat(undefined, { month: 'long', day: 'numeric', year: 'numeric' }).format(new Date());
-    const set = (key, text) => { const el = header.querySelector(`[data-print="${key}"]`); if (el) el.textContent = text; };
-    set('page', printPageTitle()); set('track', CERT.name); set('owner', owner ? `Prepared for ${owner}` : ''); set('date', date);
-    header.classList.toggle('is-off', !!main.querySelector('.report-head'));
-    const css = text => JSON.stringify(text.replace(/[\u0000-\u001f]/g, ' '));
-    document.documentElement.style.setProperty('--print-running-head', css(`Cert Study · ${CERT.name} · ${printPageTitle()}`));
-    document.documentElement.style.setProperty('--print-running-foot', css(owner ? `${owner} · ${date}` : date));
-  }
-  // "Save as PDF" proposes the page title as the file name, so give it a descriptive one for the
-  // length of the print and put the normal tab title back afterwards.
-  let titleBeforePrint = null;
-  let detailsOpenedForPrint = [];
-  window.addEventListener('beforeprint', () => {
-    syncPrintHeader();
-    titleBeforePrint = document.title;
-    document.title = `${printPageTitle()} — ${CERT.name} — Cert Study`;
-    // A collapsed <details> prints as just its summary line, which would silently drop the lists
-    // inside it — open every one for the print, then put them back as they were.
-    detailsOpenedForPrint = [...document.querySelectorAll('details:not([open])')];
-    detailsOpenedForPrint.forEach(el => { el.open = true; });
+  // See print.js: it draws the masthead and handles before/afterprint; this just says what page it is.
+  const printInfo = () => ({
+    pageTitle: (routeMeta[currentRoute()] || routeMeta.dashboard)[0], trackName: CERT.name,
+    owner: (metaState.displayName || '').trim() || (currentProfile().name || '').trim(), hasOwnHeader: !!main.querySelector('.report-head')
   });
-  window.addEventListener('afterprint', () => {
-    if (titleBeforePrint != null) { document.title = titleBeforePrint; titleBeforePrint = null; }
-    detailsOpenedForPrint.forEach(el => { el.open = false; });
-    detailsOpenedForPrint = [];
-  });
+  initPrint(printInfo);
 
   // ---------- Collapsible sidebar sections (independent — any number open at once) ----------
   // Each section header is a disclosure toggle. Opening one no longer closes the others —
@@ -2247,7 +2112,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
       report: renderReadinessReport, 'guide-digest': renderHighlightsDigest, achievements: renderAchievementsPage, examday: renderExamDay, mistakes: renderMistakePatterns, packet: renderStudyPacket,
       finalreview: renderFinalReview, search: renderSearch }[route] || renderDashboard)();
     main.classList.remove('page-enter'); void main.offsetWidth; main.classList.add('page-enter');
-    hydrateIcons(main); updateChrome(); syncPrintHeader(); main.focus({ preventScroll: true }); window.scrollTo({ top: 0, behavior: 'smooth' });
+    hydrateIcons(main); updateChrome(); syncPrintHeader(printInfo()); main.focus({ preventScroll: true }); window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function activityMarkup() {
@@ -5022,40 +4887,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
     return (state.guideHighlights[domainId] || []).filter(h => h.section === section && h.para === para).sort((a, b) => a.start - b.start);
   }
 
-  // A small real-highlighter-style pack — each name is also the exact CSS custom-property token
-  // (var(--amber) etc.), already contrast-tuned for both themes, so no new color tokens needed.
-  const HIGHLIGHT_COLORS = ['amber', 'green', 'blue', 'violet'];
-  const HIGHLIGHT_DEFAULT_NAMES = { amber: 'yellow', green: 'green', blue: 'blue', violet: 'pink' };
-  function guideHighlightColor(color) { return HIGHLIGHT_COLORS.includes(color) ? color : 'amber'; }
-
-  // Each of the four highlighter slots can be recolored (Settings → Appearance → Highlight colors).
-  // A highlight remembers only its slot, so a recolor carries through every highlight already made
-  // with it — color-coding by topic stays consistent. An unset slot keeps its built-in theme token.
-  function highlightCustomHex(slot) {
-    const value = (metaState.highlightColors || {})[slot];
-    return isHexColor(value) ? value.toLowerCase() : null;
-  }
-  function highlightColorValue(slot) { return highlightCustomHex(slot) || `var(--${slot})`; }
-  function highlightCustomVars(hex) {
-    const d = highlightMixFor(hex, 'dark'), l = highlightMixFor(hex, 'light');
-    return `--hl-color:${hex};--hl-mix-d:${d}%;--hl-mix-hover-d:${Math.min(d + 20, 60)}%;--hl-mix-l:${l}%;--hl-mix-hover-l:${Math.min(l + 20, 60)}%`;
-  }
-  function highlightStyleVars(slot) {
-    const hex = highlightCustomHex(slot);
-    return hex ? highlightCustomVars(hex) : `--hl-color:var(--${guideHighlightColor(slot)})`;
-  }
-  function highlightSlotName(slot) { const hex = highlightCustomHex(slot); return hex ? colorNameFor(hex) : HIGHLIGHT_DEFAULT_NAMES[slot]; }
-  // Keeps the floating Highlight popover's four swatches in step with the palette. Numbers, not
-  // letters, mark each swatch so a choice never depends on hue alone and never mislabels a recolor.
-  function applyHighlightPalette() {
-    document.querySelectorAll('#guide-highlight-popover .highlight-swatch').forEach((el, index) => {
-      const slot = el.dataset.color; const hex = highlightCustomHex(slot); const name = highlightSlotName(slot);
-      el.style.background = highlightColorValue(slot);
-      el.style.setProperty('--swatch-ink', hex ? readableTextOn(hex) : 'rgba(0,0,0,.55)');
-      el.dataset.letter = String(index + 1);
-      el.setAttribute('aria-label', `Highlight in ${name}`); el.title = `Highlight in ${name}`;
-    });
-  }
+  const { highlightCustomHex, highlightColorValue, highlightStyleVars, highlightSlotName, applyHighlightPalette } = createHighlightPalette(() => metaState.highlightColors);
 
   // Injects <mark> spans around highlighted substrings of a paragraph's plain text. Ranges are
   // clamped and walked in order so out-of-date offsets (e.g. from hand-edited content) can't
@@ -5404,9 +5236,6 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
       </article>`; }).join('')}</div></section>`;
   }
 
-  function chartMarkup(values, labels) {
-    return `<div class="bar-chart">${values.map((value, index) => `<div class="chart-bar-wrap" title="${value}%"><div class="chart-bar" style="height:${Math.max(3, value)}%"></div><small>${labels[index]}</small></div>`).join('')}</div>`;
-  }
 
   // Full-width readiness-over-time section for the History page: an SVG line of the daily
   // readiness snapshot series (plus a fainter first-try-accuracy line), an 80% "exam-ready"
@@ -6172,18 +6001,6 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
     } catch {}
   }
 
-  // RFC 5545 requires literal backslash/semicolon/comma/newline to be backslash-escaped inside
-  // TEXT values — cert and domain names in this app are plain enough that this rarely bites,
-  // but a schedule someone's edited to include one shouldn't silently corrupt the whole file.
-  function icsEscape(text) {
-    return String(text || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
-  }
-
-  function csvEscape(value) {
-    const str = String(value ?? '');
-    return /[",\r\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
-  }
-
   // Plain spreadsheet-friendly dump of every saved session for this track — the same rows the
   // History table already shows, just all of them (not just the last 8) and in a format a
   // spreadsheet app can sort/chart, for anyone who wants to track progress outside the app.
@@ -6191,11 +6008,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
     if (!state.sessions.length) { toast('No sessions to export yet.', 'info'); return; }
     const header = ['Date', 'Track', 'Type', 'Session', 'Core', 'Questions', 'Correct', 'First-try score %', 'Scaled score', 'Time (seconds)', 'Timed out'];
     const rows = state.sessions.map(s => [s.date, CERT.name, s.type, s.label, s.core, s.total, s.correct, s.score, s.scaled ?? '', s.elapsed, s.timedOut ? 'yes' : 'no']);
-    const csv = [header, ...rows].map(row => row.map(csvEscape).join(',')).join('\r\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a'); link.href = url; link.download = `cert-study-stats-${CERT.name.replace(/\s+/g, '-')}-${todayKey()}.csv`; link.click();
-    setTimeout(() => URL.revokeObjectURL(url), 500);
+    downloadText(buildCsv(header, rows), 'text/csv', `cert-study-stats-${CERT.name.replace(/\s+/g, '-')}-${todayKey()}.csv`);
     toast(`Exported ${state.sessions.length} sessions to CSV.`);
   }
 
@@ -6233,17 +6046,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
         description: 'Target date set in your Cert Study plan.'
       });
     });
-    const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Cert Study//Study Plan//EN', 'CALSCALE:GREGORIAN'];
-    events.forEach(event => {
-      lines.push('BEGIN:VEVENT', `UID:${event.uid}`, `DTSTAMP:${dtstamp}`,
-        `DTSTART;VALUE=DATE:${event.start.replace(/-/g, '')}`, `DTEND;VALUE=DATE:${event.end.replace(/-/g, '')}`,
-        `SUMMARY:${icsEscape(event.summary)}`, `DESCRIPTION:${icsEscape(event.description)}`, 'END:VEVENT');
-    });
-    lines.push('END:VCALENDAR');
-    // CRLF line endings are part of the ICS spec, not just style — some calendar apps
-    // (older Outlook builds especially) reject or mis-parse a file with bare \n.
-    const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar' });
-    const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = `cert-study-plan-${todayKey()}.ics`; link.click(); setTimeout(() => URL.revokeObjectURL(url), 500);
+    downloadText(buildIcs(events, dtstamp), 'text/calendar', `cert-study-plan-${todayKey()}.ics`);
     toast(`Exported ${events.length} calendar events — import the .ics file into Google Calendar, Outlook, or Apple Calendar.`);
   }
 
@@ -6340,36 +6143,10 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
     renderRoute();
   }
 
-  // Plain-text (TSV) export, not a real .apkg — Anki's own "Import File" dialog reads this
-  // directly (the #-prefixed header lines are its documented plain-text-import directives:
-  // separator/html/notetype/deck/tags-column), so no SQLite or zip writer is needed client-side.
-  // A field can't contain a literal tab or newline in this format, so both get neutralised.
-  function ankiField(text) {
-    return String(text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\t/g, ' ').replace(/\r?\n/g, '<br>');
-  }
-  // Anki treats spaces as tag separators within the tags column, and colons as hierarchy
-  // separators (shown as a nested tree in Anki's sidebar) — so track::domain reads as a
-  // two-level group per track instead of one flat, unbrowsable tag per domain.
-  function ankiTag(text) {
-    return String(text || '').trim().replace(/[^\w\s:+-]/g, '').replace(/\s+/g, '_').replace(/_+/g, '_');
-  }
   function exportAnkiDeck(filter = {}) {
     const cards = allConcepts().filter(concept => (!filter.core || filter.core === 'all' || concept.core === filter.core) && (!filter.domain || filter.domain === 'all' || concept.domain === filter.domain));
     if (!cards.length) { toast('No cards match that filter.', 'info'); return; }
-    const trackTag = ankiTag(CERT.name);
-    const lines = ['#separator:tab', '#html:true', '#notetype:Basic', `#deck:${CERT.name}`, '#tags column:3',
-      ...cards.map(concept => {
-        const domain = domainById[concept.domain];
-        const front = ankiField(concept.term);
-        // Escape each raw field individually, then splice in the <br>/<i> ourselves — escaping
-        // the already-assembled string would turn our own literal tags into visible "&lt;br&gt;"
-        // text on the card instead of an actual line break.
-        const back = concept.scenario ? `${ankiField(concept.definition)}<br><br><i>${ankiField(concept.scenario)}.</i>` : ankiField(concept.definition);
-        const tags = [domain ? `${trackTag}::${ankiTag(domain.name)}` : trackTag, concept.objective ? `obj_${ankiTag(concept.objective)}` : null].filter(Boolean).join(' ');
-        return `${front}\t${back}\t${tags}`;
-      })];
-    const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = `${CERT.name.replace(/[^\w-]+/g, '-')}-anki.txt`; link.click(); setTimeout(() => URL.revokeObjectURL(url), 500);
+    downloadText(buildAnkiTsv({ cards, deckName: CERT.name, domainById }), 'text/plain', `${CERT.name.replace(/[^\w-]+/g, '-')}-anki.txt`);
     toast(`Exported ${cards.length} card${cards.length === 1 ? '' : 's'} — in Anki, use File > Import and pick this file.`);
   }
 
@@ -6508,45 +6285,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
     return items;
   }
 
-  function scorePaletteItem(query, item) {
-    const label = item.label.toLowerCase();
-    if (label === query) return 100;
-    if (label.startsWith(query)) return 82;
-    if (label.split(/[\s—·/-]+/).some(word => word.startsWith(query))) return 62;
-    if (label.includes(query)) return 42;
-    if (item.type.toLowerCase().includes(query)) return 22;
-    // Global Search: a real word found in a term's definition/scenario, a guide chapter's
-    // actual paragraph text, or a note's own text — ranked above the last-resort fuzzy
-    // subsequence match below, since a genuine substring hit in real content is more likely
-    // what was meant than two letters that happen to appear in the right order in a label.
-    if (item.body && item.body.toLowerCase().includes(query)) return 30;
-    let i = 0;
-    for (const ch of label) { if (ch === query[i]) i++; if (i === query.length) break; }
-    return i === query.length ? 12 : -1;
-  }
-
-  // When a match came from body text rather than the label itself, swap the displayed sub-line
-  // for a short excerpt centered on the match — otherwise a Term/Guide/Note result found by
-  // Global Search would show its normal (irrelevant-looking) sub and give no hint why it matched.
-  function paletteSnippet(item, query) {
-    const label = item.label.toLowerCase();
-    if (!item.body || label.includes(query)) return item.sub;
-    const body = item.body; const idx = body.toLowerCase().indexOf(query);
-    if (idx === -1) return item.sub;
-    const start = Math.max(0, idx - 30); const end = Math.min(body.length, idx + query.length + 45);
-    return `${start > 0 ? '…' : ''}${body.slice(start, end).trim()}${end < body.length ? '…' : ''}`;
-  }
-
-  function paletteResultsFor(query) {
-    const q = query.trim().toLowerCase();
-    if (!q) return paletteIndex.filter(item => item.type === 'Page' || item.type === 'Action').slice(0, 8);
-    return paletteIndex
-      .map(item => ({ item, score: scorePaletteItem(q, item) }))
-      .filter(entry => entry.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 9)
-      .map(entry => ({ ...entry.item, sub: paletteSnippet(entry.item, q) }));
-  }
+  function paletteResultsFor(query) { return rankPaletteItems(paletteIndex, query); }
 
   function renderPaletteResults() {
     const input = document.getElementById('palette-input');

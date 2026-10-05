@@ -64,6 +64,36 @@ def run(ctx):
     t.check(units["customDark"] != "#101040" and units["customLight"] != "#ffee00", "a custom accent that is too dark (or too light) for the theme is nudged for contrast", f"{units['customDark']} / {units['customLight']}")
     t.check(units["presets"] == ["default", "slate", "ink", "sand"] and units["fallback"] == "default", "four surface styles; unknown ones fall back to Classic")
 
+    # ---------------------------------------------------------------- more pure modules
+    t.suite("export, palette, chart, and highlight modules")
+    more = browser.eval(r"""(async () => {
+      const ex = await import('/app/exports.js?v=1'); const pal = await import('/app/palette.js?v=1'); const ch = await import('/app/charts.js?v=1'); const hl = await import('/app/highlights.js?v=1');
+      const items = [{ type: 'Page', label: 'Glossary', sub: 'x' }, { type: 'Action', label: 'Export to Anki', sub: 'y' }, { type: 'Term', label: 'Subnet mask', sub: 'z', body: 'Divides an address into network and host parts' }, { type: 'Setting', label: 'Accent color', sub: 's' }];
+      const palette = hl.createHighlightPalette(() => ({ blue: '#e11d48' }));
+      const ics = ex.buildIcs([{ uid: 'u1', start: '2026-01-05', end: '2026-01-06', summary: 'Study, hard; really', description: 'a\nb' }], '20260101T000000Z');
+      const tsv = ex.buildAnkiTsv({ cards: [{ term: 'A & B', definition: 'x\ty', scenario: 'use it', domain: 'd1', objective: '1.1' }], deckName: 'CompTIA A+', domainById: { d1: { name: 'Mobile Devices' } } });
+      return {
+        icsEscape: ex.icsEscape('a,b;c\\d\n'), csv: [ex.csvEscape('plain'), ex.csvEscape('a,"b"')], csvRows: ex.buildCsv(['h1', 'h2'], [['x', 'y,z']]),
+        ics: { lines: ics.split('\r\n'), crlf: ics.includes('\r\n') },
+        anki: { lines: tsv.split('\n'), field: ex.ankiField('a\tb\nc & <d>'), tag: ex.ankiTag('Mobile Devices & more!') },
+        rankExact: pal.rankPaletteItems(items, 'glossary').map(i => i.label), rankEmpty: pal.rankPaletteItems(items, '').map(i => i.type), rankBody: pal.rankPaletteItems(items, 'host parts').map(i => [i.label, i.sub]),
+        chart: ch.chartMarkup([50, 0], ['a', 'b']),
+        hl: { colors: hl.HIGHLIGHT_COLORS, custom: palette.highlightStyleVars('blue'), plain: palette.highlightStyleVars('amber'), name: [palette.highlightSlotName('blue'), palette.highlightSlotName('amber')], fallback: hl.guideHighlightColor('nope') }
+      };
+    })()""")
+    t.check(more["icsEscape"] == r"a\,b\;c\\d\n" and more["csv"] == ["plain", '"a,""b"""'], "calendar and CSV text is escaped correctly", str(more["icsEscape"]))
+    t.check(more["csvRows"] == "h1,h2\r\nx,\"y,z\"", "CSV rows join with CRLF and quote commas")
+    t.check(more["ics"]["crlf"] and more["ics"]["lines"][0] == "BEGIN:VCALENDAR" and more["ics"]["lines"][-1] == "END:VCALENDAR" and "DTSTART;VALUE=DATE:20260105" in more["ics"]["lines"]
+            and r"SUMMARY:Study\, hard\; really" in more["ics"]["lines"], "a calendar file is well-formed (CRLF, dates, escaped summary)", str(more["ics"]["lines"][:8]))
+    t.check(more["anki"]["lines"][:5] == ["#separator:tab", "#html:true", "#notetype:Basic", "#deck:CompTIA A+", "#tags column:3"] and more["anki"]["lines"][5].endswith("CompTIA_A+::Mobile_Devices obj_11"),
+            "an Anki deck has its import directives and a track::domain tag", str(more["anki"]["lines"][5:]))
+    t.check(more["anki"]["field"] == "a b<br>c &amp; &lt;d&gt;" and more["anki"]["tag"] == "Mobile_Devices_more", "Anki fields and tags are neutralized", str(more["anki"]))
+    t.check(more["rankExact"][0] == "Glossary" and more["rankEmpty"] == ["Page", "Action"] and more["rankBody"][0][0] == "Subnet mask" and "host parts" in more["rankBody"][0][1],
+            "palette ranking: exact label first, an empty query shows pages and actions, body matches show an excerpt", str(more["rankBody"]))
+    t.check("height:50%" in more["chart"] and "height:3%" in more["chart"], "the bar chart gives tiny values a visible minimum height")
+    t.check(more["hl"]["colors"] == ["amber", "green", "blue", "violet"] and more["hl"]["custom"].startswith("--hl-color:#e11d48") and more["hl"]["plain"] == "--hl-color:var(--amber)"
+            and more["hl"]["name"] == ["red", "yellow"] and more["hl"]["fallback"] == "amber", "the highlighter palette honors overrides and falls back to defaults", str(more["hl"]))
+
     # ---------------------------------------------------------------- themed controls
     t.suite("themed dropdowns, dates, fonts, and the crossword")
     go(browser, "practice", wait=0.8)
