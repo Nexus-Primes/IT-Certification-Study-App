@@ -4,7 +4,7 @@ import {
   daysBetween, formatDate, formatDateKey, formatPlanDate, formatDuration, hashNumber,
   seededShuffle, recallMatchHint
 } from './utils.js?v=4';
-import { CHANGELOG } from './changelog.js?v=4';
+import { CHANGELOG } from './changelog.js?v=5';
 import { closeAnyCustomPopover, registerCustomPopover, releaseCustomPopover, setFontSuggestions, setDefaultFonts } from './controls.js?v=1';
 import { generateCrosswordLayout } from './crossword.js?v=1';
 import { createHighlightPalette, HIGHLIGHT_COLORS, HIGHLIGHT_DEFAULT_NAMES, guideHighlightColor, highlightCustomVars } from './highlights.js?v=1';
@@ -53,7 +53,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v221';
+  const APP_VERSION = 'v222';
   const DIAGNOSTIC_LEN = 15;
   let certDialogGroup = null;
   let certDialogEntryDomain = null; // domain ('certs'|'programs') the bottom "Current track" switcher is scoped to
@@ -2610,7 +2610,8 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
     const due = getDueCards(false);
     if (due.length) return { kind: 'flashcards', due };
     const focus = getActiveTrackPlanFocus();
-    if (focus && focus.block) return { kind: 'domain', domain: focus.block.domain, fromPlan: true };
+    // A domain you've marked complete is not "today's" work even if the plan's calendar says so.
+    if (focus && focus.block && !state.completedDomains[focus.block.domain.id]) return { kind: 'domain', domain: focus.block.domain, fromPlan: true };
     const weakest = getWeakDomains(1)[0];
     if (weakest) return { kind: 'domain', domain: weakest.domain, fromPlan: false };
     return { kind: 'quick10' };
@@ -5656,8 +5657,29 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
     return `<article class="settings-card" data-section="account" data-card="profile"><h3>Your profile</h3><p>Shown in the sidebar and on your printed readiness report — not shared anywhere, just for you.</p><div class="setting-row"><div><strong>Account</strong><small>Each account has its own completely separate progress and settings.</small></div><button class="secondary small" data-action="open-account-dialog">${icon('repeat')} Switch (${escapeHtml(currentProfile().name || 'this account')})</button></div><div class="setting-row"><div><strong>Display name</strong><small>Leave blank to keep the default.</small></div><input type="text" id="setting-display-name" class="setting-date-input" style="width:180px" placeholder="Future technician" value="${escapeHtml(metaState.displayName || '')}" autocomplete="off" maxlength="40"></div><div class="setting-row stacked"><div><strong>Avatar</strong><small>Pick a style and color, or upload your own photo.</small></div><div class="avatar-style-row"><button type="button" class="avatar-style-btn ${metaState.avatar.type === 'initials' ? 'active' : ''}" data-action="set-avatar-style" data-style="initials" title="Initials">Aa</button>${AVATAR_EMOJIS.map(e => `<button type="button" class="avatar-style-btn ${metaState.avatar.type === 'emoji' && metaState.avatar.emoji === e ? 'active' : ''}" data-action="set-avatar-style" data-style="emoji" data-emoji="${e}" title="${e}">${e}</button>`).join('')}</div><div class="swatch-row"><button type="button" class="swatch-btn none ${!metaState.avatar.color ? 'active' : ''}" data-action="set-avatar-color" data-color="" title="Default"></button>${AVATAR_COLORS.map(c => `<button type="button" class="swatch-btn ${metaState.avatar.color === c ? 'active' : ''}" style="background:${c}" data-action="set-avatar-color" data-color="${c}" title="${c}"></button>`).join('')}${customSwatchMarkup('avatar', 'Choose a custom avatar color', metaState.avatar.color, AVATAR_COLORS)}</div><div class="button-row" style="margin-top:2px"><button class="secondary small" data-action="choose-avatar-photo" type="button">${icon('image')} Upload photo</button>${metaState.avatar.type === 'photo' && metaState.avatar.photoVersion ? `<button class="secondary small" data-action="remove-avatar-photo" type="button">${icon('trash')} Remove photo</button>` : ''}<input type="file" id="avatar-photo-input" accept="image/*" class="hidden"></div></div></article>`;
   }
 
+  // "Reset look & feel" puts back only the cosmetic choices — theme, style, accent (and per-track
+  // accents), font, text size, corners, density. Accessibility options, the sidebar, and highlight
+  // colors are yours to keep. Undo restores everything it changed.
+  const LOOK_KEYS = ['themeMode', 'themePreset', 'accentColor', 'fontFamily', 'fontSize', 'cornerStyle', 'density'];
+  function lookIsDefault() {
+    const defaults = defaultState().settings;
+    return LOOK_KEYS.every(key => state.settings[key] === defaults[key]) && !metaState.perTrackAccent && !Object.keys(metaState.trackAccents || {}).length;
+  }
+  function resetLook() {
+    const defaults = defaultState().settings;
+    const snapshot = () => ({ settings: Object.fromEntries(LOOK_KEYS.map(key => [key, state.settings[key]])), theme: state.settings.theme, perTrackAccent: !!metaState.perTrackAccent, trackAccents: { ...(metaState.trackAccents || {}) } });
+    const before = snapshot();
+    const apply = values => {
+      LOOK_KEYS.forEach(key => { state.settings[key] = values.settings[key]; });
+      state.settings.theme = values.theme; metaState.perTrackAccent = values.perTrackAccent; metaState.trackAccents = { ...values.trackAccents };
+      saveMeta(); saveState(); updateChrome(); refreshSettingsInPlace();
+    };
+    apply({ settings: Object.fromEntries(LOOK_KEYS.map(key => [key, defaults[key]])), theme: resolveTheme(defaults.themeMode), perTrackAccent: false, trackAccents: {} });
+    toast('Look & feel reset to the defaults.', 'success', { label: 'Undo', run: () => { apply(before); toast('Your look is back.'); } });
+  }
+
   function settingsCardLook(isPrograms) {
-    return `<article class="settings-card" data-section="appearance" data-card="look"><h3>Look &amp; feel</h3><p>Purely cosmetic — none of this changes how mastery or scoring works.</p><div class="setting-row"><div><strong>Color theme</strong><small>Dark, light, or follow your system setting automatically.</small></div><div class="domain-tabs" style="margin:0">${['dark', 'light', 'auto'].map(mode => `<button class="tab-button ${state.settings.themeMode === mode ? 'active' : ''}" type="button" data-action="set-theme-mode" data-mode="${mode}">${mode === 'auto' ? 'Auto' : mode === 'dark' ? 'Dark' : 'Light'}</button>`).join('')}</div></div>${themePresetRowMarkup()}${accentRowMarkup()}${highlightColorsRowMarkup()}<div class="setting-row stacked"><div><strong>App font</strong><small>Start typing to see common fonts, or type any exact name of your own.</small></div><div class="button-row" style="width:100%;align-items:center"><input type="text" id="setting-font-name" class="setting-date-input" style="flex:1;min-width:200px" placeholder="e.g. Calibri, Comic Sans MS" value="${escapeHtml(state.settings.fontFamily || '')}" autocomplete="off">${'queryLocalFonts' in window ? `<button class="secondary small" type="button" data-action="browse-local-fonts">Check Installed Fonts</button>` : ''}${state.settings.fontFamily ? `<button class="secondary small" type="button" data-action="reset-font-family">Reset</button>` : ''}</div><p id="font-preview-sample" style="margin:8px 0 0;font-family:${escapeHtml(buildFontStack(state.settings.fontFamily))};font-size:13px;color:var(--muted)">The quick brown fox jumps over the lazy dog.</p></div><div class="setting-row stacked"><div><strong>Text size</strong><small>Scales the whole app, not just body text.</small></div><div class="domain-tabs" style="margin:0">${[['0.9', 'Small'], ['1', 'Default'], ['1.15', 'Large'], ['1.3', 'Extra large']].map(([size, label]) => `<button class="tab-button ${Number(state.settings.fontSize) === Number(size) ? 'active' : ''}" type="button" data-action="set-font-size" data-size="${size}">${label}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Corner style</strong><small>Rounded or sharp corners across the app.</small></div><div class="domain-tabs" style="margin:0">${[['rounded', 'Rounded'], ['sharp', 'Sharp']].map(([id, label]) => `<button class="tab-button ${(state.settings.cornerStyle || 'rounded') === id ? 'active' : ''}" type="button" data-action="set-corner-style" data-corners="${id}">${label}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Density</strong><small>How much breathing room cards and lists get.</small></div><div class="domain-tabs" style="margin:0">${[['comfortable', 'Comfortable'], ['compact', 'Compact']].map(([id, label]) => `<button class="tab-button ${(state.settings.density || 'comfortable') === id ? 'active' : ''}" type="button" data-action="set-density" data-density="${id}">${label}</button>`).join('')}</div></div></article>`;
+    return `<article class="settings-card" data-section="appearance" data-card="look"><h3>Look &amp; feel</h3><p>Purely cosmetic — none of this changes how mastery or scoring works.</p><div class="setting-row"><div><strong>Color theme</strong><small>Dark, light, or follow your system setting automatically.</small></div><div class="domain-tabs" style="margin:0">${['dark', 'light', 'auto'].map(mode => `<button class="tab-button ${state.settings.themeMode === mode ? 'active' : ''}" type="button" data-action="set-theme-mode" data-mode="${mode}">${mode === 'auto' ? 'Auto' : mode === 'dark' ? 'Dark' : 'Light'}</button>`).join('')}</div></div>${themePresetRowMarkup()}${accentRowMarkup()}${highlightColorsRowMarkup()}<div class="setting-row stacked"><div><strong>App font</strong><small>Start typing to see common fonts, or type any exact name of your own.</small></div><div class="button-row" style="width:100%;align-items:center"><input type="text" id="setting-font-name" class="setting-date-input" style="flex:1;min-width:200px" placeholder="e.g. Calibri, Comic Sans MS" value="${escapeHtml(state.settings.fontFamily || '')}" autocomplete="off">${'queryLocalFonts' in window ? `<button class="secondary small" type="button" data-action="browse-local-fonts">Check Installed Fonts</button>` : ''}${state.settings.fontFamily ? `<button class="secondary small" type="button" data-action="reset-font-family">Reset</button>` : ''}</div><p id="font-preview-sample" style="margin:8px 0 0;font-family:${escapeHtml(buildFontStack(state.settings.fontFamily))};font-size:13px;color:var(--muted)">The quick brown fox jumps over the lazy dog.</p></div><div class="setting-row stacked"><div><strong>Text size</strong><small>Scales the whole app, not just body text.</small></div><div class="domain-tabs" style="margin:0">${[['0.9', 'Small'], ['1', 'Default'], ['1.15', 'Large'], ['1.3', 'Extra large']].map(([size, label]) => `<button class="tab-button ${Number(state.settings.fontSize) === Number(size) ? 'active' : ''}" type="button" data-action="set-font-size" data-size="${size}">${label}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Corner style</strong><small>Rounded or sharp corners across the app.</small></div><div class="domain-tabs" style="margin:0">${[['rounded', 'Rounded'], ['sharp', 'Sharp']].map(([id, label]) => `<button class="tab-button ${(state.settings.cornerStyle || 'rounded') === id ? 'active' : ''}" type="button" data-action="set-corner-style" data-corners="${id}">${label}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Density</strong><small>How much breathing room cards and lists get.</small></div><div class="domain-tabs" style="margin:0">${[['comfortable', 'Comfortable'], ['compact', 'Compact']].map(([id, label]) => `<button class="tab-button ${(state.settings.density || 'comfortable') === id ? 'active' : ''}" type="button" data-action="set-density" data-density="${id}">${label}</button>`).join('')}</div></div><div class="setting-row"><div><strong>Reset look &amp; feel</strong><small>Back to the default theme, style, accent, font, text size, corners, and density. Accessibility options, the sidebar, and highlight colors stay as they are.</small></div><button class="secondary small" data-action="reset-look" ${lookIsDefault() ? 'disabled' : ''}>${icon('rotate')} Reset</button></div></article>`;
   }
 
   function settingsCardAccessibility(isPrograms) {
@@ -6329,7 +6351,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
   // ---------- Keyboard shortcuts reference ----------
   function openShortcuts() {
     const groups = [
-      ['Global', [['Ctrl / ⌘ + K', 'Open the command palette'], ['/', 'Open the command palette'], ['?', 'Show this shortcuts list'], ['Esc', 'Close a dialog']]],
+      ['Global', [['Ctrl / ⌘ + K', 'Open the command palette'], ['/', 'Open the command palette'], ['?', 'Show this shortcuts list'], ['\\', 'Collapse or expand the sidebar to icons'], ['Esc', 'Close a dialog']]],
       ['Jump to a page (press G, then a letter)', [
         ['G D', 'Dashboard'], ['G P', 'Practice'], ['G E', 'Mock exams'], ['G F', 'Flashcards'],
         ['G L', 'Labs'], ['G T', 'Case studies'], ['G X', 'Terminal sandbox'], ['G C', 'Crossword'],
@@ -6743,6 +6765,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
       toast('Sidebar reset to the default order.');
     }
     if (action === 'open-color-picker') toggleColorPicker(button);
+    if (action === 'reset-look') resetLook();
     if (action === 'goto-exam-date') openSettingAt('study', 'Exam date');
     if (action === 'reset-highlight-colors') { metaState.highlightColors = {}; saveMeta(); applyHighlightPalette(); refreshSettingsInPlace(); toast('Highlight colors reset.'); }
     if (action === 'browse-local-fonts') browseLocalFonts();
@@ -7173,6 +7196,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
 
     if (!typing && event.key === '/') { event.preventDefault(); openPalette(); return; }
     if (!typing && event.key === '?') { event.preventDefault(); openShortcuts(); return; }
+    if (!typing && event.key === '\\' && !event.ctrlKey && !event.altKey && !event.metaKey) { event.preventDefault(); toggleSidebarRail(); return; }
 
     // Read-aloud: spacebar pauses/resumes without reaching for the mouse — mirrors the
     // flash-card Space handler below, gated the same way (not while typing anywhere else).

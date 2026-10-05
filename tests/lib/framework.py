@@ -66,3 +66,41 @@ def set_theme(browser, theme):
     if browser.eval("document.documentElement.dataset.theme") != theme:
         browser.eval("document.getElementById('theme-toggle').click()")
         time.sleep(0.6)
+
+
+def reload(browser, wait=3.0):
+    """A real page reload (a hash-only navigation does not reload the app)."""
+    browser.call("Page.reload")
+    time.sleep(wait)
+    browser.wait_for("document.getElementById('main-content') && document.getElementById('main-content').innerText.trim().length > 20", timeout=20)
+    dismiss_dialogs(browser)
+
+
+def finish_quiz(browser, exam=False, limit=140):
+    """Answers every question of the quiz on screen (always the first open choice) through to the results.
+
+    Returns { question prompt: domain tag text }, read from each question's own header, so tests can see
+    which domains a session actually drew from."""
+    seen = {}
+    for _ in range(limit):
+        state = browser.eval("""(() => {
+          const next = document.querySelector('[data-action="next-question"]');
+          const meta = [...document.querySelectorAll('.question-meta .tag')].map(t => t.textContent.trim());
+          const prompt = document.querySelector('.question-card h2')?.textContent.trim() || '';
+          return { open: [...document.querySelectorAll('[data-answer]')].filter(a => !a.disabled).length, selected: !!document.querySelector('.answer-option.selected'),
+                   next: !!next && !next.disabled, submit: !!document.querySelector('[data-action="submit-exam"]'),
+                   results: !!document.querySelector('.results-metrics, .results-hero'), meta, prompt }; })()""")
+        if state["results"]:
+            return seen
+        if state["prompt"] and len(state["meta"]) > 1:
+            seen[state["prompt"]] = state["meta"][1]
+        if state["submit"]:
+            browser.eval("document.querySelector('[data-action=\"submit-exam\"]').click()")
+        elif exam and not state["selected"] and state["open"]:
+            browser.eval("[...document.querySelectorAll('[data-answer]')].filter(a => !a.disabled)[0].click()")
+        elif state["next"]:
+            browser.eval("document.querySelector('[data-action=\"next-question\"]').click()")
+        elif state["open"]:
+            browser.eval("[...document.querySelectorAll('[data-answer]')].filter(a => !a.disabled)[0].click()")
+        time.sleep(0.25)
+    return seen

@@ -361,4 +361,63 @@ def run(ctx):
     time.sleep(1.5)
     t.check(sandbox.progress()["zz-test"] == {"v": 2}, "Undo brings back exactly what was replaced")
 
+    # ---------------------------------------------------------------- reset look & feel, and the sidebar key
+    t.suite("reset look & feel and the sidebar key")
+    _open_settings(browser, "appearance")
+    t.check(browser.eval("document.querySelector('[data-action=\"reset-look\"]').disabled") in (False, True), "the Reset row is in Look & feel")
+    # Change a bit of everything it is supposed to put back, and something it must leave alone.
+    browser.eval("document.querySelector('[data-action=\"set-theme-mode\"][data-mode=\"light\"]').click()")
+    time.sleep(0.4)
+    _open_settings(browser, "appearance")
+    browser.eval("document.querySelector('[data-action=\"set-theme-preset\"][data-preset=\"sand\"]').click()")
+    time.sleep(0.4)
+    browser.eval("document.querySelector('[data-action=\"set-accent-color\"][data-accent=\"rose\"]').click()")
+    time.sleep(0.4)
+    browser.eval("document.querySelector('[data-action=\"set-corner-style\"][data-corners=\"sharp\"]').click()")
+    time.sleep(0.5)
+    _open_settings(browser, "appearance")
+    browser.eval("document.querySelector('[data-action=\"set-density\"][data-density=\"compact\"]').click()")
+    time.sleep(0.5)
+    _open_settings(browser, "appearance")
+    browser.eval("(() => { const c = document.getElementById('setting-reading-mode'); if (c) { c.checked = true; c.dispatchEvent(new Event('change', { bubbles: true })); } })()")
+    time.sleep(0.5)
+    _open_settings(browser, "appearance")
+    changed = sandbox.progress()["app-meta"]["appearance"]
+    t.check(changed["themeMode"] == "light" and changed["themePreset"] == "sand" and changed["accentColor"] == "rose" and changed["cornerStyle"] == "sharp" and changed["density"] == "compact",
+            "(setup) a non-default look is saved", str({k: changed[k] for k in ("themeMode", "themePreset", "accentColor", "cornerStyle", "density")}))
+    t.check(browser.eval("!document.querySelector('[data-action=\"reset-look\"]').disabled"), "Reset is available once the look differs from the defaults")
+    browser.eval("document.querySelector('[data-action=\"reset-look\"]').click()")
+    time.sleep(1.2)
+    now = sandbox.progress()["app-meta"]["appearance"]
+    t.check(now["themeMode"] == "dark" and now["themePreset"] == "default" and now["accentColor"] == "teal" and now["cornerStyle"] == "rounded" and now["density"] == "comfortable" and now["fontSize"] == 1 and now["fontFamily"] == "",
+            "Reset puts back the default theme, style, accent, corners, density, text size, and font", str(now))
+    t.check(now["readingMode"] is True, "...and leaves the accessibility toggle you turned on alone")
+    page = browser.eval("({ theme: document.documentElement.dataset.theme, preset: document.documentElement.dataset.preset || null, corners: document.documentElement.dataset.corners || null })")
+    t.check(page["theme"] == "dark" and page["preset"] is None, "the page itself changes straight away", str(page))
+    t.check(browser.eval("document.querySelector('[data-action=\"reset-look\"]').disabled"), "Reset is greyed out when there is nothing to reset")
+    t.check(browser.eval("document.querySelector('.toast-action')?.textContent") == "Undo", "an Undo is offered")
+    browser.eval("document.querySelector('.toast-action').click()")
+    time.sleep(1.2)
+    back = sandbox.progress()["app-meta"]["appearance"]
+    t.check(back["themeMode"] == "light" and back["themePreset"] == "sand" and back["accentColor"] == "rose" and back["cornerStyle"] == "sharp" and back["density"] == "compact", "Undo brings the whole look back", str(back))
+    browser.eval("document.querySelector('[data-action=\"reset-look\"]').click()")  # leave things tidy
+    time.sleep(0.8)
+
+    before = browser.eval("document.documentElement.dataset.rail || 'off'")
+    browser.eval("document.dispatchEvent(new KeyboardEvent('keydown', { key: '\\\\', bubbles: true }))")
+    time.sleep(0.4)
+    after = browser.eval("document.documentElement.dataset.rail || 'off'")
+    t.check(before != after, "the backslash key collapses or expands the sidebar", f"{before} -> {after}")
+    browser.eval("document.dispatchEvent(new KeyboardEvent('keydown', { key: '\\\\', bubbles: true }))")
+    time.sleep(0.3)
+    browser.eval("(() => { const i = document.createElement('input'); i.id = 'tmp-typing'; document.body.appendChild(i); i.focus(); i.dispatchEvent(new KeyboardEvent('keydown', { key: '\\\\', bubbles: true })); })()")
+    time.sleep(0.3)
+    t.check(browser.eval("document.documentElement.dataset.rail || 'off'") == before, "...but typing a backslash in a field does not")
+    browser.eval("document.getElementById('tmp-typing').remove()")
+    act_shortcuts = "document.dispatchEvent(new KeyboardEvent('keydown', { key: '?', bubbles: true }))"
+    browser.eval(act_shortcuts)
+    time.sleep(0.4)
+    t.check("Collapse or expand the sidebar" in browser.eval("document.getElementById('dialog-layer').innerText"), "the shortcuts list mentions it")
+    browser.eval("document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))")
+
     t.check(not browser.errors(), "no JavaScript errors during interactions", "; ".join(browser.errors()[:3]))

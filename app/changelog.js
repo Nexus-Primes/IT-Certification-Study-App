@@ -6,6 +6,12 @@
 // this app having per-build version numbers at all, so their "version" is the date instead —
 // still real history, just not tagged with a build number the way later entries are.
 export const CHANGELOG = [
+  { version: 'v222', date: 'October 2026', title: 'Reset your look, a sidebar key, and a study-plan fix', items: [
+    "New: Settings → Appearance → Look & feel has \"Reset\", which puts back the default theme, style, accent, font, text size, corners, and density in one click — with Undo. Accessibility options, the sidebar, and highlight colors are left as you set them.",
+    "New: press \\ (backslash) to collapse or expand the sidebar to icons. It's listed in the keyboard shortcuts (?).",
+    "Fixed: Today's session could suggest a domain you had marked complete whenever your study plan's calendar happened to be on it. Completed domains are now skipped there too.",
+    "Fixed: the type label at the right of the highlighted command-palette row (Page, Setting, Lab…) was too faint to read comfortably."
+  ] },
   { version: 'v220', date: 'October 2026', title: 'Palette shortcuts and a tidier printed Browse table', items: [
     "New: the command palette can print or save the current page as a PDF, and can hide or show any sidebar page (type a page name, e.g. \"crossword\").",
     "Fixed: printing Browse cards kept no column titles and wasted a column on checkboxes and buttons. It now prints a compact table with Term, Status, Accuracy, Interval, and Due, in 18 sheets instead of 29."
