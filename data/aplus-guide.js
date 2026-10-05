@@ -194,6 +194,71 @@
         "heading": "macOS and Linux",
         "objectives": ["1.6"],
         "body": "macOS ships with its own set of built-in utilities: Disk Utility manages partitioning and drive health, Time Machine handles automatic, versioned backups, and Migration Assistant transfers data and settings from an old Mac (or a Windows PC) to a new one. Common macOS keyboard-driven and Terminal commands overlap conceptually with their Windows and Linux counterparts, even though the exact syntax differs.\n\nLinux is genuinely more command-line-centric in typical day-to-day administration than either Windows or macOS, and a technician is expected to know a set of foundational commands: ls (list directory contents), cd (change directory), and others for navigating and managing the filesystem directly rather than through a graphical file manager. Linux permissions work through a read/write/execute model applied separately to a file's owner, group, and everyone else — a genuinely different mental model from Windows' more graphical, ACL-based permission system, and one the exam specifically tests understanding of. Both OSes support backups and running applications, but with philosophies and default tools different enough from Windows that a technician who only knows Windows well can still be caught off guard by basic macOS or Linux support requests without at least this foundational familiarity."
+      },
+      {
+        "heading": "More Windows tools",
+        "objectives": [
+          "1.2"
+        ],
+        "body": "Beyond Task Manager and Event Viewer, a handful of consoles show up constantly in support work. Device Manager (devmgmt.msc) lists every device and its driver — a yellow warning icon marks a problem, and the driver tab offers Update, Roll Back, Disable, and Uninstall. Task Scheduler runs programs on a schedule or trigger, Services (services.msc) controls whether and when each background service starts, and Local Users and Groups and Certificate Manager handle local accounts and certificates (the first is missing on Home edition).\n\nFor diagnostics, Performance Monitor logs counters over time to build a baseline, Resource Monitor shows live per-process detail down to files and ports, and System Information (msinfo32) is a read-only inventory including BIOS mode and Secure Boot state. System Configuration (msconfig) is the one that changes boot behavior — Safe boot and the clean-boot technique of hiding Microsoft services and disabling the rest to isolate a conflict. Disk Cleanup frees space by deleting junk, Optimize Drives defragments hard disks but only trims SSDs, and Disk Management can shrink and extend volumes without erasing them."
+      },
+      {
+        "heading": "More command-line tools",
+        "objectives": [
+          "1.3"
+        ],
+        "body": "DNS and path problems have their own commands. nslookup tests name resolution, so it explains why pinging a name fails while pinging the IP works, and tracert lists each hop on the path and where it slows or stops. net use maps drive letters to UNC shares such as \\\\server\\share, net user creates, disables, and resets accounts, and gpresult reports which Group Policy settings actually applied (gpupdate /force is what refreshes them).\n\nformat writes a new file system and erases the volume, tasklist and taskkill find and end processes by name or PID, and DISM repairs the Windows component store that sfc depends on — when sfc /scannow cannot fix corruption, run DISM /Online /Cleanup-Image /RestoreHealth and then sfc again. Adding /? to almost any command prints its syntax and switches, and winver shows the edition and build number in a small dialog."
+      },
+      {
+        "heading": "Windows Settings, installation, and upgrades",
+        "objectives": [
+          "1.4",
+          "1.5"
+        ],
+        "body": "The Settings app groups options by page: System (display, power, storage, About), Time & language (the clock matters — a drifting time breaks Kerberos and certificate checks), Accessibility (Magnifier, Narrator, Sticky Keys), and Network & Internet, where Network reset reinstalls every adapter as a last step for stubborn connectivity problems.\n\nFor installation, firmware settings and disk layout matter: GPT is needed for disks over 2 TB and for UEFI boot, while MBR tops out at 2 TB and four primary partitions. PXE lets many PCs install over the network, and an answer file (autounattend.xml) makes setup unattended. Reset this PC reinstalls Windows and lets you keep personal files. Windows 11 requires UEFI with Secure Boot and TPM 2.0, which is why capable-looking older PCs sometimes cannot upgrade — so back up, check compatibility, and test before any upgrade."
+      },
+      {
+        "heading": "Windows networking",
+        "objectives": [
+          "1.7"
+        ],
+        "body": "A workgroup is peer-to-peer: each PC keeps its own accounts, which is fine for a handful of machines. A domain centralizes accounts and Group Policy on a domain controller, and joining one needs Windows Pro or higher plus working DNS. Mapped drives give a shared folder a drive letter, a metered connection tells Windows to defer big downloads, and a firewall exception opens one program or port through Windows Defender Firewall without turning it off.\n\nRemote connectivity relies on two different tools that are easy to confuse: a VPN builds an encrypted tunnel into the private network, while a proxy simply relays web requests for filtering or caching. On the IP side, a static address is typed into the adapter's IPv4 properties, whereas a 169.254.x.x address means DHCP failed and the PC addressed itself — it can talk only to other local devices."
+      },
+      {
+        "heading": "Control Panel utilities",
+        "objectives": [
+          "1.8"
+        ],
+        "body": "The classic Control Panel still hosts many support tools. Internet Options covers security zones, proxy, and privacy for web access; Programs and Features (appwiz.cpl) uninstalls programs and toggles Windows features such as Hyper-V; Power Options sets power plans, lid and button actions, sleep, hibernate, and Fast Startup; and Credential Manager holds saved passwords, where a stale entry is a common cause of repeated account lockouts.\n\nFile Explorer Options reveals hidden files and file extensions — worth turning on to spot disguised names like invoice.pdf.exe. Devices and Printers handles default printers and print queues, Indexing Options rebuilds Windows Search, Network and Sharing Center holds adapter and advanced sharing settings, and the Mail applet manages Outlook profiles and data files."
+      },
+      {
+        "heading": "Applications and cloud productivity",
+        "objectives": [
+          "1.9",
+          "1.10"
+        ],
+        "body": "Before installing anything, compare the application's system requirements with the machine — operating system and 32/64-bit support, CPU, RAM, storage, and graphics. For many machines, use centralized deployment (Intune, Configuration Manager, or Group Policy) so installs are silent and consistent, and start with a pilot group so compatibility or network problems appear before everyone is affected. Compatibility mode can coax a legacy program into running by emulating an older Windows version.\n\nCloud productivity suites such as Microsoft 365 and Google Workspace deliver email, calendars, documents, and storage as hosted services, usually tied to single sign-on so one verified login works across many apps. Version history in cloud storage restores an earlier copy of a file after an accidental overwrite — different from the Recycle Bin, which only holds deleted files."
+      },
+      {
+        "heading": "OS types and file systems",
+        "objectives": [
+          "1.11"
+        ],
+        "body": "Operating systems are built for different roles: workstation systems serve one interactive user, server systems host services such as AD, DNS, DHCP, and file and print for many, embedded systems run one fixed function inside a device (and are often hard to patch), and ChromeOS is a browser-centric cloud OS. An end-of-life OS no longer receives security patches, so it is a growing risk even if it still runs.\n\nFile systems follow the platform: NTFS is the Windows standard, with permissions, encryption, and huge files; FAT32 is universally readable but caps files at 4 GB; exFAT removes that limit and works on both Windows and macOS, which makes it the usual choice for flash drives; APFS is the modern macOS default; and ext4 is the common Linux default."
+      },
+      {
+        "heading": "macOS features",
+        "objectives": [
+          "1.12"
+        ],
+        "body": "Finder is the file manager and Spotlight (Command+Space) is the system-wide search. Mission Control shows all open windows and Spaces, and Force Quit (Option+Command+Esc) ends a frozen app, while Activity Monitor is the Mac's Task Manager with live per-process use.\n\nSecurity and sync features have Windows counterparts worth knowing: Keychain stores passwords and certificates (like Credential Manager), FileVault encrypts the startup disk (like BitLocker), and Gatekeeper checks that downloaded apps are signed and notarized before they run. iCloud syncs files, photos, backups, and passwords across Apple devices, while Time Machine remains the local backup."
+      },
+      {
+        "heading": "Linux commands and tools",
+        "objectives": [
+          "1.13"
+        ],
+        "body": "Everyday Linux administration is command-line work. grep searches the contents of text, find locates files by name or age, ps and top show processes (with kill to end one), df and du report disk space per file system and per directory, and ip addr shows network addresses much as ipconfig does on Windows. man displays the manual page for any command, and nano or vi edit files inside a terminal.\n\ncron runs scheduled jobs from crontab entries, dd copies raw blocks (and erases whichever target you name), and Samba lets a Linux server share files with Windows over SMB. Linux uses a single directory tree: /etc holds configuration, /home user files, and /var/log the logs."
       }
     ]
   },
@@ -230,6 +295,76 @@
         "heading": "Malware removal",
         "objectives": ["2.6"],
         "body": "CompTIA defines a specific, ordered process for malware remediation, and the exam tests the order directly, not just the individual steps. First, identify and research the malware symptoms to understand what's actually being dealt with. Quarantine the infected system — disconnect it from the network — so the infection can't spread further while it's being cleaned up.\n\nDisable System Restore (on Windows) before remediation, since malware can otherwise hide inside a restore point and simply reappear later even after an apparently successful cleanup. Remediate the infected system, using appropriate anti-malware tools to actually remove the threat. Schedule scans and run updates afterward, to catch anything that was missed on the first pass and ensure defenses are current going forward. Enable System Restore again once the system is confirmed clean. Finally, educate the end user on what happened and how to avoid it recurring — since in most real cases, some user action (however unintentional) played a role in the infection happening in the first place, and that's the step that actually prevents a repeat."
+      },
+      {
+        "heading": "Physical and logical security controls",
+        "objectives": [
+          "2.1"
+        ],
+        "body": "Physical controls keep people and vehicles away from equipment: bollards stop vehicles, an access control vestibule (mantrap) admits one authenticated person at a time to defeat tailgating, badge readers and smart cards check something you have, biometrics check something you are, and surveillance cameras record while motion sensors and alarms alert in real time. Know which control prevents, detects, or records, since scenarios often hinge on that difference.\n\nOn the logical side, an access control list states who may do what to a resource, and email filtering screens mail before users see it. In a Windows domain, domain controllers authenticate users and computers, organizational units group them so Group Policy can be applied separately, security groups carry permissions (grant to the group, then manage membership), logon scripts map drives and printers at sign-in, and folder redirection stores Documents and Desktop on a server."
+      },
+      {
+        "heading": "Workstation hardening practices",
+        "objectives": [
+          "2.3"
+        ],
+        "body": "Several simple settings cover most day-to-day workstation risk. A strong password policy emphasizes length and uniqueness over clever substitutions, account lockout blocks rapid guessing after repeated failures, and a screen lock timeout protects an unattended session. Logon-hour and workstation restrictions limit when and where an account works, and disabling or renaming the default Administrator and Guest accounts removes well-known targets.\n\nDisable AutoRun and AutoPlay so a program on a USB drive cannot launch by itself, and set a BIOS or UEFI password so nobody can change the boot order to start from their own media. Each control addresses a different step of an attack, so match the control to the threat — a Windows password does nothing for firmware settings, for example."
+      },
+      {
+        "heading": "Mobile and IoT protection",
+        "objectives": [
+          "2.4"
+        ],
+        "body": "A locator app finds, rings, and locks a lost phone, with remote wipe as the destructive last resort. Sideloading installs apps from outside the official store and skips vetting, while jailbreaking or rooting removes the operating system's own restrictions; MDM typically flags both as non-compliant.\n\nIoT and embedded devices are rarely patched and cannot run endpoint security, so harden them by changing default credentials, updating firmware, disabling unneeded services, and isolating them on a separate network."
+      },
+      {
+        "heading": "Data destruction and disposal",
+        "objectives": [
+          "2.5"
+        ],
+        "body": "Deleting files or running a standard format only rebuilds the index and leaves the data recoverable. To reuse a drive, overwrite every sector with a drive wipe; to retire it, degauss magnetic media (which does nothing to SSDs) or physically destroy it by shredding, drilling, crushing, or incinerating. Physical destruction is the most certain option for failed or highly sensitive media.\n\nWhen a vendor performs the work, a certificate of destruction lists the serial numbers, date, and method as proof for auditors. This is different from chain of custody, which documents how evidence was handled."
+      },
+      {
+        "heading": "Wireless security and authentication",
+        "objectives": [
+          "2.7"
+        ],
+        "body": "WEP and WPA with TKIP are RC4-based and weak; WPA2 with AES-CCMP is the long-standing solid choice, and WPA3 adds SAE, a handshake that resists offline guessing of a captured passphrase. Personal mode shares one passphrase, while Enterprise mode uses 802.1X so each user or device authenticates individually to a RADIUS server.\n\nKnow which protocol serves which job: TACACS+ authorizes administrators on network devices command by command (TCP 49), RADIUS handles user network access (UDP 1812/1813), and Kerberos issues time-limited tickets in Active Directory and therefore depends on synchronized clocks. For second factors, authenticator apps beat SMS codes, and hardware security keys are the strongest option against phishing."
+      },
+      {
+        "heading": "Malware types and prevention",
+        "objectives": [
+          "2.8"
+        ],
+        "body": "A trojan is disguised as useful software and needs the user to run it; a virus attaches to a host file and needs user action to spread; a worm replicates itself across networks through vulnerabilities. Spyware watches and reports, a keylogger records keystrokes, a cryptominer steals processor cycles (constant 100% CPU at idle is the clue), a boot sector virus loads before the OS, and a botnet is a group of infected machines controlled remotely.\n\nDefenses combine technology and people: signature detection catches known samples, heuristic and behavioral detection catches new variants, and security awareness training reduces the number of convincing phishing emails that get clicked."
+      },
+      {
+        "heading": "Social engineering, attacks, and vulnerabilities",
+        "objectives": [
+          "2.9"
+        ],
+        "body": "Phishing has many delivery channels: vishing by voice, smishing by text, QR-code phishing hidden in an image, spear phishing aimed at a person or group, and whaling aimed at executives. Impersonation and dumpster diving need no technology at all, and business email compromise tricks staff into payments by impersonating a trusted sender.\n\nOn the technical side, DoS and DDoS attacks target availability, on-path attacks sit between two parties, a dictionary attack tries a word list while brute force tries every combination, SQL injection targets the database and XSS targets other users' browsers. A zero-day has no patch yet, while an unpatched or end-of-life system is a known flaw left open, and insider and supply chain threats come through trusted access."
+      },
+      {
+        "heading": "Windows security settings",
+        "objectives": [
+          "2.10"
+        ],
+        "body": "User Account Control prompts before elevated actions, and everyday work belongs in a standard account while administrator accounts are used only when needed (run as administrator elevates one task). Windows Hello signs in with a device-bound PIN or biometric, and Microsoft Defender Antivirus provides built-in real-time malware protection in the Windows Security app.\n\nNTFS permissions are inherited from the parent: copying takes the destination's permissions, and a same-volume move keeps the original ones. When share and NTFS permissions both apply, the most restrictive result wins. For encryption, BitLocker covers whole volumes, BitLocker To Go covers removable drives, and EFS encrypts individual files tied to a user certificate."
+      },
+      {
+        "heading": "SOHO network security",
+        "objectives": [
+          "2.11"
+        ],
+        "body": "Start a new router by changing its default administrator credentials and network name, installing firmware updates, and using WPA2 or WPA3. MAC filtering and hiding the SSID are speed bumps rather than real protection, and port forwarding and UPnP open paths in from the Internet, so keep them deliberate or off.\n\nA DHCP reservation gives a device the same address from the server, content filtering blocks websites by category, a guest network keeps visitors away from internal devices, and a screened subnet (DMZ) isolates public servers from the internal LAN."
+      },
+      {
+        "heading": "Browser security",
+        "objectives": [
+          "2.12"
+        ],
+        "body": "Download software only from official sources and verify the published hash. Keep extensions to a minimum because they run with page access, use a password manager (it will not autofill on a look-alike domain), and block pop-ups and ads to cut down on fake alerts and malvertising.\n\nHTTPS means the traffic is encrypted and the certificate verifies the domain, but it does not prove the site is trustworthy. Private browsing only forgets local history, and clearing cache and cookies is a quick first fix for one site that misbehaves."
       }
     ]
   },
@@ -256,6 +391,56 @@
         "heading": "Application and cloud issues",
         "objectives": ["3.4"],
         "body": "Licensing issues can prevent an application from launching entirely or lock a user out of specific features, and they're worth checking early since the underlying fix (renewing or correctly activating a license) is often trivially simple once actually identified — but very easy to overlook while chasing a more complicated technical explanation instead. Sync issues mean data isn't properly updating across a user's devices or with a cloud service, commonly caused by connectivity problems, a full storage quota, or a genuine conflict between two devices that both modified the exact same file while offline.\n\nPermissions issues block a user from accessing something they should reasonably be able to, or conversely — a genuine security concern — grant access to something they shouldn't be able to reach at all; both directions are worth checking, not just the direction the user happens to be complaining about in the moment. Compatibility issues arise when software depends on a specific OS version, specific hardware capability, or another specific piece of software that isn't present or is a mismatched version. Availability issues mean a cloud service simply can't be reached — which could be a genuine, widespread provider-side outage, or could just as easily be a local network or DNS problem masquerading as one, and distinguishing between the two (checking a provider's public status page is usually the fastest way) determines whether the fix is on your end at all or simply a matter of waiting."
+      },
+      {
+        "heading": "More Windows problems and recovery tools",
+        "objectives": [
+          "3.1"
+        ],
+        "body": "Match the symptom to the layer. A black screen with a pointer means Windows is running, so restart explorer.exe from Task Manager or check the display driver; \"Operating system not found\" is a boot-record problem fixed from the recovery environment with bootrec; a low memory warning means RAM and the page file are exhausted; and a USB controller resource warning means too many devices share one controller.\n\nWrong or drifting time (often a dead CMOS battery) breaks certificates and Kerberos sign-in, limited connectivity with a 169.254 address means DHCP failed, and a slow profile load usually comes from a large roaming profile. Safe Mode loads minimal drivers to isolate problems, and System Restore rolls system state back to a restore point without touching documents."
+      },
+      {
+        "heading": "More PC security symptoms",
+        "objectives": [
+          "3.2"
+        ],
+        "body": "Malware often attacks defenses first, so antivirus that turns itself off or cannot update is a symptom of infection, and failing Windows Updates may come from corrupted components, a wrong clock, or interference (use the troubleshooter, then DISM and sfc). The hosts file overrides DNS for one PC, so a single machine reaching a fake site while others reach the real one points to tampering.\n\nIf contacts receive spam from a user and the sent items show messages the user never wrote, the mailbox is compromised: reset the password, enable MFA, sign out all sessions, and remove forwarding rules and delegates."
+      },
+      {
+        "heading": "Mobile reboots, rotation, and reset",
+        "objectives": [
+          "3.3"
+        ],
+        "body": "Random reboots point to a recent app or update, overheating, or a failing battery. A screen that will not rotate is almost always the rotation lock or an app that does not support landscape. A factory reset erases everything, so it comes last and only after a backup."
+      },
+      {
+        "heading": "Mobile security issues",
+        "objectives": [
+          "3.5"
+        ],
+        "body": "Ads and \"virus detected\" warnings outside any app point to adware or an abused notification permission. Spoofed apps imitate real ones, so check the publisher and install only from official stores, and permissions that do not fit an app's purpose are a red flag to review and revoke.\n\nDeveloper mode and USB debugging give a connected computer deep control, so keep them off when not developing. If personal data leaks, secure the accounts (new passwords and MFA) and review the apps and permissions behind it."
+      },
+      {
+        "heading": "Boot repair, printing, and performance triage",
+        "objectives": [
+          "3.1"
+        ],
+        "body": "When Windows will not start, work through the recovery environment in order: Startup Repair for damaged boot files, then uninstall the latest update, System Restore, and command-line repair (bootrec, offline sfc). The INACCESSIBLE_BOOT_DEVICE stop code often follows a SATA mode change (AHCI or RAID) in firmware, so revert that setting first.\n\nFor a slow or unstable PC, sort Task Manager by the busy column to find the process behind high CPU, memory, or disk use, and use Reliability Monitor (perfmon /rel) to see when crashes and failed updates began. A stuck print queue is fixed by stopping the Print Spooler, clearing its spool folder, and starting it again — no new hardware needed."
+      },
+      {
+        "heading": "Compromise indicators on a PC",
+        "objectives": [
+          "3.2"
+        ],
+        "body": "Several symptoms point to compromise even when no alert appears: files renamed or permissions changed with no ticket, constant unexplained outbound traffic (check destinations with netstat), repeated lockouts or password-reset emails nobody requested, and unwanted toolbars that came bundled with a free installer (a potentially unwanted program).\n\nRespond in order: isolate the machine, look at logs, remove or reset the cause, and restore from a clean backup if files were changed. Add MFA where credentials were being tested."
+      },
+      {
+        "heading": "Mobile performance, installs, and heat",
+        "objectives": [
+          "3.3",
+          "3.5"
+        ],
+        "body": "A sluggish phone is usually low storage, background apps, an old OS, or a worn battery, so free space, restart, and update before a reset. Failed installs or updates come from low storage, an old OS, or a store account or cache problem, not only from the network.\n\nA hot device with a bulging battery is a safety hazard: stop using and charging it and replace the battery. Apps that open on their own, unknown apps, or messages the owner never sent suggest malware, so review recent installs and permissions, scan, and reset if the behavior returns."
       }
     ]
   },
@@ -279,11 +464,6 @@
         "body": "A full backup copies everything, every time — simple to restore from since it's complete on its own, but slow to create and consumes the most storage space of the three backup types. An incremental backup captures only what's changed since the most recent backup of any kind, making it fast and space-efficient to create, but a full restore requires the last full backup plus every single incremental made since then, applied in the correct order.\n\nA differential backup captures everything changed since the last full backup specifically, growing larger each day until the next full backup resets it — a middle ground that trades a bit more backup time and storage than incremental for a meaningfully simpler, faster restore process (just the last full backup plus one differential, rather than a whole chain of increments). The 3-2-1 rule is a widely-followed backup strategy: keep at least 3 copies of important data, on at least 2 different types of media, with at least 1 copy stored offsite — specifically to survive not just a single drive failure, but an entire site-level disaster like a fire or flood taking out everything in one physical location at once. Testing backups regularly — actually attempting a real restore, not just assuming a backup job completing successfully means the data is genuinely recoverable — is the step most often skipped, and the exact one that determines whether a backup strategy is real protection or just a comfortable illusion of protection."
       },
       {
-        "heading": "Safety and environmental controls",
-        "objectives": ["4.4"],
-        "body": "ESD (Electrostatic Discharge) can silently damage sensitive electronic components without any visible sign at the moment it happens — an anti-static wrist strap and proper grounding are basic, cheap precautions before handling internal components, and skipping them is a common, avoidable cause of components that mysteriously fail shortly after apparently-successful hardware work. An SDS (Safety Data Sheet) documents the hazards and safe handling procedures for a chemical or material — relevant, for example, when handling printer toner or cleaning solutions, not just in a factory setting.\n\nProper disposal procedures matter for both environmental compliance and security — batteries, toner cartridges, and old hardware often contain materials that shouldn't simply go into regular trash, and drives specifically need genuine data destruction (covered back in the data protection chapter), not just physical disposal of the device itself. Safe lifting technique — using your legs, not your back — prevents a genuinely common, entirely preventable workplace injury when moving equipment like servers or monitors. Basic fire safety, including knowing the correct fire extinguisher class for an electrical fire specifically (never water, which conducts electricity and creates a serious shock hazard), rounds out the physical safety expectations for this domain."
-      },
-      {
         "heading": "Professionalism and incident response",
         "objectives": ["4.5", "4.6"],
         "body": "Professional communication means actively listening to a user's actual problem without interrupting, avoiding jargon they likely won't understand, and maintaining a genuinely respectful, patient tone even when a situation or a user is frustrating — a skill the exam treats as seriously as any technical one, and for good reason, since it directly shapes whether a user trusts and cooperates with IT going forward. Respecting a user's privacy means not looking at personal files or data beyond exactly what's necessary to resolve the specific issue at hand. Understanding software licensing (and not installing unlicensed software) and following an organization's AUP (Acceptable Use Policy) round out the core expectations for day-to-day professional conduct. Remote support brings its own etiquette on top of all of this — clearly explaining what you're about to do, especially before taking any control of a user's system, rather than silently taking over without a heads-up.\n\nIncident response follows a specific process, and — much like the malware-removal steps earlier — the exam tests the order, not just the individual pieces. Identification recognizes that a genuine security incident (not just a routine technical problem) is actually occurring in the first place. Containment limits the damage and prevents further spread once an incident is confirmed. Evidence — logs, affected systems, relevant details — needs to be properly preserved throughout, both for the internal investigation and for any potential legal proceedings that might follow later. Reporting follows an organization's specific, established incident response plan, notifying the right people through the right channel. Lessons learned closes the loop, similar in spirit to root cause analysis — figuring out how the incident actually happened and what changes would prevent a genuine repeat, not just cleaning up this one occurrence and moving on."
@@ -292,6 +472,62 @@
         "heading": "Automation and AI",
         "objectives": ["4.7"],
         "body": "Scripting automates repetitive tasks — batch files, PowerShell scripts, and similar tools can perform in seconds what would take a technician performing the same steps by hand across many machines a genuinely long time, and scripting skill has become an increasingly expected, practical part of the modern support role rather than a specialized, optional extra. Generative AI tools are an increasingly common part of the same modern IT toolkit — capable of helping draft documentation, suggest a starting point for troubleshooting an unfamiliar problem, or even generate a first draft of a script — but they come with real responsibility attached, not a free pass to skip understanding the work.\n\nVerification means never blindly trusting AI-generated output, whether that's a script or a piece of technical advice, without actually checking that it's correct and genuinely appropriate for the specific situation at hand before relying on it. Privacy considerations matter here specifically because sensitive organizational data should generally not be pasted into a public AI tool without a clear understanding of exactly how that tool stores, uses, and potentially trains on the data submitted to it. Appropriate use means understanding an organization's specific policy on AI tools (which increasingly exists as its own distinct category of policy) and applying sound professional judgment about when automation and AI genuinely help versus when a task still, deliberately, calls for direct human judgment and hands-on attention instead."
+      },
+      {
+        "heading": "Tickets, assets, and employee lifecycle",
+        "objectives": [
+          "4.1"
+        ],
+        "body": "Order tickets by severity — the combination of impact and urgency — rather than arrival time, and record a clear problem description, each step taken, and the resolution so the next technician (and the knowledge base) can use it. Asset records follow the full life cycle: procurement, deployment and assignment, maintenance, and retirement.\n\nChecklists keep onboarding and offboarding consistent. A new-user checklist covers accounts, access, hardware, and training; a termination checklist disables access first, collects equipment and badges, and preserves or reassigns data."
+      },
+      {
+        "heading": "More change-management practice",
+        "objectives": [
+          "4.2"
+        ],
+        "body": "Test changes in a sandbox that mirrors production before they go live, schedule them in a maintenance window when few people are affected, and announce them to stakeholders. After implementation, end users confirm the change works for their real workflows (end-user acceptance) before it is closed.\n\nStandard changes are pre-approved, low-risk, and repeatable, while an emergency change is fast-tracked to fix a critical outage and reviewed afterwards."
+      },
+      {
+        "heading": "Backup objectives and storage",
+        "objectives": [
+          "4.3"
+        ],
+        "body": "A synthetic full backup is assembled on the backup server from the last full and later incrementals, so the source is not read again. Off-site copies (a vault or the cloud) survive a site disaster, whereas on-site copies restore faster but are lost with the building. A snapshot is a quick rollback point on the same storage, not a replacement for a backup.\n\nTwo targets drive the design: the recovery point objective (RPO) is how much data you can afford to lose and so sets the backup frequency, and the recovery time objective (RTO) is how long you can be down and so sets how fast recovery must be."
+      },
+      {
+        "heading": "Safety and environmental controls",
+        "objectives": [
+          "4.4"
+        ],
+        "body": "Before opening equipment, shut it down, unplug it, remove the battery where possible, and discharge residual power; an ESD strap protects components, not you. PPE protects the person: goggles for debris, an air filtration mask for dust and toner, and gloves for sharp or hot parts.\n\nKeep equipment rooms cool with humidity around 40 to 60 percent (too dry invites static, too humid causes corrosion), use a UPS for battery backup during outages (a surge protector only absorbs spikes), and remove dust with compressed air or an ESD-safe vacuum while holding fans still."
+      },
+      {
+        "heading": "Policies, data rules, and customer communication",
+        "objectives": [
+          "4.5"
+        ],
+        "body": "If you find prohibited or illegal content, stop, preserve the device as it is, and report it — never delete, copy, or show it. Regulated data has its own rules (PCI DSS for payment cards, HIPAA for health records, GDPR for EU personal data), a retention policy states how long to keep records and when to destroy them, and license type matters: free for personal use rarely covers business, and DRM restricts copying of licensed content.\n\nGood customer handling is a technical skill too: listen actively without interrupting, restate the problem, stay calm with difficult customers, set honest expectations, and follow up to confirm the customer is satisfied."
+      },
+      {
+        "heading": "Scripting languages and risks",
+        "objectives": [
+          "4.8"
+        ],
+        "body": "Match the extension to the language and platform: .bat is a Windows batch file run by cmd.exe, .ps1 is PowerShell (Windows administration, governed by the execution policy), .vbs is legacy Windows scripting, .sh is a Bash or shell script for Linux and macOS, .js is JavaScript for browsers and Node.js, and .py is cross-platform Python.\n\nScripts are powerful, which is also the risk: an untrusted or untested script can introduce malware, change settings unintentionally, or crash a system. Review the code, test it in a sandbox, and run it with least privilege."
+      },
+      {
+        "heading": "Remote access technologies",
+        "objectives": [
+          "4.9"
+        ],
+        "body": "RDP provides graphical Windows sessions over TCP 3389 (Pro or higher on the host), SSH provides encrypted command-line access and file transfer over TCP 22 and replaces clear-text Telnet, and VNC shares a desktop across operating systems but should be tunneled because its native encryption is weak. Quick Assist is a consent-based, one-time-code session, while an RMM platform installs an agent on every endpoint so IT can monitor, patch, script, and control many devices from one console.\n\nWhatever the tool, secure it: require MFA, connect through a VPN or gateway, use least privilege, log sessions, and never expose RDP directly to the Internet."
+      },
+      {
+        "heading": "AI limitations, policy, and data",
+        "objectives": [
+          "4.10"
+        ],
+        "body": "Generative AI can hallucinate (state invented facts confidently), reflect bias from its training data, and echo copyrighted material, so output is a draft to verify and attribute rather than an authority. Hallucination and bias are different problems: one is made-up information and the other is a systematic unfairness.\n\nData handling matters most in practice: public AI services may retain or learn from prompts, so sensitive data belongs only in a private, governed service, and an AI use policy spells out which tools are approved, what data must never be entered, and what review is required."
       }
     ]
   }

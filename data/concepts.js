@@ -413,7 +413,8 @@
                   "Home",
                   "Pro",
                   "Enterprise",
-                  "Feature differences"
+                  "Feature differences",
+                  "32-bit vs 64-bit"
                 ]
               },
               {
@@ -424,7 +425,12 @@
                   "MMC",
                   "Event Viewer",
                   "Registry",
-                  "Disk Management"
+                  "Disk Management",
+                  "Task Scheduler",
+                  "Device Manager",
+                  "Performance Monitor",
+                  "System Configuration",
+                  "Services"
                 ]
               },
               {
@@ -435,7 +441,10 @@
                   "Filesystems",
                   "Repair",
                   "Policy",
-                  "File operations"
+                  "File operations",
+                  "DNS and routing",
+                  "Accounts and shares",
+                  "Help switch"
                 ]
               },
               {
@@ -446,7 +455,10 @@
                   "Networking",
                   "Apps",
                   "Privacy",
-                  "Updates"
+                  "Updates",
+                  "Time and language",
+                  "Accessibility",
+                  "Network reset"
                 ]
               },
               {
@@ -457,7 +469,11 @@
                   "Upgrade",
                   "Partitions",
                   "Drivers",
-                  "Recovery"
+                  "Recovery",
+                  "PXE boot",
+                  "GPT",
+                  "Unattended",
+                  "Reset this PC"
                 ]
               },
               {
@@ -469,6 +485,80 @@
                   "Permissions",
                   "Backups",
                   "Applications"
+                ]
+              },
+              {
+                "code": "1.7",
+                "title": "Windows networking",
+                "topics": [
+                  "Workgroup vs domain",
+                  "Mapped drives",
+                  "VPN and proxy",
+                  "Metered connections",
+                  "IP configuration"
+                ]
+              },
+              {
+                "code": "1.8",
+                "title": "Control Panel utilities",
+                "topics": [
+                  "Internet Options",
+                  "Programs and Features",
+                  "Power Options",
+                  "Credential Manager",
+                  "Devices and Printers"
+                ]
+              },
+              {
+                "code": "1.9",
+                "title": "Application installation",
+                "topics": [
+                  "System requirements",
+                  "Deployment methods",
+                  "Pilot rollout",
+                  "Compatibility mode"
+                ]
+              },
+              {
+                "code": "1.10",
+                "title": "Cloud productivity",
+                "topics": [
+                  "Email and collaboration suites",
+                  "Single sign-on",
+                  "Version history"
+                ]
+              },
+              {
+                "code": "1.11",
+                "title": "OS types and file systems",
+                "topics": [
+                  "Workstation vs server",
+                  "Embedded and ChromeOS",
+                  "End of life",
+                  "NTFS and exFAT",
+                  "APFS and ext4"
+                ]
+              },
+              {
+                "code": "1.12",
+                "title": "macOS features",
+                "topics": [
+                  "Finder and Spotlight",
+                  "Mission Control",
+                  "Keychain and iCloud",
+                  "Gatekeeper and FileVault",
+                  "Force Quit"
+                ]
+              },
+              {
+                "code": "1.13",
+                "title": "Linux commands and tools",
+                "topics": [
+                  "cron",
+                  "grep and find",
+                  "ps and top",
+                  "df and du",
+                  "Samba"
                 ]
               }
             ]
@@ -488,7 +578,10 @@
                   "Logical",
                   "Administrative",
                   "Least privilege",
-                  "Zero Trust"
+                  "Zero Trust",
+                  "Mantraps and badges",
+                  "Active Directory",
+                  "ACLs"
                 ]
               },
               {
@@ -509,7 +602,11 @@
                   "Encryption",
                   "Secure Boot",
                   "Updates",
-                  "EDR"
+                  "EDR",
+                  "Password policy",
+                  "Account lockout",
+                  "Screen lock",
+                  "AutoRun"
                 ]
               },
               {
@@ -520,7 +617,10 @@
                   "BYOD",
                   "Remote wipe",
                   "App control",
-                  "Screen locks"
+                  "Screen locks",
+                  "Locator apps",
+                  "Sideloading",
+                  "IoT hardening"
                 ]
               },
               {
@@ -531,7 +631,10 @@
                   "DLP",
                   "Backups",
                   "Destruction",
-                  "Permissions"
+                  "Permissions",
+                  "Degaussing",
+                  "Drive wipe",
+                  "Certificate of destruction"
                 ]
               },
               {
@@ -543,6 +646,72 @@
                   "Remediate",
                   "Update",
                   "Educate"
+                ]
+              },
+              {
+                "code": "2.7",
+                "title": "Wireless security protocols",
+                "topics": [
+                  "WPA2 and WPA3",
+                  "802.1X",
+                  "TACACS+",
+                  "Kerberos",
+                  "Authenticator apps"
+                ]
+              },
+              {
+                "code": "2.8",
+                "title": "Malware types and prevention",
+                "topics": [
+                  "Trojans and viruses",
+                  "Spyware and keyloggers",
+                  "Cryptominers",
+                  "Botnets",
+                  "Detection methods"
+                ]
+              },
+              {
+                "code": "2.9",
+                "title": "Attacks and vulnerabilities",
+                "topics": [
+                  "Vishing and smishing",
+                  "DoS and on-path",
+                  "Injection attacks",
+                  "Zero-day",
+                  "Insider threats"
+                ]
+              },
+              {
+                "code": "2.10",
+                "title": "Windows security settings",
+                "topics": [
+                  "UAC",
+                  "Account types",
+                  "NTFS and share permissions",
+                  "BitLocker and EFS",
+                  "Defender"
+                ]
+              },
+              {
+                "code": "2.11",
+                "title": "SOHO network security",
+                "topics": [
+                  "Default credentials",
+                  "MAC filtering",
+                  "Port forwarding",
+                  "Screened subnet",
+                  "Content filtering"
+                ]
+              },
+              {
+                "code": "2.12",
+                "title": "Browser security",
+                "topics": [
+                  "Trusted downloads",
+                  "Extensions",
+                  "HTTPS and certificates",
+                  "Password managers",
+                  "Private browsing"
                 ]
               }
             ]
@@ -562,7 +731,11 @@
                   "Performance",
                   "Applications",
                   "Services",
-                  "Profiles"
+                  "Profiles",
+                  "Recovery tools",
+                  "Connectivity",
+                  "Printing",
+                  "Stability"
                 ]
               },
               {
@@ -573,7 +746,11 @@
                   "Redirects",
                   "Fake alerts",
                   "Certificates",
-                  "Unauthorized access"
+                  "Unauthorized access",
+                  "Hosts file",
+                  "Disabled antivirus",
+                  "Lockouts",
+                  "Unusual traffic"
                 ]
               },
               {
@@ -584,7 +761,11 @@
                   "Battery drain",
                   "Storage",
                   "Connectivity",
-                  "Updates"
+                  "Updates",
+                  "Reboots",
+                  "Factory reset",
+                  "Install failures",
+                  "Overheating"
                 ]
               },
               {
@@ -596,6 +777,17 @@
                   "Permissions",
                   "Compatibility",
                   "Availability"
+                ]
+              },
+              {
+                "code": "3.5",
+                "title": "Mobile security issues",
+                "topics": [
+                  "Ads and fake warnings",
+                  "Spoofed apps",
+                  "Developer mode",
+                  "App permissions",
+                  "Leaked data"
                 ]
               }
             ]
@@ -615,7 +807,10 @@
                   "SOPs",
                   "Assets",
                   "SLAs",
-                  "Knowledge bases"
+                  "Knowledge bases",
+                  "Severity",
+                  "Asset life cycle",
+                  "Onboarding and offboarding"
                 ]
               },
               {
@@ -626,7 +821,11 @@
                   "Risk",
                   "Approval",
                   "Backout",
-                  "Documentation"
+                  "Documentation",
+                  "Sandbox testing",
+                  "User acceptance",
+                  "Maintenance window",
+                  "Emergency change"
                 ]
               },
               {
@@ -637,7 +836,11 @@
                   "Incremental",
                   "Differential",
                   "3-2-1",
-                  "Testing"
+                  "Testing",
+                  "Synthetic full",
+                  "Off-site",
+                  "RPO and RTO",
+                  "Snapshots"
                 ]
               },
               {
@@ -648,7 +851,12 @@
                   "SDS",
                   "Disposal",
                   "Lifting",
-                  "Fire safety"
+                  "Fire safety",
+                  "Power disconnection",
+                  "PPE",
+                  "Humidity",
+                  "UPS",
+                  "Dust"
                 ]
               },
               {
@@ -659,7 +867,11 @@
                   "Privacy",
                   "Licensing",
                   "AUP",
-                  "Remote support"
+                  "Remote support",
+                  "Prohibited content",
+                  "Regulated data",
+                  "Retention",
+                  "Active listening"
                 ]
               },
               {
@@ -682,6 +894,39 @@
                   "Verification",
                   "Privacy",
                   "Appropriate use"
+                ]
+              },
+              {
+                "code": "4.8",
+                "title": "Scripting languages and risks",
+                "topics": [
+                  "Batch files",
+                  "PowerShell",
+                  "Shell scripts",
+                  "Python",
+                  "Script risks"
+                ]
+              },
+              {
+                "code": "4.9",
+                "title": "Remote access technologies",
+                "topics": [
+                  "RDP",
+                  "SSH",
+                  "VNC",
+                  "RMM",
+                  "Quick Assist"
+                ]
+              },
+              {
+                "code": "4.10",
+                "title": "AI limitations and policy",
+                "topics": [
+                  "Hallucinations",
+                  "Bias",
+                  "Private vs public AI",
+                  "Use policy",
+                  "Plagiarism"
                 ]
               }
             ]
@@ -6740,6 +6985,22 @@
     ,
       "diagram": "<svg viewBox='0 0 380 175' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-11-5'><title id='dt-c2d1-11-5'>Built for high-end hardware \u2014 higher max RAM, ReFS, and multiple CPUs unavailable in standard Windows Pro.</title><rect x='16.0' y='30' width='169.0' height='60' rx='5' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.5'/><text x='100.5' y='56.0' font-size='8.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Pro for Workstations</text><text x='100.5' y='70.0' font-size='7.5' fill='var(--muted)' text-anchor='middle'>higher RAM, ReFS, multi-CPU</text><rect x='195.0' y='30' width='169.0' height='60' rx='5' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><text x='279.5' y='56.0' font-size='8.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Standard Pro</text><text x='279.5' y='70.0' font-size='7.5' fill='var(--muted)' text-anchor='middle'>lower ceilings</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Built for high-end hardware \u2014 higher max RAM, ReFS, and multiple CPUs</text><text x='16' y='165' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>unavailable in standard Windows Pro.</text></svg>"},
     {
+      "id": "c2d1-11-6",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.1",
+      "term": "32-bit Windows (4 GB RAM limit)",
+      "definition": "A 32-bit (x86) edition of Windows can address only about 4 GB of RAM and runs only 32-bit applications, while 64-bit (x64) editions address far more memory and also run most 32-bit apps.",
+      "scenario": "explain why a PC with 8 GB of RAM installed shows only about 3.5 GB usable in Windows",
+      "distractors": [
+        "64-bit Windows",
+        "A page file that is too small",
+        "A failing RAM module"
+      ],
+      "tip": "A ceiling near 4 GB is the 32-bit address-space limit — failing RAM would throw errors or vary, and 64-bit Windows would see all 8 GB.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-11-6'><title id='dt-c2d1-11-6'>32-bit Windows addresses about 4 GB of RAM; 64-bit adds far more memory and runs 32-bit apps too.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Windows architecture</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>32-bit (x86)</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Up to about 4 GB of RAM</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Runs 32-bit apps only</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Installs to Program Files</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>64-bit (x64)</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Far more RAM supported</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Runs 64-bit and most 32-bit</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>32-bit apps: Program Files (x86)</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>32-bit Windows addresses about 4 GB of RAM; 64-bit adds far more memory</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>and runs 32-bit apps too.</text></svg>"
+    },
+    {
       "id": "c2d1-12-6",
       "core": "core2",
       "domain": "c2d1",
@@ -6754,6 +7015,198 @@
       ],
       "tip": "LOCAL machine only (gpedit.msc) — managing policy across an entire domain needs the Group Policy Management Console on a server instead.",
       "diagram": "<svg viewBox='0 0 380 190' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-12-6'><title id='dt-c2d1-12-6'>gpedit only reaches the machine you're sitting at \u2014 not joined to a domain here.</title><text x='95' y='18' font-size='9.5' fill='var(--text)' text-anchor='middle' font-weight='700'>gpedit.msc (local)</text><rect x='20' y='26' width='150' height='30' rx='5' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.5'/><text x='95' y='45' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Local Group Policy Editor</text><line x1='95' y1='56' x2='95' y2='78' stroke='var(--primary)' stroke-width='1.5'/><rect x='55' y='78' width='80' height='50' rx='6' fill='var(--surface-2)' stroke='var(--primary)' stroke-width='1.5'/><text x='95' y='108' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>This PC</text><text x='95' y='120' font-size='7' fill='var(--muted)' text-anchor='middle'>only</text><text x='285' y='18' font-size='9.5' fill='var(--muted)' text-anchor='middle' font-weight='700'>GPMC (domain)</text><rect x='210' y='26' width='150' height='30' rx='5' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><text x='285' y='45' font-size='7.5' fill='var(--muted)' text-anchor='middle' font-weight='700'>Group Policy Mgmt Console</text><line x1='285' y1='56' x2='285' y2='78' stroke='var(--muted-2)' stroke-width='1.5'/><rect x='230' y='78' width='36' height='36' rx='4' fill='var(--surface-2)' stroke='var(--muted-2)' stroke-width='1.3'/><rect x='270' y='78' width='36' height='36' rx='4' fill='var(--surface-2)' stroke='var(--muted-2)' stroke-width='1.3'/><rect x='310' y='78' width='36' height='36' rx='4' fill='var(--surface-2)' stroke='var(--muted-2)' stroke-width='1.3'/><text x='285' y='128' font-size='7' fill='var(--muted)' text-anchor='middle'>every domain PC</text><text x='20' y='155' font-size='8.5' fill='var(--muted-2)'>gpedit only reaches the machine you're</text><text x='20' y='167' font-size='8.5' fill='var(--muted-2)'>sitting at \u2014 not joined to a domain here.</text></svg>"
+    },
+    {
+      "id": "c2d1-12-7",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.2",
+      "term": "Task Scheduler",
+      "definition": "A Windows tool (taskschd.msc) that runs programs or scripts automatically on a schedule or in response to triggers such as startup, logon, or a logged event.",
+      "scenario": "run a maintenance script every night at 2 a.m. without anyone being signed in",
+      "distractors": [
+        "Event Viewer",
+        "Task Manager",
+        "Performance Monitor"
+      ],
+      "tip": "It runs things on a SCHEDULE or trigger — Task Manager only shows what is running right now.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-12-7'><title id='dt-c2d1-12-7'>Task Scheduler runs a program or script when a trigger fires, such as a set time, startup, or logon.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Anatomy of a scheduled task</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Trigger</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>time, logon, event</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Condition</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>idle, on AC power</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Action</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>run program/script</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Task Scheduler runs a program or script when a trigger fires, such as a</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>set time, startup, or logon.</text></svg>"
+    },
+    {
+      "id": "c2d1-12-8",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.2",
+      "term": "Device Manager",
+      "definition": "An MMC snap-in (devmgmt.msc) that lists every hardware device and its driver, and lets you update, roll back, disable, or uninstall drivers and spot devices with problems.",
+      "scenario": "roll back a video driver after an update caused display glitches",
+      "distractors": [
+        "Disk Management",
+        "Services console",
+        "System Information"
+      ],
+      "tip": "Roll Back Driver sits on the device's Driver tab — System Information only REPORTS resources and cannot change a driver.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-12-8'><title id='dt-c2d1-12-8'>Device Manager lists hardware and its drivers so you can update, roll back, disable, or uninstall them.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Reading Device Manager</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Yellow ! icon</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>Driver missing, or the device has a problem</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Down arrow</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>The device is disabled</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Update driver</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>Search or browse for a newer driver</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Roll Back Driver</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>Return to the previously installed version</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Device Manager lists hardware and its drivers so you can update, roll</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>back, disable, or uninstall them.</text></svg>"
+    },
+    {
+      "id": "c2d1-12-9",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.2",
+      "term": "Certificate Manager (certmgr.msc)",
+      "definition": "A console for viewing and managing the digital certificates stored for the current user (certmgr.msc) or for the computer (certlm.msc), including trusted root authorities.",
+      "scenario": "check whether an expired personal certificate or an untrusted root authority is behind a certificate warning",
+      "distractors": [
+        "Credential Manager",
+        "Device Manager",
+        "Local Security Policy"
+      ],
+      "tip": "CERTIFICATES and trusted root authorities live here — Credential Manager holds saved passwords, not certificates.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-12-9'><title id='dt-c2d1-12-9'>Certificate Manager shows the certificates a user or computer holds and which authorities it trusts.</title><rect x='115' y='14' width='150' height='34' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='190' y='27.86' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Certificate Manager</text><text x='190' y='39.26' font-size='6.4' fill='var(--muted)' text-anchor='middle'>certmgr.msc (user), certlm.msc (PC)</text><line x1='190' y1='48' x2='70' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='16' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='70' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Personal</text><text x='70' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>your own certificates</text><line x1='190' y1='48' x2='190' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='136' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Trusted Root</text><text x='190' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>CAs this PC trusts</text><line x1='190' y1='48' x2='310' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='256' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='310' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Intermediate</text><text x='310' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>CAs between root and site</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Certificate Manager shows the certificates a user or computer holds and</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>which authorities it trusts.</text></svg>"
+    },
+    {
+      "id": "c2d1-12-10",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.2",
+      "term": "Local Users and Groups (lusrmgr.msc)",
+      "definition": "An MMC snap-in for creating, disabling, and resetting local accounts and managing membership of local groups such as Administrators and Users; it is not available in Home edition.",
+      "scenario": "add a local account to the Administrators group on a Windows Pro workstation",
+      "distractors": [
+        "Active Directory Users and Computers",
+        "Credential Manager",
+        "Group Policy Editor"
+      ],
+      "tip": "It manages LOCAL accounts and groups on this PC — Active Directory Users and Computers handles domain accounts, and the snap-in is missing on Home.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-12-10'><title id='dt-c2d1-12-10'>Local Users and Groups manages accounts and group membership on the local machine (Pro and above).</title><rect x='115' y='14' width='150' height='34' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='190' y='27.86' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Local Users and Groups</text><text x='190' y='39.26' font-size='6.4' fill='var(--muted)' text-anchor='middle'>lusrmgr.msc</text><line x1='190' y1='48' x2='70' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='16' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='70' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Users</text><text x='70' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>create, disable, reset</text><line x1='190' y1='48' x2='190' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='136' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Groups</text><text x='190' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>Administrators, Users</text><line x1='190' y1='48' x2='310' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='256' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='310' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Pro and above</text><text x='310' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>missing on Home</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Local Users and Groups manages accounts and group membership on the</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>local machine (Pro and above).</text></svg>"
+    },
+    {
+      "id": "c2d1-12-11",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.2",
+      "term": "Performance Monitor (perfmon)",
+      "definition": "A tool that graphs and logs detailed performance counters for CPU, memory, disk, and network over time, including data collector sets used to build a baseline.",
+      "scenario": "log memory and disk counters for a week to build a baseline and spot a slow trend",
+      "distractors": [
+        "Task Manager",
+        "Resource Monitor",
+        "Event Viewer"
+      ],
+      "tip": "Counters over TIME with saved logs — Task Manager and Resource Monitor show what is happening right now.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-12-11'><title id='dt-c2d1-12-11'>Performance Monitor logs counters over time so you can compare today with a known-good baseline.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Building a performance baseline</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Counters</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>CPU, RAM, disk, network</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Collector set</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>logs counters over time</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Report</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>baseline and trends</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Performance Monitor logs counters over time so you can compare today</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>with a known-good baseline.</text></svg>"
+    },
+    {
+      "id": "c2d1-12-12",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.2",
+      "term": "Resource Monitor (resmon)",
+      "definition": "A real-time view of CPU, memory, disk, and network use per process that shows which process holds a file open or listens on a port, a deeper look than Task Manager.",
+      "scenario": "find which process is hammering the disk or holding a locked file open right now",
+      "distractors": [
+        "Performance Monitor",
+        "Disk Management",
+        "Event Viewer"
+      ],
+      "tip": "Live and per-process down to files and ports — Performance Monitor is for counters logged over time.",
+      "diagram": "<svg viewBox='0 0 380 178' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-12-12'><title id='dt-c2d1-12-12'>Resource Monitor shows live per-process CPU, memory, disk, and network activity in detail.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Resource Monitor tabs</text><rect x='16' y='30' width='87' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='59.5' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Tab</text><rect x='103' y='30' width='261' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='233.5' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Shows right now</text><rect x='16' y='50' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>CPU</text><rect x='103' y='50' width='261' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='233.5' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>processes, services, handles</text><rect x='16' y='70' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>Memory</text><rect x='103' y='70' width='261' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='233.5' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>hard faults and in-use RAM</text><rect x='16' y='90' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>Disk</text><rect x='103' y='90' width='261' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='233.5' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>the files each process touches</text><rect x='16' y='110' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='123.2' font-size='7' fill='var(--text)' text-anchor='middle'>Network</text><rect x='103' y='110' width='261' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='233.5' y='123.2' font-size='7' fill='var(--text)' text-anchor='middle'>connections and listening ports</text><text x='16' y='154' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Resource Monitor shows live per-process CPU, memory, disk, and network</text><text x='16' y='166' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>activity in detail.</text></svg>"
+    },
+    {
+      "id": "c2d1-12-13",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.2",
+      "term": "System Information (msinfo32)",
+      "definition": "A read-only report of hardware resources, components, the software environment, BIOS version and mode, and Secure Boot state — a quick inventory without installing anything.",
+      "scenario": "confirm whether a PC boots in UEFI mode with Secure Boot on and check its BIOS version",
+      "distractors": [
+        "Device Manager",
+        "System Configuration",
+        "Disk Management"
+      ],
+      "tip": "A read-only INVENTORY report — System Configuration is the one that changes boot and startup behavior.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-12-13'><title id='dt-c2d1-12-13'>System Information reports hardware, BIOS mode, and Secure Boot state without changing anything.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>System Information - System Summary</text><rect x='16' y='36' width='348' height='86' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>msinfo32</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>BIOS Mode            UEFI</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>Secure Boot State    On</text><text x='28' y='96' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>Processor            x64-based, 8 cores</text><text x='28' y='110' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>Installed Memory      16 GB</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>System Information reports hardware, BIOS mode, and Secure Boot state</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>without changing anything.</text></svg>"
+    },
+    {
+      "id": "c2d1-12-14",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.2",
+      "term": "System Configuration (msconfig)",
+      "definition": "A utility for choosing the startup mode (normal, diagnostic, selective), boot options such as Safe boot, and which services load, used to isolate a startup problem with a clean boot.",
+      "scenario": "hide Microsoft services and disable the rest to test whether a third-party service causes a startup conflict",
+      "distractors": [
+        "System Information",
+        "Device Manager",
+        "Event Viewer"
+      ],
+      "tip": "It changes what loads at BOOT (Safe boot, clean boot) — System Information only reports on the system.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-12-14'><title id='dt-c2d1-12-14'>msconfig sets the boot mode and which services start so you can isolate a startup problem.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Clean boot to isolate a conflict</text><rect x='16' y='30' width='75' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='53.5' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Services tab</text><text x='53.5' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>hide MS services</text><line x1='93' y1='53' x2='105' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M101 50 L105 53 L101 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='107' y='30' width='75' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='144.5' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Disable all</text><text x='144.5' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>untick the rest</text><line x1='184' y1='53' x2='196' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M192 50 L196 53 L192 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='198' y='30' width='75' height='46' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='235.5' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Restart</text><text x='235.5' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>then test</text><line x1='275' y1='53' x2='287' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M283 50 L287 53 L283 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='289' y='30' width='75' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='326.5' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Re-enable</text><text x='326.5' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>one at a time</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>msconfig sets the boot mode and which services start so you can isolate</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>a startup problem.</text></svg>"
+    },
+    {
+      "id": "c2d1-12-15",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.2",
+      "term": "Disk Cleanup",
+      "definition": "A utility that frees space by deleting temporary files, the Recycle Bin contents, thumbnails, downloaded program files, and old Windows update files.",
+      "scenario": "reclaim space on a nearly full system drive by clearing temp files and leftover update files",
+      "distractors": [
+        "Defragment and Optimize Drives",
+        "chkdsk",
+        "Disk Management"
+      ],
+      "tip": "It DELETES junk to free space — defragmenting only rearranges data, and chkdsk repairs file system errors.",
+      "diagram": "<svg viewBox='0 0 380 187' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-12-15'><title id='dt-c2d1-12-15'>Disk Cleanup frees storage by deleting temporary and leftover system files, not your own documents.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Disk Cleanup</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Removes</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Temporary files</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Recycle Bin contents</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Thumbnails and cached data</text><rect x='16' y='120' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='132.5' font-size='7' fill='var(--text)' text-anchor='middle'>Old Windows update files</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Leaves alone</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Your documents</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Installed programs</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>The registry</text><rect x='196' y='120' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='132.5' font-size='7' fill='var(--text)' text-anchor='middle'>Drive health</text><text x='16' y='163' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Disk Cleanup frees storage by deleting temporary and leftover system</text><text x='16' y='175' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>files, not your own documents.</text></svg>"
+    },
+    {
+      "id": "c2d1-12-16",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.2",
+      "term": "Defragment and Optimize Drives",
+      "definition": "A utility that rearranges fragmented files on a hard disk drive for faster access and sends TRIM to solid-state drives; HDDs are defragmented, SSDs are only trimmed.",
+      "scenario": "speed up file access on an aging mechanical hard drive whose files are scattered in pieces",
+      "distractors": [
+        "Disk Cleanup",
+        "chkdsk /r",
+        "Disk Management"
+      ],
+      "tip": "Defragment HDDs, never SSDs — an SSD only needs TRIM, and Disk Cleanup frees space rather than rearranging it.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-12-16'><title id='dt-c2d1-12-16'>Optimize Drives defragments hard disks and only runs TRIM on solid-state drives.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Optimize Drives treats them differently</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>HDD</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Defragment (consolidate files)</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Spinning platters, seek time</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Scheduled weekly by default</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>SSD</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>TRIM only (retrim)</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>No moving parts</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Never defragment</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Optimize Drives defragments hard disks and only runs TRIM on solid-state</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>drives.</text></svg>"
+    },
+    {
+      "id": "c2d1-12-17",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.2",
+      "term": "Services console (services.msc)",
+      "definition": "A console that lists background services with their status and startup type (Automatic, Automatic Delayed Start, Manual, Disabled) and lets you start, stop, restart, or reconfigure them.",
+      "scenario": "set a service's startup type to Automatic (Delayed Start) so it launches shortly after boot",
+      "distractors": [
+        "Task Manager Startup tab",
+        "Task Scheduler",
+        "System Information"
+      ],
+      "tip": "Startup TYPE and recovery actions for services live here — Task Manager's Startup tab handles apps, not services.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-12-17'><title id='dt-c2d1-12-17'>services.msc controls whether, when, and how each background service starts.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Startup types in services.msc</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Automatic</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>Starts during boot</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Automatic (Delayed)</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>Starts shortly after boot finishes</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Manual</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>Starts only when something asks</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Disabled</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>Cannot be started</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>services.msc controls whether, when, and how each background service</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>starts.</text></svg>"
+    },
+    {
+      "id": "c2d1-12-18",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.2",
+      "term": "Extend and shrink volume (Disk Management)",
+      "definition": "Disk Management can shrink a volume to free unallocated space or extend a volume into adjacent unallocated space on the same disk, without erasing the data on the volume.",
+      "scenario": "grow the C: partition into the unallocated space that sits directly after it",
+      "distractors": [
+        "Formatting the volume",
+        "diskpart clean",
+        "Disk Cleanup"
+      ],
+      "tip": "Extend needs UNALLOCATED space directly next to the volume, and neither extend nor shrink erases data — formatting does.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-12-18'><title id='dt-c2d1-12-18'>Extending a volume uses adjacent unallocated space and keeps the existing data.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Growing a partition</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Shrink or delete</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>the neighboring volume</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Unallocated</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>space right after C:</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Extend Volume</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>C: grows, data kept</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Extending a volume uses adjacent unallocated space and keeps the</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>existing data.</text></svg>"
     },
     {
       "id": "c2d1-13-8",
@@ -6772,6 +7225,182 @@
     ,
       "diagram": "<svg viewBox='0 0 380 190' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-13-8'><title id='dt-c2d1-13-8'>Shows active connections and listening ports \u2014 the tool for spotting an unexpected outbound connection that might mean malware.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>netstat</text><rect x='16' y='36' width='348' height='100' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace'>&gt; netstat -ano</text><text x='28' y='70' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace'>TCP  192.168.1.42:51200  203.0.113.9:443  ESTABLISHED</text><text x='28' y='84' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace'>TCP  192.168.1.42:51300  198.51.100.4:4444  ESTABLISHED  \u2190 unexpected</text><text x='16' y='168' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Shows active connections and listening ports \u2014 the tool for spotting an</text><text x='16' y='180' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>unexpected outbound connection that might mean malware.</text></svg>"},
     {
+      "id": "c2d1-13-9",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.3",
+      "term": "nslookup",
+      "definition": "A command that queries DNS to translate a hostname to an IP address (or the reverse) and shows which DNS server answered.",
+      "scenario": "check whether a website name resolves to an IP address when pinging the name fails but pinging the IP works",
+      "distractors": [
+        "ping",
+        "tracert",
+        "netstat"
+      ],
+      "tip": "It tests NAME resolution — ping tests whether a host answers, and tracert shows the hops along the path.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-13-9'><title id='dt-c2d1-13-9'>nslookup asks a DNS server to resolve a name, revealing DNS problems that ping alone cannot.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>Command Prompt</text><rect x='16' y='36' width='348' height='86' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>nslookup example.com</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>Server:   router.lan</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>Address:  192.168.1.1</text><text x='28' y='96' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>Name:     example.com</text><text x='28' y='110' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>Address:  93.184.216.34</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>nslookup asks a DNS server to resolve a name, revealing DNS problems</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>that ping alone cannot.</text></svg>"
+    },
+    {
+      "id": "c2d1-13-10",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.3",
+      "term": "tracert",
+      "definition": "A command that traces the route packets take to a destination, listing each router hop and its round-trip time to show where delay or failure occurs.",
+      "scenario": "find which router along the path to a remote site is adding delay or dropping packets",
+      "distractors": [
+        "ping",
+        "nslookup",
+        "netstat"
+      ],
+      "tip": "It shows EACH hop along the path — ping only says whether the final destination answered.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-13-10'><title id='dt-c2d1-13-10'>tracert lists every router hop to a destination with timing, locating where a path slows or breaks.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>Command Prompt</text><rect x='16' y='36' width='348' height='86' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>tracert example.com</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>  1    &lt;1 ms   192.168.1.1</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>  2     9 ms   10.20.0.1</text><text x='28' y='96' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>  3     *       Request timed out</text><text x='28' y='110' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>  4    24 ms   example.com</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>tracert lists every router hop to a destination with timing, locating</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>where a path slows or breaks.</text></svg>"
+    },
+    {
+      "id": "c2d1-13-11",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.3",
+      "term": "net use",
+      "definition": "A command that connects, lists, or disconnects shared network folders and printers, such as mapping a drive letter to a UNC path like \\\\server\\share.",
+      "scenario": "map drive Z: to a department file server share from the command line or a logon script",
+      "distractors": [
+        "net user",
+        "robocopy",
+        "ipconfig"
+      ],
+      "tip": "It maps drive letters to UNC SHARES — net user manages accounts instead.",
+      "diagram": "<svg viewBox='0 0 380 156' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-13-11'><title id='dt-c2d1-13-11'>net use maps or lists network shares and printers, such as a drive letter pointing at \\\\server\\share.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>Command Prompt</text><rect x='16' y='36' width='348' height='72' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>net use Z: \\\\fs01\\dept /persistent:yes</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>The command completed successfully.</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>net use</text><text x='28' y='96' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>OK    Z:    \\\\fs01\\dept    Microsoft Windows Network</text><text x='16' y='132' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>net use maps or lists network shares and printers, such as a drive</text><text x='16' y='144' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>letter pointing at \\\\server\\share.</text></svg>"
+    },
+    {
+      "id": "c2d1-13-12",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.3",
+      "term": "net user",
+      "definition": "A command that creates, modifies, enables, disables, and resets passwords for local (or domain) user accounts.",
+      "scenario": "disable a local account or reset its password from an elevated command prompt",
+      "distractors": [
+        "net use",
+        "gpupdate",
+        "gpresult"
+      ],
+      "tip": "It manages ACCOUNTS — net use manages network shares and drive mappings.",
+      "diagram": "<svg viewBox='0 0 380 156' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-13-12'><title id='dt-c2d1-13-12'>net user creates, disables, or resets accounts straight from the command line.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>Command Prompt (Administrator)</text><rect x='16' y='36' width='348' height='72' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>net user jsmith /active:no</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>The command completed successfully.</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>net user jsmith *</text><text x='28' y='96' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>Type a password for the user:</text><text x='16' y='132' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>net user creates, disables, or resets accounts straight from the command</text><text x='16' y='144' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>line.</text></svg>"
+    },
+    {
+      "id": "c2d1-13-13",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.3",
+      "term": "format",
+      "definition": "A command that prepares a volume with a file system such as NTFS, FAT32, or exFAT, erasing what was on it; /q performs a quick format, while a full format also checks for bad sectors.",
+      "scenario": "erase a USB drive and prepare it with a new exFAT file system from the command line",
+      "distractors": [
+        "chkdsk",
+        "sfc",
+        "robocopy"
+      ],
+      "tip": "It writes a NEW file system and erases data — chkdsk only checks one that already exists.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-13-13'><title id='dt-c2d1-13-13'>format writes a new file system and erases the volume; a full format also scans for bad sectors.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>format: quick vs full</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Quick format (/q)</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Rewrites the file tables</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Seconds to minutes</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>No bad-sector scan</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Full format</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Scans for bad sectors</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Much slower</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Better for suspect drives</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>format writes a new file system and erases the volume; a full format</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>also scans for bad sectors.</text></svg>"
+    },
+    {
+      "id": "c2d1-13-14",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.3",
+      "term": "gpresult",
+      "definition": "A command that reports which Group Policy settings actually applied to a user and computer (gpresult /r), used to see why a policy did or did not take effect.",
+      "scenario": "see which GPOs applied to a user's session and which were filtered out",
+      "distractors": [
+        "gpupdate /force",
+        "ipconfig /all",
+        "net user"
+      ],
+      "tip": "It REPORTS what applied — gpupdate /force just forces a refresh of policy.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-13-14'><title id='dt-c2d1-13-14'>gpresult reports the policies applied to a user and computer, to verify what really took effect.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Troubleshooting Group Policy</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>gpupdate /force</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>pull fresh policy</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>gpresult /r</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>see what applied</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Fix GPO scope</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>if one is missing</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>gpresult reports the policies applied to a user and computer, to verify</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>what really took effect.</text></svg>"
+    },
+    {
+      "id": "c2d1-13-15",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.3",
+      "term": "winver",
+      "definition": "A command that opens a small dialog showing the Windows edition, version, and build number.",
+      "scenario": "quickly display a small dialog with the Windows edition and exact build number",
+      "distractors": [
+        "hostname",
+        "ipconfig",
+        "chkdsk"
+      ],
+      "tip": "A tiny dialog with edition and BUILD — hostname only reports the computer's name.",
+      "diagram": "<svg viewBox='0 0 380 134' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-13-15'><title id='dt-c2d1-13-15'>winver shows the installed Windows edition, version, and build number.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>winver shows</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Edition</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>Windows 11 Pro</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Version</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>24H2</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>OS Build</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>26100.xxxx</text><text x='16' y='122' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>winver shows the installed Windows edition, version, and build number.</text></svg>"
+    },
+    {
+      "id": "c2d1-13-16",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.3",
+      "term": "The /? help switch",
+      "definition": "Adding /? after most Windows commands prints that command's syntax, switches, and examples directly in the prompt (PowerShell uses Get-Help).",
+      "scenario": "look up the available switches for an unfamiliar command without leaving the command prompt",
+      "distractors": [
+        "tasklist",
+        "systeminfo",
+        "winver"
+      ],
+      "tip": "Append /? to the command itself — it prints that command's own switches and examples.",
+      "diagram": "<svg viewBox='0 0 380 144' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-13-16'><title id='dt-c2d1-13-16'>/? shows a command&#39;s syntax, switches, and examples right in the prompt.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>Command Prompt</text><rect x='16' y='36' width='348' height='72' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>robocopy /?</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>ROBOCOPY :: Robust File Copy for Windows</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>Usage :: ROBOCOPY source destination [options]</text><text x='28' y='96' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>Options :: /MIR /Z /R:n /LOG:file</text><text x='16' y='132' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>/? shows a command&#39;s syntax, switches, and examples right in the prompt.</text></svg>"
+    },
+    {
+      "id": "c2d1-13-17",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.3",
+      "term": "tasklist and taskkill",
+      "definition": "tasklist lists running processes with their process IDs, and taskkill ends a process by name or PID, adding /f to force it.",
+      "scenario": "end a frozen process from the command line when Task Manager itself will not respond",
+      "distractors": [
+        "shutdown /r",
+        "sfc /scannow",
+        "gpupdate /force"
+      ],
+      "tip": "Process-level control by name or PID — shutdown affects the whole machine.",
+      "diagram": "<svg viewBox='0 0 380 156' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-13-17'><title id='dt-c2d1-13-17'>tasklist finds a process and its ID; taskkill ends it, which helps when Task Manager will not open.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>Command Prompt</text><rect x='16' y='36' width='348' height='72' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>tasklist | find \"notepad\"</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>notepad.exe              4412 Console</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>taskkill /PID 4412 /F</text><text x='28' y='96' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>SUCCESS: The process has been terminated.</text><text x='16' y='132' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>tasklist finds a process and its ID; taskkill ends it, which helps when</text><text x='16' y='144' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Task Manager will not open.</text></svg>"
+    },
+    {
+      "id": "c2d1-13-18",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.3",
+      "term": "DISM",
+      "definition": "Deployment Image Servicing and Management repairs the Windows component store (DISM /Online /Cleanup-Image /RestoreHealth) that sfc relies on, and can also service offline images.",
+      "scenario": "repair the Windows image when sfc /scannow reports corruption it cannot fix",
+      "distractors": [
+        "chkdsk /f",
+        "diskpart",
+        "robocopy"
+      ],
+      "tip": "It repairs the component STORE that sfc draws from — run DISM when sfc cannot repair, then run sfc again.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-13-18'><title id='dt-c2d1-13-18'>DISM repairs the Windows image that sfc depends on, so it is the fix when sfc cannot repair files.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>When sfc cannot repair files</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>DISM</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>/RestoreHealth</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>sfc</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>/scannow</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Restart</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>then retest</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>DISM repairs the Windows image that sfc depends on, so it is the fix</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>when sfc cannot repair files.</text></svg>"
+    },
+    {
+      "id": "c2d1-13-19",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.3",
+      "term": "dir, cd, md, and rd",
+      "definition": "Basic file system navigation commands: dir lists a folder, cd changes the current directory, md (mkdir) creates a folder, and rd (rmdir) removes one, with /s deleting its contents.",
+      "scenario": "list a folder, move into another one, and create a new directory from the command prompt",
+      "distractors": [
+        "robocopy",
+        "xcopy",
+        "diskpart"
+      ],
+      "tip": "dir/cd/md/rd NAVIGATE and make or remove folders — robocopy and xcopy copy data between them.",
+      "diagram": "<svg viewBox='0 0 380 156' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-13-19'><title id='dt-c2d1-13-19'>dir, cd, md, and rd list, change, create, and remove folders from the command line.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>Command Prompt</text><rect x='16' y='36' width='348' height='72' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>cd C:\\Users\\Public</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>dir</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>md Reports</text><text x='28' y='96' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>rd /s /q Reports</text><text x='16' y='132' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>dir, cd, md, and rd list, change, create, and remove folders from the</text><text x='16' y='144' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>command line.</text></svg>"
+    },
+    {
       "id": "c2d1-14-6",
       "core": "core2",
       "domain": "c2d1",
@@ -6787,6 +7416,70 @@
       "tip": "SYNCS across PCs via the cloud — a local account is tied to just that one machine, with no OneDrive/settings sync at all."
     ,
       "diagram": "<svg viewBox='0 0 380 175' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-14-6'><title id='dt-c2d1-14-6'>Tied to an online Microsoft account, syncing settings and enabling cloud features like OneDrive across PCs.</title><rect x='16.0' y='30' width='169.0' height='60' rx='5' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.5'/><text x='100.5' y='56.0' font-size='8.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Microsoft account</text><text x='100.5' y='70.0' font-size='7.5' fill='var(--muted)' text-anchor='middle'>syncs across PCs via cloud</text><rect x='195.0' y='30' width='169.0' height='60' rx='5' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><text x='279.5' y='56.0' font-size='8.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Local account</text><text x='279.5' y='70.0' font-size='7.5' fill='var(--muted)' text-anchor='middle'>tied to one machine only</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Tied to an online Microsoft account, syncing settings and enabling cloud</text><text x='16' y='165' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>features like OneDrive across PCs.</text></svg>"},
+    {
+      "id": "c2d1-14-7",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.4",
+      "term": "Settings: System (display, power, storage)",
+      "definition": "The System page of the Settings app holds display resolution and scaling, sound, notifications, power and battery options, Storage Sense, and the About page that shows the edition and specs.",
+      "scenario": "turn on Storage Sense to clear temporary files automatically and check what is using the disk",
+      "distractors": [
+        "Network & Internet",
+        "Accounts",
+        "Privacy & security"
+      ],
+      "tip": "Display, power, STORAGE, and About live under System — network, account, and privacy options each have their own page.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-14-7'><title id='dt-c2d1-14-7'>Settings &gt; System covers display, power, storage, and the About page with the edition and specs.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Settings &gt; System</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Display</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>resolution and scaling</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Power &amp; battery</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>sleep, battery saver</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Storage</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>Storage Sense, cleanup</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>About</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>edition, version, specs</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Settings &gt; System covers display, power, storage, and the About page</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>with the edition and specs.</text></svg>"
+    },
+    {
+      "id": "c2d1-14-8",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.4",
+      "term": "Time and language settings",
+      "definition": "Settings that control the time zone, automatic time sync, region formats, display language, and keyboard layouts; a wrong clock or zone can break certificate validation and Kerberos sign-in.",
+      "scenario": "fix a laptop whose clock is an hour off and is causing certificate and sign-in errors",
+      "distractors": [
+        "Accounts",
+        "Privacy & security",
+        "Apps"
+      ],
+      "tip": "TIME sync, zone, language, and region — a drifting clock also breaks Kerberos tickets and certificate checks.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-14-8'><title id='dt-c2d1-14-8'>Time &amp; language sets the clock, zone, display language, and region; wrong time breaks sign-in and certificates.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Settings &gt; Time &amp; language</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Date &amp; time</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>automatic time and time zone</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Language</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>display language packs</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Region</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>number and date formats</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Typing</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>keyboard layouts</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Time &amp; language sets the clock, zone, display language, and region;</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>wrong time breaks sign-in and certificates.</text></svg>"
+    },
+    {
+      "id": "c2d1-14-9",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.4",
+      "term": "Accessibility settings",
+      "definition": "Options such as Magnifier, Narrator, high contrast, color filters, captions, Sticky Keys, and pointer size that make Windows usable for people with vision, hearing, or motor needs.",
+      "scenario": "enable Sticky Keys and a larger mouse pointer for a user with limited dexterity",
+      "distractors": [
+        "Personalization",
+        "Devices",
+        "System"
+      ],
+      "tip": "Vision, hearing, and interaction aids live under Accessibility — Personalization only changes how things look.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-14-9'><title id='dt-c2d1-14-9'>Accessibility settings add vision, hearing, and interaction aids such as Magnifier and Sticky Keys.</title><rect x='115' y='14' width='150' height='34' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='190' y='27.86' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Accessibility</text><text x='190' y='39.26' font-size='6.4' fill='var(--muted)' text-anchor='middle'>Settings</text><line x1='190' y1='48' x2='70' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='16' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='70' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Vision</text><text x='70' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>Magnifier, Narrator</text><line x1='190' y1='48' x2='190' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='136' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Hearing</text><text x='190' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>captions, mono audio</text><line x1='190' y1='48' x2='310' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='256' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='310' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Interaction</text><text x='310' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>Sticky Keys, speech</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Accessibility settings add vision, hearing, and interaction aids such as</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Magnifier and Sticky Keys.</text></svg>"
+    },
+    {
+      "id": "c2d1-14-10",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.4",
+      "term": "Network reset",
+      "definition": "A Settings option that removes and reinstalls all network adapters and resets networking components to defaults; VPN clients and virtual switches then have to be set up again.",
+      "scenario": "return all network adapters to their defaults after repeated, unexplained connectivity problems",
+      "distractors": [
+        "ipconfig /renew",
+        "Forgetting a single Wi-Fi network",
+        "Disabling IPv6"
+      ],
+      "tip": "It resets EVERY adapter and networking component at once — renewing a lease or forgetting one network is far narrower.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-14-10'><title id='dt-c2d1-14-10'>Network reset reinstalls adapters and restores networking defaults, a last step for stubborn connectivity problems.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Network reset</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Settings</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>Network &amp; Internet</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Advanced</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>Network reset</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Restart</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>adapters reinstall</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Network reset reinstalls adapters and restores networking defaults, a</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>last step for stubborn connectivity problems.</text></svg>"
+    },
     {
       "id": "c2d1-15-6",
       "core": "core2",
@@ -6804,6 +7497,102 @@
     ,
       "diagram": "<svg viewBox='0 0 400 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-15-6'><title id='dt-c2d1-15-6'>Installing Windows by applying a pre-configured disk image to many machines at once.</title><rect x='30' y='40' width='100' height='40' rx='6' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='2'/><text x='80' y='63' font-size='7.3' fill='var(--primary)' text-anchor='middle' font-weight='700'>.wim image</text><line x1='140' y1='60' x2='194' y2='60' stroke='var(--muted)' stroke-width='1.5'/><path d='M192 56 L199 60 L192 64' fill='none' stroke='var(--muted)' stroke-width='1.5'/><rect x='210' y='46' width='40' height='28' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><rect x='260' y='46' width='40' height='28' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><rect x='310' y='46' width='40' height='28' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><text x='280' y='90' font-size='6.8' fill='var(--text)' text-anchor='middle' font-weight='700'>200 machines, one day</text><text x='190' y='118' font-size='7.3' fill='var(--text)' text-anchor='middle'>ONE image, MANY machines \u2014 built for scale, unlike</text><text x='190' y='130' font-size='7.3' fill='var(--text)' text-anchor='middle'>running setup individually on every device.</text><text x='16' y='155' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Installing Windows by applying a pre-configured disk image to many machines at once.</text></svg>"},
     {
+      "id": "c2d1-15-7",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.5",
+      "term": "PXE network boot",
+      "definition": "A firmware feature (Preboot Execution Environment) that boots a computer from an image on a network server, commonly used to deploy Windows to many machines without physical media.",
+      "scenario": "deploy Windows to dozens of bare-metal PCs from a server without handing out USB drives",
+      "distractors": [
+        "USB flash drive install",
+        "Optical disc install",
+        "Internal recovery partition"
+      ],
+      "tip": "It boots over the NETWORK using the NIC — USB and disc installs need physical media at every machine.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-15-7'><title id='dt-c2d1-15-7'>PXE boots a PC from a network server so Windows can be installed with no local media.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>PXE deployment</text><rect x='16' y='30' width='75' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='53.5' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>NIC</text><text x='53.5' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>PXE boot request</text><line x1='93' y1='53' x2='105' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M101 50 L105 53 L101 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='107' y='30' width='75' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='144.5' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>DHCP + TFTP</text><text x='144.5' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>gives boot image</text><line x1='184' y1='53' x2='196' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M192 50 L196 53 L192 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='198' y='30' width='75' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='235.5' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>WinPE</text><text x='235.5' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>loads on client</text><line x1='275' y1='53' x2='287' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M283 50 L287 53 L283 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='289' y='30' width='75' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='326.5' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Setup</text><text x='326.5' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>installs Windows</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>PXE boots a PC from a network server so Windows can be installed with no</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>local media.</text></svg>"
+    },
+    {
+      "id": "c2d1-15-8",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.5",
+      "term": "GPT partition style",
+      "definition": "The GUID Partition Table supports disks larger than 2 TB and up to 128 partitions with redundant headers, and is required for UEFI boot, whereas MBR is limited to 2 TB and four primary partitions.",
+      "scenario": "initialize a 4 TB drive so that all of its capacity is usable",
+      "distractors": [
+        "MBR partition style",
+        "Dynamic disk",
+        "Extended partition"
+      ],
+      "tip": "GPT for disks over 2 TB and UEFI/Secure Boot — MBR tops out at 2 TB and four primary partitions.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-15-8'><title id='dt-c2d1-15-8'>GPT supports disks over 2 TB, many partitions, and UEFI boot; MBR stops at 2 TB and four primary partitions.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Partition styles</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>MBR</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Disks up to 2 TB</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Four primary partitions</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Legacy BIOS boot</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>GPT</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Disks beyond 2 TB</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Up to 128 partitions</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>UEFI and Secure Boot</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>GPT supports disks over 2 TB, many partitions, and UEFI boot; MBR stops</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>at 2 TB and four primary partitions.</text></svg>"
+    },
+    {
+      "id": "c2d1-15-9",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.5",
+      "term": "Unattended installation (answer file)",
+      "definition": "A Windows setup driven by an answer file such as autounattend.xml that supplies the product key, partitions, account, and settings so installation needs no keyboard input.",
+      "scenario": "install Windows on many PCs with identical settings without answering any setup prompts",
+      "distractors": [
+        "Manual clean install",
+        "In-place upgrade",
+        "System Restore"
+      ],
+      "tip": "An ANSWER FILE feeds every setup prompt — image-based deployment instead copies a system that is already built.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-15-9'><title id='dt-c2d1-15-9'>An answer file lets Windows setup run with no prompts, using preset keys, partitions, and settings.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Unattended install</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Boot media</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>+ autounattend.xml</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Setup reads</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>the answer file</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Configured</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>no prompts needed</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>An answer file lets Windows setup run with no prompts, using preset</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>keys, partitions, and settings.</text></svg>"
+    },
+    {
+      "id": "c2d1-15-10",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.5",
+      "term": "Reset this PC",
+      "definition": "A Windows recovery option that reinstalls Windows without install media, letting you Keep my files or Remove everything, and optionally download a fresh copy from the cloud.",
+      "scenario": "return a corrupted laptop to a clean Windows install while keeping the user's personal documents",
+      "distractors": [
+        "System Restore",
+        "Startup Repair",
+        "Clean install from USB media"
+      ],
+      "tip": "A reinstall with the choice to KEEP files — System Restore only rolls back system files and settings, and never reinstalls Windows.",
+      "diagram": "<svg viewBox='0 0 380 164' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-15-10'><title id='dt-c2d1-15-10'>Reset this PC reinstalls Windows and lets you keep personal files or remove everything.</title><rect x='105' y='14' width='170' height='34' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='190' y='33.496' font-size='7.8' fill='var(--text)' text-anchor='middle' font-weight='700'>Reset this PC</text><line x1='190' y1='48' x2='70' y2='72' stroke='var(--border)' stroke-width='1.2'/><rect x='16' y='72' width='108' height='44' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='70' y='90.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Keep my files</text><text x='70' y='101.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>apps and settings removed</text><line x1='190' y1='48' x2='190' y2='72' stroke='var(--border)' stroke-width='1.2'/><rect x='136' y='72' width='108' height='44' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='90.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Remove everything</text><text x='190' y='101.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>full wipe</text><line x1='190' y1='48' x2='310' y2='72' stroke='var(--border)' stroke-width='1.2'/><rect x='256' y='72' width='108' height='44' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='310' y='90.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Cloud download</text><text x='310' y='101.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>fetches a fresh copy</text><text x='16' y='140' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Reset this PC reinstalls Windows and lets you keep personal files or</text><text x='16' y='152' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>remove everything.</text></svg>"
+    },
+    {
+      "id": "c2d1-15-11",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.5",
+      "term": "Windows 11 hardware requirements",
+      "definition": "Windows 11 needs a compatible 64-bit processor, 4 GB of RAM, 64 GB of storage, UEFI firmware with Secure Boot, and TPM 2.0; the TPM and Secure Boot requirements are the usual reason an older PC cannot upgrade.",
+      "scenario": "explain why a five-year-old PC that meets the RAM and disk minimums still cannot upgrade to Windows 11",
+      "distractors": [
+        "A missing Windows Pro license",
+        "A 32-bit processor architecture",
+        "Insufficient virtual memory"
+      ],
+      "tip": "Look for TPM 2.0 and Secure Boot — a PC with enough RAM and disk can still fail on the security hardware.",
+      "diagram": "<svg viewBox='0 0 380 178' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-15-11'><title id='dt-c2d1-15-11'>Windows 11 requires UEFI with Secure Boot and TPM 2.0 in addition to RAM, storage, and a 64-bit CPU.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Windows 11 minimums</text><rect x='16' y='30' width='132.24' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='82.12' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Requirement</text><rect x='148.24' y='30' width='215.76' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='256.12' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Windows 11 minimum</text><rect x='16' y='50' width='132.24' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='82.12' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>Processor</text><rect x='148.24' y='50' width='215.76' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='256.12' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>64-bit, 2+ cores, 1 GHz or faster</text><rect x='16' y='70' width='132.24' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='82.12' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>RAM / storage</text><rect x='148.24' y='70' width='215.76' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='256.12' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>4 GB / 64 GB</text><rect x='16' y='90' width='132.24' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='82.12' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>Firmware</text><rect x='148.24' y='90' width='215.76' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='256.12' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>UEFI with Secure Boot</text><rect x='16' y='110' width='132.24' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='82.12' y='123.2' font-size='7' fill='var(--text)' text-anchor='middle'>Security chip</text><rect x='148.24' y='110' width='215.76' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='256.12' y='123.2' font-size='7' fill='var(--text)' text-anchor='middle'>TPM 2.0</text><text x='16' y='154' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Windows 11 requires UEFI with Secure Boot and TPM 2.0 in addition to</text><text x='16' y='166' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>RAM, storage, and a 64-bit CPU.</text></svg>"
+    },
+    {
+      "id": "c2d1-15-12",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.5",
+      "term": "Pre-upgrade compatibility check",
+      "definition": "Before upgrading, back up data, confirm hardware, driver, and application compatibility (for example with PC Health Check), and test critical apps so the upgrade does not cause data loss or broken software.",
+      "scenario": "reduce the risk of data loss and broken applications before upgrading a department's PCs to a new Windows version",
+      "distractors": [
+        "Formatting the system drive first",
+        "Upgrading every PC at once",
+        "Installing drivers only after the upgrade"
+      ],
+      "tip": "BACK UP, check compatibility, and test first — skipping the check is what turns an upgrade into an outage.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-15-12'><title id='dt-c2d1-15-12'>Back up, verify hardware, driver, and app compatibility, and test before upgrading.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Before upgrading</text><rect x='16' y='30' width='75' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='53.5' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Back up</text><text x='53.5' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>files and image</text><line x1='93' y1='53' x2='105' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M101 50 L105 53 L101 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='107' y='30' width='75' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='144.5' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Check</text><text x='144.5' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>hardware, drivers</text><line x1='184' y1='53' x2='196' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M192 50 L196 53 L192 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='198' y='30' width='75' height='46' rx='4' fill='var(--violet-soft)' stroke='var(--violet)' stroke-width='1.3'/><text x='235.5' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Test</text><text x='235.5' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>key apps</text><line x1='275' y1='53' x2='287' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M283 50 L287 53 L283 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='289' y='30' width='75' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='326.5' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Upgrade</text><text x='326.5' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>pilot group first</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Back up, verify hardware, driver, and app compatibility, and test before</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>upgrading.</text></svg>"
+    },
+    {
       "id": "c2d1-16-7",
       "core": "core2",
       "domain": "c2d1",
@@ -6820,6 +7609,854 @@
     ,
       "diagram": "<svg viewBox='0 0 380 175' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-16-7'><title id='dt-c2d1-16-7'>Temporarily elevates a user&#39;s privileges to run a single command as superuser, rather than a full root login.</title><rect x='16.0' y='30' width='169.0' height='60' rx='5' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.5'/><text x='100.5' y='56.0' font-size='8.5' fill='var(--text)' text-anchor='middle' font-weight='700'>sudo</text><text x='100.5' y='70.0' font-size='7.5' fill='var(--muted)' text-anchor='middle'>TEMP elevation, one command</text><rect x='195.0' y='30' width='169.0' height='60' rx='5' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.5'/><text x='279.5' y='56.0' font-size='8.5' fill='var(--text)' text-anchor='middle' font-weight='700'>su</text><text x='279.5' y='70.0' font-size='7.5' fill='var(--muted)' text-anchor='middle'>full persistent root session</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Temporarily elevates a user&#39;s privileges to run a single command as superuser,</text><text x='16' y='165' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>rather than a full root login.</text></svg>"},
     {
+      "id": "c2d1-17-1",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.7",
+      "term": "Workgroup (peer-to-peer) network",
+      "definition": "A small network in which each Windows PC keeps its own local accounts and shares resources directly, with no central server managing logins or policy.",
+      "scenario": "set up a five-person office with no server, where every PC manages its own accounts and shared folders",
+      "distractors": [
+        "Active Directory domain",
+        "VPN",
+        "Cloud tenant with SSO"
+      ],
+      "tip": "NO central server — each PC has its own accounts, whereas a domain centralizes them on a domain controller.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-17-1'><title id='dt-c2d1-17-1'>A workgroup is peer-to-peer with local accounts on each PC; a domain centralizes accounts on a server.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Workgroup vs domain</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Workgroup</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Peer to peer</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Accounts stored on each PC</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Fine for a handful of PCs</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Domain</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Domain controller in charge</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Central accounts and policy</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>One login, many PCs</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A workgroup is peer-to-peer with local accounts on each PC; a domain</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>centralizes accounts on a server.</text></svg>"
+    },
+    {
+      "id": "c2d1-17-2",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.7",
+      "term": "Joining a domain",
+      "definition": "Adding a Windows Pro (or higher) PC to an Active Directory domain so users sign in with domain credentials and the PC receives Group Policy; it needs a reachable domain controller and working DNS.",
+      "scenario": "let employees sign in to a company laptop with their network username and receive company policies",
+      "distractors": [
+        "Workgroup membership",
+        "A local administrator account",
+        "A Microsoft account sign-in"
+      ],
+      "tip": "It needs Pro or higher and a reachable domain controller with DNS — Home edition cannot join, whatever the settings say.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-17-2'><title id='dt-c2d1-17-2'>Joining a domain lets a PC use central accounts and Group Policy; it needs Pro or higher and a reachable DC.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Domain join</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Join domain</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>System &gt; Domain</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>DC authenticates</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>user signs in</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Policy applies</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>GPOs and scripts</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Joining a domain lets a PC use central accounts and Group Policy; it</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>needs Pro or higher and a reachable DC.</text></svg>"
+    },
+    {
+      "id": "c2d1-17-3",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.7",
+      "term": "Mapped network drive",
+      "definition": "A drive letter assigned to a shared folder on another computer or server (a UNC path such as \\\\server\\share) so it appears in File Explorer like a local drive, optionally reconnecting at sign-in.",
+      "scenario": "give users a persistent drive letter for the department's shared folder",
+      "distractors": [
+        "A local disk partition",
+        "Port forwarding",
+        "A roaming profile"
+      ],
+      "tip": "A drive letter pointing at a UNC SHARE — it is not storage on the PC itself.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-17-3'><title id='dt-c2d1-17-3'>A mapped drive gives a shared folder on another computer a local drive letter.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>What a mapped drive points to</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Z:</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>drive letter</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>UNC path</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>\\\\fs01\\dept</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>File server</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>holds the share</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A mapped drive gives a shared folder on another computer a local drive</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>letter.</text></svg>"
+    },
+    {
+      "id": "c2d1-17-4",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.7",
+      "term": "Metered connection",
+      "definition": "A setting that tells Windows a network has a data cap, so it postpones large downloads such as updates and trims background data use.",
+      "scenario": "keep Windows Update from using up the limited data on a mobile hotspot",
+      "distractors": [
+        "Airplane mode",
+        "VPN",
+        "Proxy server"
+      ],
+      "tip": "It marks a connection as LIMITED — airplane mode turns the radios off entirely.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-17-4'><title id='dt-c2d1-17-4'>Setting a connection as metered makes Windows defer big downloads and reduce background data use.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Metered connection</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Metered: on</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Large updates are deferred</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Background sync is trimmed</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Right for hotspots and caps</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Metered: off</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Updates download freely</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Background sync runs</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Right for home broadband</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Setting a connection as metered makes Windows defer big downloads and</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>reduce background data use.</text></svg>"
+    },
+    {
+      "id": "c2d1-17-5",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.7",
+      "term": "VPN client configuration in Windows",
+      "definition": "Windows can connect to a VPN gateway from Settings > Network & Internet > VPN, creating an encrypted tunnel across the Internet so a remote user reaches internal resources as if on site.",
+      "scenario": "let a remote employee securely reach internal file servers from hotel Wi-Fi",
+      "distractors": [
+        "Port forwarding on the home router",
+        "A web proxy server",
+        "A public Wi-Fi hotspot"
+      ],
+      "tip": "An encrypted TUNNEL into the private network — a proxy only relays web requests and does not put you on the LAN.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-17-5'><title id='dt-c2d1-17-5'>A VPN client builds an encrypted tunnel to the office so a remote PC can use internal resources.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Remote access over VPN</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Laptop</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>VPN client</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Encrypted tunnel</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>across the Internet</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>VPN gateway</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>office network</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A VPN client builds an encrypted tunnel to the office so a remote PC can</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>use internal resources.</text></svg>"
+    },
+    {
+      "id": "c2d1-17-6",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.7",
+      "term": "Proxy server settings",
+      "definition": "A proxy relays a client's web requests for filtering, caching, or logging; Windows can use an automatic setup script (PAC), auto-detect, or a manually entered proxy address and port.",
+      "scenario": "send a workstation's web traffic through the company filtering server",
+      "distractors": [
+        "A VPN client",
+        "Port forwarding",
+        "A default gateway change"
+      ],
+      "tip": "It relays web REQUESTS through a middleman — a VPN encrypts all traffic into a tunnel instead.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-17-6'><title id='dt-c2d1-17-6'>A proxy server sits between clients and the web to filter, cache, and log requests.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Web traffic through a proxy</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Browser</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>sends request</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Proxy</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>filter, cache, log</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Internet</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>site replies</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A proxy server sits between clients and the web to filter, cache, and</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>log requests.</text></svg>"
+    },
+    {
+      "id": "c2d1-17-7",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.7",
+      "term": "Alternate configuration (APIPA fallback)",
+      "definition": "When a Windows PC set to obtain an address automatically cannot reach a DHCP server, it self-assigns a 169.254.x.x APIPA address, or uses a configured alternate address, that works only on the local segment.",
+      "scenario": "explain why a PC that cannot reach DHCP shows a 169.254.x.x address and no Internet access",
+      "distractors": [
+        "A static IP address",
+        "A DHCP reservation",
+        "A public IP address"
+      ],
+      "tip": "169.254.x.x means DHCP FAILED — the PC addressed itself, so it can only talk to other link-local devices.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-17-7'><title id='dt-c2d1-17-7'>With no DHCP reply Windows self-assigns a 169.254.x.x address that only works on the local link.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>What a failed DHCP request looks like</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>DHCP request</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>no reply</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Self-assign</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>169.254.x.x</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Local only</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>no gateway, no Internet</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>With no DHCP reply Windows self-assigns a 169.254.x.x address that only</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>works on the local link.</text></svg>"
+    },
+    {
+      "id": "c2d1-17-8",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.7",
+      "term": "Static IP configuration (adapter properties)",
+      "definition": "Setting a fixed IPv4 address, subnet mask, default gateway, and DNS servers manually in the network adapter's Properties (ncpa.cpl) instead of obtaining them automatically.",
+      "scenario": "give a machine a fixed address that never changes by entering it directly on the network adapter",
+      "distractors": [
+        "Dynamic (DHCP) addressing",
+        "APIPA addressing",
+        "A NAT translation entry"
+      ],
+      "tip": "Typed in by hand on the adapter — DHCP and APIPA both assign an address automatically.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-17-8'><title id='dt-c2d1-17-8'>A static IP is entered manually (address, mask, gateway, DNS) in the adapter&#39;s IPv4 properties.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Adapter Properties &gt; IPv4</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>IP address</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>192.168.1.50</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Subnet mask</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>255.255.255.0</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Default gateway</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>192.168.1.1</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>DNS servers</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>192.168.1.1 and 8.8.8.8</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A static IP is entered manually (address, mask, gateway, DNS) in the</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>adapter&#39;s IPv4 properties.</text></svg>"
+    },
+    {
+      "id": "c2d1-17-9",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.7",
+      "term": "Firewall exception (allowed app or port)",
+      "definition": "An inbound rule in Windows Defender Firewall that lets a specific program or port receive connections while the firewall stays on; rules can be set per profile (Domain, Private, Public).",
+      "scenario": "allow a locally hosted app to accept connections on TCP 8080 without turning the firewall off",
+      "distractors": [
+        "Disabling the firewall",
+        "Port forwarding on the router",
+        "Disabling UAC"
+      ],
+      "tip": "Open ONE program or port and keep the firewall on — router port forwarding is a different device altogether.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-17-9'><title id='dt-c2d1-17-9'>A firewall exception allows one app or port through while the Windows firewall stays enabled.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Firewall rules apply per profile</text><rect x='16' y='30' width='87' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='59.5' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Profile</text><rect x='103' y='30' width='261' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='233.5' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Typical use</text><rect x='16' y='50' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>Domain</text><rect x='103' y='50' width='261' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='233.5' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>PC joined to the company domain</text><rect x='16' y='70' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>Private</text><rect x='103' y='70' width='261' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='233.5' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>trusted home or office network</text><rect x='16' y='90' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>Public</text><rect x='103' y='90' width='261' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='233.5' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>coffee shop or airport Wi-Fi</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A firewall exception allows one app or port through while the Windows</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>firewall stays enabled.</text></svg>"
+    },
+    {
+      "id": "c2d1-18-1",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.8",
+      "term": "Internet Options",
+      "definition": "The Control Panel applet (inetcpl.cpl) for legacy browser and system web settings: security zones and trusted sites, proxy and VPN connections, privacy and pop-up options, add-ons, and clearing temporary files.",
+      "scenario": "set a proxy server and add a trusted site through the classic browser settings dialog",
+      "distractors": [
+        "Network and Sharing Center",
+        "Programs and Features",
+        "Device Manager"
+      ],
+      "tip": "Zones, proxy, and privacy for web access sit on its tabs — Network and Sharing Center manages adapters and sharing.",
+      "diagram": "<svg viewBox='0 0 380 210' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-18-1'><title id='dt-c2d1-18-1'>Internet Options holds browser security zones, proxy and connection settings, privacy, and add-ons.</title><rect x='115' y='14' width='150' height='34' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='190' y='27.86' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Internet Options</text><text x='190' y='39.26' font-size='6.4' fill='var(--muted)' text-anchor='middle'>inetcpl.cpl</text><line x1='190' y1='48' x2='70' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='16' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='70' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>General</text><text x='70' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>home page, history</text><line x1='190' y1='48' x2='190' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='136' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Security</text><text x='190' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>zones, trusted sites</text><line x1='190' y1='48' x2='310' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='256' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='310' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Privacy</text><text x='310' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>cookies, pop-ups</text><line x1='190' y1='48' x2='70' y2='121.5' stroke='var(--border)' stroke-width='1.2'/><rect x='16' y='122' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='70' y='138.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Connections</text><text x='70' y='149.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>proxy and VPN</text><line x1='190' y1='48' x2='190' y2='121.5' stroke='var(--border)' stroke-width='1.2'/><rect x='136' y='122' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='138.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Programs</text><text x='190' y='149.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>add-ons, defaults</text><line x1='190' y1='48' x2='310' y2='121.5' stroke='var(--border)' stroke-width='1.2'/><rect x='256' y='122' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='310' y='138.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Advanced</text><text x='310' y='149.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>TLS and misc</text><text x='16' y='186' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Internet Options holds browser security zones, proxy and connection</text><text x='16' y='198' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>settings, privacy, and add-ons.</text></svg>"
+    },
+    {
+      "id": "c2d1-18-2",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.8",
+      "term": "Programs and Features",
+      "definition": "The Control Panel applet (appwiz.cpl) that lists installed desktop programs for uninstalling, repairing, or changing them, with links to turn Windows features on or off and view installed updates.",
+      "scenario": "uninstall a desktop application and turn on the Hyper-V Windows feature",
+      "distractors": [
+        "Device Manager",
+        "Administrative Tools",
+        "Indexing Options"
+      ],
+      "tip": "appwiz.cpl uninstalls programs AND toggles Windows features such as Hyper-V — Device Manager only deals with hardware.",
+      "diagram": "<svg viewBox='0 0 380 146' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-18-2'><title id='dt-c2d1-18-2'>Programs and Features removes programs, toggles Windows features, and lists installed updates.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Programs and Features</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Uninstall / Change</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>remove or repair a program</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Windows features</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>Hyper-V, .NET, Telnet client</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Installed updates</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>view or remove patches</text><text x='16' y='122' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Programs and Features removes programs, toggles Windows features, and</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>lists installed updates.</text></svg>"
+    },
+    {
+      "id": "c2d1-18-3",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.8",
+      "term": "Power Options",
+      "definition": "The Control Panel applet that sets power plans (Balanced, High performance, Power saver), what the power button and lid do, sleep and hibernate timers, USB selective suspend, and Fast Startup.",
+      "scenario": "keep a laptop awake with the lid closed while it is docked to an external monitor",
+      "distractors": [
+        "Windows Mobility Center",
+        "Display settings",
+        "Task Scheduler"
+      ],
+      "tip": "Lid and power-button actions live in Power Options — Mobility Center only offers quick toggles such as brightness and plan choice.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-18-3'><title id='dt-c2d1-18-3'>Power Options controls power plans, lid and button actions, sleep and hibernate, and Fast Startup.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Power states</text><rect x='16' y='30' width='87' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='59.5' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Mode</text><rect x='103' y='30' width='174' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='190' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Where the session is kept</text><rect x='277' y='30' width='87' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='320.5' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Resume</text><rect x='16' y='50' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>Sleep</text><rect x='103' y='50' width='174' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='190' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>in RAM, low power</text><rect x='277' y='50' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='320.5' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>seconds</text><rect x='16' y='70' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>Hibernate</text><rect x='103' y='70' width='174' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='190' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>saved to disk, no power</text><rect x='277' y='70' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='320.5' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>slower</text><rect x='16' y='90' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>Fast Startup</text><rect x='103' y='90' width='174' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='190' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>kernel saved to disk</text><rect x='277' y='90' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='320.5' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>faster boot</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Power Options controls power plans, lid and button actions, sleep and</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>hibernate, and Fast Startup.</text></svg>"
+    },
+    {
+      "id": "c2d1-18-4",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.8",
+      "term": "Credential Manager",
+      "definition": "The Control Panel applet that stores saved usernames and passwords for websites and for Windows resources such as network shares, where they can be viewed, edited, or removed.",
+      "scenario": "clear a stale saved password for a file server that keeps locking out the user's account",
+      "distractors": [
+        "Local Users and Groups",
+        "Certificate Manager",
+        "Group Policy Editor"
+      ],
+      "tip": "It holds saved PASSWORDS for sites and shares — stale entries are a classic cause of repeated lockouts.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-18-4'><title id='dt-c2d1-18-4'>Credential Manager stores saved web and Windows logins; deleting a stale entry can stop repeated lockouts.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Credential Manager</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Web Credentials</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Saved site logins</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Browser passwords</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Windows Credentials</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Network share logins</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Remote Desktop and apps</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Certificate-based entries</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Credential Manager stores saved web and Windows logins; deleting a stale</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>entry can stop repeated lockouts.</text></svg>"
+    },
+    {
+      "id": "c2d1-18-5",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.8",
+      "term": "File Explorer Options",
+      "definition": "The Control Panel applet that controls how File Explorer displays items: show hidden files, show file extensions, what it opens to, folder views, and search behavior.",
+      "scenario": "show hidden files and file extensions so a disguised name like invoice.pdf.exe becomes visible",
+      "distractors": [
+        "Folder permissions",
+        "Indexing Options",
+        "Programs and Features"
+      ],
+      "tip": "Showing EXTENSIONS exposes disguised files such as invoice.pdf.exe — permissions are a different setting.",
+      "diagram": "<svg viewBox='0 0 380 143' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-18-5'><title id='dt-c2d1-18-5'>File Explorer Options can reveal hidden files and extensions, exposing disguised names like invoice.pdf.exe.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Why show file extensions</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Extensions hidden</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>invoice.pdf</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>looks harmless</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Extensions shown</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>invoice.pdf.exe</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>an executable in disguise</text><text x='16' y='119' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>File Explorer Options can reveal hidden files and extensions, exposing</text><text x='16' y='131' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>disguised names like invoice.pdf.exe.</text></svg>"
+    },
+    {
+      "id": "c2d1-18-6",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.8",
+      "term": "Devices and Printers",
+      "definition": "A Control Panel view of connected devices such as printers, scanners, mice, and phones, where you can add a printer, set the default, open the print queue and printer properties, and run troubleshooters.",
+      "scenario": "set the default printer and clear a stuck print queue",
+      "distractors": [
+        "Device Manager",
+        "Disk Management",
+        "Network and Sharing Center"
+      ],
+      "tip": "Printer-level tasks (default, queue, properties) — Device Manager is about hardware drivers.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-18-6'><title id='dt-c2d1-18-6'>Devices and Printers manages connected devices, printer defaults, queues, and printer properties.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Devices and Printers</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Add a printer</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>wizard or network search</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Default printer</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>where prints go</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>See what&#39;s printing</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>open and clear the queue</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Printer properties</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>ports, sharing, drivers</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Devices and Printers manages connected devices, printer defaults,</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>queues, and printer properties.</text></svg>"
+    },
+    {
+      "id": "c2d1-18-7",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.8",
+      "term": "Indexing Options",
+      "definition": "The Control Panel applet that chooses which locations Windows Search indexes for fast results, and can rebuild the index when search returns missing or stale results.",
+      "scenario": "fix File Explorer search that does not find recently saved files",
+      "distractors": [
+        "Disk Cleanup",
+        "Defragment and Optimize Drives",
+        "File Explorer Options"
+      ],
+      "tip": "It controls the search INDEX — rebuild it when results are missing or stale.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-18-7'><title id='dt-c2d1-18-7'>Indexing Options chooses the indexed locations and can rebuild the index to fix missing search results.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>How Windows Search indexing works</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Locations</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>folders to index</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Indexer</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>catalogs files</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Search</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>fast results</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Indexing Options chooses the indexed locations and can rebuild the index</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>to fix missing search results.</text></svg>"
+    },
+    {
+      "id": "c2d1-18-8",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.8",
+      "term": "Network and Sharing Center",
+      "definition": "The Control Panel hub that shows the active network and connection type, opens adapter settings, sets up new connections, and holds the advanced sharing settings for network discovery and file and printer sharing.",
+      "scenario": "turn on network discovery and file sharing for the Private network profile",
+      "distractors": [
+        "Internet Options",
+        "Windows Defender Firewall",
+        "Credential Manager"
+      ],
+      "tip": "Discovery and sharing toggles per PROFILE live here — Internet Options is about web zones and proxy settings.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-18-8'><title id='dt-c2d1-18-8'>Network and Sharing Center shows connection status and holds adapter and advanced sharing settings.</title><rect x='115' y='14' width='150' height='34' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='190' y='27.86' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Network and Sharing Center</text><text x='190' y='39.26' font-size='6.4' fill='var(--muted)' text-anchor='middle'>network status in one place</text><line x1='190' y1='48' x2='70' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='16' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='70' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Active networks</text><text x='70' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>name and type</text><line x1='190' y1='48' x2='190' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='136' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Change adapter</text><text x='190' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>ncpa.cpl</text><line x1='190' y1='48' x2='310' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='256' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='310' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Advanced sharing</text><text x='310' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>discovery, file sharing</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Network and Sharing Center shows connection status and holds adapter and</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>advanced sharing settings.</text></svg>"
+    },
+    {
+      "id": "c2d1-18-9",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.8",
+      "term": "Mail control panel (Outlook profiles)",
+      "definition": "The Mail (Microsoft Outlook) applet manages Outlook profiles, email accounts, and data files, so a damaged profile can be replaced without reinstalling Office.",
+      "scenario": "create a new Outlook profile to fix one that will not open, without reinstalling Office",
+      "distractors": [
+        "Credential Manager",
+        "Programs and Features",
+        "User Accounts"
+      ],
+      "tip": "Profiles and data files for Outlook are managed in Mail — reinstalling Office is the heavy-handed alternative.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-18-9'><title id='dt-c2d1-18-9'>The Mail applet manages Outlook profiles and data files, so a bad profile can be recreated.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Replacing a damaged Outlook profile</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Mail applet</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>Show Profiles</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Add profile</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>sign in again</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Set default</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>prompt or use</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>The Mail applet manages Outlook profiles and data files, so a bad</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>profile can be recreated.</text></svg>"
+    },
+    {
+      "id": "c2d1-19-1",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.9",
+      "term": "Application system requirements",
+      "definition": "The minimum CPU, RAM, storage, graphics, OS version, and 32/64-bit support an application needs; they should be compared with the target machine before installation.",
+      "scenario": "prevent an install that will crash or run too slowly by checking whether the PC meets the vendor's minimums first",
+      "distractors": [
+        "Running the installer as Administrator",
+        "Disabling UAC",
+        "Installing and testing afterward"
+      ],
+      "tip": "Verify the MINIMUMS before installing — elevation and UAC changes cannot add RAM or a supported OS version.",
+      "diagram": "<svg viewBox='0 0 380 178' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-19-1'><title id='dt-c2d1-19-1'>Compare an app&#39;s stated requirements with the PC (OS, CPU, RAM, storage, graphics) before installing.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Pre-install checklist</text><rect x='16' y='30' width='121.8' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='76.9' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Check</text><rect x='137.8' y='30' width='226.2' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='250.9' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Compare against</text><rect x='16' y='50' width='121.8' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='76.9' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>OS and bitness</text><rect x='137.8' y='50' width='226.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='250.9' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>Windows version, 32/64-bit</text><rect x='16' y='70' width='121.8' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='76.9' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>CPU and RAM</text><rect x='137.8' y='70' width='226.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='250.9' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>vendor minimum or recommended</text><rect x='16' y='90' width='121.8' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='76.9' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>Storage</text><rect x='137.8' y='90' width='226.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='250.9' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>free space for the install</text><rect x='16' y='110' width='121.8' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='76.9' y='123.2' font-size='7' fill='var(--text)' text-anchor='middle'>Graphics</text><rect x='137.8' y='110' width='226.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='250.9' y='123.2' font-size='7' fill='var(--text)' text-anchor='middle'>GPU, driver, display</text><text x='16' y='154' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Compare an app&#39;s stated requirements with the PC (OS, CPU, RAM, storage,</text><text x='16' y='166' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>graphics) before installing.</text></svg>"
+    },
+    {
+      "id": "c2d1-19-2",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.9",
+      "term": "Centralized software deployment",
+      "definition": "Pushing applications to many computers from a management platform (Intune, Configuration Manager, or Group Policy) as a silent, consistent install, instead of each user running an installer.",
+      "scenario": "deploy the same application silently to 200 company PCs without visiting each desk",
+      "distractors": [
+        "Each user downloading and running the EXE",
+        "Installing from a DVD at every desk",
+        "Copying a portable app to a USB stick"
+      ],
+      "tip": "ONE package pushed silently to many PCs — hand installs are slow, inconsistent, and need rights users should not have.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-19-2'><title id='dt-c2d1-19-2'>Management tools push a packaged application to many PCs silently and consistently.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Central deployment</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Admin</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>packages the app</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Management</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>Intune / SCCM / GPO</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>PCs</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>silent install</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Management tools push a packaged application to many PCs silently and</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>consistently.</text></svg>"
+    },
+    {
+      "id": "c2d1-19-3",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.9",
+      "term": "Pilot (staged) rollout",
+      "definition": "Deploying a new application or update to a small test group first to find compatibility, performance, or network problems before it reaches everyone.",
+      "scenario": "limit the damage if a new application version breaks something on company PCs",
+      "distractors": [
+        "Deploying to every PC at once",
+        "Skipping testing because the vendor signed it",
+        "Disabling antivirus during installation"
+      ],
+      "tip": "Small group FIRST, then widen — a flawless vendor signature does not prove it works in YOUR environment.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-19-3'><title id='dt-c2d1-19-3'>A pilot group tests a deployment first, so problems are found before everyone is affected.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Staged rollout</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Pilot</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>small test group</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Review</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>issues and network load</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Wider rollout</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>in waves</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A pilot group tests a deployment first, so problems are found before</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>everyone is affected.</text></svg>"
+    },
+    {
+      "id": "c2d1-19-4",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.9",
+      "term": "Compatibility mode",
+      "definition": "A Windows feature that runs an older program with settings that emulate a previous Windows version, a reduced color or resolution mode, or administrator rights, to get legacy applications to work.",
+      "scenario": "get a legacy business application written for Windows 7 to run on Windows 11",
+      "distractors": [
+        "Safe Mode",
+        "Selective startup",
+        "Windows Update rollback"
+      ],
+      "tip": "It makes ONE program behave as if on an older Windows — a virtual machine is the heavier fallback when that is not enough.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-19-4'><title id='dt-c2d1-19-4'>Compatibility mode lets an older application run as if it were on an earlier Windows version.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Setting compatibility mode</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Right-click</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>Properties</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Compatibility tab</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>pick older Windows</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Run program</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>test behavior</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Compatibility mode lets an older application run as if it were on an</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>earlier Windows version.</text></svg>"
+    },
+    {
+      "id": "c2d1-110-1",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.10",
+      "term": "Cloud productivity suite",
+      "definition": "A vendor-hosted subscription such as Microsoft 365 or Google Workspace that delivers email, calendar, documents, chat, and storage through a browser or app, with administrator-managed accounts and licenses.",
+      "scenario": "give remote staff shared email, calendars, and live document editing without hosting any servers",
+      "distractors": [
+        "On-premises Exchange server",
+        "A local file server",
+        "Peer-to-peer file sharing"
+      ],
+      "tip": "Vendor-HOSTED and subscription-based — on-premises Exchange is the self-hosted alternative.",
+      "diagram": "<svg viewBox='0 0 380 210' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-110-1'><title id='dt-c2d1-110-1'>Cloud suites such as Microsoft 365 and Google Workspace host email, documents, chat, and storage for you.</title><rect x='115' y='14' width='150' height='34' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='190' y='27.86' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Cloud productivity suite</text><text x='190' y='39.26' font-size='6.4' fill='var(--muted)' text-anchor='middle'>hosted by the vendor</text><line x1='190' y1='48' x2='70' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='16' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='70' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Email</text><text x='70' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>mailboxes</text><line x1='190' y1='48' x2='190' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='136' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Calendar</text><text x='190' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>scheduling</text><line x1='190' y1='48' x2='310' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='256' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='310' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Documents</text><text x='310' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>co-authoring</text><line x1='190' y1='48' x2='70' y2='121.5' stroke='var(--border)' stroke-width='1.2'/><rect x='16' y='122' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='70' y='138.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Chat and meetings</text><text x='70' y='149.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>video, messaging</text><line x1='190' y1='48' x2='190' y2='121.5' stroke='var(--border)' stroke-width='1.2'/><rect x='136' y='122' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='138.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Storage</text><text x='190' y='149.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>files and sharing</text><line x1='190' y1='48' x2='310' y2='121.5' stroke='var(--border)' stroke-width='1.2'/><rect x='256' y='122' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='310' y='138.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Admin portal</text><text x='310' y='149.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>users, licenses</text><text x='16' y='186' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Cloud suites such as Microsoft 365 and Google Workspace host email,</text><text x='16' y='198' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>documents, chat, and storage for you.</text></svg>"
+    },
+    {
+      "id": "c2d1-110-2",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.10",
+      "term": "Single sign-on (SSO)",
+      "definition": "A system where one set of credentials, verified by an identity provider, signs a user in to many applications without separate passwords for each.",
+      "scenario": "let employees sign in once and open Microsoft 365 and other cloud apps without separate passwords",
+      "distractors": [
+        "Multifactor authentication",
+        "A shared team account",
+        "Password expiration"
+      ],
+      "tip": "ONE login for MANY apps — MFA adds more factors to a login, but it does not reduce how many logins there are.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-110-2'><title id='dt-c2d1-110-2'>SSO lets one verified sign-in work across many apps, reducing passwords to manage.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Single sign-on</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>User signs in</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>once</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Identity provider</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>issues a token</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Apps</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>accept the token</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>SSO lets one verified sign-in work across many apps, reducing passwords</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>to manage.</text></svg>"
+    },
+    {
+      "id": "c2d1-110-3",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.10",
+      "term": "Version history (cloud storage)",
+      "definition": "A cloud storage feature that keeps earlier saved versions of a file so a document can be restored to a previous state after accidental edits or overwrites.",
+      "scenario": "restore yesterday's version of a document that someone accidentally overwrote in cloud storage",
+      "distractors": [
+        "The local Recycle Bin",
+        "Disk Cleanup",
+        "Offline files"
+      ],
+      "tip": "It keeps earlier VERSIONS of the same file — the Recycle Bin only holds files that were deleted.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-110-3'><title id='dt-c2d1-110-3'>Version history keeps earlier copies of a cloud file so a mistake can be rolled back.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Version history</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Edit</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>file changes</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Saved versions</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>v1, v2, v3 kept</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Restore</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>pick the good one</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Version history keeps earlier copies of a cloud file so a mistake can be</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>rolled back.</text></svg>"
+    },
+    {
+      "id": "c2d1-111-1",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.11",
+      "term": "Server operating system",
+      "definition": "An OS such as Windows Server or a Linux server distribution, built to host services like Active Directory, DNS, DHCP, and file and print sharing for many users rather than serve one interactive user.",
+      "scenario": "choose an OS to host Active Directory and DHCP for a company",
+      "distractors": [
+        "Windows 11 Pro",
+        "macOS",
+        "An embedded OS"
+      ],
+      "tip": "It hosts SERVICES for many clients — workstation operating systems are built around one interactive user.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-111-1'><title id='dt-c2d1-111-1'>Server operating systems host shared services such as AD, DNS, DHCP, and file sharing for many clients.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>OS roles</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Workstation OS</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Windows 10/11, macOS, Linux desktop</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>One interactive user</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Runs apps and productivity</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Server OS</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Windows Server, Linux server</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Serves many clients</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>AD, DNS, DHCP, file and print</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Server operating systems host shared services such as AD, DNS, DHCP, and</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>file sharing for many clients.</text></svg>"
+    },
+    {
+      "id": "c2d1-111-2",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.11",
+      "term": "Embedded operating system",
+      "definition": "A specialized OS built into a dedicated device, such as an ATM, point-of-sale terminal, smart TV, medical device, or IoT appliance, running one fixed function and often hard to patch.",
+      "scenario": "identify the OS inside a point-of-sale terminal or smart thermostat that does one fixed job",
+      "distractors": [
+        "A server OS",
+        "A workstation OS",
+        "A hypervisor"
+      ],
+      "tip": "Built into ONE single-purpose device — and often hard to update, which makes it a security concern.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-111-2'><title id='dt-c2d1-111-2'>An embedded OS runs one fixed function inside a dedicated device and is often hard to patch.</title><rect x='115' y='14' width='150' height='34' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='190' y='27.86' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Embedded OS</text><text x='190' y='39.26' font-size='6.4' fill='var(--muted)' text-anchor='middle'>single-purpose firmware</text><line x1='190' y1='48' x2='55' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='16' y='70' width='78' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='55' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>ATM</text><text x='55' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>kiosk, terminal</text><line x1='190' y1='48' x2='145' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='106' y='70' width='78' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='145' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Smart TV</text><text x='145' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>appliance</text><line x1='190' y1='48' x2='235' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='196' y='70' width='78' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='235' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Medical device</text><text x='235' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>fixed function</text><line x1='190' y1='48' x2='325' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='286' y='70' width='78' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='325' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>IoT thermostat</text><text x='325' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>limited updates</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>An embedded OS runs one fixed function inside a dedicated device and is</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>often hard to patch.</text></svg>"
+    },
+    {
+      "id": "c2d1-111-3",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.11",
+      "term": "ChromeOS (cloud-based OS)",
+      "definition": "A browser-centric operating system on Chromebooks where most apps and storage live in the cloud, with fast boot, automatic updates, and simple central management.",
+      "scenario": "pick an easy-to-manage laptop OS for a school whose students mostly use web apps",
+      "distractors": [
+        "Windows 11 Enterprise",
+        "A Linux server distribution",
+        "macOS"
+      ],
+      "tip": "WEB apps and cloud storage on cheap, auto-updating hardware — it is not a general-purpose desktop OS.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-111-3'><title id='dt-c2d1-111-3'>ChromeOS runs web apps with cloud storage, quick boot, and automatic background updates.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>ChromeOS at a glance</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Boot</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>seconds, from a read-only OS</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Apps</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>web apps and Android apps</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Storage</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>mostly cloud, little local</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Updates</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>automatic, in the background</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>ChromeOS runs web apps with cloud storage, quick boot, and automatic</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>background updates.</text></svg>"
+    },
+    {
+      "id": "c2d1-111-4",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.11",
+      "term": "OS end of life (EOL)",
+      "definition": "The point at which a vendor stops providing security patches and support for an operating system, leaving machines that still run it increasingly exposed to attack.",
+      "scenario": "explain the risk of continuing to run a Windows version that no longer receives security updates",
+      "distractors": [
+        "A beta release",
+        "A long-term servicing channel",
+        "A service pack"
+      ],
+      "tip": "No more security PATCHES — the risk grows with every new vulnerability even if the PC still runs fine.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-111-4'><title id='dt-c2d1-111-4'>After end of life an OS receives no security patches, so each new flaw stays open.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Operating system life cycle</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Release</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>new version ships</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Support</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>patches and fixes</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>End of life</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>no more patches</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>After end of life an OS receives no security patches, so each new flaw</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>stays open.</text></svg>"
+    },
+    {
+      "id": "c2d1-111-5",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.11",
+      "term": "NTFS file system",
+      "definition": "The default Windows file system, supporting file and folder permissions, encryption (EFS), compression, journaling, very large files and volumes, and disk quotas.",
+      "scenario": "format a Windows system drive so it supports file permissions, encryption, and files larger than 4 GB",
+      "distractors": [
+        "FAT32",
+        "exFAT",
+        "ext4"
+      ],
+      "tip": "PERMISSIONS plus encryption plus big files — FAT32 has no permissions and caps a file at 4 GB.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-111-5'><title id='dt-c2d1-111-5'>NTFS adds permissions, encryption, journaling, and huge files; FAT32 and exFAT lack permissions.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Windows-friendly file systems</text><rect x='16' y='30' width='69.6' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='50.8' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>File system</text><rect x='85.6' y='30' width='69.6' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='120.4' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Max file size</text><rect x='155.2' y='30' width='69.6' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='190' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Permissions</text><rect x='224.8' y='30' width='139.2' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='294.4' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Typical use</text><rect x='16' y='50' width='69.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='50.8' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>NTFS</text><rect x='85.6' y='50' width='69.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='120.4' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>huge</text><rect x='155.2' y='50' width='69.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='190' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>yes</text><rect x='224.8' y='50' width='139.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='294.4' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>Windows system drives</text><rect x='16' y='70' width='69.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='50.8' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>exFAT</text><rect x='85.6' y='70' width='69.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='120.4' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>huge</text><rect x='155.2' y='70' width='69.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='190' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>no</text><rect x='224.8' y='70' width='139.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='294.4' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>flash drives, SD cards</text><rect x='16' y='90' width='69.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='50.8' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>FAT32</text><rect x='85.6' y='90' width='69.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='120.4' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>4 GB</text><rect x='155.2' y='90' width='69.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='190' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>no</text><rect x='224.8' y='90' width='139.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='294.4' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>old or small media</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>NTFS adds permissions, encryption, journaling, and huge files; FAT32 and</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>exFAT lack permissions.</text></svg>"
+    },
+    {
+      "id": "c2d1-111-6",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.11",
+      "term": "exFAT file system",
+      "definition": "A lightweight file system without FAT32's 4 GB file limit that works on both Windows and macOS, making it common for flash drives and SD cards.",
+      "scenario": "format a 128 GB flash drive to hold 6 GB video files and be readable on both Windows and a Mac",
+      "distractors": [
+        "FAT32",
+        "NTFS",
+        "APFS"
+      ],
+      "tip": "Big files AND cross-platform — FAT32 caps files at 4 GB, NTFS is read-only on macOS, and APFS is not native on Windows.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-111-6'><title id='dt-c2d1-111-6'>exFAT removes the 4 GB file limit and works on Windows and macOS, ideal for removable drives.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>exFAT vs FAT32</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>exFAT</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Files over 4 GB</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Windows and macOS</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>No permissions or journaling</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>FAT32</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>4 GB file limit</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Works almost everywhere</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>No permissions</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>exFAT removes the 4 GB file limit and works on Windows and macOS, ideal</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>for removable drives.</text></svg>"
+    },
+    {
+      "id": "c2d1-111-7",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.11",
+      "term": "APFS file system",
+      "definition": "Apple File System, the default on current Macs and iOS devices, optimized for flash storage with snapshots, native encryption, and space sharing between volumes.",
+      "scenario": "identify the default file system on a current MacBook",
+      "distractors": [
+        "NTFS",
+        "ext4",
+        "exFAT"
+      ],
+      "tip": "APFS is Apple's modern default — NTFS belongs to Windows and ext4 to Linux.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-111-7'><title id='dt-c2d1-111-7'>APFS is Apple&#39;s default file system, built for flash storage with snapshots and encryption.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>APFS</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Platform</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>macOS, iOS, iPadOS</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Built for</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>flash and SSD storage</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Features</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>snapshots, encryption, clones</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Replaced</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>HFS+</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>APFS is Apple&#39;s default file system, built for flash storage with</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>snapshots and encryption.</text></svg>"
+    },
+    {
+      "id": "c2d1-111-8",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.11",
+      "term": "ext4 file system",
+      "definition": "A journaling file system that is the default on many Linux distributions, supporting large files and volumes and standard Unix permissions.",
+      "scenario": "identify the default file system on many Linux distributions",
+      "distractors": [
+        "APFS",
+        "NTFS",
+        "exFAT"
+      ],
+      "tip": "ext4 is the typical LINUX choice — APFS is Apple's and NTFS is Windows'.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-111-8'><title id='dt-c2d1-111-8'>ext4 is the common default Linux file system, with journaling and Unix permissions.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>ext4</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Platform</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>Linux</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Journaling</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>protects against crashes</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Permissions</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>Unix owner, group, other</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Evolved from</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>ext2 and ext3</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>ext4 is the common default Linux file system, with journaling and Unix</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>permissions.</text></svg>"
+    },
+    {
+      "id": "c2d1-112-1",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.12",
+      "term": "Finder",
+      "definition": "The macOS file manager, comparable to File Explorer: it browses folders, shows the sidebar and tags, shares through AirDrop, and opens Get Info to review or change a file's sharing and permissions.",
+      "scenario": "browse folders and change a file's sharing permissions through Get Info on a Mac",
+      "distractors": [
+        "Spotlight",
+        "Mission Control",
+        "Launchpad"
+      ],
+      "tip": "The file MANAGER — Spotlight is the search tool, and Mission Control arranges windows and desktops.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-112-1'><title id='dt-c2d1-112-1'>Finder is macOS&#39;s file manager: browse, tag, share, and review permissions with Get Info.</title><rect x='115' y='14' width='150' height='34' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='190' y='27.86' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Finder</text><text x='190' y='39.26' font-size='6.4' fill='var(--muted)' text-anchor='middle'>the macOS file manager</text><line x1='190' y1='48' x2='55' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='16' y='70' width='78' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='55' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Sidebar</text><text x='55' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>locations</text><line x1='190' y1='48' x2='145' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='106' y='70' width='78' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='145' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Tags</text><text x='145' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>color labels</text><line x1='190' y1='48' x2='235' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='196' y='70' width='78' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='235' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Get Info</text><text x='235' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>size, access</text><line x1='190' y1='48' x2='325' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='286' y='70' width='78' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='325' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>AirDrop</text><text x='325' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>nearby share</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Finder is macOS&#39;s file manager: browse, tag, share, and review</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>permissions with Get Info.</text></svg>"
+    },
+    {
+      "id": "c2d1-112-2",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.12",
+      "term": "Spotlight",
+      "definition": "The macOS system-wide search (Command+Space) that finds files, apps, contacts, and web results, and can perform quick calculations and conversions.",
+      "scenario": "launch an app or find a document by name with a single keyboard shortcut on a Mac",
+      "distractors": [
+        "Finder",
+        "Launchpad",
+        "Mission Control"
+      ],
+      "tip": "Command+Space SEARCH — Finder browses folders manually rather than searching everything.",
+      "diagram": "<svg viewBox='0 0 380 146' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-112-2'><title id='dt-c2d1-112-2'>Spotlight is macOS&#39;s Command+Space search for files, apps, contacts, and quick calculations.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Using Spotlight</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Command + Space</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>opens Spotlight</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Type</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>app, file, contact, or math</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Return</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>open the top result</text><text x='16' y='122' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Spotlight is macOS&#39;s Command+Space search for files, apps, contacts, and</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>quick calculations.</text></svg>"
+    },
+    {
+      "id": "c2d1-112-3",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.12",
+      "term": "Mission Control and Spaces",
+      "definition": "A macOS view showing every open window and virtual desktop (Space), opened with a multi-finger swipe up or the Mission Control key, used to switch between desktops and windows.",
+      "scenario": "see every open window at once and switch between several virtual desktops on a Mac",
+      "distractors": [
+        "Spotlight",
+        "Launchpad",
+        "Finder"
+      ],
+      "tip": "All windows and virtual DESKTOPS at a glance — Launchpad shows installed apps, not open windows.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-112-3'><title id='dt-c2d1-112-3'>Mission Control shows all open windows and Spaces (virtual desktops) so you can switch between them.</title><rect x='115' y='14' width='150' height='34' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='190' y='27.86' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Mission Control</text><text x='190' y='39.26' font-size='6.4' fill='var(--muted)' text-anchor='middle'>swipe up with three or four fingers</text><line x1='190' y1='48' x2='70' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='16' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='70' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Spaces</text><text x='70' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>virtual desktops</text><line x1='190' y1='48' x2='190' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='136' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Windows</text><text x='190' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>all open windows</text><line x1='190' y1='48' x2='310' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='256' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='310' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Full-screen apps</text><text x='310' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>own Space</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Mission Control shows all open windows and Spaces (virtual desktops) so</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>you can switch between them.</text></svg>"
+    },
+    {
+      "id": "c2d1-112-4",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.12",
+      "term": "Keychain (macOS)",
+      "definition": "The macOS password and certificate store that holds Wi-Fi passwords, website logins, secure notes, and certificates, and can sync through iCloud Keychain.",
+      "scenario": "retrieve a saved Wi-Fi password on a Mac",
+      "distractors": [
+        "Credential Manager",
+        "FileVault",
+        "Gatekeeper"
+      ],
+      "tip": "macOS's credential store — Windows calls its counterpart Credential Manager.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-112-4'><title id='dt-c2d1-112-4'>Keychain stores Mac passwords, Wi-Fi keys, and certificates, and can sync through iCloud.</title><rect x='115' y='14' width='150' height='34' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='190' y='27.86' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Keychain Access</text><text x='190' y='39.26' font-size='6.4' fill='var(--muted)' text-anchor='middle'>macOS credential store</text><line x1='190' y1='48' x2='70' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='16' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='70' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Wi-Fi passwords</text><text x='70' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>saved networks</text><line x1='190' y1='48' x2='190' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='136' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Website logins</text><text x='190' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>Safari and apps</text><line x1='190' y1='48' x2='310' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='256' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='310' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Certificates</text><text x='310' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>and secure notes</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Keychain stores Mac passwords, Wi-Fi keys, and certificates, and can</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>sync through iCloud.</text></svg>"
+    },
+    {
+      "id": "c2d1-112-5",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.12",
+      "term": "iCloud",
+      "definition": "Apple's cloud service that syncs files (iCloud Drive), photos, contacts, calendars, device backups, and Keychain across a user's Apple devices, and powers Find My.",
+      "scenario": "keep photos, documents, and device backups synced across a user's iPhone, iPad, and Mac",
+      "distractors": [
+        "Time Machine",
+        "AirDrop",
+        "OneDrive"
+      ],
+      "tip": "Cloud SYNC across Apple devices — Time Machine is a local backup, and AirDrop is a nearby peer transfer.",
+      "diagram": "<svg viewBox='0 0 380 210' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-112-5'><title id='dt-c2d1-112-5'>iCloud syncs files, photos, backups, and passwords across a user&#39;s Apple devices.</title><rect x='115' y='14' width='150' height='34' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='190' y='27.86' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>iCloud</text><text x='190' y='39.26' font-size='6.4' fill='var(--muted)' text-anchor='middle'>syncs across Apple devices</text><line x1='190' y1='48' x2='70' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='16' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='70' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>iCloud Drive</text><text x='70' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>files</text><line x1='190' y1='48' x2='190' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='136' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Photos</text><text x='190' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>library sync</text><line x1='190' y1='48' x2='310' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='256' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='310' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Backup</text><text x='310' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>iPhone and iPad</text><line x1='190' y1='48' x2='70' y2='121.5' stroke='var(--border)' stroke-width='1.2'/><rect x='16' y='122' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='70' y='138.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Keychain</text><text x='70' y='149.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>passwords</text><line x1='190' y1='48' x2='190' y2='121.5' stroke='var(--border)' stroke-width='1.2'/><rect x='136' y='122' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='138.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Find My</text><text x='190' y='149.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>locate and lock</text><line x1='190' y1='48' x2='310' y2='121.5' stroke='var(--border)' stroke-width='1.2'/><rect x='256' y='122' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='310' y='138.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Mail and contacts</text><text x='310' y='149.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>calendars</text><text x='16' y='186' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>iCloud syncs files, photos, backups, and passwords across a user&#39;s Apple</text><text x='16' y='198' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>devices.</text></svg>"
+    },
+    {
+      "id": "c2d1-112-6",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.12",
+      "term": "Gatekeeper",
+      "definition": "A macOS security feature that checks downloaded apps for a valid developer signature and notarization before they first run, blocking unidentified or tampered software.",
+      "scenario": "stop users from running unsigned applications downloaded from the Internet",
+      "distractors": [
+        "FileVault",
+        "Keychain",
+        "Time Machine"
+      ],
+      "tip": "It decides which apps may RUN (signed and notarized) — FileVault encrypts the disk instead.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-112-6'><title id='dt-c2d1-112-6'>Gatekeeper verifies an app&#39;s signature and notarization before it runs for the first time.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Gatekeeper check</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Download</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>app from Internet</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Gatekeeper</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>checks signature</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Run or block</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>unidentified is stopped</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Gatekeeper verifies an app&#39;s signature and notarization before it runs</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>for the first time.</text></svg>"
+    },
+    {
+      "id": "c2d1-112-7",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.12",
+      "term": "FileVault",
+      "definition": "macOS full-disk encryption that protects data at rest on the startup disk; the user password or a recovery key (optionally stored in iCloud) unlocks it.",
+      "scenario": "encrypt a laptop's startup disk so its data is unreadable if the Mac is stolen",
+      "distractors": [
+        "BitLocker",
+        "Gatekeeper",
+        "Time Machine"
+      ],
+      "tip": "It encrypts the disk — BitLocker is the Windows equivalent, and Gatekeeper only checks apps.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-112-7'><title id='dt-c2d1-112-7'>FileVault encrypts a Mac&#39;s startup disk; BitLocker is the Windows equivalent.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Full-disk encryption</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Windows</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>BitLocker</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Needs Pro or higher</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>TPM-assisted</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>macOS</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>FileVault</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Turn on in Privacy &amp; Security</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Recovery key or iCloud</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>FileVault encrypts a Mac&#39;s startup disk; BitLocker is the Windows</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>equivalent.</text></svg>"
+    },
+    {
+      "id": "c2d1-112-8",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.12",
+      "term": "Force Quit (Option+Command+Esc)",
+      "definition": "The macOS Force Quit window, opened with Option+Command+Esc, ends an unresponsive application without restarting the Mac.",
+      "scenario": "close a frozen application on a Mac without restarting the computer",
+      "distractors": [
+        "Task Manager",
+        "Mission Control",
+        "Safe Mode"
+      ],
+      "tip": "Option+Command+Esc ends the frozen APP — Task Manager is the Windows tool, and Safe Mode is a restart.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-112-8'><title id='dt-c2d1-112-8'>Force Quit ends a frozen Mac app with Option+Command+Esc, like End task in Windows.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Ending a frozen Mac app</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Keys</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>Option + Command + Esc</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Choose</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>the app that is not responding</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Click</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>Force Quit</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Windows twin</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>Ctrl + Shift + Esc, End task</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Force Quit ends a frozen Mac app with Option+Command+Esc, like End task</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>in Windows.</text></svg>"
+    },
+    {
+      "id": "c2d1-112-9",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.12",
+      "term": "Activity Monitor",
+      "definition": "The macOS utility that shows live CPU, memory, energy, disk, and network use per process, equivalent to Windows Task Manager.",
+      "scenario": "see which process is using the most CPU and memory on a Mac",
+      "distractors": [
+        "Disk Utility",
+        "Force Quit",
+        "Spotlight"
+      ],
+      "tip": "macOS's Task Manager — live per-process CPU, memory, energy, disk, and network use.",
+      "diagram": "<svg viewBox='0 0 380 178' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-112-9'><title id='dt-c2d1-112-9'>Activity Monitor is the Mac&#39;s Task Manager, showing per-process CPU, memory, energy, disk, and network.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Activity Monitor tabs</text><rect x='16' y='30' width='104.4' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='68.2' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Tab</text><rect x='120.4' y='30' width='243.6' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='242.2' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Shows</text><rect x='16' y='50' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='68.2' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>CPU</text><rect x='120.4' y='50' width='243.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='242.2' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>processes using processor time</text><rect x='16' y='70' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='68.2' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>Memory</text><rect x='120.4' y='70' width='243.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='242.2' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>pressure and per-app use</text><rect x='16' y='90' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='68.2' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>Energy</text><rect x='120.4' y='90' width='243.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='242.2' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>battery impact per app</text><rect x='16' y='110' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='68.2' y='123.2' font-size='7' fill='var(--text)' text-anchor='middle'>Disk and Network</text><rect x='120.4' y='110' width='243.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='242.2' y='123.2' font-size='7' fill='var(--text)' text-anchor='middle'>reads, writes, traffic</text><text x='16' y='154' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Activity Monitor is the Mac&#39;s Task Manager, showing per-process CPU,</text><text x='16' y='166' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>memory, energy, disk, and network.</text></svg>"
+    },
+    {
+      "id": "c2d1-113-1",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.13",
+      "term": "cron and crontab",
+      "definition": "The Linux scheduler for repeating jobs, defined in crontab entries with minute, hour, day-of-month, month, and day-of-week fields followed by the command to run.",
+      "scenario": "run a backup script on a Linux server every night at two in the morning",
+      "distractors": [
+        "systemctl",
+        "ps",
+        "Windows Task Scheduler"
+      ],
+      "tip": "cron is the Linux counterpart of Task Scheduler — five time fields then the command.",
+      "diagram": "<svg viewBox='0 0 380 142' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-113-1'><title id='dt-c2d1-113-1'>cron runs repeating jobs on Linux from crontab entries with five time fields and a command.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>Terminal</text><rect x='16' y='36' width='348' height='58' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>crontab -e</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>0 2 * * *  /opt/scripts/backup.sh</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'># min hour day month weekday  command</text><text x='16' y='118' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>cron runs repeating jobs on Linux from crontab entries with five time</text><text x='16' y='130' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>fields and a command.</text></svg>"
+    },
+    {
+      "id": "c2d1-113-2",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.13",
+      "term": "grep",
+      "definition": "A command that searches text for lines matching a pattern, in files or in piped output; common switches are -i (ignore case), -r (recursive), and -n (show line numbers).",
+      "scenario": "find every line containing the word \"error\" in a log file from the command line",
+      "distractors": [
+        "cat",
+        "find",
+        "ls"
+      ],
+      "tip": "grep searches the CONTENTS of text — find locates files by name, and cat just prints a file.",
+      "diagram": "<svg viewBox='0 0 380 130' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-113-2'><title id='dt-c2d1-113-2'>grep prints the lines of a file or command output that match a pattern.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>Terminal</text><rect x='16' y='36' width='348' height='58' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>grep -i error /var/log/syslog</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>Oct  4 02:11 kernel: disk error on sda</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>Oct  4 02:12 app: retry after error</text><text x='16' y='118' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>grep prints the lines of a file or command output that match a pattern.</text></svg>"
+    },
+    {
+      "id": "c2d1-113-3",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.13",
+      "term": "find",
+      "definition": "A command that searches directory trees for files by name, type, size, or modified time, such as find / -name \"*.conf\".",
+      "scenario": "locate every .conf file under a directory tree on a Linux system",
+      "distractors": [
+        "grep",
+        "cat",
+        "ls"
+      ],
+      "tip": "find locates FILES by name, size, or age — grep searches inside them.",
+      "diagram": "<svg viewBox='0 0 380 130' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-113-3'><title id='dt-c2d1-113-3'>find searches directory trees for files by name, type, size, or age.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>Terminal</text><rect x='16' y='36' width='348' height='58' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>find /etc -name \"*.conf\"</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>/etc/resolv.conf</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>/etc/ssh/sshd_config</text><text x='16' y='118' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>find searches directory trees for files by name, type, size, or age.</text></svg>"
+    },
+    {
+      "id": "c2d1-113-4",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.13",
+      "term": "ps and top",
+      "definition": "ps lists running processes with their process IDs, while top shows them live ranked by CPU and memory use; kill ends a process by PID.",
+      "scenario": "see which processes are using the most CPU on a Linux server in real time",
+      "distractors": [
+        "ls",
+        "chmod",
+        "df"
+      ],
+      "tip": "top is the live view and ps is a snapshot — kill then ends a process by its PID.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-113-4'><title id='dt-c2d1-113-4'>top shows live CPU and memory use per process, ps lists them, and kill ends one by PID.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>Terminal</text><rect x='16' y='36' width='348' height='86' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>top</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>  PID USER   %CPU %MEM COMMAND</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'> 2210 www      87.0  4.1 php-fpm</text><text x='28' y='96' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'> 1104 mysql    9.2 22.5 mysqld</text><text x='28' y='110' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>kill 2210</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>top shows live CPU and memory use per process, ps lists them, and kill</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>ends one by PID.</text></svg>"
+    },
+    {
+      "id": "c2d1-113-5",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.13",
+      "term": "df and du",
+      "definition": "df reports free and used space for each mounted file system, while du reports how much space files and directories use; -h prints human-readable sizes.",
+      "scenario": "find out why a Linux volume is full by checking usage per file system and per directory",
+      "distractors": [
+        "ls -l",
+        "chmod",
+        "ps"
+      ],
+      "tip": "df is per FILE SYSTEM and du is per DIRECTORY — together they show where the space went.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-113-5'><title id='dt-c2d1-113-5'>df shows free space per file system and du shows what uses it per directory.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Disk space commands</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>df -h</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Free and used space</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Per mounted file system</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Is the volume full?</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>du -sh *</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Space used by items</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Per directory or file</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>What is using it?</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>df shows free space per file system and du shows what uses it per</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>directory.</text></svg>"
+    },
+    {
+      "id": "c2d1-113-6",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.13",
+      "term": "ip addr (and ifconfig)",
+      "definition": "The ip command shows or configures network interfaces and addresses on Linux (ip addr), replacing the older ifconfig; it is the counterpart of Windows ipconfig.",
+      "scenario": "view a Linux machine's IP address and interface state from the command line",
+      "distractors": [
+        "ipconfig",
+        "traceroute",
+        "nslookup"
+      ],
+      "tip": "ip addr is the Linux twin of ipconfig — ipconfig itself is the Windows command.",
+      "diagram": "<svg viewBox='0 0 380 142' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-113-6'><title id='dt-c2d1-113-6'>ip addr shows interface addresses on Linux, much as ipconfig does on Windows.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>Terminal</text><rect x='16' y='36' width='348' height='58' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>ip addr show eth0</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>2: eth0: &lt;BROADCAST,MULTICAST,UP&gt; mtu 1500</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>    inet 192.168.1.20/24 brd 192.168.1.255</text><text x='16' y='118' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>ip addr shows interface addresses on Linux, much as ipconfig does on</text><text x='16' y='130' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Windows.</text></svg>"
+    },
+    {
+      "id": "c2d1-113-7",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.13",
+      "term": "man (manual pages)",
+      "definition": "The man command displays the built-in manual page for a Linux command, showing its syntax, options, and examples.",
+      "scenario": "read the built-in documentation for an unfamiliar Linux command",
+      "distractors": [
+        "The /? switch",
+        "grep",
+        "cat"
+      ],
+      "tip": "man shows the manual page for a command — Windows uses /? for a similar purpose.",
+      "diagram": "<svg viewBox='0 0 380 156' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-113-7'><title id='dt-c2d1-113-7'>man opens the manual page for a Linux command with its syntax and options.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>Terminal</text><rect x='16' y='36' width='348' height='72' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>man chmod</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>CHMOD(1)           User Commands</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>NAME  chmod - change file mode bits</text><text x='28' y='96' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>SYNOPSIS  chmod [OPTION]... MODE FILE...</text><text x='16' y='132' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>man opens the manual page for a Linux command with its syntax and</text><text x='16' y='144' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>options.</text></svg>"
+    },
+    {
+      "id": "c2d1-113-8",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.13",
+      "term": "dd",
+      "definition": "A command that copies data block by block, used to write ISO images to USB drives or clone disks; naming the wrong output device overwrites it without warning.",
+      "scenario": "write an ISO image to a USB drive or clone a disk at the block level on Linux",
+      "distractors": [
+        "cp",
+        "rsync",
+        "tar"
+      ],
+      "tip": "Raw BLOCK-level copy (and dangerous) — cp and rsync copy files, not whole disks.",
+      "diagram": "<svg viewBox='0 0 380 142' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-113-8'><title id='dt-c2d1-113-8'>dd copies raw blocks to clone disks or write images, and erases whichever target you name.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>Terminal</text><rect x='16' y='36' width='348' height='58' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>sudo dd if=disk.iso of=/dev/sdb bs=4M</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'># if = input, of = output device</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'># the wrong of= erases that disk</text><text x='16' y='118' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>dd copies raw blocks to clone disks or write images, and erases</text><text x='16' y='130' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>whichever target you name.</text></svg>"
+    },
+    {
+      "id": "c2d1-113-9",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.13",
+      "term": "Samba",
+      "definition": "An open-source implementation of the SMB protocol that lets Linux and macOS systems share files and printers with Windows and even act as domain members.",
+      "scenario": "let Windows PCs map a drive to a file share hosted on a Linux server",
+      "distractors": [
+        "SSH",
+        "FTP",
+        "cron"
+      ],
+      "tip": "Samba speaks SMB to Windows — SSH gives a secure shell, not drive-mapped shares.",
+      "diagram": "<svg viewBox='0 0 380 112' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-113-9'><title id='dt-c2d1-113-9'>Samba lets Linux share files and printers with Windows over SMB.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Samba file sharing</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Windows PC</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>maps \\\\linux\\share</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>SMB protocol</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>carried by Samba</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Linux server</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>owns the files</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Samba lets Linux share files and printers with Windows over SMB.</text></svg>"
+    },
+    {
+      "id": "c2d1-113-10",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.13",
+      "term": "nano and vi",
+      "definition": "Terminal text editors: nano is beginner-friendly with its shortcuts shown on screen, while vi or vim is modal (press Esc, then :wq to save and quit).",
+      "scenario": "edit a configuration file over an SSH session with no graphical desktop",
+      "distractors": [
+        "Notepad",
+        "grep",
+        "cat"
+      ],
+      "tip": "Both run INSIDE the terminal — Notepad needs a graphical Windows desktop.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-113-10'><title id='dt-c2d1-113-10'>nano and vi edit text inside a terminal; nano is simpler and vi is modal.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Terminal editors</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>nano</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Shortcuts shown on screen</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Ctrl+O save, Ctrl+X exit</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Easy for beginners</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>vi / vim</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Modal: command and insert</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>i to edit, Esc to stop</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>:wq saves and quits</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>nano and vi edit text inside a terminal; nano is simpler and vi is</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>modal.</text></svg>"
+    },
+    {
+      "id": "c2d1-113-11",
+      "core": "core2",
+      "domain": "c2d1",
+      "objective": "1.13",
+      "term": "Linux directory layout",
+      "definition": "Linux organizes everything under a single root (/): configuration files live in /etc, user files in /home, logs in /var/log, and programs in /bin and /usr.",
+      "scenario": "find the system log files and configuration files on a Linux machine",
+      "distractors": [
+        "The Windows Registry",
+        "The C:\\Users folder",
+        "The Program Files folder"
+      ],
+      "tip": "One tree under /: /etc is configuration and /var/log is logs — there are no drive letters or a Registry.",
+      "diagram": "<svg viewBox='0 0 380 178' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d1-113-11'><title id='dt-c2d1-113-11'>Linux uses one directory tree: /etc for configuration, /home for users, and /var/log for logs.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Linux directory layout</text><rect x='16' y='30' width='104.4' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='68.2' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Directory</text><rect x='120.4' y='30' width='243.6' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='242.2' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Holds</text><rect x='16' y='50' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='68.2' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>/etc</text><rect x='120.4' y='50' width='243.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='242.2' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>configuration files</text><rect x='16' y='70' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='68.2' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>/home</text><rect x='120.4' y='70' width='243.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='242.2' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>user files</text><rect x='16' y='90' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='68.2' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>/var/log</text><rect x='120.4' y='90' width='243.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='242.2' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>system and app logs</text><rect x='16' y='110' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='68.2' y='123.2' font-size='7' fill='var(--text)' text-anchor='middle'>/bin and /usr</text><rect x='120.4' y='110' width='243.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='242.2' y='123.2' font-size='7' fill='var(--text)' text-anchor='middle'>programs</text><text x='16' y='154' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Linux uses one directory tree: /etc for configuration, /home for users,</text><text x='16' y='166' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>and /var/log for logs.</text></svg>"
+    },
+    {
       "id": "c2d2-21-6",
       "core": "core2",
       "domain": "c2d2",
@@ -6835,6 +8472,214 @@
       "tip": "TWO OR MORE independent factors — a stolen password alone isn't enough, that's the entire point over single-factor login."
     ,
       "diagram": "<svg viewBox='0 0 380 125' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-21-6'><title id='dt-c2d2-21-6'>Requires two or more independent proof factors before granting access.</title><rect x='30' y='26' width='106' height='34' rx='5' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.5'/><text x='83' y='47' font-size='6.4' fill='var(--primary)' text-anchor='middle' font-weight='700'>Know (password)</text><rect x='146' y='26' width='106' height='34' rx='5' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.5'/><text x='199' y='47' font-size='6.4' fill='var(--primary)' text-anchor='middle' font-weight='700'>Have (phone/token)</text><rect x='262' y='26' width='106' height='34' rx='5' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.5'/><text x='315' y='47' font-size='6.4' fill='var(--primary)' text-anchor='middle' font-weight='700'>Are (fingerprint)</text><text x='190' y='80' font-size='7.3' fill='var(--text)' text-anchor='middle'>TWO OR MORE independent factors \u2014 a stolen password</text><text x='190' y='92' font-size='7.3' fill='var(--text)' text-anchor='middle'>alone is not enough to log in.</text><text x='16' y='115' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Requires two or more independent proof factors before granting access.</text></svg>"},
+    {
+      "id": "c2d2-21-7",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.1",
+      "term": "Access control vestibule (mantrap)",
+      "definition": "A small space with two interlocking doors where the second door will not open until the first has closed and the person has been authenticated, stopping tailgating and holding unauthorized entrants.",
+      "scenario": "stop an unauthorized person from following an employee into a secure data room",
+      "distractors": [
+        "A badge reader alone",
+        "A security camera",
+        "A perimeter fence"
+      ],
+      "tip": "TWO interlocked doors admit one authenticated person at a time — a badge reader alone can be tailgated.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-21-7'><title id='dt-c2d2-21-7'>An access control vestibule interlocks two doors so only one authenticated person passes at a time.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Access control vestibule</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Outer door</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>opens, then closes</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Authenticate</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>badge, PIN, biometric</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Inner door</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>one person at a time</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>An access control vestibule interlocks two doors so only one</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>authenticated person passes at a time.</text></svg>"
+    },
+    {
+      "id": "c2d2-21-8",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.1",
+      "term": "Bollards",
+      "definition": "Short, sturdy posts set at entrances and walkways that stop vehicles from ramming a building while letting pedestrians pass.",
+      "scenario": "prevent a vehicle from being driven into a building's entrance",
+      "distractors": [
+        "Access control vestibule",
+        "Motion sensors",
+        "Cable locks"
+      ],
+      "tip": "An anti-VEHICLE barrier — a vestibule or badge reader controls people, not cars.",
+      "diagram": "<svg viewBox='0 0 380 146' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-21-8'><title id='dt-c2d2-21-8'>Bollards are sturdy posts that block vehicles from reaching a building while allowing foot traffic.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Bollards</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Purpose</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>stop vehicles, let people through</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Common spot</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>entrances and loading docks</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Not for</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>deciding who may walk in</text><text x='16' y='122' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Bollards are sturdy posts that block vehicles from reaching a building</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>while allowing foot traffic.</text></svg>"
+    },
+    {
+      "id": "c2d2-21-9",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.1",
+      "term": "Badge reader and smart card",
+      "definition": "An access control reader that authenticates a proximity badge or smart card (something you have), often with a PIN or biometric, and logs each entry.",
+      "scenario": "let employees open a secure door with an ID card and keep a log of who entered",
+      "distractors": [
+        "A keyed deadbolt",
+        "A motion sensor",
+        "A bollard"
+      ],
+      "tip": "Something you HAVE, with an entry log — a plain key leaves no record of who used it.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-21-9'><title id='dt-c2d2-21-9'>A badge or smart card reader checks the card, unlocks the door, and records who entered.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Badge access</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Badge</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>tapped on reader</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Controller</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>checks rights</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Door unlocks</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>entry is logged</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A badge or smart card reader checks the card, unlocks the door, and</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>records who entered.</text></svg>"
+    },
+    {
+      "id": "c2d2-21-10",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.1",
+      "term": "Biometric access control",
+      "definition": "Verifying identity by a physical trait such as a fingerprint, face, iris, or palm (something you are), which cannot be lent or forgotten but can suffer false accepts and rejects.",
+      "scenario": "secure a server room with a credential that cannot be lent to a coworker like a keycard",
+      "distractors": [
+        "A smart card",
+        "A PIN",
+        "A key fob"
+      ],
+      "tip": "Something you ARE — a card, PIN, or fob can be handed over, a fingerprint cannot.",
+      "diagram": "<svg viewBox='0 0 380 146' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-21-10'><title id='dt-c2d2-21-10'>Biometrics verify who you are by a physical trait, so the credential cannot be lent out.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Authentication factors</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Something you know</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>password, PIN</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Something you have</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>smart card, token</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Something you are</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>fingerprint, face, iris</text><text x='16' y='122' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Biometrics verify who you are by a physical trait, so the credential</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>cannot be lent out.</text></svg>"
+    },
+    {
+      "id": "c2d2-21-11",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.1",
+      "term": "Video surveillance",
+      "definition": "Cameras at entrances and sensitive areas that deter misuse and record activity, providing evidence that can be reviewed after an incident.",
+      "scenario": "review who entered the server room last Tuesday night after equipment went missing",
+      "distractors": [
+        "A motion sensor",
+        "An alarm system",
+        "Bollards"
+      ],
+      "tip": "It RECORDS evidence you can review later — a motion sensor only detects movement as it happens.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-21-11'><title id='dt-c2d2-21-11'>Surveillance cameras deter misuse and record activity as evidence for later review.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Video surveillance</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Camera</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>covers the entrance</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Recorder</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>stores footage</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Review</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>evidence after an event</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Surveillance cameras deter misuse and record activity as evidence for</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>later review.</text></svg>"
+    },
+    {
+      "id": "c2d2-21-12",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.1",
+      "term": "Motion sensors and alarms",
+      "definition": "Sensors that detect movement or a door or window opening and trigger an alarm or notification when an area should be empty.",
+      "scenario": "alert security the moment someone enters the data center after hours",
+      "distractors": [
+        "Video surveillance (recorded footage)",
+        "Bollards",
+        "An access control vestibule"
+      ],
+      "tip": "It DETECTS and alerts in real time — cameras provide the record of what happened.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-21-12'><title id='dt-c2d2-21-12'>Motion sensors and alarms detect entry to an empty area and alert security immediately.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Detecting after-hours entry</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Sensor trips</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>motion or door open</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Alarm panel</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>sounds or alerts</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Security notified</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>responds</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Motion sensors and alarms detect entry to an empty area and alert</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>security immediately.</text></svg>"
+    },
+    {
+      "id": "c2d2-21-13",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.1",
+      "term": "Access control list (ACL)",
+      "definition": "A list attached to a resource or network device that states which users, groups, or addresses are allowed or denied particular actions.",
+      "scenario": "define which accounts may read, modify, or delete a shared folder",
+      "distractors": [
+        "A password policy",
+        "A VPN",
+        "A distribution group"
+      ],
+      "tip": "A per-resource list of WHO may do WHAT — permissions on a folder and rules on a router both work this way.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-21-13'><title id='dt-c2d2-21-13'>An ACL lists which users or groups may read, change, or delete a resource, and which are denied.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>An ACL on a shared folder</text><rect x='16' y='30' width='139.2' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='85.6' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Principal</text><rect x='155.2' y='30' width='69.6' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='190' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Read</text><rect x='224.8' y='30' width='69.6' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='259.6' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Modify</text><rect x='294.4' y='30' width='69.6' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='329.2' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Delete</text><rect x='16' y='50' width='139.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='85.6' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>Finance group</text><rect x='155.2' y='50' width='69.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='190' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>yes</text><rect x='224.8' y='50' width='69.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='259.6' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>yes</text><rect x='294.4' y='50' width='69.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='329.2' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>no</text><rect x='16' y='70' width='139.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='85.6' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>Interns</text><rect x='155.2' y='70' width='69.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='190' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>yes</text><rect x='224.8' y='70' width='69.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='259.6' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>no</text><rect x='294.4' y='70' width='69.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='329.2' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>no</text><rect x='16' y='90' width='139.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='85.6' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>Everyone else</text><rect x='155.2' y='90' width='69.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='190' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>no</text><rect x='224.8' y='90' width='69.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='259.6' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>no</text><rect x='294.4' y='90' width='69.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='329.2' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>no</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>An ACL lists which users or groups may read, change, or delete a</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>resource, and which are denied.</text></svg>"
+    },
+    {
+      "id": "c2d2-21-14",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.1",
+      "term": "Email filtering",
+      "definition": "A gateway or cloud service that scans incoming and outgoing mail for spam, phishing, malicious links, and attachments, and quarantines or blocks them before they reach users.",
+      "scenario": "reduce phishing emails and malicious attachments reaching employees' inboxes",
+      "distractors": [
+        "A host-based firewall",
+        "Full disk encryption",
+        "A BIOS password"
+      ],
+      "tip": "It filters the MAIL flow before users see it — it complements user training rather than replacing it.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-21-14'><title id='dt-c2d2-21-14'>Email filtering scans mail for spam, phishing, and malware and quarantines it before users see it.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Email filtering</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Internet mail</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>all inbound messages</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Filter</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>spam, phish, malware</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Inbox or quarantine</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>clean vs blocked</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Email filtering scans mail for spam, phishing, and malware and</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>quarantines it before users see it.</text></svg>"
+    },
+    {
+      "id": "c2d2-21-15",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.1",
+      "term": "Active Directory domain controller",
+      "definition": "A Windows Server running Active Directory Domain Services that stores user and computer accounts and authenticates sign-ins for a domain, giving centralized management and single sign-on.",
+      "scenario": "centrally authenticate employees and manage accounts for all company PCs",
+      "distractors": [
+        "A workgroup",
+        "Local Users and Groups",
+        "Cloud file sync"
+      ],
+      "tip": "The CENTRAL authority for accounts and policy — a workgroup has no server, and local accounts exist on one PC only.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-21-15'><title id='dt-c2d2-21-15'>A domain controller holds the directory and authenticates users and computers for the whole domain.</title><rect x='115' y='14' width='150' height='34' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='190' y='27.86' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Domain controller (AD DS)</text><text x='190' y='39.26' font-size='6.4' fill='var(--muted)' text-anchor='middle'>central authentication</text><line x1='190' y1='48' x2='70' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='16' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='70' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Users</text><text x='70' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>accounts and groups</text><line x1='190' y1='48' x2='190' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='136' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Computers</text><text x='190' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>domain-joined PCs</text><line x1='190' y1='48' x2='310' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='256' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='310' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Policies</text><text x='310' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>Group Policy</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A domain controller holds the directory and authenticates users and</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>computers for the whole domain.</text></svg>"
+    },
+    {
+      "id": "c2d2-21-16",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.1",
+      "term": "Organizational unit (OU)",
+      "definition": "A container in Active Directory that organizes users, computers, and groups so Group Policy and delegated administration can be applied to one department or location.",
+      "scenario": "apply a different Group Policy to the Sales department than to Engineering",
+      "distractors": [
+        "A security group",
+        "A new domain",
+        "A local group"
+      ],
+      "tip": "A CONTAINER for applying policy and delegating admin — a security group is for granting permissions.",
+      "diagram": "<svg viewBox='0 0 380 152' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-21-16'><title id='dt-c2d2-21-16'>OUs group accounts and computers inside a domain so policy can be applied to each separately.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Organizational units</text><rect x='16' y='30' width='104' height='22' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68' y='44.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Domain</text><rect x='126' y='30' width='238' height='22' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='134' y='44.5' font-size='7' fill='var(--text)' text-anchor='start'>corp.example.com</text><rect x='16' y='56' width='104' height='22' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='68' y='70.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>OU: Sales</text><rect x='126' y='56' width='238' height='22' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='134' y='70.5' font-size='7' fill='var(--text)' text-anchor='start'>its users and PCs get Group Policy A</text><rect x='16' y='82' width='104' height='22' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68' y='96.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>OU: Engineering</text><rect x='126' y='82' width='238' height='22' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='134' y='96.5' font-size='7' fill='var(--text)' text-anchor='start'>its users and PCs get Group Policy B</text><text x='16' y='128' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>OUs group accounts and computers inside a domain so policy can be</text><text x='16' y='140' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>applied to each separately.</text></svg>"
+    },
+    {
+      "id": "c2d2-21-17",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.1",
+      "term": "Security group",
+      "definition": "A group used to assign permissions and rights to many users at once; permissions are granted to the group, and users receive them by membership.",
+      "scenario": "grant 40 accountants access to a shared folder by changing a single permission entry",
+      "distractors": [
+        "An organizational unit",
+        "A distribution group",
+        "A Group Policy object"
+      ],
+      "tip": "Permissions go to the GROUP and membership does the rest — an OU is for policy, and a distribution group only handles email.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-21-17'><title id='dt-c2d2-21-17'>Granting permissions to a security group gives every member access with one change.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Group-based access</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Users</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>added to the group</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Security group</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>holds the permission</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Resource</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>folder or printer</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Granting permissions to a security group gives every member access with</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>one change.</text></svg>"
+    },
+    {
+      "id": "c2d2-21-18",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.1",
+      "term": "Logon script",
+      "definition": "A script that runs automatically when a user signs in, commonly to map network drives, connect printers, or set values for that session.",
+      "scenario": "map the department share and printers automatically every time a user signs in",
+      "distractors": [
+        "A scheduled backup job",
+        "A DHCP option",
+        "A registry export"
+      ],
+      "tip": "It runs at SIGN-IN for that user — a scheduled task runs at a set time instead.",
+      "diagram": "<svg viewBox='0 0 380 142' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-21-18'><title id='dt-c2d2-21-18'>A logon script runs at sign-in to map drives and printers or configure the session.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>logon.bat</text><rect x='16' y='36' width='348' height='58' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>net use Z: \\\\fs01\\dept</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>net use P: \\\\ps01\\hr-printer</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>echo Drives and printers mapped</text><text x='16' y='118' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A logon script runs at sign-in to map drives and printers or configure</text><text x='16' y='130' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>the session.</text></svg>"
+    },
+    {
+      "id": "c2d2-21-19",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.1",
+      "term": "Folder redirection",
+      "definition": "A Group Policy setting that redirects known folders such as Documents and Desktop to a network location, so files are stored and backed up centrally and follow the user between PCs.",
+      "scenario": "keep every user's Documents on the file server so they are backed up and follow the user to any PC",
+      "distractors": [
+        "A mapped network drive",
+        "A local backup",
+        "A VPN"
+      ],
+      "tip": "Known folders such as Documents transparently live on the SERVER — a mapped drive is a separate letter users must remember to use.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-21-19'><title id='dt-c2d2-21-19'>Folder redirection stores users&#39; Documents and Desktop on a server while they still appear local.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Folder redirection</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Documents</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>looks like a local folder</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Group Policy</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>redirects the path</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>File server</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>stores and backs up</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Folder redirection stores users&#39; Documents and Desktop on a server while</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>they still appear local.</text></svg>"
+    },
     {
       "id": "c2d2-22-8",
       "core": "core2",
@@ -6868,6 +8713,118 @@
     ,
       "diagram": "<svg viewBox='0 0 400 120' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-23-6'><title id='dt-c2d2-23-6'>Filters traffic to/from an individual endpoint, protecting it even when it leaves the network&#39;s perimeter.</title><rect x='30' y='30' width='130' height='50' rx='6' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='2'/><text x='95' y='50' font-size='7.5' fill='var(--primary)' text-anchor='middle' font-weight='700'>Laptop</text><text x='95' y='64' font-size='6.2' fill='var(--primary)' text-anchor='middle'>host-based firewall</text><text x='190' y='20' font-size='6.6' fill='var(--muted)' text-anchor='middle'>travels WITH the device</text><rect x='220' y='30' width='150' height='50' rx='6' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><text x='295' y='50' font-size='7' fill='var(--text)' text-anchor='middle' font-weight='700'>Coffee shop Wi-Fi</text><text x='295' y='64' font-size='6' fill='var(--muted)' text-anchor='middle'>no perimeter firewall here</text><text x='16' y='98' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Filters traffic to/from an individual endpoint, protecting it even when it leaves</text><text x='16' y='110' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>the network&#39;s perimeter.</text></svg>"},
     {
+      "id": "c2d2-23-7",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.3",
+      "term": "Strong password policy",
+      "definition": "A policy favoring long, unique passwords or passphrases that are never reused or shared, with a password manager to make that practical.",
+      "scenario": "set a password policy that makes guessing and brute force harder without relying on frequent forced changes",
+      "distractors": [
+        "Password hints on the sign-in screen",
+        "A shared team password",
+        "Four-digit PINs for every account"
+      ],
+      "tip": "LENGTH and uniqueness beat clever substitutions — reuse and sharing are the real killers.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-23-7'><title id='dt-c2d2-23-7'>Long, unique, unshared passwords stored in a manager resist guessing far better than short complex ones.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Strong password practice</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Length</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>12 or more characters, or a passphrase</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Unique</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>one password per account</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Complexity</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>mixed types where required</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Storage</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>use a password manager</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Long, unique, unshared passwords stored in a manager resist guessing far</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>better than short complex ones.</text></svg>"
+    },
+    {
+      "id": "c2d2-23-8",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.3",
+      "term": "Account lockout policy",
+      "definition": "A policy that temporarily locks an account after a set number of failed sign-in attempts, slowing brute-force and password-guessing attacks.",
+      "scenario": "limit how many wrong passwords an attacker can try against an account",
+      "distractors": [
+        "Password expiration",
+        "Password history",
+        "Screen lock timeout"
+      ],
+      "tip": "It counts FAILED attempts and then blocks — expiration just forces a change on a schedule.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-23-8'><title id='dt-c2d2-23-8'>After too many failed sign-ins the account is locked, blocking rapid password guessing.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Account lockout</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Wrong password</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>attempts 1, 2, 3...</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Threshold hit</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>for example 5 tries</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Account locked</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>waits or admin unlocks</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>After too many failed sign-ins the account is locked, blocking rapid</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>password guessing.</text></svg>"
+    },
+    {
+      "id": "c2d2-23-9",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.3",
+      "term": "Screen lock timeout",
+      "definition": "Automatically locking the screen after a period of inactivity and requiring a password to resume, so an unattended workstation cannot be used.",
+      "scenario": "keep a reception PC from being used by a passerby whenever the receptionist steps away",
+      "distractors": [
+        "Account lockout",
+        "Full disk encryption",
+        "A BIOS password"
+      ],
+      "tip": "It locks an unattended SESSION — account lockout reacts to wrong passwords, not to idleness.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-23-9'><title id='dt-c2d2-23-9'>A screen lock timeout secures an unattended PC by requiring a password after inactivity.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Inactivity lock</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Idle</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>for N minutes</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Screen locks</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>session stays open</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Password</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>needed to resume</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A screen lock timeout secures an unattended PC by requiring a password</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>after inactivity.</text></svg>"
+    },
+    {
+      "id": "c2d2-23-10",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.3",
+      "term": "Disabling AutoRun and AutoPlay",
+      "definition": "Turning off automatic execution when removable media is inserted, so a program on a USB drive cannot launch without the user choosing to run it.",
+      "scenario": "keep a malicious program on a found USB stick from launching the moment it is plugged in",
+      "distractors": [
+        "Disabling the firewall",
+        "A screen lock timeout",
+        "Secure Boot"
+      ],
+      "tip": "It stops auto-RUN from removable media — antivirus still has to scan what the drive contains.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-23-10'><title id='dt-c2d2-23-10'>Disabling AutoRun stops programs on removable media from executing automatically.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Removable media behavior</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>AutoRun on</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Plug in a USB drive</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>The program runs by itself</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Malware executes</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>AutoRun off</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Plug in a USB drive</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Nothing runs automatically</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>The user decides</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Disabling AutoRun stops programs on removable media from executing</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>automatically.</text></svg>"
+    },
+    {
+      "id": "c2d2-23-11",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.3",
+      "term": "BIOS/UEFI password",
+      "definition": "A firmware password that prevents unauthorized changes to boot order and settings, and can require a password before the PC starts from any device.",
+      "scenario": "stop someone from changing the boot order to start a PC from a USB drive",
+      "distractors": [
+        "A Windows sign-in password",
+        "Full disk encryption",
+        "A screen lock timeout"
+      ],
+      "tip": "It protects FIRMWARE settings — a Windows password is only checked after the OS boots.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-23-11'><title id='dt-c2d2-23-11'>A BIOS or UEFI password protects boot settings and startup devices before Windows loads.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Firmware password</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Power on</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>firmware starts</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>UEFI password</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>to change settings</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Windows loads</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>its own sign-in</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A BIOS or UEFI password protects boot settings and startup devices</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>before Windows loads.</text></svg>"
+    },
+    {
+      "id": "c2d2-23-12",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.3",
+      "term": "Logon time and account restrictions",
+      "definition": "Limiting when an account can sign in (logon hours) and where (specific computers), and setting expiry dates so access ends when it should.",
+      "scenario": "prevent an hourly employee's account from being used at 3 a.m. on a weekend",
+      "distractors": [
+        "Account lockout",
+        "Password expiration",
+        "Least privilege"
+      ],
+      "tip": "It controls WHEN and WHERE an account may sign in — lockout reacts to failures, not to the time of day.",
+      "diagram": "<svg viewBox='0 0 380 146' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-23-12'><title id='dt-c2d2-23-12'>Logon-hour and workstation restrictions limit when and where an account can be used.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Account restrictions</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Logon hours</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>Mon-Fri, 07:00 to 19:00</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Log on to</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>specific workstations only</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Account expires</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>on the contractor&#39;s end date</text><text x='16' y='122' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Logon-hour and workstation restrictions limit when and where an account</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>can be used.</text></svg>"
+    },
+    {
+      "id": "c2d2-23-13",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.3",
+      "term": "Disabling default and guest accounts",
+      "definition": "Renaming or disabling the built-in Administrator and Guest accounts and using named, accountable accounts removes easy, well-known targets for attackers.",
+      "scenario": "reduce the risk from well-known built-in accounts that attackers try first",
+      "distractors": [
+        "Enabling the Guest account",
+        "Sharing the Administrator password",
+        "Using one account for everyone"
+      ],
+      "tip": "Well-known accounts are the FIRST ones tried — named accounts also make actions traceable to a person.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-23-13'><title id='dt-c2d2-23-13'>Disable or rename default accounts and use named accounts so access is limited and traceable.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Built-in accounts</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Risky</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Guest account enabled</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Default Administrator in use</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>One shared admin password</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Better</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Guest disabled</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Named admin accounts</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Each action traceable</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Disable or rename default accounts and use named accounts so access is</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>limited and traceable.</text></svg>"
+    },
+    {
       "id": "c2d2-24-6",
       "core": "core2",
       "domain": "c2d2",
@@ -6883,6 +8840,70 @@
       "tip": "Triggers based on PHYSICAL LOCATION — a virtual boundary crossing is the trigger, not a manual admin action like a remote wipe."
     ,
       "diagram": "<svg viewBox='0 0 400 180' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-24-6'><title id='dt-c2d2-24-6'>Automatically triggers policy actions based on a device&#39;s physical location relative to a defined boundary.</title><circle cx='140' cy='60' r='50' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='2'/><text x='140' y='56' font-size='7' fill='var(--primary)' text-anchor='middle' font-weight='700'>Hospital</text><text x='140' y='68' font-size='6.2' fill='var(--primary)' text-anchor='middle'>grounds</text><circle cx='140' cy='60' r='4' fill='var(--primary)'/><text x='280' y='40' font-size='6.8' fill='var(--primary)' text-anchor='middle' font-weight='700'>Inside: app unlocked</text><circle cx='310' cy='60' r='6' fill='var(--red)'/><text x='280' y='78' font-size='6.8' fill='var(--red)' text-anchor='middle' font-weight='700'>Crosses boundary \u2192</text><text x='280' y='90' font-size='6.4' fill='var(--red)' text-anchor='middle'>app locks automatically</text><text x='190' y='118' font-size='7.3' fill='var(--text)' text-anchor='middle'>Triggers based on PHYSICAL LOCATION crossing a</text><text x='190' y='130' font-size='7.3' fill='var(--text)' text-anchor='middle'>virtual boundary, not a manual admin action.</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Automatically triggers policy actions based on a device&#39;s physical location relative</text><text x='16' y='170' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>to a defined boundary.</text></svg>"},
+    {
+      "id": "c2d2-24-7",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.4",
+      "term": "Mobile locator app",
+      "definition": "A feature such as Find My or Find My Device that shows a lost phone on a map and lets the owner make it ring, lock it, or erase it.",
+      "scenario": "see on a map where a lost phone is and make it ring",
+      "distractors": [
+        "Remote wipe",
+        "Geofencing",
+        "An MDM compliance policy"
+      ],
+      "tip": "It LOCATES, rings, and locks — remote wipe is the destructive last resort when recovery is unlikely.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-24-7'><title id='dt-c2d2-24-7'>A locator app finds a lost phone and lets the owner ring, lock, or erase it remotely.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Finding a lost device</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Lost phone</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>signed in to the account</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Locator</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>shows location</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Ring, lock, or erase</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>owner chooses</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A locator app finds a lost phone and lets the owner ring, lock, or erase</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>it remotely.</text></svg>"
+    },
+    {
+      "id": "c2d2-24-8",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.4",
+      "term": "Sideloading",
+      "definition": "Installing an app from outside the official app store, such as an APK file from a website, bypassing the store's vetting and increasing the chance of malware.",
+      "scenario": "explain the risk of installing a mobile app from an unofficial website instead of the official store",
+      "distractors": [
+        "Jailbreaking",
+        "An MDM profile",
+        "A biometric lock"
+      ],
+      "tip": "It changes WHERE apps come from and skips store vetting — jailbreaking changes the OS's own restrictions.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-24-8'><title id='dt-c2d2-24-8'>Sideloading skips the app store&#39;s vetting, so a malicious app is more likely to get through.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>App sources</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Official store</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Apps reviewed and scanned</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Signed and updated</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Lower malware risk</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Sideloaded APK</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>No store review</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Source may be spoofed</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Higher malware risk</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Sideloading skips the app store&#39;s vetting, so a malicious app is more</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>likely to get through.</text></svg>"
+    },
+    {
+      "id": "c2d2-24-9",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.4",
+      "term": "Jailbreaking and rooting",
+      "definition": "Removing the manufacturer's restrictions to gain root-level control of a phone; it disables built-in protections, enables untrusted apps, and is typically flagged as non-compliant by MDM.",
+      "scenario": "identify a device whose OS restrictions were removed and that an MDM reports as non-compliant",
+      "distractors": [
+        "Sideloading",
+        "A remote wipe",
+        "Geofencing"
+      ],
+      "tip": "It removes the OS's own SECURITY model — sideloading only changes where apps are installed from.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-24-9'><title id='dt-c2d2-24-9'>Jailbreaking or rooting removes OS restrictions and protections, making a device non-compliant and riskier.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Jailbroken or rooted device</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Restrictions removed</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>root access gained</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Protections off</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>sandboxing weakened</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>MDM flags it</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>non-compliant device</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Jailbreaking or rooting removes OS restrictions and protections, making</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>a device non-compliant and riskier.</text></svg>"
+    },
+    {
+      "id": "c2d2-24-10",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.4",
+      "term": "IoT device hardening",
+      "definition": "Changing default credentials, updating firmware, disabling unneeded services, and isolating IoT and embedded devices on a separate network because they are rarely patched and cannot run endpoint security.",
+      "scenario": "secure a new smart camera that ships with a default admin password",
+      "distractors": [
+        "Leaving the default password in place",
+        "Forwarding its ports to the Internet",
+        "Placing it on the main office LAN"
+      ],
+      "tip": "Change defaults, patch, and ISOLATE it — embedded devices often cannot run endpoint software.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-24-10'><title id='dt-c2d2-24-10'>Harden IoT devices by changing defaults, patching, and isolating them from the main network.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Hardening an IoT device</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Change default login</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>unique credentials</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Update firmware</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>close known flaws</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Isolate</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>IoT or guest network</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Harden IoT devices by changing defaults, patching, and isolating them</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>from the main network.</text></svg>"
+    },
     {
       "id": "c2d2-25-6",
       "core": "core2",
@@ -6900,6 +8921,86 @@
     ,
       "diagram": "<svg viewBox='0 0 380 168' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-25-6'><title id='dt-c2d2-25-6'>Labels data by sensitivity FIRST \u2014 that label is what determines which controls actually get applied.</title><rect x='16' y='16' width='348' height='36' rx='6' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.8'/><text x='190.0' y='29' font-size='9' fill='var(--text)' text-anchor='middle' font-weight='700'>Label data by sensitivity</text><text x='190.0' y='42' font-size='7.5' fill='var(--text)' text-anchor='middle'>public / internal / confidential / restricted</text><line x1='190.0' y1='52' x2='190.0' y2='60' stroke='var(--muted)' stroke-width='1.5'/><path d='M186.0 58 L190.0 65 L194.0 58' fill='none' stroke='var(--muted)' stroke-width='1.5'/><rect x='16' y='66' width='348' height='36' rx='6' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190.0' y='79' font-size='9' fill='var(--muted)' text-anchor='middle' font-weight='700'>Label determines controls</text><text x='190.0' y='92' font-size='7.5' fill='var(--muted)' text-anchor='middle'>encryption, access limits, DLP policy</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Labels data by sensitivity FIRST \u2014 that label is what determines which controls</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>actually get applied.</text></svg>"},
     {
+      "id": "c2d2-25-7",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.5",
+      "term": "Degaussing",
+      "definition": "Exposing magnetic media such as hard drives and backup tapes to a powerful magnetic field to scramble the data; it is ineffective on SSDs and leaves HDDs unusable.",
+      "scenario": "destroy the data on retired magnetic hard drives and backup tapes beyond recovery",
+      "distractors": [
+        "A quick format",
+        "A drive wipe (overwrite)",
+        "Emptying the Recycle Bin"
+      ],
+      "tip": "Magnetic fields only work on MAGNETIC media — SSDs and flash need overwriting or physical destruction.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-25-7'><title id='dt-c2d2-25-7'>Degaussing scrambles data on magnetic media only; SSDs and flash need other methods.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Degaussing</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Works on</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Hard disk drives</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Backup tapes</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Does not work on</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>SSDs</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>USB flash drives</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Optical discs</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Degaussing scrambles data on magnetic media only; SSDs and flash need</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>other methods.</text></svg>"
+    },
+    {
+      "id": "c2d2-25-8",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.5",
+      "term": "Physical destruction (shredding)",
+      "definition": "Mechanically destroying storage media by shredding, drilling, crushing, or incinerating it so data cannot be recovered; the most certain method for failed or highly sensitive drives.",
+      "scenario": "guarantee that a failed drive holding sensitive records can never be read again",
+      "distractors": [
+        "A standard format",
+        "Recycling the drive as it is",
+        "A drive wipe (overwrite)"
+      ],
+      "tip": "It destroys the MEDIA itself — a format or wipe leaves a working drive behind.",
+      "diagram": "<svg viewBox='0 0 380 146' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-25-8'><title id='dt-c2d2-25-8'>Shredding, drilling, crushing, or burning media destroys it so the data cannot be recovered.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Physical destruction</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Shredder</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>cuts drives into small pieces</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Drill or crush</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>ruins platters or chips</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Incinerate</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>melts media completely</text><text x='16' y='122' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Shredding, drilling, crushing, or burning media destroys it so the data</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>cannot be recovered.</text></svg>"
+    },
+    {
+      "id": "c2d2-25-9",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.5",
+      "term": "Drive wipe (overwrite)",
+      "definition": "Overwriting every sector of a drive with patterns, using wiping software or a secure-erase command, so it can be reused or resold with its old data unrecoverable.",
+      "scenario": "repurpose a workstation's hard drive for another employee without leaving recoverable data",
+      "distractors": [
+        "A standard format",
+        "Deleting the files",
+        "Degaussing"
+      ],
+      "tip": "It OVERWRITES so the drive stays usable — deleting or formatting leaves data recoverable.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-25-9'><title id='dt-c2d2-25-9'>Overwriting every sector makes old data unrecoverable while leaving the drive reusable.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Drive wipe</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Old data</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>still on the platters</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Overwrite passes</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>every sector rewritten</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Reusable drive</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>old data unrecoverable</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Overwriting every sector makes old data unrecoverable while leaving the</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>drive reusable.</text></svg>"
+    },
+    {
+      "id": "c2d2-25-10",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.5",
+      "term": "Standard (quick) format",
+      "definition": "A normal format only rebuilds the file system tables and leaves the old data on the disk, so recovery tools can often restore it; it is not adequate sanitization before disposal.",
+      "scenario": "identify which disposal step only rebuilds the file table and leaves the old data recoverable",
+      "distractors": [
+        "Drive wipe (overwrite)",
+        "Degaussing",
+        "Physical shredding"
+      ],
+      "tip": "It resets the INDEX, not the data — only overwriting or destroying the media removes the contents.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-25-10'><title id='dt-c2d2-25-10'>A standard format leaves data recoverable; only overwriting or destroying the media sanitizes a drive.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Format is not sanitization</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Standard format</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Rebuilds the file tables</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Data still on the disk</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Recoverable with tools</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Wipe or destroy</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Overwrites or destroys media</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Data gone for good</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Acceptable for disposal</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A standard format leaves data recoverable; only overwriting or</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>destroying the media sanitizes a drive.</text></svg>"
+    },
+    {
+      "id": "c2d2-25-11",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.5",
+      "term": "Certificate of destruction",
+      "definition": "A document from a destruction vendor attesting that specific media or devices were destroyed, listing serial numbers, date, and method, as evidence for audits and compliance.",
+      "scenario": "prove to auditors that retired drives were destroyed by an outside vendor",
+      "distractors": [
+        "A chain of custody form",
+        "An asset tag",
+        "A backup log"
+      ],
+      "tip": "PROOF of destruction (serials, date, method) — chain of custody tracks how evidence was handled.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-25-11'><title id='dt-c2d2-25-11'>A certificate of destruction documents which media were destroyed, when, and how.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Certificate of destruction</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Lists</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>serial number of each drive</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>States</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>method and date of destruction</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Signed by</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>the destruction vendor</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Kept for</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>audit and compliance records</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A certificate of destruction documents which media were destroyed, when,</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>and how.</text></svg>"
+    },
+    {
       "id": "c2d2-26-6",
       "core": "core2",
       "domain": "c2d2",
@@ -6915,6 +9016,966 @@
       "tip": "Runs BEFORE Windows loads — catches rootkits that specifically hide themselves once the OS (and the malware's own defenses) are running."
     ,
       "diagram": "<svg viewBox='0 0 400 150' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-26-6'><title id='dt-c2d2-26-6'>Runs before the OS fully loads, catching rootkits that hide themselves once Windows is running normally.</title><rect x='20' y='30' width='150' height='50' rx='6' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><text x='95' y='50' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Standard AV scan</text><text x='95' y='64' font-size='6.2' fill='var(--red)' text-anchor='middle'>reports clean (wrong)</text><line x1='172' y1='55' x2='204' y2='55' stroke='var(--muted)' stroke-width='1.5'/><path d='M202 51 L209 55 L202 59' fill='none' stroke='var(--muted)' stroke-width='1.5'/><rect x='210' y='24' width='150' height='62' rx='6' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='2'/><text x='285' y='44' font-size='7.3' fill='var(--primary)' text-anchor='middle' font-weight='700'>Boot-time scan</text><text x='285' y='58' font-size='6.2' fill='var(--primary)' text-anchor='middle'>runs BEFORE Windows</text><text x='285' y='70' font-size='6.2' fill='var(--primary)' text-anchor='middle'>and its rootkit load</text><text x='16' y='128' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Runs before the OS fully loads, catching rootkits that hide themselves once Windows</text><text x='16' y='140' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>is running normally.</text></svg>"},
+    {
+      "id": "c2d2-27-1",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.7",
+      "term": "WPA2 with AES-CCMP",
+      "definition": "Wi-Fi security that encrypts traffic with AES using CCMP and, in Personal mode, a shared passphrase; WPA2-Enterprise authenticates each user through 802.1X.",
+      "scenario": "choose widely supported Wi-Fi encryption that uses AES instead of the weak, older RC4-based options",
+      "distractors": [
+        "WEP",
+        "WPA with TKIP",
+        "An open network"
+      ],
+      "tip": "AES-CCMP is the strong part — WEP and TKIP are RC4-based and deprecated.",
+      "diagram": "<svg viewBox='0 0 380 178' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-27-1'><title id='dt-c2d2-27-1'>WPA2 uses AES-CCMP encryption, which replaced the weak RC4-based WEP and TKIP.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Wi-Fi security over time</text><rect x='16' y='30' width='139.2' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='85.6' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Protocol</text><rect x='155.2' y='30' width='104.4' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='207.4' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Cipher</text><rect x='259.6' y='30' width='104.4' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='311.8' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Status</text><rect x='16' y='50' width='139.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='85.6' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>WEP</text><rect x='155.2' y='50' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='207.4' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>RC4</text><rect x='259.6' y='50' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='311.8' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>broken</text><rect x='16' y='70' width='139.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='85.6' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>WPA with TKIP</text><rect x='155.2' y='70' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='207.4' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>RC4</text><rect x='259.6' y='70' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='311.8' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>deprecated</text><rect x='16' y='90' width='139.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='85.6' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>WPA2</text><rect x='155.2' y='90' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='207.4' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>AES-CCMP</text><rect x='259.6' y='90' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='311.8' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>solid</text><rect x='16' y='110' width='139.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='85.6' y='123.2' font-size='7' fill='var(--text)' text-anchor='middle'>WPA3</text><rect x='155.2' y='110' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='207.4' y='123.2' font-size='7' fill='var(--text)' text-anchor='middle'>AES with SAE</text><rect x='259.6' y='110' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='311.8' y='123.2' font-size='7' fill='var(--text)' text-anchor='middle'>best</text><text x='16' y='154' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>WPA2 uses AES-CCMP encryption, which replaced the weak RC4-based WEP and</text><text x='16' y='166' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>TKIP.</text></svg>"
+    },
+    {
+      "id": "c2d2-27-2",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.7",
+      "term": "WEP and TKIP (legacy protocols)",
+      "definition": "WEP and WPA with TKIP use the RC4 stream cipher with known weaknesses; WEP can be cracked in minutes, so networks should use WPA2 or WPA3 with AES instead.",
+      "scenario": "explain why an old router configured for WEP should be replaced or reconfigured",
+      "distractors": [
+        "WPA3",
+        "WPA2 with AES",
+        "802.1X"
+      ],
+      "tip": "RC4-based and crackable — move to WPA2 or WPA3 with AES.",
+      "diagram": "<svg viewBox='0 0 380 112' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-27-2'><title id='dt-c2d2-27-2'>WEP and TKIP are RC4-based and weak; use WPA2 or WPA3 with AES.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Retire the legacy options</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>WEP</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>cracked in minutes</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>WPA with TKIP</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>stopgap, deprecated</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>WPA2 / WPA3</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>use AES</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>WEP and TKIP are RC4-based and weak; use WPA2 or WPA3 with AES.</text></svg>"
+    },
+    {
+      "id": "c2d2-27-3",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.7",
+      "term": "SAE (WPA3 handshake)",
+      "definition": "Simultaneous Authentication of Equals replaces the WPA2 pre-shared-key handshake with a password-authenticated key exchange that resists offline dictionary attacks and provides forward secrecy.",
+      "scenario": "stop an attacker who captures a Wi-Fi handshake from cracking the passphrase offline later",
+      "distractors": [
+        "The WPA2 pre-shared key handshake",
+        "WEP",
+        "MAC filtering"
+      ],
+      "tip": "It defeats OFFLINE guessing of a captured handshake — WPA2-PSK handshakes can be attacked offline.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-27-3'><title id='dt-c2d2-27-3'>SAE protects WPA3-Personal against offline password guessing and adds forward secrecy.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Personal mode handshakes</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>WPA2-PSK</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Four-way handshake</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Capture it, crack it offline</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>No forward secrecy</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>WPA3 SAE</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Password-authenticated exchange</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Offline guessing fails</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Forward secrecy</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>SAE protects WPA3-Personal against offline password guessing and adds</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>forward secrecy.</text></svg>"
+    },
+    {
+      "id": "c2d2-27-4",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.7",
+      "term": "802.1X enterprise Wi-Fi authentication",
+      "definition": "Port-based access control in which each user or device authenticates individually through EAP to a RADIUS server before the access point or switch grants access; it underlies WPA2 and WPA3-Enterprise.",
+      "scenario": "give each employee unique Wi-Fi credentials and revoke one person's access without changing a shared password",
+      "distractors": [
+        "WPA2-Personal with a pre-shared key",
+        "MAC filtering",
+        "A captive portal"
+      ],
+      "tip": "PER-USER credentials checked by a RADIUS server — a pre-shared key is one password for everyone.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-27-4'><title id='dt-c2d2-27-4'>802.1X makes each user authenticate to a RADIUS server before the network grants access.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>802.1X roles</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Supplicant</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>laptop or phone</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Authenticator</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>access point or switch</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>RADIUS server</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>checks identity</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>802.1X makes each user authenticate to a RADIUS server before the</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>network grants access.</text></svg>"
+    },
+    {
+      "id": "c2d2-27-5",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.7",
+      "term": "TACACS+",
+      "definition": "A Cisco-originated AAA protocol, typically used to authenticate and authorize administrators on network devices, separating authentication, authorization, and accounting and encrypting the whole payload over TCP.",
+      "scenario": "control which commands each administrator may run on routers and switches",
+      "distractors": [
+        "RADIUS",
+        "Kerberos",
+        "LDAP"
+      ],
+      "tip": "Device ADMINISTRATION with per-command authorization — RADIUS is aimed at user network access.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-27-5'><title id='dt-c2d2-27-5'>TACACS+ authorizes administrators on network devices command by command over encrypted TCP.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>TACACS+ vs RADIUS</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>TACACS+</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>TCP port 49</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Encrypts the full payload</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Per-command authorization</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>RADIUS</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>UDP ports 1812 and 1813</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Encrypts the password only</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>User network access</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>TACACS+ authorizes administrators on network devices command by command</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>over encrypted TCP.</text></svg>"
+    },
+    {
+      "id": "c2d2-27-6",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.7",
+      "term": "Kerberos",
+      "definition": "A ticket-based authentication protocol used by Active Directory in which a key distribution center issues time-limited tickets, so users prove identity without resending passwords; it needs clocks to be closely synchronized.",
+      "scenario": "explain why domain sign-in fails when a workstation's clock is more than a few minutes off",
+      "distractors": [
+        "A DNS server failure",
+        "An expired website certificate",
+        "A full system drive"
+      ],
+      "tip": "TICKETS with a roughly five-minute clock tolerance — a wrong clock breaks domain sign-in even with the right password.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-27-6'><title id='dt-c2d2-27-6'>Kerberos issues time-limited tickets, so clocks must stay in sync for domain sign-in to work.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Kerberos tickets</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>User</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>asks for a ticket</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Ticket server (KDC)</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>issues tickets</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Service</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>accepts the ticket</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Kerberos issues time-limited tickets, so clocks must stay in sync for</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>domain sign-in to work.</text></svg>"
+    },
+    {
+      "id": "c2d2-27-7",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.7",
+      "term": "Authenticator app (TOTP)",
+      "definition": "An app that generates time-based one-time passcodes on the user's device as a second factor; it is safer than SMS because the codes are never sent over the phone network.",
+      "scenario": "add a second factor that is not exposed to SIM-swap interception of text messages",
+      "distractors": [
+        "SMS one-time codes",
+        "Security questions",
+        "Emailing a password reset link"
+      ],
+      "tip": "Codes are generated ON the device — SMS codes can be intercepted or SIM-swapped.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-27-7'><title id='dt-c2d2-27-7'>An authenticator app computes rotating codes locally, avoiding the weaknesses of SMS codes.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Time-based one-time codes</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Shared secret</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>scanned at setup</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>App computes</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>six digits every 30 s</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Server checks</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>the same code</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>An authenticator app computes rotating codes locally, avoiding the</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>weaknesses of SMS codes.</text></svg>"
+    },
+    {
+      "id": "c2d2-27-8",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.7",
+      "term": "Hardware security key (FIDO2)",
+      "definition": "A physical USB or NFC device that signs a challenge with a private key and only responds to the genuine site, giving a strong second factor that resists phishing.",
+      "scenario": "protect administrators from phishing pages that steal passwords and typed one-time codes",
+      "distractors": [
+        "SMS one-time codes",
+        "Security questions",
+        "A longer password"
+      ],
+      "tip": "A phishing-RESISTANT factor — a code typed into a fake site can still be stolen.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-27-8'><title id='dt-c2d2-27-8'>A hardware key only answers the real site, so phishing pages cannot reuse what it provides.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Why security keys resist phishing</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Sign in</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>site sends a challenge</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Key signs</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>for that site only</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Fake site</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>gets nothing usable</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A hardware key only answers the real site, so phishing pages cannot</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>reuse what it provides.</text></svg>"
+    },
+    {
+      "id": "c2d2-28-1",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.8",
+      "term": "Trojan horse",
+      "definition": "Malware disguised as legitimate software that performs hidden malicious actions once the user runs it; it does not replicate by itself.",
+      "scenario": "identify malware that arrived inside a free 'PDF converter' download and opened a backdoor after installation",
+      "distractors": [
+        "A worm",
+        "A file-infecting virus",
+        "A cryptominer"
+      ],
+      "tip": "It is DISGUISED as something useful and user-installed — a worm spreads by itself with no user action.",
+      "diagram": "<svg viewBox='0 0 380 112' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-28-1'><title id='dt-c2d2-28-1'>A trojan hides a malicious payload inside software that appears useful.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>How a trojan works</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Looks useful</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>free tool or crack</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>User runs it</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>installs willingly</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Hidden payload</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>backdoor or theft</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A trojan hides a malicious payload inside software that appears useful.</text></svg>"
+    },
+    {
+      "id": "c2d2-28-2",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.8",
+      "term": "Virus",
+      "definition": "Malicious code that attaches itself to a legitimate file or program and spreads when that host is opened or run, usually needing a user action.",
+      "scenario": "identify malware that infects an executable and spreads when the infected file is shared and run on another PC",
+      "distractors": [
+        "A worm",
+        "A trojan",
+        "A rootkit"
+      ],
+      "tip": "It needs a HOST file and user action to spread — a worm spreads on its own across networks.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-28-2'><title id='dt-c2d2-28-2'>A virus attaches to a host file and spreads when the host runs; a worm spreads on its own.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Virus vs worm</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Virus</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Needs a host file</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Spreads when the host runs</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>User action required</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Worm</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>A standalone program</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Spreads by itself</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Exploits network flaws</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A virus attaches to a host file and spreads when the host runs; a worm</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>spreads on its own.</text></svg>"
+    },
+    {
+      "id": "c2d2-28-3",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.8",
+      "term": "Worm",
+      "definition": "Self-replicating malware that spreads across networks by exploiting vulnerabilities, needing no host file or user action, and often consuming bandwidth quickly.",
+      "scenario": "explain why one unpatched PC infected hundreds of machines within minutes without anyone opening an attachment",
+      "distractors": [
+        "A virus",
+        "A trojan",
+        "Spyware"
+      ],
+      "tip": "It spreads ITSELF over the network through a vulnerability — a virus needs a host file and a user.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-28-3'><title id='dt-c2d2-28-3'>A worm replicates itself across networks through vulnerabilities, with no user action required.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>A worm spreading</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Infects one PC</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>through an unpatched flaw</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Scans the network</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>finds vulnerable hosts</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Copies itself</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>and repeats</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A worm replicates itself across networks through vulnerabilities, with</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>no user action required.</text></svg>"
+    },
+    {
+      "id": "c2d2-28-4",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.8",
+      "term": "Spyware",
+      "definition": "Software that secretly monitors user activity and collects information such as browsing habits, credentials, or screenshots and sends it to a third party.",
+      "scenario": "identify malware that quietly records the sites a user visits and sends them to a remote server",
+      "distractors": [
+        "Adware",
+        "Ransomware",
+        "A worm"
+      ],
+      "tip": "It quietly WATCHES and reports — ransomware announces itself, and adware is mostly an annoyance.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-28-4'><title id='dt-c2d2-28-4'>Spyware secretly gathers activity and credentials and sends them to an attacker.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Spyware</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Hidden agent</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>runs unnoticed</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Collects data</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>sites, logins, screens</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Sends it out</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>to the attacker</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Spyware secretly gathers activity and credentials and sends them to an</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>attacker.</text></svg>"
+    },
+    {
+      "id": "c2d2-28-5",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.8",
+      "term": "Keylogger",
+      "definition": "Software or a hardware device that records every keystroke to capture passwords and messages; hardware loggers sit between the keyboard and the PC.",
+      "scenario": "explain how an attacker captured a user's typed passwords without ever touching the password database",
+      "distractors": [
+        "A rootkit",
+        "A cryptominer",
+        "Ransomware"
+      ],
+      "tip": "It records KEYSTROKES — spyware is the broader category, and a keylogger can see anything typed, including one-time codes.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-28-5'><title id='dt-c2d2-28-5'>A keylogger records everything typed, capturing passwords before they are ever stored.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Keylogger</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>User types</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>passwords and messages</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Keylogger</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>logs every key</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Attacker</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>reads the log</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A keylogger records everything typed, capturing passwords before they</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>are ever stored.</text></svg>"
+    },
+    {
+      "id": "c2d2-28-6",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.8",
+      "term": "Boot sector virus",
+      "definition": "Malware that infects the master boot record or boot sector so it loads before the operating system, hiding from antivirus that runs inside Windows.",
+      "scenario": "identify malware that loads before Windows starts and hides from security software running inside the OS",
+      "distractors": [
+        "A file-infecting virus",
+        "A macro virus",
+        "A worm"
+      ],
+      "tip": "It runs BEFORE the OS — a boot-time scan, MBR repair, and Secure Boot are the defenses.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-28-6'><title id='dt-c2d2-28-6'>A boot sector virus runs before the OS, so ordinary in-OS antivirus cannot see it.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Boot sector infection</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Power on</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>firmware starts</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Boot sector</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>infected code runs first</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>OS loads</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>already compromised</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A boot sector virus runs before the OS, so ordinary in-OS antivirus</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>cannot see it.</text></svg>"
+    },
+    {
+      "id": "c2d2-28-7",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.8",
+      "term": "Cryptominer (cryptojacking)",
+      "definition": "Malware that hijacks a computer's CPU or GPU to mine cryptocurrency for an attacker, showing up as constant high resource use, heat, and slowdowns.",
+      "scenario": "explain why several office PCs run hot at idle with sustained 100% CPU and no obvious malware messages",
+      "distractors": [
+        "Ransomware",
+        "Spyware",
+        "Adware"
+      ],
+      "tip": "It steals your CYCLES for mining — fans spinning and constant 100% CPU at idle are the clue.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-28-7'><title id='dt-c2d2-28-7'>Cryptominers use your processor to mine cryptocurrency, causing sustained high usage and heat.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Cryptojacking</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Symptom</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>high CPU or GPU use at idle</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Symptom</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>heat, loud fans, a slow PC</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Goal</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>mine coins for the attacker</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Spread</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>trojans and malicious scripts</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Cryptominers use your processor to mine cryptocurrency, causing</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>sustained high usage and heat.</text></svg>"
+    },
+    {
+      "id": "c2d2-28-8",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.8",
+      "term": "Botnet",
+      "definition": "A network of compromised computers (zombies) controlled remotely by an attacker through command and control, used for DDoS attacks, spam, and credential attacks.",
+      "scenario": "explain how thousands of infected home PCs were used together to flood a website",
+      "distractors": [
+        "A worm",
+        "A rootkit",
+        "A honeypot"
+      ],
+      "tip": "Many infected machines obeying ONE controller — a worm is the spreader, the botnet is the army.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-28-8'><title id='dt-c2d2-28-8'>A botnet is a group of infected machines that an attacker commands remotely at scale.</title><rect x='115' y='14' width='150' height='34' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='190' y='27.86' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Attacker (C2 server)</text><text x='190' y='39.26' font-size='6.4' fill='var(--muted)' text-anchor='middle'>commands the bots</text><line x1='190' y1='48' x2='70' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='16' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='70' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Zombie PC</text><text x='70' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>DDoS traffic</text><line x1='190' y1='48' x2='190' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='136' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Zombie PC</text><text x='190' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>sends spam</text><line x1='190' y1='48' x2='310' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='256' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='310' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Zombie IoT</text><text x='310' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>credential attacks</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A botnet is a group of infected machines that an attacker commands</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>remotely at scale.</text></svg>"
+    },
+    {
+      "id": "c2d2-28-9",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.8",
+      "term": "Security awareness (anti-phishing) training",
+      "definition": "Regular training that teaches staff to spot phishing and social engineering, avoid unsafe behavior, and report suspicious messages, covering attacks that technology alone misses.",
+      "scenario": "reduce how often employees click convincing phishing emails that filters let through",
+      "distractors": [
+        "A stricter firewall",
+        "Full disk encryption",
+        "Disabling USB ports"
+      ],
+      "tip": "It trains PEOPLE — technical controls cannot stop someone convinced to hand over a password.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-28-9'><title id='dt-c2d2-28-9'>Awareness training teaches users to spot and report phishing that technical filters miss.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Awareness training</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Teach</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>spot the red flags</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Simulate</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>phishing tests</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Report</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>one-click report</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Awareness training teaches users to spot and report phishing that</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>technical filters miss.</text></svg>"
+    },
+    {
+      "id": "c2d2-28-10",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.8",
+      "term": "Heuristic (behavioral) detection",
+      "definition": "Antimalware that flags software by what it does or how it is built instead of matching known signatures, so it can catch new variants; it may also raise more false positives.",
+      "scenario": "catch a never-before-seen malware variant by looking at what the file tries to do",
+      "distractors": [
+        "Signature-based detection",
+        "A firewall rule",
+        "Patch management"
+      ],
+      "tip": "BEHAVIOR catches new variants — signatures only match samples that are already known.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-28-10'><title id='dt-c2d2-28-10'>Heuristic detection spots suspicious behavior, catching new malware that signatures do not know.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Detection methods</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Signature</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Matches known samples</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Fast and precise</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Misses brand-new malware</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Heuristic</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Watches behavior</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Catches new variants</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>More false positives</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Heuristic detection spots suspicious behavior, catching new malware that</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>signatures do not know.</text></svg>"
+    },
+    {
+      "id": "c2d2-29-1",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.9",
+      "term": "Vishing",
+      "definition": "Voice phishing: an attacker phones a victim, often spoofing a trusted number, to trick them into revealing credentials, codes, or payment details.",
+      "scenario": "identify a phone call from someone claiming to be IT support who asks for the user's MFA code",
+      "distractors": [
+        "Smishing",
+        "A phishing email",
+        "Pharming"
+      ],
+      "tip": "It uses the phone VOICE — smishing is text messages, and phishing is email.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-29-1'><title id='dt-c2d2-29-1'>Vishing uses phone calls and spoofed numbers to extract credentials or payment details.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Vishing</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Caller</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>spoofs &#39;IT help desk&#39;</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Pretext</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>an urgent problem</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Victim</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>gives code or login</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Vishing uses phone calls and spoofed numbers to extract credentials or</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>payment details.</text></svg>"
+    },
+    {
+      "id": "c2d2-29-2",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.9",
+      "term": "Smishing",
+      "definition": "Phishing by SMS or messaging apps using urgent texts and malicious links, such as a fake delivery or bank alert.",
+      "scenario": "identify a text message claiming a package is on hold and linking to a fake login page",
+      "distractors": [
+        "Vishing",
+        "Spear phishing",
+        "Whaling"
+      ],
+      "tip": "It arrives as a TEXT message — vishing happens over a voice call.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-29-2'><title id='dt-c2d2-29-2'>Smishing sends urgent text messages with malicious links, such as fake delivery notices.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Smishing</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Channel</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>SMS or a chat app</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Lure</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>delivery, bank, or toll alert</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Hook</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>a link to a fake page</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Defense</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>go to the real site yourself</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Smishing sends urgent text messages with malicious links, such as fake</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>delivery notices.</text></svg>"
+    },
+    {
+      "id": "c2d2-29-3",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.9",
+      "term": "Whaling",
+      "definition": "Phishing aimed at senior executives or other high-value targets, using personalized messages about legal, financial, or board matters.",
+      "scenario": "identify a targeted message impersonating legal counsel that is sent specifically to the CEO",
+      "distractors": [
+        "Spear phishing",
+        "Vishing",
+        "Smishing"
+      ],
+      "tip": "Whaling is spear phishing aimed at the BIG fish — executives and other high-value targets.",
+      "diagram": "<svg viewBox='0 0 380 152' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-29-3'><title id='dt-c2d2-29-3'>Whaling targets executives with highly personalized phishing about business-critical matters.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Scope of the target</text><rect x='16' y='30' width='104' height='22' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68' y='44.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Phishing</text><rect x='126' y='30' width='238' height='22' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='134' y='44.5' font-size='7' fill='var(--text)' text-anchor='start'>wide net with a generic lure</text><rect x='16' y='56' width='104' height='22' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68' y='70.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Spear phishing</text><rect x='126' y='56' width='238' height='22' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='134' y='70.5' font-size='7' fill='var(--text)' text-anchor='start'>one person or group, personalized</text><rect x='16' y='82' width='104' height='22' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='68' y='96.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Whaling</text><rect x='126' y='82' width='238' height='22' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='134' y='96.5' font-size='7' fill='var(--text)' text-anchor='start'>executives and high-value targets</text><text x='16' y='128' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Whaling targets executives with highly personalized phishing about</text><text x='16' y='140' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>business-critical matters.</text></svg>"
+    },
+    {
+      "id": "c2d2-29-4",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.9",
+      "term": "QR code phishing (quishing)",
+      "definition": "Phishing that hides a malicious URL inside a QR code on a flyer, email, or sticker, sending a scanning phone to a fake login or malware page.",
+      "scenario": "identify an attack in which a sticker over a parking meter's real QR code leads to a fake payment page",
+      "distractors": [
+        "Smishing",
+        "An evil twin",
+        "Tailgating"
+      ],
+      "tip": "The link hides in an IMAGE — filters that read URLs in text can miss it.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-29-4'><title id='dt-c2d2-29-4'>Quishing hides a malicious link in a QR code, which can slip past text-based link filters.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Quishing</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>QR code</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>on a poster or email</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Phone scans it</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>URL is hard to preview</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Fake page</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>steals login or card</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Quishing hides a malicious link in a QR code, which can slip past</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>text-based link filters.</text></svg>"
+    },
+    {
+      "id": "c2d2-29-5",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.9",
+      "term": "Impersonation",
+      "definition": "Pretending to be a trusted person, such as IT staff, a vendor, or an executive, to gain access or information (pretexting).",
+      "scenario": "identify someone in a hi-vis vest and a badge claiming to be a contractor to get into a locked wiring closet",
+      "distractors": [
+        "Shoulder surfing",
+        "Dumpster diving",
+        "Brute force"
+      ],
+      "tip": "The attacker pretends to BE someone with authority — shoulder surfing and dumpster diving involve no false identity.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-29-5'><title id='dt-c2d2-29-5'>Impersonation uses a false identity of authority to gain access or information.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Impersonation</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Pretext</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>&#39;I&#39;m from IT&#39; or &#39;the vendor&#39;</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Goal</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>access, information, or money</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Tell</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>urgency and a bypassed process</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Defense</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>verify identity independently</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Impersonation uses a false identity of authority to gain access or</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>information.</text></svg>"
+    },
+    {
+      "id": "c2d2-29-6",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.9",
+      "term": "Dumpster diving",
+      "definition": "Searching discarded trash or recycling for documents, drives, or notes that contain sensitive information; shredding and secure disposal prevent it.",
+      "scenario": "explain how an attacker learned employee names and account numbers without breaching any system",
+      "distractors": [
+        "Shoulder surfing",
+        "Tailgating",
+        "Phishing"
+      ],
+      "tip": "The trash is the target — shred documents and destroy media before disposal.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-29-6'><title id='dt-c2d2-29-6'>Dumpster diving recovers sensitive information from discarded paper and media.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Dumpster diving</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Discarded</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>papers, labels, drives</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Attacker digs</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>trash or recycling</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Finds data</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>names, accounts, notes</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Dumpster diving recovers sensitive information from discarded paper and</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>media.</text></svg>"
+    },
+    {
+      "id": "c2d2-29-7",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.9",
+      "term": "DoS and DDoS",
+      "definition": "A denial-of-service attack overwhelms a system or network with traffic or requests so legitimate users cannot reach it; a distributed attack (DDoS) uses many compromised sources, often a botnet.",
+      "scenario": "explain why a company website became unreachable when thousands of sources flooded it with requests",
+      "distractors": [
+        "An on-path attack",
+        "SQL injection",
+        "A brute-force attack"
+      ],
+      "tip": "The goal is lost AVAILABILITY, not theft — DDoS only means the flood comes from many sources.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-29-7'><title id='dt-c2d2-29-7'>DoS attacks flood a target so legitimate users cannot reach it; DDoS uses many sources at once.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>DDoS</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Botnet</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>many sources</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Flood of requests</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>saturates the target</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Users locked out</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>service unavailable</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>DoS attacks flood a target so legitimate users cannot reach it; DDoS</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>uses many sources at once.</text></svg>"
+    },
+    {
+      "id": "c2d2-29-8",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.9",
+      "term": "Zero-day exploit",
+      "definition": "An attack that exploits a vulnerability unknown to the vendor, so no patch exists yet and signature-based defenses may not recognize it.",
+      "scenario": "identify an exploit used before the software vendor has released any fix",
+      "distractors": [
+        "An unpatched known vulnerability",
+        "A brute-force attack",
+        "A phishing email"
+      ],
+      "tip": "NO patch exists yet — an unpatched known flaw has a fix that simply was never applied.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-29-8'><title id='dt-c2d2-29-8'>A zero-day exploit targets a flaw the vendor does not yet know, so no patch exists.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Zero-day timeline</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Flaw found</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>vendor unaware</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Exploited</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>day zero</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Patch released</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>after the damage</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A zero-day exploit targets a flaw the vendor does not yet know, so no</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>patch exists.</text></svg>"
+    },
+    {
+      "id": "c2d2-29-9",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.9",
+      "term": "On-path attack",
+      "definition": "An attacker secretly positions between two parties to read or alter their communication, for example through a rogue access point or ARP poisoning; formerly called man-in-the-middle.",
+      "scenario": "identify an attack in which traffic between a laptop and a bank is silently intercepted and relayed by a third party",
+      "distractors": [
+        "A DDoS attack",
+        "A phishing email",
+        "A brute-force attack"
+      ],
+      "tip": "The attacker sits BETWEEN both parties — HTTPS with valid certificates is the main defense.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-29-9'><title id='dt-c2d2-29-9'>An on-path attacker silently relays and can alter traffic between two parties.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>On-path attack</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Victim</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>thinks it talks to the bank</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Attacker</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>reads or alters traffic</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Bank</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>sees normal requests</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>An on-path attacker silently relays and can alter traffic between two</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>parties.</text></svg>"
+    },
+    {
+      "id": "c2d2-29-10",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.9",
+      "term": "Dictionary attack",
+      "definition": "A password attack that tries words from a list of common passwords and their variations instead of every possible combination, far faster than brute force against weak passwords.",
+      "scenario": "explain how an account was cracked by trying thousands of common passwords such as seasons plus a year",
+      "distractors": [
+        "A brute-force attack",
+        "Credential stuffing",
+        "Phishing"
+      ],
+      "tip": "It uses a WORD LIST of likely passwords — brute force tries every combination.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-29-10'><title id='dt-c2d2-29-10'>A dictionary attack tries likely passwords from a list, which is quick against weak choices.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Password guessing</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Dictionary</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Common words and patterns</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Fast against weak passwords</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Beaten by long random ones</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Brute force</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Every possible combination</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Slow but exhaustive</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Beaten by length + lockout</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A dictionary attack tries likely passwords from a list, which is quick</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>against weak choices.</text></svg>"
+    },
+    {
+      "id": "c2d2-29-11",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.9",
+      "term": "Insider threat",
+      "definition": "A risk from someone with legitimate access, such as an employee or contractor, who deliberately or carelessly misuses it to steal data, sabotage systems, or cause a breach.",
+      "scenario": "identify the risk from a departing employee who copies customer files to a personal drive",
+      "distractors": [
+        "An external hacker",
+        "A zero-day exploit",
+        "A phishing email"
+      ],
+      "tip": "The person already has ACCESS — least privilege, monitoring, and prompt offboarding limit the damage.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-29-11'><title id='dt-c2d2-29-11'>An insider threat comes from someone with legitimate access who misuses it.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Insider threat</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Legitimate access</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>employee or contractor</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Misuse</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>theft or sabotage</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Controls</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>least privilege, logging</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>An insider threat comes from someone with legitimate access who misuses</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>it.</text></svg>"
+    },
+    {
+      "id": "c2d2-29-12",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.9",
+      "term": "SQL injection",
+      "definition": "Entering malicious SQL through an input field or URL so the application's database runs it, exposing, altering, or deleting data; input validation and parameterized queries prevent it.",
+      "scenario": "identify an attack in which typing admin' -- into a login form signs in without a valid password",
+      "distractors": [
+        "Cross-site scripting",
+        "A brute-force attack",
+        "A DDoS attack"
+      ],
+      "tip": "It attacks the DATABASE through an input field — XSS targets other users' browsers instead.",
+      "diagram": "<svg viewBox='0 0 380 142' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-29-12'><title id='dt-c2d2-29-12'>SQL injection slips database commands into an input field to bypass checks or read data.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>What the database sees</text><rect x='16' y='36' width='348' height='58' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>user:  admin&#39; --</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>SELECT * FROM users WHERE name=&#39;admin&#39; --&#39; AND ...</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>-- the comment drops the password check</text><text x='16' y='118' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>SQL injection slips database commands into an input field to bypass</text><text x='16' y='130' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>checks or read data.</text></svg>"
+    },
+    {
+      "id": "c2d2-29-13",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.9",
+      "term": "Cross-site scripting (XSS)",
+      "definition": "Injecting malicious script into a trusted website so it runs in other visitors' browsers, stealing cookies or session tokens; output encoding and input validation prevent it.",
+      "scenario": "identify an attack in which a script saved in a comment runs in every visitor's browser",
+      "distractors": [
+        "SQL injection",
+        "An on-path attack",
+        "A brute-force attack"
+      ],
+      "tip": "The script runs in the VISITOR'S browser — SQL injection targets the server's database.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-29-13'><title id='dt-c2d2-29-13'>XSS plants script in a trusted page so it runs in other visitors&#39; browsers.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Stored XSS</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Attacker</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>posts a script</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Site stores it</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>serves it to visitors</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Visitor&#39;s browser</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>runs it, cookie stolen</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>XSS plants script in a trusted page so it runs in other visitors&#39;</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>browsers.</text></svg>"
+    },
+    {
+      "id": "c2d2-29-14",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.9",
+      "term": "Business email compromise (BEC)",
+      "definition": "Fraud in which an attacker impersonates or takes over a business email account, typically an executive or vendor, to trick staff into wiring money or changing payment details.",
+      "scenario": "identify a convincing email that appears to be from the CFO asking accounts payable to urgently change a vendor's bank details",
+      "distractors": [
+        "Ransomware",
+        "A zero-day exploit",
+        "A DDoS attack"
+      ],
+      "tip": "It is fraud by email IMPERSONATION, often with no malware — confirm payment changes through a second channel.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-29-14'><title id='dt-c2d2-29-14'>BEC uses impersonated or hijacked business email to trigger fraudulent payments.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Business email compromise</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Spoof or takeover</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>executive or vendor</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Urgent request</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>wire money, new bank</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Verify</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>call a known number</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>BEC uses impersonated or hijacked business email to trigger fraudulent</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>payments.</text></svg>"
+    },
+    {
+      "id": "c2d2-29-15",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.9",
+      "term": "Supply chain attack",
+      "definition": "Compromising a trusted vendor, software update, or component so malicious code reaches many downstream customers, bypassing defenses that trust the supplier.",
+      "scenario": "identify an attack in which a legitimately signed software update from a vendor contained malware",
+      "distractors": [
+        "Phishing",
+        "A brute-force attack",
+        "An evil twin"
+      ],
+      "tip": "It attacks the TRUSTED supplier — customers receive the threat through a channel they believe is safe.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-29-15'><title id='dt-c2d2-29-15'>A supply chain attack hides malicious code in a trusted vendor&#39;s product or update.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Supply chain attack</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Vendor breached</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>build or update server</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Tainted update</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>signed and trusted</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Customers infected</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>at scale</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A supply chain attack hides malicious code in a trusted vendor&#39;s product</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>or update.</text></svg>"
+    },
+    {
+      "id": "c2d2-29-16",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.9",
+      "term": "Unpatched and end-of-life systems",
+      "definition": "Systems missing security patches, or running unsupported software, contain known flaws that attackers actively exploit; patching and replacement close them.",
+      "scenario": "explain why a server still running an unsupported OS keeps appearing in vulnerability scans",
+      "distractors": [
+        "A zero-day exploit",
+        "An insider threat",
+        "Spoofing"
+      ],
+      "tip": "Known flaws left OPEN — a zero-day has no fix yet, but an unpatched system had one available.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-29-16'><title id='dt-c2d2-29-16'>Unpatched or unsupported systems keep known flaws open for attackers to exploit.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Why patching matters</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Flaw disclosed</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>patch released</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Not applied</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>system stays exposed</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Exploited</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>by automated scans</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Unpatched or unsupported systems keep known flaws open for attackers to</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>exploit.</text></svg>"
+    },
+    {
+      "id": "c2d2-210-1",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.10",
+      "term": "User Account Control (UAC)",
+      "definition": "A prompt that asks for confirmation or administrator credentials before an action needs elevated rights, limiting what malware or a mistaken click can change.",
+      "scenario": "have Windows ask for approval before a program makes system-wide changes during a standard sign-in",
+      "distractors": [
+        "Windows Defender Firewall",
+        "BitLocker",
+        "Secure Boot"
+      ],
+      "tip": "It asks BEFORE elevation — it does not scan for malware, but it stops silent system changes.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-210-1'><title id='dt-c2d2-210-1'>UAC asks for approval or admin credentials before anything changes the system.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>User Account Control</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>App needs admin</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>install or change system</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>UAC prompt</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>dims the desktop</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Allow or deny</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>credentials if standard</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>UAC asks for approval or admin credentials before anything changes the</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>system.</text></svg>"
+    },
+    {
+      "id": "c2d2-210-2",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.10",
+      "term": "Standard vs administrator accounts",
+      "definition": "Standard users can run apps and change their own settings but cannot install system-wide software or change security settings; administrators can; Guest has minimal rights and should stay disabled.",
+      "scenario": "give an employee a daily-use account that cannot install software or change system settings",
+      "distractors": [
+        "The Administrator account",
+        "The Guest account",
+        "The Power Users group"
+      ],
+      "tip": "Daily work belongs in a STANDARD account — admin accounts are for admin tasks (least privilege).",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-210-2'><title id='dt-c2d2-210-2'>Standard accounts limit what a user or malware can change; administrator accounts should be used sparingly.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Windows account types</text><rect x='16' y='30' width='104.4' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='68.2' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Account</text><rect x='120.4' y='30' width='139.2' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='190' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Install software</text><rect x='259.6' y='30' width='104.4' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='311.8' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Change security</text><rect x='16' y='50' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='68.2' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>Administrator</text><rect x='120.4' y='50' width='139.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='190' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>yes</text><rect x='259.6' y='50' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='311.8' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>yes</text><rect x='16' y='70' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='68.2' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>Standard user</text><rect x='120.4' y='70' width='139.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='190' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>needs admin approval</text><rect x='259.6' y='70' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='311.8' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>no</text><rect x='16' y='90' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='68.2' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>Guest</text><rect x='120.4' y='90' width='139.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='190' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>no</text><rect x='259.6' y='90' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='311.8' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>no</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Standard accounts limit what a user or malware can change; administrator</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>accounts should be used sparingly.</text></svg>"
+    },
+    {
+      "id": "c2d2-210-3",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.10",
+      "term": "Run as administrator",
+      "definition": "Starting a program with elevated rights for one task, with right-click and Run as administrator or the runas command, instead of staying signed in as an administrator.",
+      "scenario": "launch Command Prompt with the rights needed to run sfc /scannow from a standard session",
+      "distractors": [
+        "Safe Mode",
+        "Compatibility mode",
+        "Remote Assistance"
+      ],
+      "tip": "It elevates for ONE task — that is how least privilege works in practice.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-210-3'><title id='dt-c2d2-210-3'>Run as administrator raises one program&#39;s rights without keeping the whole session elevated.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Elevating a single program</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Right-click</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>Run as administrator</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>UAC prompt</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>approve or enter creds</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Elevated window</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>title shows &#39;Administrator&#39;</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Run as administrator raises one program&#39;s rights without keeping the</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>whole session elevated.</text></svg>"
+    },
+    {
+      "id": "c2d2-210-4",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.10",
+      "term": "NTFS permission inheritance",
+      "definition": "Files and folders inherit permissions from their parent; moving within the same volume keeps the original permissions, while copying (or moving to another volume) takes the destination folder's.",
+      "scenario": "explain why a file copied into a restricted folder now carries that folder's permissions",
+      "distractors": [
+        "Share permissions",
+        "An explicit deny",
+        "EFS"
+      ],
+      "tip": "A COPY (or a move across volumes) takes the destination's permissions — a move within one volume keeps its own.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-210-4'><title id='dt-c2d2-210-4'>Copying takes on the destination&#39;s permissions; a same-volume move keeps the originals.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Inheritance on copy and move</text><rect x='16' y='30' width='156.6' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='94.3' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Action</text><rect x='172.6' y='30' width='191.4' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='268.3' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Permissions afterwards</text><rect x='16' y='50' width='156.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='94.3' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>Copy anywhere</text><rect x='172.6' y='50' width='191.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='268.3' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>take the destination&#39;s</text><rect x='16' y='70' width='156.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='94.3' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>Move to another volume</text><rect x='172.6' y='70' width='191.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='268.3' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>take the destination&#39;s</text><rect x='16' y='90' width='156.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='94.3' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>Move within one volume</text><rect x='172.6' y='90' width='191.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='268.3' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>keep the original ones</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Copying takes on the destination&#39;s permissions; a same-volume move keeps</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>the originals.</text></svg>"
+    },
+    {
+      "id": "c2d2-210-5",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.10",
+      "term": "Share and NTFS permissions combined",
+      "definition": "Share permissions apply only over the network, while NTFS permissions apply locally and over the network; when both apply, the most restrictive result wins.",
+      "scenario": "work out why a user with Full Control at the share still cannot modify files in it",
+      "distractors": [
+        "Share permissions override NTFS",
+        "Permission inheritance",
+        "A firewall rule"
+      ],
+      "tip": "The MOST RESTRICTIVE of share and NTFS wins — fixing only one side is not enough.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-210-5'><title id='dt-c2d2-210-5'>When share and NTFS permissions both apply, the most restrictive one decides the effective access.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Combining the two</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Share permission</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>Full Control</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>NTFS permission</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>Read only</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Effective access</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>Read: most restrictive</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>When share and NTFS permissions both apply, the most restrictive one</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>decides the effective access.</text></svg>"
+    },
+    {
+      "id": "c2d2-210-6",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.10",
+      "term": "BitLocker To Go",
+      "definition": "Encryption for removable drives such as USB flash drives and external disks that requires a password or smart card to open them, protecting the data if the drive is lost.",
+      "scenario": "protect the data on a USB drive so it is unreadable if the drive is lost",
+      "distractors": [
+        "BitLocker on the system drive only",
+        "EFS",
+        "FileVault"
+      ],
+      "tip": "It is for REMOVABLE drives — FileVault is the Mac equivalent, and EFS encrypts individual files.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-210-6'><title id='dt-c2d2-210-6'>BitLocker To Go encrypts removable drives so a lost USB stick does not expose its contents.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>BitLocker To Go</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Insert USB drive</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>turn on BitLocker To Go</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Set a password</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>or use a smart card</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Drive encrypted</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>unlock to read</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>BitLocker To Go encrypts removable drives so a lost USB stick does not</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>expose its contents.</text></svg>"
+    },
+    {
+      "id": "c2d2-210-7",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.10",
+      "term": "Encrypting File System (EFS)",
+      "definition": "Encrypts individual files or folders on NTFS using a key tied to the user's certificate; other users, even administrators, cannot read them without it, so the certificate must be backed up.",
+      "scenario": "encrypt just one folder so that only a specific user account can open its files",
+      "distractors": [
+        "BitLocker",
+        "FileVault",
+        "NTFS permissions"
+      ],
+      "tip": "Per-FILE encryption tied to a user certificate — BitLocker encrypts a whole volume.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-210-7'><title id='dt-c2d2-210-7'>EFS encrypts selected files for one user&#39;s certificate; BitLocker encrypts the whole volume.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>BitLocker vs EFS</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>BitLocker</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Whole volume</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Protects the OS drive too</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>TPM or password</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>EFS</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Files and folders</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Tied to a user certificate</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Back up the certificate</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>EFS encrypts selected files for one user&#39;s certificate; BitLocker</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>encrypts the whole volume.</text></svg>"
+    },
+    {
+      "id": "c2d2-210-8",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.10",
+      "term": "Windows Hello",
+      "definition": "Windows sign-in with a PIN, fingerprint, or face recognition that is tied to the device, with the credential protected by the TPM, instead of a typed account password.",
+      "scenario": "let users sign in with a fingerprint or a short device-bound PIN",
+      "distractors": [
+        "Windows Defender Firewall",
+        "Credential Manager",
+        "Kerberos"
+      ],
+      "tip": "A local, device-bound PIN or biometric — the PIN is useless on any other computer.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-210-8'><title id='dt-c2d2-210-8'>Windows Hello signs in with a device-bound PIN or biometric protected by the TPM.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Windows Hello</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>PIN</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>bound to this device only</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Fingerprint</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>needs a reader</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Face</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>needs an infrared camera</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Backed by</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>the device TPM</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Windows Hello signs in with a device-bound PIN or biometric protected by</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>the TPM.</text></svg>"
+    },
+    {
+      "id": "c2d2-210-9",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.10",
+      "term": "Microsoft Defender Antivirus",
+      "definition": "Windows' built-in antivirus and antimalware, with real-time protection, cloud-delivered protection, and scheduled scans, managed in the Windows Security app.",
+      "scenario": "confirm that real-time protection is on and run a full scan using only built-in Windows tools",
+      "distractors": [
+        "Windows Defender Firewall",
+        "BitLocker",
+        "User Account Control"
+      ],
+      "tip": "It scans for MALWARE — the firewall filters traffic, and BitLocker encrypts data.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-210-9'><title id='dt-c2d2-210-9'>Microsoft Defender Antivirus is Windows&#39; built-in real-time malware protection.</title><rect x='115' y='14' width='150' height='34' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='190' y='27.86' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Windows Security app</text><text x='190' y='39.26' font-size='6.4' fill='var(--muted)' text-anchor='middle'>built-in protection</text><line x1='190' y1='48' x2='70' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='16' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='70' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Virus and threats</text><text x='70' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>Defender Antivirus</text><line x1='190' y1='48' x2='190' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='136' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Firewall</text><text x='190' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>network profiles</text><line x1='190' y1='48' x2='310' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='256' y='70' width='108' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='310' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Device security</text><text x='310' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>Secure Boot, TPM</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Microsoft Defender Antivirus is Windows&#39; built-in real-time malware</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>protection.</text></svg>"
+    },
+    {
+      "id": "c2d2-211-1",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.11",
+      "term": "Change default router credentials",
+      "definition": "Replacing the router's default administrator username and password, and its default network name, with unique strong values so attackers cannot log in with published defaults.",
+      "scenario": "secure a new home router out of the box before connecting any devices",
+      "distractors": [
+        "Enabling WPS",
+        "Port forwarding",
+        "Leaving UPnP on"
+      ],
+      "tip": "Defaults are PUBLISHED online — changing them is the first step on any new router.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-211-1'><title id='dt-c2d2-211-1'>Change the router&#39;s default login and network name before putting it into service.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Router defaults</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Out of the box</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>admin / admin</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Default SSID names the model</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Anyone can guess it</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>After hardening</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Unique admin password</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Custom SSID</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>WPA2 or WPA3 passphrase</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Change the router&#39;s default login and network name before putting it</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>into service.</text></svg>"
+    },
+    {
+      "id": "c2d2-211-2",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.11",
+      "term": "Router firmware updates",
+      "definition": "Installing vendor firmware updates closes security flaws and fixes bugs in the router itself; many consumer routers do not update automatically.",
+      "scenario": "close known vulnerabilities in a small office router",
+      "distractors": [
+        "Changing the SSID",
+        "Enabling MAC filtering",
+        "Moving the router"
+      ],
+      "tip": "It patches the router's own SOFTWARE — SSID or MAC tweaks cannot fix a firmware flaw.",
+      "diagram": "<svg viewBox='0 0 380 112' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-211-2'><title id='dt-c2d2-211-2'>Firmware updates patch security flaws in the router itself.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Updating router firmware</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Check vendor</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>for new firmware</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Back up config</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>before updating</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Install and reboot</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>verify settings</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Firmware updates patch security flaws in the router itself.</text></svg>"
+    },
+    {
+      "id": "c2d2-211-3",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.11",
+      "term": "MAC filtering",
+      "definition": "Allowing or blocking devices by their MAC address on the router; simple to set up but weak, because MAC addresses can be sniffed and spoofed.",
+      "scenario": "limit a small network to a known list of devices while accepting that it is not strong security",
+      "distractors": [
+        "WPA3",
+        "Disabling SSID broadcast",
+        "A screened subnet"
+      ],
+      "tip": "A speed bump, not real security — MAC addresses can be spoofed.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-211-3'><title id='dt-c2d2-211-3'>MAC filtering allows only listed devices but is easy to bypass by spoofing an address.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>MAC filtering</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Device joins</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>sends its MAC</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Router checks</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>the allow list</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Allowed or blocked</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>MACs can be spoofed</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>MAC filtering allows only listed devices but is easy to bypass by</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>spoofing an address.</text></svg>"
+    },
+    {
+      "id": "c2d2-211-4",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.11",
+      "term": "Disabling SSID broadcast",
+      "definition": "Hiding the network name keeps it from appearing in Wi-Fi lists but does not stop discovery with simple tools; strong encryption matters far more.",
+      "scenario": "reduce casual visibility of a network name while knowing it is not real protection",
+      "distractors": [
+        "WPA3 encryption",
+        "MAC filtering",
+        "Changing the router password"
+      ],
+      "tip": "It hides the NAME only — a sniffer still sees it, so encryption is what actually protects.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-211-4'><title id='dt-c2d2-211-4'>Hiding the SSID only removes it from lists; encryption is what protects the network.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Hiding vs encrypting</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>SSID hidden</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Not shown in Wi-Fi lists</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Still visible to sniffers</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Not a real control</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Encryption on</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Traffic is protected</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Passphrase required</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>The real protection</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Hiding the SSID only removes it from lists; encryption is what protects</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>the network.</text></svg>"
+    },
+    {
+      "id": "c2d2-211-5",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.11",
+      "term": "Port forwarding",
+      "definition": "A router rule that sends traffic arriving on a specific external port to a chosen internal host and port, making an internal service reachable from the Internet at the cost of more exposure.",
+      "scenario": "let outside users reach a web server at 192.168.1.50 through the router's single public IP address",
+      "distractors": [
+        "A DHCP reservation",
+        "MAC filtering",
+        "Content filtering"
+      ],
+      "tip": "It maps an outside PORT to an inside host — every rule is an opening in the firewall.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-211-5'><title id='dt-c2d2-211-5'>Port forwarding sends traffic arriving on a router port to a specific internal host.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Port forwarding</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Internet</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>TCP 443 to public IP</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Router</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>forwards 443 to .50</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Web server</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>192.168.1.50</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Port forwarding sends traffic arriving on a router port to a specific</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>internal host.</text></svg>"
+    },
+    {
+      "id": "c2d2-211-6",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.11",
+      "term": "UPnP risk",
+      "definition": "Universal Plug and Play lets devices open router ports automatically; convenient, but compromised devices or malware can expose internal systems, so it is usually disabled.",
+      "scenario": "stop devices on the network from automatically creating port-forward rules on the router",
+      "distractors": [
+        "Manual port forwarding",
+        "DHCP",
+        "Network address translation"
+      ],
+      "tip": "It lets DEVICES open ports automatically — manual port forwarding is a deliberate admin choice.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-211-6'><title id='dt-c2d2-211-6'>UPnP lets devices open router ports on their own, so it is usually turned off.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>UPnP</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>UPnP on</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Devices open ports themselves</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Malware can use it too</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Hard to audit</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>UPnP off</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Admin opens ports by hand</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Each rule is deliberate</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Smaller attack surface</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>UPnP lets devices open router ports on their own, so it is usually</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>turned off.</text></svg>"
+    },
+    {
+      "id": "c2d2-211-7",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.11",
+      "term": "DHCP reservation",
+      "definition": "Tying a specific IP address to a device's MAC address in the DHCP server, so it always receives the same address while still being configured centrally.",
+      "scenario": "make a network printer always receive the same address without configuring it by hand",
+      "distractors": [
+        "A static IP set on the device",
+        "APIPA",
+        "Port forwarding"
+      ],
+      "tip": "The server hands out a FIXED address — a static IP is typed on the device itself.",
+      "diagram": "<svg viewBox='0 0 380 146' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-211-7'><title id='dt-c2d2-211-7'>A DHCP reservation always gives one device the same address from the DHCP server.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>A DHCP reservation</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>MAC address</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>AA:BB:CC:11:22:33</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Reserved IP</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>192.168.1.20</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Result</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>same address on every lease</text><text x='16' y='122' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A DHCP reservation always gives one device the same address from the</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>DHCP server.</text></svg>"
+    },
+    {
+      "id": "c2d2-211-8",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.11",
+      "term": "Content filtering",
+      "definition": "Blocking categories of websites or specific domains at the router, a DNS service, or a proxy to enforce policy and reduce exposure to malicious or inappropriate content.",
+      "scenario": "block known malicious and adult website categories for every device on a small office network",
+      "distractors": [
+        "MAC filtering",
+        "Port forwarding",
+        "QoS"
+      ],
+      "tip": "It filters WEB CONTENT by category or domain — MAC filtering controls devices, not sites.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-211-8'><title id='dt-c2d2-211-8'>Content filtering blocks websites by category or domain according to policy.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Content filtering</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Client</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>requests a site</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Filter</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>category and reputation</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Allow or block</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>policy decides</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Content filtering blocks websites by category or domain according to</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>policy.</text></svg>"
+    },
+    {
+      "id": "c2d2-211-9",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.11",
+      "term": "Screened subnet (DMZ)",
+      "definition": "A separate network segment, isolated from the internal LAN by firewalls, that hosts public-facing servers so that compromising one does not give direct access to internal systems.",
+      "scenario": "host a public web server without placing it on the same network as internal workstations",
+      "distractors": [
+        "A VPN",
+        "Port forwarding to a LAN host",
+        "MAC filtering"
+      ],
+      "tip": "Public servers go in an ISOLATED middle zone — forwarding straight to a LAN host exposes the internal network if it is compromised.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-211-9'><title id='dt-c2d2-211-9'>A screened subnet isolates public-facing servers between the Internet and the internal network.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Screened subnet</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Internet</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>untrusted</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Screened subnet</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>public web server</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Internal LAN</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>protected</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A screened subnet isolates public-facing servers between the Internet</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>and the internal network.</text></svg>"
+    },
+    {
+      "id": "c2d2-211-10",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.11",
+      "term": "Guest network",
+      "definition": "A separate wireless network with isolation from the main LAN that gives visitors Internet access without letting them reach internal devices.",
+      "scenario": "let visitors use the Wi-Fi without exposing the office file server",
+      "distractors": [
+        "Disabling SSID broadcast",
+        "MAC filtering",
+        "Port forwarding"
+      ],
+      "tip": "An ISOLATED SSID for visitors — hiding the main name does nothing to separate guests from internal devices.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-211-10'><title id='dt-c2d2-211-10'>A guest network gives visitors Internet access while keeping them off the internal LAN.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Separate networks</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Main network</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Staff devices and servers</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Strong passphrase</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Internal access</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Guest network</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Visitors only</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Isolated from the LAN</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Internet access only</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A guest network gives visitors Internet access while keeping them off</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>the internal LAN.</text></svg>"
+    },
+    {
+      "id": "c2d2-212-1",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.12",
+      "term": "Trusted downloads and hash verification",
+      "definition": "Installing software only from official sources and comparing the file's checksum (hash) with the vendor's published value confirms the download was not altered.",
+      "scenario": "confirm that a downloaded installer matches what the vendor published",
+      "distractors": [
+        "Running it and scanning afterward",
+        "Checking the file size",
+        "Renaming the file"
+      ],
+      "tip": "Compare the HASH with the published value — file size and names are easy to fake.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-212-1'><title id='dt-c2d2-212-1'>Comparing a download&#39;s hash with the vendor&#39;s published value proves it was not altered.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Verifying a download</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Download</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>official site only</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Hash the file</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>for example SHA-256</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Compare</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>with the published hash</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Comparing a download&#39;s hash with the vendor&#39;s published value proves it</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>was not altered.</text></svg>"
+    },
+    {
+      "id": "c2d2-212-2",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.12",
+      "term": "Browser extensions",
+      "definition": "Add-ons that extend a browser; each requests permissions and can read or change page data, so only needed extensions from trusted publishers should be installed and reviewed.",
+      "scenario": "reduce the risk from a malicious add-on that can read every website a user visits",
+      "distractors": [
+        "Clearing the cache",
+        "Private browsing",
+        "Disabling pop-ups"
+      ],
+      "tip": "Extensions run with PAGE ACCESS — private browsing and cache clearing do not limit them.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-212-2'><title id='dt-c2d2-212-2'>Extensions have broad page access, so install few, from trusted publishers, and review them.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Browser extensions</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Permissions</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>can read and change site data</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Source</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>official store, known publisher</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Review</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>remove ones nobody uses</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Managed</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>admins can allow-list</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Extensions have broad page access, so install few, from trusted</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>publishers, and review them.</text></svg>"
+    },
+    {
+      "id": "c2d2-212-3",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.12",
+      "term": "Browser password manager",
+      "definition": "A password manager stores unique passwords in an encrypted vault and autofills them only on matching sites, reducing reuse and helping reveal look-alike phishing pages that will not autofill.",
+      "scenario": "let users keep a different strong password for every site without memorizing them",
+      "distractors": [
+        "A shared spreadsheet",
+        "The same password everywhere",
+        "Browser history"
+      ],
+      "tip": "It will not AUTOFILL on a look-alike domain — a handy phishing tell.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-212-3'><title id='dt-c2d2-212-3'>A password manager fills unique passwords only on the genuine site, which also exposes phishing pages.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Password manager</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Master password</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>unlocks the vault</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Autofills</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>only on the right domain</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Fake site</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>nothing fills in</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A password manager fills unique passwords only on the genuine site,</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>which also exposes phishing pages.</text></svg>"
+    },
+    {
+      "id": "c2d2-212-4",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.12",
+      "term": "HTTPS and valid certificates",
+      "definition": "A padlock/HTTPS connection means traffic is encrypted and the site presented a valid certificate for its domain from a trusted authority; warnings signal expired, mismatched, or untrusted certificates.",
+      "scenario": "ensure traffic to a website is encrypted and the site's domain identity was verified",
+      "distractors": [
+        "Plain HTTP",
+        "A pop-up blocker",
+        "Private browsing"
+      ],
+      "tip": "It encrypts AND verifies the domain — a padlock alone does not prove the site is honest.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-212-4'><title id='dt-c2d2-212-4'>HTTPS encrypts traffic and a valid certificate verifies the domain; warnings mean something is wrong.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>What the padlock means</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>HTTPS</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>TLS encrypts the traffic</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Certificate</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>proves the domain&#39;s identity</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Issued by</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>a trusted authority</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Warning</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>expired, mismatched, untrusted</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>HTTPS encrypts traffic and a valid certificate verifies the domain;</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>warnings mean something is wrong.</text></svg>"
+    },
+    {
+      "id": "c2d2-212-5",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.12",
+      "term": "Pop-up and ad blockers",
+      "definition": "Blocking pop-up windows and ads reduces exposure to malvertising, fake alerts, and unwanted redirects.",
+      "scenario": "reduce fake virus-alert pop-ups and malicious ads in a user's browser",
+      "distractors": [
+        "Private browsing",
+        "Clearing cookies",
+        "A password manager"
+      ],
+      "tip": "It blocks the DELIVERY of pop-ups and ads — private browsing blocks nothing.",
+      "diagram": "<svg viewBox='0 0 380 143' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-212-5'><title id='dt-c2d2-212-5'>Pop-up and ad blockers stop fake alerts and malicious ads from reaching the user.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Pop-up and ad blocking</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Without a blocker</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Fake alert pop-ups</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Malvertising redirects</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>With a blocker</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Pop-ups suppressed</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Known ad domains blocked</text><text x='16' y='119' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Pop-up and ad blockers stop fake alerts and malicious ads from reaching</text><text x='16' y='131' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>the user.</text></svg>"
+    },
+    {
+      "id": "c2d2-212-6",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.12",
+      "term": "Private browsing",
+      "definition": "A mode that does not save history, cookies, or form data when the window closes, but does not hide activity from the websites visited, the network, or an employer, and adds no malware protection.",
+      "scenario": "use a shared kiosk PC without leaving the user's history and logins behind on it",
+      "distractors": [
+        "A VPN",
+        "A pop-up blocker",
+        "Clearing the DNS cache"
+      ],
+      "tip": "It forgets LOCAL history — it does not hide you from the site, your ISP, or your employer.",
+      "diagram": "<svg viewBox='0 0 380 143' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-212-6'><title id='dt-c2d2-212-6'>Private browsing leaves no local history, but does not make activity invisible on the network.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>What private browsing does</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Hidden from</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>The next person at this PC</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Local history and cookies</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Not hidden from</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Websites you visit</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>ISP and employer network</text><text x='16' y='119' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Private browsing leaves no local history, but does not make activity</text><text x='16' y='131' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>invisible on the network.</text></svg>"
+    },
+    {
+      "id": "c2d2-212-7",
+      "core": "core2",
+      "domain": "c2d2",
+      "objective": "2.12",
+      "term": "Clearing cache and cookies",
+      "definition": "Deleting cached files, cookies, and saved site data forces fresh page loads and removes stale or corrupted content, which often fixes display or sign-in problems on one site.",
+      "scenario": "fix a website that keeps showing an old, broken version of its page",
+      "distractors": [
+        "Resetting the router",
+        "Updating the BIOS",
+        "Reinstalling Windows"
+      ],
+      "tip": "Stale CACHE or cookies cause site-specific glitches — try this before anything bigger.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d2-212-7'><title id='dt-c2d2-212-7'>Clearing the cache and cookies removes stale data that causes one-site display or login problems.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Clearing browsing data</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Stale cache</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>old files served</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Clear data</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>cache and cookies</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Fresh load</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>the site works</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Clearing the cache and cookies removes stale data that causes one-site</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>display or login problems.</text></svg>"
+    },
     {
       "id": "c2d3-31-6",
       "core": "core2",
@@ -6932,6 +9993,230 @@
     ,
       "diagram": "<svg viewBox='0 0 360 218' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-31-6'><title id='dt-c2d3-31-6'>The stop code identifies the actual cause \u2014 look it up before reinstalling the OS or swapping RAM blind.</title><rect x='16' y='16' width='328' height='36' rx='6' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='180.0' y='29' font-size='9' fill='var(--muted)' text-anchor='middle' font-weight='700'>Blue Screen of Death</text><text x='180.0' y='42' font-size='7.5' fill='var(--muted)' text-anchor='middle'>random crash, unclear cause</text><line x1='180.0' y1='52' x2='180.0' y2='60' stroke='var(--muted)' stroke-width='1.5'/><path d='M176.0 58 L180.0 65 L184.0 58' fill='none' stroke='var(--muted)' stroke-width='1.5'/><rect x='16' y='66' width='328' height='36' rx='6' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.8'/><text x='180.0' y='79' font-size='9' fill='var(--text)' text-anchor='middle' font-weight='700'>Stop code: 0x0000007B</text><text x='180.0' y='92' font-size='7.5' fill='var(--text)' text-anchor='middle'>e.g. shown on screen</text><line x1='180.0' y1='102' x2='180.0' y2='110' stroke='var(--muted)' stroke-width='1.5'/><path d='M176.0 108 L180.0 115 L184.0 108' fill='none' stroke='var(--muted)' stroke-width='1.5'/><rect x='16' y='116' width='328' height='36' rx='6' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='180.0' y='129' font-size='9' fill='var(--muted)' text-anchor='middle' font-weight='700'>Look up the code</text><text x='180.0' y='142' font-size='7.5' fill='var(--muted)' text-anchor='middle'>identifies failing driver/subsystem</text><text x='16' y='196' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>The stop code identifies the actual cause \u2014 look it up before reinstalling</text><text x='16' y='208' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>the OS or swapping RAM blind.</text></svg>"},
     {
+      "id": "c2d3-31-7",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.1",
+      "term": "Black screen after sign-in",
+      "definition": "A desktop that shows only a black screen and a pointer after sign-in usually means the Explorer shell failed to start or a display driver problem; running explorer.exe from Task Manager, or updating or rolling back the display driver, restores it.",
+      "scenario": "restore a desktop that shows only a black screen with a mouse pointer after the user signs in",
+      "distractors": [
+        "Replacing the power supply",
+        "Resetting the BIOS",
+        "Reinstalling Windows"
+      ],
+      "tip": "A pointer means Windows is RUNNING — try Task Manager > Run new task > explorer.exe before heavier fixes.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-31-7'><title id='dt-c2d3-31-7'>A black screen with a pointer means Windows runs; restart explorer.exe or fix the display driver.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Black screen with a pointer</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Ctrl+Shift+Esc</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>opens Task Manager</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Run new task</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>type explorer.exe</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Desktop returns</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>else fix the driver</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A black screen with a pointer means Windows runs; restart explorer.exe</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>or fix the display driver.</text></svg>"
+    },
+    {
+      "id": "c2d3-31-8",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.1",
+      "term": "bootrec (boot record repair)",
+      "definition": "A Windows Recovery Environment command that repairs boot records: /fixmbr, /fixboot, /scanos, and /rebuildbcd rebuild the master boot record, boot sector, and Boot Configuration Data.",
+      "scenario": "repair a PC that reports \"Operating system not found\" after its boot configuration was damaged",
+      "distractors": [
+        "sfc /scannow",
+        "chkdsk /f",
+        "gpupdate /force"
+      ],
+      "tip": "bootrec REBUILDS the boot records — sfc repairs system files, which only matters once Windows can boot.",
+      "diagram": "<svg viewBox='0 0 380 156' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-31-8'><title id='dt-c2d3-31-8'>bootrec rebuilds the master boot record, boot sector, and BCD from the recovery environment.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>Recovery Command Prompt</text><rect x='16' y='36' width='348' height='72' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>bootrec /fixmbr</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>bootrec /fixboot</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>bootrec /scanos</text><text x='28' y='96' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>bootrec /rebuildbcd</text><text x='16' y='132' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>bootrec rebuilds the master boot record, boot sector, and BCD from the</text><text x='16' y='144' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>recovery environment.</text></svg>"
+    },
+    {
+      "id": "c2d3-31-9",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.1",
+      "term": "Low memory warning",
+      "definition": "Windows warns that it is low on memory when RAM and the page file are nearly exhausted; closing apps, finding a memory leak in Task Manager, enlarging the page file, or adding RAM resolves it.",
+      "scenario": "resolve repeated \"Your computer is low on memory\" messages on a 4 GB PC running many apps",
+      "distractors": [
+        "A corrupted user profile",
+        "A failing CMOS battery",
+        "Time drift"
+      ],
+      "tip": "RAM and the page file are exhausted — add RAM, close apps, or find the leaking process in Task Manager.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-31-9'><title id='dt-c2d3-31-9'>A low memory warning means RAM and the page file are nearly full; close apps, fix leaks, or add RAM.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Low memory</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Warning</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>low on memory</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Task Manager</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>find the hungry app</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Fix</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>close it, add RAM</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A low memory warning means RAM and the page file are nearly full; close</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>apps, fix leaks, or add RAM.</text></svg>"
+    },
+    {
+      "id": "c2d3-31-10",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.1",
+      "term": "USB controller resource warning",
+      "definition": "A message that a USB controller has run out of resources appears when too many devices share one controller, often through hubs; spreading devices across ports, using a powered hub, or updating drivers fixes it.",
+      "scenario": "resolve a \"not enough USB controller resources\" message after plugging many devices into one hub",
+      "distractors": [
+        "A BSOD stop code",
+        "Time drift",
+        "A stuck print spooler"
+      ],
+      "tip": "Too many devices for one CONTROLLER — spread them across ports or use a powered hub on a different controller.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-31-10'><title id='dt-c2d3-31-10'>Too many devices on one USB controller trigger a resource warning; spread them out.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>USB resource warning</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Many devices</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>all on one hub</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Warning</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>controller out of resources</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Fix</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>spread them, update drivers</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Too many devices on one USB controller trigger a resource warning;</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>spread them out.</text></svg>"
+    },
+    {
+      "id": "c2d3-31-11",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.1",
+      "term": "System time drift",
+      "definition": "When a PC's clock keeps resetting or drifting, the usual causes are a dead CMOS battery or failed time sync; the wrong time breaks certificate validation and Kerberos sign-in, so replace the battery and resync the clock.",
+      "scenario": "explain why a PC's clock resets after power-off and why certificates and domain sign-in then fail",
+      "distractors": [
+        "A corrupted user profile",
+        "Low memory",
+        "A stuck service"
+      ],
+      "tip": "A dead CMOS battery loses the clock while the PC is off — and a wrong time breaks certificates and Kerberos.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-31-11'><title id='dt-c2d3-31-11'>A failing CMOS battery or broken time sync makes the clock drift and breaks certificate and domain checks.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Time drift</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>CMOS battery</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>dies</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Clock resets</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>wrong date at boot</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Errors</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>certificates, domain logon</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A failing CMOS battery or broken time sync makes the clock drift and</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>breaks certificate and domain checks.</text></svg>"
+    },
+    {
+      "id": "c2d3-31-12",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.1",
+      "term": "Limited connectivity (no Internet)",
+      "definition": "A PC showing a link but \"limited\" or no Internet often has a failed DHCP lease (a 169.254.x.x address), a bad gateway or DNS setting, or a driver problem; check the link, run ipconfig /all, then renew the lease and flush DNS.",
+      "scenario": "diagnose a PC with a working link light that has a 169.254.x.x address and no Internet",
+      "distractors": [
+        "A stopped print spooler",
+        "A low-memory condition",
+        "A corrupted user profile"
+      ],
+      "tip": "A 169.254 address means DHCP FAILED — a valid address with failing names points to DNS instead.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-31-12'><title id='dt-c2d3-31-12'>Limited connectivity is diagnosed by checking the link, the IP settings, and then renewing and flushing.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Limited connectivity</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Check the link</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>cable, Wi-Fi, switch</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>ipconfig /all</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>address, gateway, DNS</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Renew and flush</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>/release /renew /flushdns</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Limited connectivity is diagnosed by checking the link, the IP settings,</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>and then renewing and flushing.</text></svg>"
+    },
+    {
+      "id": "c2d3-31-13",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.1",
+      "term": "Slow profile load",
+      "definition": "A long sign-in on a PC is often caused by a large or roaming profile copied across the network, many startup items, or slow Group Policy processing; folder redirection, trimming the profile, or rebuilding it helps.",
+      "scenario": "reduce a three-minute sign-in on a PC that downloads a huge roaming profile every time",
+      "distractors": [
+        "A failing GPU",
+        "A corrupted BIOS",
+        "Time drift"
+      ],
+      "tip": "Profile SIZE and the network pull cause it — redirect folders instead of roaming them.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-31-13'><title id='dt-c2d3-31-13'>A large roaming profile or heavy startup load makes sign-in slow; redirect folders and trim the profile.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Slow sign-in</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Sign in</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>profile is copied down</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Large profile</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>over the network</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Fix</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>redirect folders, trim</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A large roaming profile or heavy startup load makes sign-in slow;</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>redirect folders and trim the profile.</text></svg>"
+    },
+    {
+      "id": "c2d3-31-14",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.1",
+      "term": "Safe Mode",
+      "definition": "A Windows startup mode that loads only minimal drivers and services (Shift+Restart > Startup Settings, or msconfig), used to isolate driver and software problems and to remove a bad update or malware.",
+      "scenario": "start Windows with only essential drivers so a faulty driver causing a boot crash can be removed",
+      "distractors": [
+        "Hibernate",
+        "Compatibility mode",
+        "Fast Startup"
+      ],
+      "tip": "Minimal drivers and services — a clean boot is for service conflicts while Windows runs normally.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-31-14'><title id='dt-c2d3-31-14'>Safe Mode loads minimal drivers and services so you can isolate and remove what is causing a problem.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Safe Mode vs normal</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Safe Mode</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Minimal drivers load</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Basic display driver</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>No third-party startup items</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Normal mode</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>All drivers load</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Full resolution</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>All startup items run</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Safe Mode loads minimal drivers and services so you can isolate and</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>remove what is causing a problem.</text></svg>"
+    },
+    {
+      "id": "c2d3-31-15",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.1",
+      "term": "System Restore",
+      "definition": "Rolls system files, drivers, and registry settings back to an earlier restore point without touching personal files; it is not a backup of documents.",
+      "scenario": "undo a recent driver install that made the system unstable without losing any documents",
+      "distractors": [
+        "Reset this PC",
+        "Restoring a file backup",
+        "Disk Cleanup"
+      ],
+      "tip": "It rolls back SYSTEM state to a restore point — it is not a backup of your files.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-31-15'><title id='dt-c2d3-31-15'>System Restore returns system files and settings to an earlier point while leaving documents alone.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>System Restore</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Restore point</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>made before the change</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>System Restore</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>drivers, files, registry</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Rolled back</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>documents untouched</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>System Restore returns system files and settings to an earlier point</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>while leaving documents alone.</text></svg>"
+    },
+    {
+      "id": "c2d3-31-16",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.1",
+      "term": "Startup Repair and the Automatic Repair loop",
+      "definition": "After repeated boot failures Windows starts Automatic Repair in the recovery environment; Startup Repair fixes missing or damaged boot files, and if it keeps looping, the other WinRE tools help: uninstall the latest update, System Restore, or the command prompt (bootrec, offline sfc).",
+      "scenario": "get a PC that keeps cycling through \"Preparing Automatic Repair\" back into Windows",
+      "distractors": [
+        "Safe Mode",
+        "Disk Cleanup",
+        "Resetting the BIOS clock"
+      ],
+      "tip": "Work through the WinRE toolbox in order — Startup Repair, uninstall the latest update, System Restore, then command-line repair.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-31-16'><title id='dt-c2d3-31-16'>Startup Repair fixes boot files; if Automatic Repair loops, use the other recovery-environment tools.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>When Automatic Repair loops</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Startup Repair</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>fixes boot files</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Uninstall updates</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>remove the latest one</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>System Restore</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>or command-line repair</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Startup Repair fixes boot files; if Automatic Repair loops, use the</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>other recovery-environment tools.</text></svg>"
+    },
+    {
+      "id": "c2d3-31-17",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.1",
+      "term": "Stuck print queue (spooler reset)",
+      "definition": "A print job that will not print or delete can block the whole queue; stop the Print Spooler service, delete the files in the spool folder, and start the service again.",
+      "scenario": "clear a print queue in which one job will not delete and nothing else prints",
+      "distractors": [
+        "Reinstalling the printer driver",
+        "Replacing the toner",
+        "Changing the default printer"
+      ],
+      "tip": "Stop the SPOOLER, clear its folder, start it again — a software jam does not need new hardware.",
+      "diagram": "<svg viewBox='0 0 380 142' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-31-17'><title id='dt-c2d3-31-17'>Stopping the spooler and clearing its folder removes a job that is blocking the queue.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>Command Prompt (Administrator)</text><rect x='16' y='36' width='348' height='58' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>net stop spooler</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>del /Q C:\\Windows\\System32\\spool\\PRINTERS\\*</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>net start spooler</text><text x='16' y='118' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Stopping the spooler and clearing its folder removes a job that is</text><text x='16' y='130' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>blocking the queue.</text></svg>"
+    },
+    {
+      "id": "c2d3-31-18",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.1",
+      "term": "High CPU, memory, or disk usage triage",
+      "definition": "Task Manager shows which process is using CPU, memory, or disk; sort by the busy column, decide whether it is expected (updates, indexing, a scan) or suspicious, then end it, disable it at startup, or fix the cause.",
+      "scenario": "find what is making a PC crawl with the disk at 100% for no obvious reason",
+      "distractors": [
+        "Defragmenting an SSD",
+        "Reinstalling the printer",
+        "Replacing the monitor"
+      ],
+      "tip": "Sort by the busy column first — most slowdowns are one process, not failing hardware.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-31-18'><title id='dt-c2d3-31-18'>Find the process behind high resource use in Task Manager, then stop, disable, or scan it.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Performance triage</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Task Manager</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>sort CPU, disk, RAM</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Identify</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>expected or suspicious?</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Act</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>stop, disable, or scan</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Find the process behind high resource use in Task Manager, then stop,</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>disable, or scan it.</text></svg>"
+    },
+    {
+      "id": "c2d3-31-19",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.1",
+      "term": "Reliability Monitor",
+      "definition": "A Windows tool (perfmon /rel) that plots a stability index over time with markers for application failures, Windows failures, and installs, making it easy to see when instability began.",
+      "scenario": "see a timeline of crashes and failed updates to work out when a PC started becoming unstable",
+      "distractors": [
+        "Task Manager",
+        "Disk Cleanup",
+        "System Information"
+      ],
+      "tip": "A stability TIMELINE (perfmon /rel) — friendlier than raw Event Viewer logs for spotting when trouble began.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-31-19'><title id='dt-c2d3-31-19'>Reliability Monitor charts crashes and installs over time so you can see when instability began.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Reading Reliability Monitor</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Stability index</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>a score of 1 to 10 over time</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Red X</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>critical failure or crash</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Yellow !</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>warning events</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Information</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>installs and updates</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Reliability Monitor charts crashes and installs over time so you can see</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>when instability began.</text></svg>"
+    },
+    {
+      "id": "c2d3-31-20",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.1",
+      "term": "INACCESSIBLE_BOOT_DEVICE stop code",
+      "definition": "A blue screen at boot meaning Windows cannot reach its boot volume, often after a storage controller mode change (AHCI or RAID), a failed update, or a failing drive; revert the firmware setting, repair boot files, or check the drive.",
+      "scenario": "diagnose a blue screen at boot that began right after someone changed the SATA mode in firmware",
+      "distractors": [
+        "A stuck service",
+        "A corrupted user profile",
+        "A low memory warning"
+      ],
+      "tip": "The boot drive is unreachable by the driver — undo the AHCI or RAID mode change first.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-31-20'><title id='dt-c2d3-31-20'>INACCESSIBLE_BOOT_DEVICE often follows a storage mode change or boot damage; revert or repair.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Inaccessible boot device</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Firmware change</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>SATA mode switched</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Windows boots</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>wrong storage driver</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Stop code</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>revert, repair boot</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>INACCESSIBLE_BOOT_DEVICE often follows a storage mode change or boot</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>damage; revert or repair.</text></svg>"
+    },
+    {
       "id": "c2d3-32-6",
       "core": "core2",
       "domain": "c2d3",
@@ -6947,6 +10232,134 @@
       "tip": "Changes browser SETTINGS directly (extension-based) — DNS redirection instead happens at the network level, a different mechanism for a similar symptom."
     ,
       "diagram": "<svg viewBox='0 0 360 206' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-32-6'><title id='dt-c2d3-32-6'>Changes browser SETTINGS directly via an extension \u2014 a DNS redirect instead happens at the network level.</title><rect x='16' y='16' width='328' height='34' rx='6' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='180.0' y='28' font-size='9' fill='var(--muted)' text-anchor='middle' font-weight='700'>Install free PDF tool</text><text x='180.0' y='41' font-size='7.5' fill='var(--muted)' text-anchor='middle'>bundled extension included</text><line x1='180.0' y1='50' x2='180.0' y2='56' stroke='var(--muted)' stroke-width='1.5'/><path d='M176.0 54 L180.0 61 L184.0 54' fill='none' stroke='var(--muted)' stroke-width='1.5'/><rect x='16' y='62' width='328' height='34' rx='6' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.8'/><text x='180.0' y='74' font-size='9' fill='var(--text)' text-anchor='middle' font-weight='700'>Homepage/search changed</text><text x='180.0' y='87' font-size='7.5' fill='var(--text)' text-anchor='middle'>without consent</text><line x1='180.0' y1='96' x2='180.0' y2='102' stroke='var(--muted)' stroke-width='1.5'/><path d='M176.0 100 L180.0 107 L184.0 100' fill='none' stroke='var(--muted)' stroke-width='1.5'/><rect x='16' y='108' width='328' height='34' rx='6' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='180.0' y='120' font-size='9' fill='var(--muted)' text-anchor='middle' font-weight='700'>Manually revert it</text><text x='180.0' y='133' font-size='7.5' fill='var(--muted)' text-anchor='middle'>reverts again on its own</text><text x='16' y='184' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Changes browser SETTINGS directly via an extension \u2014 a DNS redirect instead</text><text x='16' y='196' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>happens at the network level.</text></svg>"},
+    {
+      "id": "c2d3-32-7",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.2",
+      "term": "Antivirus disabled or unable to update",
+      "definition": "Malware commonly turns off antivirus or blocks its updates; a protection service that will not start, repeated \"turned off\" alerts, or a failing update are signs of infection.",
+      "scenario": "interpret a PC whose antivirus switched itself off and cannot download updates",
+      "distractors": [
+        "A corrupted user profile",
+        "A failing hard drive",
+        "A metered connection"
+      ],
+      "tip": "Malware attacks the defenses FIRST — treat a disabled antivirus as a symptom, not just a setting.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-32-7'><title id='dt-c2d3-32-7'>Antivirus that turns off or cannot update is a common sign of malware interference.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>When protection is tampered with</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Infection</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>gets a foothold</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Defenses off</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>AV off, no updates</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Respond</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>isolate, boot-time scan</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Antivirus that turns off or cannot update is a common sign of malware</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>interference.</text></svg>"
+    },
+    {
+      "id": "c2d3-32-8",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.2",
+      "term": "Windows Update failure",
+      "definition": "Updates that repeatedly fail or never install can come from corrupted update components, low disk space, a wrong clock, or malware; run the Windows Update troubleshooter, then DISM and sfc, then reset the update components.",
+      "scenario": "fix a PC that cannot install updates and shows an error code after repeated attempts",
+      "distractors": [
+        "A metered connection",
+        "Time drift",
+        "A low memory warning"
+      ],
+      "tip": "Try the update TROUBLESHOOTER first, then DISM and sfc, then reset the update components.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-32-8'><title id='dt-c2d3-32-8'>Failed updates are fixed by the troubleshooter, DISM and sfc, and finally resetting update components.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Fixing failed updates</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Troubleshooter</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>built-in fix-it</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>DISM and sfc</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>repair system files</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Reset components</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>clear update cache</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Failed updates are fixed by the troubleshooter, DISM and sfc, and</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>finally resetting update components.</text></svg>"
+    },
+    {
+      "id": "c2d3-32-9",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.2",
+      "term": "Compromised email account",
+      "definition": "When contacts receive spam from a user, or sent items show messages the user never wrote, the mailbox is compromised; change the password, enable MFA, sign out all sessions, and check for forwarding rules and delegates.",
+      "scenario": "respond to coworkers reporting spam sent from a user's mailbox that appears in the user's own sent items",
+      "distractors": [
+        "A spoofed sender address only",
+        "A DDoS attack",
+        "A browser cache problem"
+      ],
+      "tip": "Messages in the SENT folder prove the account itself was used — reset, add MFA, and remove attacker forwarding rules.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-32-9'><title id='dt-c2d3-32-9'>Mail the user never sent means the account is compromised: reset it, add MFA, and remove attacker rules.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Email account takeover</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Spam from user</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>shows in sent items</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Reset and MFA</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>sign out all sessions</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Check rules</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>forwarding, delegates</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Mail the user never sent means the account is compromised: reset it, add</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>MFA, and remove attacker rules.</text></svg>"
+    },
+    {
+      "id": "c2d3-32-10",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.2",
+      "term": "Hosts file tampering",
+      "definition": "The local hosts file maps names to IP addresses before DNS is consulted; malware can add entries that send sites such as a bank or an update server to an attacker's address, or block security sites.",
+      "scenario": "explain why one PC reaches a fake bank page while every other PC on the network reaches the real site",
+      "distractors": [
+        "A browser cache problem",
+        "A metered connection",
+        "Time drift"
+      ],
+      "tip": "Only THIS PC is affected and names are overridden locally — check the hosts file before blaming DNS.",
+      "diagram": "<svg viewBox='0 0 380 156' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-32-10'><title id='dt-c2d3-32-10'>Malware can edit the hosts file so chosen sites resolve to an attacker&#39;s address on that PC.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>hosts file</text><rect x='16' y='36' width='348' height='72' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>type C:\\Windows\\System32\\drivers\\etc\\hosts</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'># normal lines start with #</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>203.0.113.50   www.mybank.example</text><text x='28' y='96' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>203.0.113.50   update.microsoft.com</text><text x='16' y='132' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Malware can edit the hosts file so chosen sites resolve to an attacker&#39;s</text><text x='16' y='144' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>address on that PC.</text></svg>"
+    },
+    {
+      "id": "c2d3-32-11",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.2",
+      "term": "Unauthorized file and permission changes",
+      "definition": "Files that are renamed, moved, or deleted, or permissions that change, without anyone doing it can indicate malware, ransomware, or unauthorized access; check logs, isolate the system, and restore from a clean backup.",
+      "scenario": "investigate shared folders where files were renamed and permissions altered overnight with no change ticket",
+      "distractors": [
+        "A scheduled defragmentation",
+        "A normal Windows Update",
+        "A full backup running"
+      ],
+      "tip": "Changes with no ticket and no owner are an indicator of compromise — isolate before restoring.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-32-11'><title id='dt-c2d3-32-11'>Unexplained file or permission changes suggest compromise; investigate, isolate, then restore.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Unexplained changes</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Unexpected change</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>files, ACLs, names</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Check the logs</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>who and when</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Isolate, restore</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>from a clean backup</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Unexplained file or permission changes suggest compromise; investigate,</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>isolate, then restore.</text></svg>"
+    },
+    {
+      "id": "c2d3-32-12",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.2",
+      "term": "Unusual outbound network traffic",
+      "definition": "A computer sending large or constant traffic to unknown destinations, especially off-hours, can indicate malware, a botnet, or data theft; verify the connections with netstat or a monitor, then isolate and scan it.",
+      "scenario": "explain why a workstation sends gigabytes of data to an unknown foreign address in the middle of the night",
+      "distractors": [
+        "A scheduled Windows Update",
+        "A normal DHCP renewal",
+        "A print job"
+      ],
+      "tip": "Check the destinations with netstat — constant unexplained traffic off-hours is exfiltration or a botnet until proven otherwise.",
+      "diagram": "<svg viewBox='0 0 380 142' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-32-12'><title id='dt-c2d3-32-12'>Constant traffic to unknown hosts, especially off-hours, can mean malware or data theft.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>Command Prompt</text><rect x='16' y='36' width='348' height='58' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>netstat -ano</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>TCP 192.168.1.40:51022  203.0.113.9:443 ESTAB 4120</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>TCP 192.168.1.40:51023  203.0.113.9:443 ESTAB 4120</text><text x='16' y='118' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Constant traffic to unknown hosts, especially off-hours, can mean</text><text x='16' y='130' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>malware or data theft.</text></svg>"
+    },
+    {
+      "id": "c2d3-32-13",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.2",
+      "term": "Potentially unwanted program (PUP)",
+      "definition": "Software bundled with a legitimate installer that adds toolbars, adware, or trackers the user did not intend; remove it in Programs and Features, run an antimalware scan, and use Custom installs to decline extras.",
+      "scenario": "explain how a browser got a new toolbar and a changed search engine after a free PDF tool was installed",
+      "distractors": [
+        "A zero-day exploit",
+        "A boot sector virus",
+        "A worm"
+      ],
+      "tip": "It was BUNDLED with a wanted installer — choose Custom installs and uncheck the extras.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-32-13'><title id='dt-c2d3-32-13'>PUPs ride along with wanted installers and add toolbars or adware; uninstall and scan.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Potentially unwanted programs</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Free installer</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>the wanted app</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Bundled extras</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>toolbar, adware</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Cleanup</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>uninstall and scan</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>PUPs ride along with wanted installers and add toolbars or adware;</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>uninstall and scan.</text></svg>"
+    },
+    {
+      "id": "c2d3-32-14",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.2",
+      "term": "Unexplained lockouts and reset notices",
+      "definition": "Repeated account lockouts, or password-reset emails the user did not request, suggest someone is guessing or testing credentials; review sign-in logs, reset passwords, and enforce MFA.",
+      "scenario": "explain why several users were locked out overnight and received password-reset emails they never requested",
+      "distractors": [
+        "A DHCP failure",
+        "A cleared browser cache",
+        "A metered connection"
+      ],
+      "tip": "Someone is TRYING the accounts — check the logs, add MFA, and watch for a later successful sign-in.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-32-14'><title id='dt-c2d3-32-14'>Unexpected lockouts and reset emails are signs that someone is attacking the accounts.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Credential attack signs</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Many failed sign-ins</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>from one source</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Lockouts and resets</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>users notice</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Respond</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>block, MFA, review logs</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Unexpected lockouts and reset emails are signs that someone is attacking</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>the accounts.</text></svg>"
+    },
     {
       "id": "c2d3-33-6",
       "core": "core2",
@@ -6964,6 +10377,102 @@
     ,
       "diagram": "<svg viewBox='0 0 380 205' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-33-6'><title id='dt-c2d3-33-6'>A sudden spike in cellular data is often one misbehaving app syncing excessively, found via per-app data stats.</title><line x1='30' y1='110' x2='350' y2='110' stroke='var(--border)' stroke-width='1.5'/><rect x='55' y='90' width='50' height='20' rx='3' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.5'/><text x='80' y='122' font-size='6.6' fill='var(--muted)' text-anchor='middle'>Mail</text><rect x='133' y='82' width='50' height='28' rx='3' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.5'/><text x='158' y='122' font-size='6.6' fill='var(--muted)' text-anchor='middle'>Maps</text><rect x='211' y='20' width='50' height='90' rx='3' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.5'/><text x='236' y='122' font-size='6.6' fill='var(--muted)' text-anchor='middle'>Photos</text><rect x='289' y='76' width='50' height='34' rx='3' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.5'/><text x='314' y='122' font-size='6.6' fill='var(--muted)' text-anchor='middle'>Social</text><text x='314' y='40' font-size='6.3' fill='var(--red)' text-anchor='middle' font-weight='700'>background sync</text><text x='190' y='142' font-size='7.3' fill='var(--text)' text-anchor='middle'>Check PER-APP data stats to isolate a background-</text><text x='190' y='154' font-size='7.3' fill='var(--text)' text-anchor='middle'>syncing app or stuck cloud backup as the culprit.</text><text x='16' y='183' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A sudden spike in cellular data is often one misbehaving app syncing</text><text x='16' y='195' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>excessively, found via per-app data stats.</text></svg>"},
     {
+      "id": "c2d3-33-7",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.3",
+      "term": "Random mobile reboots",
+      "definition": "A phone or tablet that restarts on its own may be overheating, have a failing battery, a bad OS update, or a faulty or malicious app; remove recent apps, update, check battery health, and factory reset as a last step.",
+      "scenario": "diagnose a phone that restarts several times a day after a new app was installed",
+      "distractors": [
+        "A low-storage warning",
+        "A Bluetooth pairing problem",
+        "Auto-rotate being off"
+      ],
+      "tip": "Check recent apps and updates, heat, and battery health BEFORE jumping to a factory reset.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-33-7'><title id='dt-c2d3-33-7'>Random reboots point to an app, update, heat, or battery problem; reset only as a last resort.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Random reboots</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Remove recent apps</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>and clear heat</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Update OS and apps</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>fix known bugs</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Factory reset</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>last resort</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Random reboots point to an app, update, heat, or battery problem; reset</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>only as a last resort.</text></svg>"
+    },
+    {
+      "id": "c2d3-33-8",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.3",
+      "term": "Screen does not auto-rotate",
+      "definition": "If the display stays in one orientation, check that rotation lock is off in quick settings, that the app supports rotation, and that the accelerometer works, restarting the device if needed.",
+      "scenario": "fix a tablet whose display stays in portrait when it is turned sideways",
+      "distractors": [
+        "A failing battery",
+        "Airplane mode being on",
+        "Low storage"
+      ],
+      "tip": "Check the rotation LOCK first, then whether the app supports landscape.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-33-8'><title id='dt-c2d3-33-8'>Rotation lock is the usual cause of a screen that will not rotate; check it first.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Auto-rotate not working</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Quick settings</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>is rotation locked?</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>App support</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>some apps stay portrait</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Restart</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>then test the sensor</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Rotation lock is the usual cause of a screen that will not rotate; check</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>it first.</text></svg>"
+    },
+    {
+      "id": "c2d3-33-9",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.3",
+      "term": "Mobile factory reset",
+      "definition": "Restoring a phone or tablet to its default state erases all data and apps, so it is a last resort after restart, update, and removing apps fail, and a backup should be made first.",
+      "scenario": "return a persistently misbehaving phone to a clean state after every other fix has failed",
+      "distractors": [
+        "Force-closing the app",
+        "Clearing the app cache",
+        "Restarting the device"
+      ],
+      "tip": "A last resort that ERASES data — back up first, and try the lighter fixes before it.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-33-9'><title id='dt-c2d3-33-9'>A factory reset wipes a mobile device to defaults, so back up first and use it last.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Factory reset</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Back up</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>cloud or computer</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Factory reset</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>erases everything</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Restore</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>apps and data</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A factory reset wipes a mobile device to defaults, so back up first and</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>use it last.</text></svg>"
+    },
+    {
+      "id": "c2d3-33-10",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.3",
+      "term": "Mobile app install or update failure",
+      "definition": "App installs and updates fail when storage is full, the OS is too old, the store account has a problem, or the store cache is corrupt; free space, update the OS, check the account, and clear the store's cache.",
+      "scenario": "fix an app that will not update and shows an error even though Wi-Fi works",
+      "distractors": [
+        "A rotation lock",
+        "A failing battery",
+        "A Bluetooth pairing problem"
+      ],
+      "tip": "Check STORAGE, OS version, and the store account — not just the network.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-33-10'><title id='dt-c2d3-33-10'>Failed installs usually come from low storage, an old OS, or a store account or cache problem.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>App will not update</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Storage</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>free up space</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>OS version</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>meets the requirement</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Store cache</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>clear and retry</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Failed installs usually come from low storage, an old OS, or a store</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>account or cache problem.</text></svg>"
+    },
+    {
+      "id": "c2d3-33-11",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.3",
+      "term": "Sluggish mobile performance",
+      "definition": "A slow, laggy phone is usually low storage, too many background apps, an out-of-date OS, or an aging battery throttling the processor; restart, close apps, free space, update, and check battery health.",
+      "scenario": "speed up a phone that lags and runs warm after months of use",
+      "distractors": [
+        "A rotation lock",
+        "A Bluetooth pairing problem",
+        "A SIM card change"
+      ],
+      "tip": "Free STORAGE, restart, and update before resorting to a factory reset.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-33-11'><title id='dt-c2d3-33-11'>Low storage, background apps, an old OS, and a worn battery are the usual causes of a slow phone.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Sluggish phone checklist</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Storage</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>free space below ~10% slows it</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Background apps</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>close or restrict them</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Updates</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>install OS and app updates</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Battery</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>a worn one can throttle speed</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Low storage, background apps, an old OS, and a worn battery are the</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>usual causes of a slow phone.</text></svg>"
+    },
+    {
+      "id": "c2d3-33-12",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.3",
+      "term": "Mobile overheating and swollen battery",
+      "definition": "A very hot device may be caused by heavy use while charging, direct sun, a runaway app, or a failing battery; a bulging battery is a safety hazard, so stop using and charging the device and have the battery replaced.",
+      "scenario": "respond to a tablet that gets very hot and whose back cover is starting to bulge",
+      "distractors": [
+        "Clearing the app cache",
+        "Disabling Bluetooth",
+        "Turning on auto-rotate"
+      ],
+      "tip": "A bulging battery is a SAFETY problem — stop charging it and replace it, do not just tweak settings.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-33-12'><title id='dt-c2d3-33-12'>A hot device with a bulging battery is a safety hazard that needs a replacement battery.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Overheating</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Hot device</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>stop heavy use</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Check the battery</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>swelling is a hazard</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Replace it</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>do not charge or puncture</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A hot device with a bulging battery is a safety hazard that needs a</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>replacement battery.</text></svg>"
+    },
+    {
       "id": "c2d3-34-6",
       "core": "core2",
       "domain": "c2d3",
@@ -6979,6 +10488,102 @@
       "tip": "CREDENTIALS still valid, requests just throttled — that distinguishes it from an outage or expired license, which would reject everything outright."
     ,
       "diagram": "<svg viewBox='0 0 380 190' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-34-6'><title id='dt-c2d3-34-6'>Exceeding a request-rate cap throttles or rejects calls even though the service and credentials remain valid.</title><line x1='30' y1='100' x2='350' y2='100' stroke='var(--border)' stroke-width='1.5'/><circle cx='30' cy='92' r='3' fill='var(--green)'/><circle cx='90' cy='90' r='3' fill='var(--green)'/><circle cx='150' cy='92' r='3' fill='var(--green)'/><rect x='180' y='50' width='90' height='50' rx='5' fill='var(--red-soft)' stroke='var(--red)' stroke-width='2'/><text x='225' y='68' font-size='7' fill='var(--red)' text-anchor='middle' font-weight='700'>Busiest hour</text><text x='225' y='82' font-size='6.4' fill='var(--red)' text-anchor='middle'>429 throttled/</text><text x='225' y='92' font-size='6.4' fill='var(--red)' text-anchor='middle'>rejected</text><circle cx='300' cy='92' r='3' fill='var(--green)'/><circle cx='330' cy='90' r='3' fill='var(--green)'/><text x='300' y='108' font-size='6.2' fill='var(--green)' text-anchor='middle'>recovers</text><text x='190' y='138' font-size='7.3' fill='var(--text)' text-anchor='middle'>Credentials stay VALID, requests just throttled \u2014 unlike</text><text x='190' y='150' font-size='7.3' fill='var(--text)' text-anchor='middle'>an outage or expired license, which reject everything.</text><text x='16' y='168' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Exceeding a request-rate cap throttles or rejects calls even though the service</text><text x='16' y='180' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>and credentials remain valid.</text></svg>"},
+    {
+      "id": "c2d3-35-1",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.5",
+      "term": "Excessive mobile ads and fake warnings",
+      "definition": "A sudden flood of full-screen ads or \"virus detected\" warnings outside any app points to adware or a malicious app or website notification permission; remove the app and revoke the permission.",
+      "scenario": "diagnose a phone that suddenly shows full-screen ads and \"your device is infected\" warnings on the home screen",
+      "distractors": [
+        "A failing battery",
+        "Low storage",
+        "A rotation lock"
+      ],
+      "tip": "Ads OUTSIDE apps point to a malicious app or notification permission — find and remove it.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-35-1'><title id='dt-c2d3-35-1'>Ads and fake alerts outside any app signal adware or an abused notification permission.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Adware on a phone</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Ads and warnings</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>appear everywhere</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Find the source</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>recent app or site</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Remove it</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>and revoke permissions</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Ads and fake alerts outside any app signal adware or an abused</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>notification permission.</text></svg>"
+    },
+    {
+      "id": "c2d3-35-2",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.5",
+      "term": "Spoofed (bootleg) apps",
+      "definition": "Fake apps that copy the name and icon of a legitimate app, often in unofficial stores or even slipping into official ones, to steal logins or deliver malware; verify the publisher and install only from official stores.",
+      "scenario": "identify an app that copies a bank's name and icon in order to steal logins",
+      "distractors": [
+        "A legitimate app update",
+        "An MDM profile",
+        "A VPN app"
+      ],
+      "tip": "A LOOK-ALIKE of a real app — check the publisher and download count, and use the official store.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-35-2'><title id='dt-c2d3-35-2'>Spoofed apps imitate real ones; checking the publisher and source exposes them.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Telling them apart</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Genuine app</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Verified publisher</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Millions of installs</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Official store link</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Spoofed app</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Odd publisher name</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Few reviews or installs</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Asks for extra permissions</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Spoofed apps imitate real ones; checking the publisher and source</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>exposes them.</text></svg>"
+    },
+    {
+      "id": "c2d3-35-3",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.5",
+      "term": "Developer mode and USB debugging",
+      "definition": "Enabling developer options and USB debugging lets a connected computer control the phone and install apps, so it should stay off unless needed, especially when plugging into unknown computers or charging ports.",
+      "scenario": "explain why a phone left with USB debugging on is riskier to charge at a public charging station",
+      "distractors": [
+        "Airplane mode",
+        "Do Not Disturb",
+        "Auto-rotate"
+      ],
+      "tip": "USB debugging gives a connected computer DEEP control — leave it off unless you are actively developing.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-35-3'><title id='dt-c2d3-35-3'>USB debugging lets a connected computer control the phone, so it should stay off when not needed.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Why to leave it off</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>USB debugging on</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>developer option enabled</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Plugged in</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>untrusted computer or port</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Device exposed</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>apps and data at risk</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>USB debugging lets a connected computer control the phone, so it should</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>stay off when not needed.</text></svg>"
+    },
+    {
+      "id": "c2d3-35-4",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.5",
+      "term": "Excessive app permissions",
+      "definition": "An app that requests or uses permissions unrelated to its purpose, such as a flashlight app wanting contacts and the microphone, is a red flag; review permissions in privacy settings and revoke or uninstall.",
+      "scenario": "reduce risk from a flashlight app that asks for contacts, microphone, and location access",
+      "distractors": [
+        "Sideloading",
+        "A VPN",
+        "A biometric lock"
+      ],
+      "tip": "Permissions that do not match the app's PURPOSE are the warning — revoke them or uninstall.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-35-4'><title id='dt-c2d3-35-4'>Permissions unrelated to an app&#39;s function are a warning sign; review and revoke them.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Does the permission fit the app?</text><rect x='16' y='30' width='87' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='59.5' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>App</text><rect x='103' y='30' width='121.8' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='163.9' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Reasonable permission</text><rect x='224.8' y='30' width='139.2' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='294.4' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Suspicious request</text><rect x='16' y='50' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>Flashlight</text><rect x='103' y='50' width='121.8' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='163.9' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>camera light</text><rect x='224.8' y='50' width='139.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='294.4' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>contacts, microphone</text><rect x='16' y='70' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>Maps</text><rect x='103' y='70' width='121.8' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='163.9' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>location</text><rect x='224.8' y='70' width='139.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='294.4' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>SMS, call log</text><rect x='16' y='90' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>Calculator</text><rect x='103' y='90' width='121.8' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='163.9' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>none</text><rect x='224.8' y='90' width='139.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='294.4' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>camera, location</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Permissions unrelated to an app&#39;s function are a warning sign; review</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>and revoke them.</text></svg>"
+    },
+    {
+      "id": "c2d3-35-5",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.5",
+      "term": "Leaked personal data (mobile)",
+      "definition": "Personal photos, contacts, or messages appearing online, or accounts accessed by others, can come from over-permissioned apps, malware, or a compromised cloud account; change passwords, add MFA, review permissions, and remove the culprit.",
+      "scenario": "respond when a user's private photos and contacts are found online after installing several free apps",
+      "distractors": [
+        "A failing battery",
+        "Low storage",
+        "A slow update"
+      ],
+      "tip": "Review app PERMISSIONS and the cloud account together — both are common leak paths.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-35-5'><title id='dt-c2d3-35-5'>Leaked mobile data is handled by securing accounts and reviewing the apps and permissions behind it.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Responding to a leak</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Leak found</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>photos, contacts online</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Contain</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>change passwords, add MFA</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Clean up</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>review apps and permissions</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Leaked mobile data is handled by securing accounts and reviewing the</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>apps and permissions behind it.</text></svg>"
+    },
+    {
+      "id": "c2d3-35-6",
+      "core": "core2",
+      "domain": "c2d3",
+      "objective": "3.5",
+      "term": "Unexpected app behavior and unknown installs",
+      "definition": "Apps that open or close on their own, unknown apps appearing, or calls and texts the user did not send are signs of malware or a compromised account; review installed apps and permissions, scan, and reset if it returns.",
+      "scenario": "investigate a phone that is sending text messages its owner never wrote and shows apps nobody installed",
+      "distractors": [
+        "A weak cellular signal",
+        "A full battery",
+        "A rotation lock"
+      ],
+      "tip": "Actions the user did not take point to malware — check recent installs and permissions first.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d3-35-6'><title id='dt-c2d3-35-6'>Unknown apps or messages the owner did not send point to malware on a mobile device.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Unexplained mobile behavior</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Unknown apps</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>or messages sent</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Review</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>installs and permissions</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Remove and scan</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>reset if it returns</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Unknown apps or messages the owner did not send point to malware on a</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>mobile device.</text></svg>"
+    },
     {
       "id": "c2d4-41-6",
       "core": "core2",
@@ -6996,6 +10601,86 @@
     ,
       "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-41-6'><title id='dt-c2d4-41-6'>Hands a ticket to a higher tier when the current tech lacks the access, expertise, or time within SLA.</title><rect x='20' y='30' width='140' height='50' rx='6' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><text x='90' y='50' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>L1 technician</text><text x='90' y='64' font-size='6.4' fill='var(--red)' text-anchor='middle'>no DB server access</text><line x1='165' y1='55' x2='214' y2='55' stroke='var(--muted)' stroke-width='1.5'/><path d='M212 51 L219 55 L212 59' fill='none' stroke='var(--muted)' stroke-width='1.5'/><text x='192' y='40' font-size='6.5' fill='var(--muted)' text-anchor='middle'>escalate</text><rect x='220' y='30' width='140' height='50' rx='6' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='2'/><text x='290' y='50' font-size='8' fill='var(--primary)' text-anchor='middle' font-weight='700'>L2 / specialist</text><text x='290' y='64' font-size='6.4' fill='var(--primary)' text-anchor='middle'>has the required access</text><text x='190' y='100' font-size='7.3' fill='var(--text)' text-anchor='middle'>Goes UP a tier for expertise/access \u2014 a same-level</text><text x='190' y='112' font-size='7.3' fill='var(--text)' text-anchor='middle'>reassignment does not solve a skill/access gap.</text><text x='16' y='143' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Hands a ticket to a higher tier when the current tech lacks the access,</text><text x='16' y='155' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>expertise, or time within SLA.</text></svg>"},
     {
+      "id": "c2d4-41-7",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.1",
+      "term": "Ticket severity and priority",
+      "definition": "Ranking tickets by category, impact, and urgency so critical outages are handled before minor requests, with response targets for each level.",
+      "scenario": "decide that a server outage affecting every employee is handled before a request for a second monitor",
+      "distractors": [
+        "A first-come, first-served queue",
+        "A ticket closure code",
+        "A knowledge base article"
+      ],
+      "tip": "IMPACT and urgency set the order, not arrival time.",
+      "diagram": "<svg viewBox='0 0 380 178' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-41-7'><title id='dt-c2d4-41-7'>Severity combines impact and urgency to decide which tickets are worked first.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Typical severity levels</text><rect x='16' y='30' width='87' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='59.5' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Severity</text><rect x='103' y='30' width='156.6' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='181.3' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Example</text><rect x='259.6' y='30' width='104.4' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='311.8' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Response</text><rect x='16' y='50' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>1 Critical</text><rect x='103' y='50' width='156.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='181.3' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>company-wide outage</text><rect x='259.6' y='50' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='311.8' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>immediate</text><rect x='16' y='70' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>2 High</text><rect x='103' y='70' width='156.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='181.3' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>department is down</text><rect x='259.6' y='70' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='311.8' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>within hours</text><rect x='16' y='90' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>3 Medium</text><rect x='103' y='90' width='156.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='181.3' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>one user is blocked</text><rect x='259.6' y='90' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='311.8' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>same day</text><rect x='16' y='110' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='123.2' font-size='7' fill='var(--text)' text-anchor='middle'>4 Low</text><rect x='103' y='110' width='156.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='181.3' y='123.2' font-size='7' fill='var(--text)' text-anchor='middle'>how-to or request</text><rect x='259.6' y='110' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='311.8' y='123.2' font-size='7' fill='var(--text)' text-anchor='middle'>scheduled</text><text x='16' y='154' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Severity combines impact and urgency to decide which tickets are worked</text><text x='16' y='166' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>first.</text></svg>"
+    },
+    {
+      "id": "c2d4-41-8",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.1",
+      "term": "Ticket progress notes and resolution",
+      "definition": "Recording a clear problem description, each step taken, and the final resolution in the ticket so others can follow the work and reuse the fix.",
+      "scenario": "make sure a colleague taking over a case can see what was already tried and how it was solved",
+      "distractors": [
+        "An escalation path",
+        "An asset tag",
+        "An SLA"
+      ],
+      "tip": "It records what was TRIED and what fixed it — the raw material for a knowledge base article.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-41-8'><title id='dt-c2d4-41-8'>Clear descriptions, progress notes, and the resolution make a ticket useful to the next technician.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Documenting a ticket</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Describe</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>clear problem statement</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Log each step</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>what was tried</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Resolution</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>what finally fixed it</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Clear descriptions, progress notes, and the resolution make a ticket</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>useful to the next technician.</text></svg>"
+    },
+    {
+      "id": "c2d4-41-9",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.1",
+      "term": "Asset life cycle",
+      "definition": "The stages an asset passes through: procurement, deployment and assignment, maintenance, and retirement or disposal, with warranty, license, and owner details tracked throughout.",
+      "scenario": "track a laptop from purchase and warranty through assignment to a user and eventual secure disposal",
+      "distractors": [
+        "A change request",
+        "A backup rotation",
+        "A ticket escalation"
+      ],
+      "tip": "The device's whole LIFE: procure, deploy, maintain, retire — each stage needs records.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-41-9'><title id='dt-c2d4-41-9'>Asset tracking follows a device from procurement through use to secure disposal.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Asset life cycle</text><rect x='16' y='30' width='75' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='53.5' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Procure</text><text x='53.5' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>buy, warranty</text><line x1='93' y1='53' x2='105' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M101 50 L105 53 L101 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='107' y='30' width='75' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='144.5' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Deploy</text><text x='144.5' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>tag and assign</text><line x1='184' y1='53' x2='196' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M192 50 L196 53 L192 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='198' y='30' width='75' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='235.5' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Maintain</text><text x='235.5' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>repair, update</text><line x1='275' y1='53' x2='287' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M283 50 L287 53 L283 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='289' y='30' width='75' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='326.5' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Retire</text><text x='326.5' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>wipe, dispose</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Asset tracking follows a device from procurement through use to secure</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>disposal.</text></svg>"
+    },
+    {
+      "id": "c2d4-41-10",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.1",
+      "term": "New-user setup checklist",
+      "definition": "A document listing every onboarding task for a new employee, such as accounts, permissions, hardware, software, and training, so setup is consistent and nothing is forgotten.",
+      "scenario": "make sure every new hire receives the same accounts, hardware, and access without steps being missed",
+      "distractors": [
+        "An end-user termination checklist",
+        "An incident report",
+        "A backup SOP"
+      ],
+      "tip": "It covers ONBOARDING — the termination checklist handles accounts and equipment when someone leaves.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-41-10'><title id='dt-c2d4-41-10'>A new-user checklist makes onboarding consistent: accounts, access, hardware, and training.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Onboarding checklist</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Accounts</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>email, directory, apps</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Access</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>groups and permissions</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Hardware</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>laptop, phone, badge</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Training</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>security and policies</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A new-user checklist makes onboarding consistent: accounts, access,</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>hardware, and training.</text></svg>"
+    },
+    {
+      "id": "c2d4-41-11",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.1",
+      "term": "End-user termination checklist",
+      "definition": "The offboarding steps for a departing employee: disable accounts, revoke access, collect equipment and badges, and preserve or reassign their data.",
+      "scenario": "make sure a departing employee's access is revoked and equipment is returned the same day",
+      "distractors": [
+        "A new-user setup checklist",
+        "A change request",
+        "An incident report"
+      ],
+      "tip": "Disable access FIRST and collect assets — the risk from an insider peaks around departure.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-41-11'><title id='dt-c2d4-41-11'>A termination checklist removes access and recovers assets when someone leaves.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Offboarding</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Disable accounts</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>and revoke access</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Collect assets</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>laptop, badge, keys</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Preserve data</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>reassign and archive</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A termination checklist removes access and recovers assets when someone</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>leaves.</text></svg>"
+    },
+    {
       "id": "c2d4-42-6",
       "core": "core2",
       "domain": "c2d4",
@@ -7011,6 +10696,70 @@
       "tip": "A GROUP decision, not one technician's call — the formal review body that weighs risk and impact before approving significant changes."
     ,
       "diagram": "<svg viewBox='0 0 380 190' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-42-6'><title id='dt-c2d4-42-6'>A group of stakeholders who formally review and approve significant changes, weighing risk, scope, and impact.</title><rect x='130' y='16' width='120' height='22' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><text x='190' y='31' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Proposed change</text><line x1='190' y1='38' x2='190' y2='50' stroke='var(--muted)' stroke-width='1.5'/><path d='M186 48 L190 55 L194 48' fill='none' stroke='var(--muted)' stroke-width='1.5'/><rect x='50' y='58' width='280' height='50' rx='6' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='2'/><text x='190' y='76' font-size='8' fill='var(--primary)' text-anchor='middle' font-weight='700'>Change Advisory Board</text><text x='190' y='92' font-size='6.6' fill='var(--primary)' text-anchor='middle'>a GROUP weighing risk, scope, impact</text><text x='190' y='128' font-size='7.3' fill='var(--text)' text-anchor='middle'>Not one technician\u2019s call \u2014 the formal review body</text><text x='190' y='140' font-size='7.3' fill='var(--text)' text-anchor='middle'>that must sign off before implementation.</text><text x='16' y='168' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A group of stakeholders who formally review and approve significant changes,</text><text x='16' y='180' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>weighing risk, scope, and impact.</text></svg>"},
+    {
+      "id": "c2d4-42-7",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.2",
+      "term": "Sandbox testing (change management)",
+      "definition": "Testing a change in an isolated environment that mirrors production before deploying it, so problems are found without affecting real users.",
+      "scenario": "verify that a new patch does not break the line-of-business application without touching production",
+      "distractors": [
+        "Deploying to production first",
+        "Skipping tests for small changes",
+        "A rollback plan"
+      ],
+      "tip": "Test BEFORE production in an isolated copy — a rollback plan is for when deployment goes wrong.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-42-7'><title id='dt-c2d4-42-7'>Sandbox testing proves a change works in an isolated copy before production sees it.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Test before you deploy</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Sandbox</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>isolated copy</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Test the change</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>verify behavior</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Production</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>only if it passes</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Sandbox testing proves a change works in an isolated copy before</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>production sees it.</text></svg>"
+    },
+    {
+      "id": "c2d4-42-8",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.2",
+      "term": "End-user acceptance",
+      "definition": "Users confirm after implementation that the change works for their real workflows, and only then is the change closed.",
+      "scenario": "have the accounting team confirm that the upgraded software works for their workflows before the change is closed",
+      "distractors": [
+        "Change board approval",
+        "Risk analysis",
+        "A backout plan"
+      ],
+      "tip": "Users sign off AFTER implementation — change board approval happens before it.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-42-8'><title id='dt-c2d4-42-8'>End-user acceptance confirms the finished change actually works for the people who use it.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Closing a change</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Implement</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>change is made</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Users test</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>real workflows</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Acceptance</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>change is closed</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>End-user acceptance confirms the finished change actually works for the</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>people who use it.</text></svg>"
+    },
+    {
+      "id": "c2d4-42-9",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.2",
+      "term": "Maintenance window",
+      "definition": "A scheduled period, usually when few people are working, set aside for planned changes, announced to stakeholders in advance, with a deadline to finish or roll back.",
+      "scenario": "schedule a server patch for Sunday at 2 a.m., when few users are online, and tell stakeholders in advance",
+      "distractors": [
+        "An emergency change",
+        "A backout plan",
+        "Risk analysis"
+      ],
+      "tip": "Pick the lowest-impact TIME and announce it ahead — it is the \"date and time\" part of the change plan.",
+      "diagram": "<svg viewBox='0 0 380 146' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-42-9'><title id='dt-c2d4-42-9'>A maintenance window schedules a change for the least disruptive time and announces it first.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Maintenance window</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>When</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>a low-usage period</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Notify</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>stakeholders in advance</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Deadline</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>finish or roll back by then</text><text x='16' y='122' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A maintenance window schedules a change for the least disruptive time</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>and announces it first.</text></svg>"
+    },
+    {
+      "id": "c2d4-42-10",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.2",
+      "term": "Emergency change",
+      "definition": "A fast-tracked change made to fix a critical outage or security problem, approved quickly and documented and reviewed afterwards, unlike pre-approved standard changes.",
+      "scenario": "apply a fix to a down production system immediately and document it for review afterwards",
+      "distractors": [
+        "A standard change",
+        "A normal scheduled change",
+        "Sandbox testing"
+      ],
+      "tip": "Fast-tracked for a critical outage and reviewed AFTER — a standard change is pre-approved and routine.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-42-10'><title id='dt-c2d4-42-10'>Emergency changes skip normal lead time to fix critical problems, then are reviewed afterwards.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Change types</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Standard change</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Pre-approved</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Low risk and repeatable</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Example: a routine patch</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Emergency change</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Fast-tracked approval</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Fixes a critical outage</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Reviewed afterwards</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Emergency changes skip normal lead time to fix critical problems, then</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>are reviewed afterwards.</text></svg>"
+    },
     {
       "id": "c2d4-43-6",
       "core": "core2",
@@ -7028,6 +10777,86 @@
     ,
       "diagram": "<svg viewBox='0 0 380 155' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-43-6'><title id='dt-c2d4-43-6'>Keeps daily (son), weekly (father), and monthly (grandfather) backup sets rather than every daily backup ever made.</title><rect x='30' y='26' width='100' height='46' rx='5' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.5'/><text x='80' y='46' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Son</text><text x='80' y='60' font-size='6.4' fill='var(--muted)' text-anchor='middle'>daily \u00d7 7</text><rect x='142' y='26' width='100' height='46' rx='5' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.5'/><text x='192' y='46' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Father</text><text x='192' y='60' font-size='6.4' fill='var(--muted)' text-anchor='middle'>weekly \u00d7 4</text><rect x='254' y='26' width='100' height='46' rx='5' fill='var(--violet)' fill-opacity='0.12' stroke='var(--violet)' stroke-width='1.5'/><text x='304' y='46' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Grandfather</text><text x='304' y='60' font-size='6.4' fill='var(--muted)' text-anchor='middle'>monthly \u00d7 12</text><text x='190' y='92' font-size='7.3' fill='var(--text)' text-anchor='middle'>THREE tiers balance how far back you can restore</text><text x='190' y='104' font-size='7.3' fill='var(--text)' text-anchor='middle'>against how much storage all those backups cost.</text><text x='16' y='133' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Keeps daily (son), weekly (father), and monthly (grandfather) backup sets</text><text x='16' y='145' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>rather than every daily backup ever made.</text></svg>"},
     {
+      "id": "c2d4-43-7",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.3",
+      "term": "Synthetic full backup",
+      "definition": "A full backup assembled on the backup server by combining the last full backup with later incrementals, so a new full is produced without reading all the data from the source again.",
+      "scenario": "produce a new full backup without transferring all the data from the production server again",
+      "distractors": [
+        "A differential backup",
+        "A snapshot",
+        "A full backup from the source"
+      ],
+      "tip": "It is built on the BACKUP server from existing pieces — the source is not read again.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-43-7'><title id='dt-c2d4-43-7'>A synthetic full combines an older full with incrementals on the backup server.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Synthetic full</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Last full</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>+ incrementals</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Merged on server</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>no source reads</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>New full backup</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>ready to restore</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A synthetic full combines an older full with incrementals on the backup</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>server.</text></svg>"
+    },
+    {
+      "id": "c2d4-43-8",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.3",
+      "term": "Off-site backup",
+      "definition": "A backup copy stored away from the primary location, such as a vault or the cloud, so it survives a site disaster; on-site copies restore faster but are lost with the building.",
+      "scenario": "make sure data survives a fire that destroys the office and the on-site backup drives",
+      "distractors": [
+        "An on-site backup only",
+        "A second copy on the same server",
+        "A snapshot on the same storage"
+      ],
+      "tip": "It survives a SITE disaster — on-site is quick to restore but dies with the building.",
+      "diagram": "<svg viewBox='0 0 380 143' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-43-8'><title id='dt-c2d4-43-8'>Off-site backups survive a disaster at the main site; on-site backups restore faster.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Backup location</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>On-site</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Fast restores</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Lost in a fire or theft</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Off-site</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Survives a site disaster</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Slower to restore</text><text x='16' y='119' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Off-site backups survive a disaster at the main site; on-site backups</text><text x='16' y='131' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>restore faster.</text></svg>"
+    },
+    {
+      "id": "c2d4-43-9",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.3",
+      "term": "Recovery point objective (RPO)",
+      "definition": "The maximum amount of data loss, measured in time, that the business will accept; it determines how often backups or replication must run.",
+      "scenario": "decide how often to back up so that no more than four hours of data can ever be lost",
+      "distractors": [
+        "Recovery time objective (RTO)",
+        "Mean time to repair",
+        "Backup rotation"
+      ],
+      "tip": "RPO is how much DATA you can lose — RTO is how long you can be down.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-43-9'><title id='dt-c2d4-43-9'>RPO is the acceptable data loss; it sets how frequently backups must run.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>RPO vs RTO</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>RPO</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>How much data can be lost</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Drives backup frequency</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Measured back from failure</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>RTO</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>How long downtime may last</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Drives recovery design</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Measured forward to restore</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>RPO is the acceptable data loss; it sets how frequently backups must</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>run.</text></svg>"
+    },
+    {
+      "id": "c2d4-43-10",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.3",
+      "term": "Recovery time objective (RTO)",
+      "definition": "The maximum time a system can be down before the business is harmed; it determines how quickly restoration must complete and what recovery methods are needed.",
+      "scenario": "set a target that the payroll system must be restored within two hours of a failure",
+      "distractors": [
+        "Recovery point objective (RPO)",
+        "A service level agreement",
+        "Backup frequency"
+      ],
+      "tip": "RTO is how long you can be DOWN — RPO is how much data you can lose.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-43-10'><title id='dt-c2d4-43-10'>RTO is the longest acceptable downtime; it sets how fast recovery has to be.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Recovery time objective</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Failure</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>system goes down</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Restore</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>within the RTO</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Back in service</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>before harm grows</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>RTO is the longest acceptable downtime; it sets how fast recovery has to</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>be.</text></svg>"
+    },
+    {
+      "id": "c2d4-43-11",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.3",
+      "term": "Snapshot (not a backup)",
+      "definition": "A point-in-time capture of a virtual machine or volume that is quick to create and revert, but depends on the original storage and so does not replace a true backup.",
+      "scenario": "capture a virtual machine's state before a risky update so it can be reverted in minutes",
+      "distractors": [
+        "A full backup",
+        "An off-site backup",
+        "A differential backup"
+      ],
+      "tip": "A fast REVERT point on the same storage — it does not protect against losing that storage.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-43-11'><title id='dt-c2d4-43-11'>A snapshot is a quick rollback point on the same storage, not a substitute for a backup.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Snapshots</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Before the update</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>take a snapshot</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Update fails</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>revert in minutes</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Not a backup</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>same storage underneath</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A snapshot is a quick rollback point on the same storage, not a</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>substitute for a backup.</text></svg>"
+    },
+    {
       "id": "c2d4-44-6",
       "core": "core2",
       "domain": "c2d4",
@@ -7044,6 +10873,86 @@
     ,
       "diagram": "<svg viewBox='0 0 380 175' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-44-6'><title id='dt-c2d4-44-6'>Rated for electrical fires with a non-conductive agent \u2014 water-based Class A on live equipment risks electrocution.</title><rect x='16.0' y='30' width='169.0' height='60' rx='5' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.5'/><text x='100.5' y='56.0' font-size='8.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Class C</text><text x='100.5' y='70.0' font-size='7.5' fill='var(--muted)' text-anchor='middle'>non-conductive agent \u2014 correct</text><rect x='195.0' y='30' width='169.0' height='60' rx='5' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.5'/><text x='279.5' y='56.0' font-size='8.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Class A (water)</text><text x='279.5' y='70.0' font-size='7.5' fill='var(--muted)' text-anchor='middle'>electrocution risk on live gear</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Rated for electrical fires with a non-conductive agent \u2014 water-based Class A on</text><text x='16' y='165' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>live equipment risks electrocution.</text></svg>"},
     {
+      "id": "c2d4-44-7",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.4",
+      "term": "Power disconnection before service",
+      "definition": "Before opening equipment, shut it down, unplug the power cord, remove the battery where possible, and discharge residual power by holding the power button; an ESD strap protects parts, not you from mains voltage.",
+      "scenario": "make a desktop PC safe to open before replacing an internal component",
+      "distractors": [
+        "Wearing an ESD strap only",
+        "Working with the power on",
+        "Putting the PC to sleep"
+      ],
+      "tip": "Unplug FIRST — an ESD strap protects the components, not you from the power supply.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-44-7'><title id='dt-c2d4-44-7'>Shut down, unplug, and discharge residual power before opening equipment.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Before opening a PC</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Shut down</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>not just sleep</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Unplug</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>power cord and battery</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Discharge</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>hold power 5 seconds</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Shut down, unplug, and discharge residual power before opening</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>equipment.</text></svg>"
+    },
+    {
+      "id": "c2d4-44-8",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.4",
+      "term": "Personal protective equipment (PPE)",
+      "definition": "Protective gear such as safety goggles, an air filtration mask, and gloves that protect a technician from debris, toner or dust, and sharp or hot parts.",
+      "scenario": "clean a toner spill and dusty fans without inhaling particles or getting debris in the eyes",
+      "distractors": [
+        "An ESD strap",
+        "Compressed air only",
+        "A surge protector"
+      ],
+      "tip": "PPE protects the PERSON — an ESD strap protects the components.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-44-8'><title id='dt-c2d4-44-8'>PPE such as goggles, masks, and gloves protects the technician from debris, dust, and sharp parts.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Matching PPE to the hazard</text><rect x='16' y='30' width='156.6' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='94.3' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Hazard</text><rect x='172.6' y='30' width='191.4' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='268.3' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Protective item</text><rect x='16' y='50' width='156.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='94.3' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>Flying debris</text><rect x='172.6' y='50' width='191.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='268.3' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>safety goggles</text><rect x='16' y='70' width='156.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='94.3' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>Dust and toner</text><rect x='172.6' y='70' width='191.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='268.3' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>air filtration mask</text><rect x='16' y='90' width='156.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='94.3' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>Sharp or hot parts</text><rect x='172.6' y='90' width='191.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='268.3' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>gloves</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>PPE such as goggles, masks, and gloves protects the technician from</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>debris, dust, and sharp parts.</text></svg>"
+    },
+    {
+      "id": "c2d4-44-9",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.4",
+      "term": "Temperature and humidity control",
+      "definition": "Equipment rooms should stay cool and moderately humid, roughly 40 to 60 percent: too dry increases static discharge, too humid causes condensation and corrosion, and good ventilation prevents overheating.",
+      "scenario": "reduce static discharge risk in a very dry server closet without causing condensation",
+      "distractors": [
+        "Raising the room temperature",
+        "Removing all ventilation",
+        "Using compressed air"
+      ],
+      "tip": "Too low a humidity means STATIC, too high means corrosion — aim for roughly 40 to 60 percent.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-44-9'><title id='dt-c2d4-44-9'>Keep equipment rooms cool and at moderate humidity to avoid static and corrosion.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Humidity and equipment</text><rect x='16' y='30' width='121.8' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='76.9' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Humidity</text><rect x='137.8' y='30' width='226.2' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='250.9' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Risk</text><rect x='16' y='50' width='121.8' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='76.9' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>Below 40%</text><rect x='137.8' y='50' width='226.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='250.9' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>static discharge (ESD)</text><rect x='16' y='70' width='121.8' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='76.9' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>40% to 60%</text><rect x='137.8' y='70' width='226.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='250.9' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>target range</text><rect x='16' y='90' width='121.8' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='76.9' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>Above 60%</text><rect x='137.8' y='90' width='226.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='250.9' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>condensation, corrosion</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Keep equipment rooms cool and at moderate humidity to avoid static and</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>corrosion.</text></svg>"
+    },
+    {
+      "id": "c2d4-44-10",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.4",
+      "term": "UPS (uninterruptible power supply)",
+      "definition": "A battery backup that keeps equipment powered through outages and sags long enough to shut down cleanly, and often conditions the line; a surge protector only absorbs voltage spikes.",
+      "scenario": "keep a server running long enough to shut down cleanly during a power outage",
+      "distractors": [
+        "A surge protector",
+        "A power strip",
+        "A grounding strap"
+      ],
+      "tip": "BATTERY runtime during outages — a surge protector only absorbs spikes and cannot keep power flowing.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-44-10'><title id='dt-c2d4-44-10'>A UPS supplies battery power during outages, while a surge protector only absorbs spikes.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Surge protector vs UPS</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Surge protector</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Clamps voltage spikes</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>No battery</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Cannot cover an outage</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>UPS</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Battery backup</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Covers outages and sags</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Time for a clean shutdown</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A UPS supplies battery power during outages, while a surge protector</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>only absorbs spikes.</text></svg>"
+    },
+    {
+      "id": "c2d4-44-11",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.4",
+      "term": "Dust removal and air filtration",
+      "definition": "Dust is removed with compressed air (holding fans still so they do not spin up), an ESD-safe vacuum, and filters or enclosures in dusty areas; a household vacuum generates static.",
+      "scenario": "clean dust from a PC's fans and heat sink safely and prevent overheating",
+      "distractors": [
+        "A household vacuum cleaner",
+        "A damp cloth",
+        "A hair dryer on high"
+      ],
+      "tip": "Compressed air or an ESD-safe vacuum, with fans held still — a household vacuum builds static.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-44-11'><title id='dt-c2d4-44-11'>Use compressed air or an ESD-safe vacuum, holding fans still, to remove dust without static.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Cleaning dust safely</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Power off</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>and unplug</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Hold fans still</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>compressed air in bursts</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Check airflow</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>filters and vents</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Use compressed air or an ESD-safe vacuum, holding fans still, to remove</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>dust without static.</text></svg>"
+    },
+    {
       "id": "c2d4-45-6",
       "core": "core2",
       "domain": "c2d4",
@@ -7059,6 +10968,134 @@
       "tip": "PLAIN language matched to the user's level — sounding credible with jargon actually works against you if the user can't follow what you're saying."
     ,
       "diagram": "<svg viewBox='0 0 400 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-45-6'><title id='dt-c2d4-45-6'>Plain language matched to the user&#39;s level \u2014 precise terminology only works against you if they can&#39;t follow it.</title><rect x='20' y='30' width='160' height='50' rx='6' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.5'/><text x='100' y='50' font-size='7.3' fill='var(--red)' text-anchor='middle' font-weight='700'>&quot;Your RAM is</text><text x='100' y='64' font-size='6' fill='var(--red)' text-anchor='middle'>thrashing background processes&quot;</text><text x='190' y='20' font-size='7.5' fill='var(--muted)' text-anchor='middle'>vs.</text><rect x='200' y='30' width='160' height='50' rx='6' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='2'/><text x='280' y='50' font-size='7.3' fill='var(--primary)' text-anchor='middle' font-weight='700'>&quot;Too many programs</text><text x='280' y='64' font-size='6.5' fill='var(--primary)' text-anchor='middle'>are open at once&quot;</text><text x='190' y='100' font-size='7.3' fill='var(--text)' text-anchor='middle'>Jargon works AGAINST you if the user can\u2019t follow it \u2014</text><text x='190' y='112' font-size='7.3' fill='var(--text)' text-anchor='middle'>sounding credible isn\u2019t the actual goal here.</text><text x='16' y='143' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Plain language matched to the user&#39;s level \u2014 precise terminology only works against</text><text x='16' y='155' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>you if they can&#39;t follow it.</text></svg>"},
+    {
+      "id": "c2d4-45-7",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.5",
+      "term": "Handling prohibited content",
+      "definition": "If a technician finds illegal or prohibited content on a device, the right response is to stop, leave the device as it is to preserve evidence, and report it through the proper channel instead of deleting, copying, or showing it.",
+      "scenario": "respond correctly after discovering illegal material while repairing an employee's laptop",
+      "distractors": [
+        "Delete it quietly",
+        "Show it to coworkers",
+        "Copy it to a USB drive"
+      ],
+      "tip": "STOP, preserve, and REPORT — never delete, copy, or show it.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-45-7'><title id='dt-c2d4-45-7'>On finding prohibited content, stop, preserve the evidence, and report it to the proper people.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Finding prohibited content</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Stop work</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>do not open more</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Preserve</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>leave the device as is</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Report</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>manager, security, HR</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>On finding prohibited content, stop, preserve the evidence, and report</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>it to the proper people.</text></svg>"
+    },
+    {
+      "id": "c2d4-45-8",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.5",
+      "term": "Regulated data (PCI DSS, HIPAA, GDPR)",
+      "definition": "Some data is protected by law or industry rules, such as payment card data (PCI DSS), health information (HIPAA), and EU personal data (GDPR), each with requirements for handling, retention, and breach notification.",
+      "scenario": "handle a laptop containing patient records according to the rules that protect health information",
+      "distractors": [
+        "Open-source license terms",
+        "The acceptable use policy alone",
+        "A standard operating procedure for printing"
+      ],
+      "tip": "Each data type has its own rule: card data PCI DSS, health data HIPAA, EU personal data GDPR.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-45-8'><title id='dt-c2d4-45-8'>Payment, health, and personal data fall under PCI DSS, HIPAA, and GDPR respectively.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Regulated data</text><rect x='16' y='30' width='191.4' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='111.7' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Data</text><rect x='207.4' y='30' width='156.6' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='285.7' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Governing rule</text><rect x='16' y='50' width='191.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='111.7' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>Payment card numbers</text><rect x='207.4' y='50' width='156.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='285.7' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>PCI DSS</text><rect x='16' y='70' width='191.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='111.7' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>Patient health records</text><rect x='207.4' y='70' width='156.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='285.7' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>HIPAA</text><rect x='16' y='90' width='191.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='111.7' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>EU residents&#39; personal data</text><rect x='207.4' y='90' width='156.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='285.7' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>GDPR</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Payment, health, and personal data fall under PCI DSS, HIPAA, and GDPR</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>respectively.</text></svg>"
+    },
+    {
+      "id": "c2d4-45-9",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.5",
+      "term": "Data retention policy",
+      "definition": "Rules for how long each kind of record must be kept and when it must be securely destroyed, to satisfy legal, regulatory, and business needs.",
+      "scenario": "determine how long email and financial records must be kept before being securely destroyed",
+      "distractors": [
+        "An acceptable use policy",
+        "A backup rotation",
+        "A change management process"
+      ],
+      "tip": "It defines HOW LONG to keep data and when to destroy it — an AUP defines how users may use systems.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-45-9'><title id='dt-c2d4-45-9'>A retention policy sets how long records are kept and when they are securely destroyed.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Retention</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Create</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>record is made</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Retain</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>for the required period</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Destroy</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>securely, and log it</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A retention policy sets how long records are kept and when they are</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>securely destroyed.</text></svg>"
+    },
+    {
+      "id": "c2d4-45-10",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.5",
+      "term": "Personal-use license restriction",
+      "definition": "Software offered free for personal or home use usually prohibits business use, so a company must buy a corporate or volume license, while open-source licenses permit use under their own conditions.",
+      "scenario": "check whether a utility that is free for home use may be installed on company computers",
+      "distractors": [
+        "An open-source license",
+        "A site license",
+        "A volume license"
+      ],
+      "tip": "Free for HOME use rarely covers business — check the license type before deploying.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-45-10'><title id='dt-c2d4-45-10'>Personal licenses usually exclude business use; corporate, volume, and open-source licenses differ.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>License types</text><rect x='16' y='30' width='121.8' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='76.9' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>License</text><rect x='137.8' y='30' width='226.2' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='250.9' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Typical rule</text><rect x='16' y='50' width='121.8' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='76.9' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>Personal</text><rect x='137.8' y='50' width='226.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='250.9' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>home use only</text><rect x='16' y='70' width='121.8' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='76.9' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>Corporate or volume</text><rect x='137.8' y='70' width='226.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='250.9' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>business use per seat or site</text><rect x='16' y='90' width='121.8' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='76.9' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>Open source</text><rect x='137.8' y='90' width='226.2' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='250.9' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>use and modify under its terms</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Personal licenses usually exclude business use; corporate, volume, and</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>open-source licenses differ.</text></svg>"
+    },
+    {
+      "id": "c2d4-45-11",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.5",
+      "term": "Digital rights management (DRM)",
+      "definition": "Technology that controls how licensed content may be used, copied, or shared and ties it to the licensed user or device; circumventing it can be illegal.",
+      "scenario": "explain why a licensed e-book or video cannot be copied or opened on an unauthorized device",
+      "distractors": [
+        "An acceptable use policy",
+        "Encryption at rest",
+        "Data loss prevention"
+      ],
+      "tip": "It enforces COPYRIGHT limits on content — DLP stops company data from leaving.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-45-11'><title id='dt-c2d4-45-11'>DRM restricts copying and use of licensed content to the authorized user or device.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>DRM</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Licensed content</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>tied to an account</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>DRM check</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>device and rights verified</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Allowed or blocked</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>copy and share limits</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>DRM restricts copying and use of licensed content to the authorized user</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>or device.</text></svg>"
+    },
+    {
+      "id": "c2d4-45-12",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.5",
+      "term": "Active listening",
+      "definition": "Letting the customer finish without interrupting, restating the problem in your own words, taking notes, and asking clarifying questions so the real issue is understood.",
+      "scenario": "confirm you understood a frustrated customer's problem by restating it and asking clarifying questions",
+      "distractors": [
+        "Interrupting with the likely fix",
+        "Using technical jargon",
+        "Taking another call during the conversation"
+      ],
+      "tip": "Let them finish, RESTATE, then clarify — solving the wrong problem is the real waste of time.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-45-12'><title id='dt-c2d4-45-12'>Active listening means not interrupting, restating the issue, and asking clarifying questions.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Active listening</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Listen</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>do not interrupt</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Restate</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>confirm the problem</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Clarify</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>ask follow-up questions</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Active listening means not interrupting, restating the issue, and asking</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>clarifying questions.</text></svg>"
+    },
+    {
+      "id": "c2d4-45-13",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.5",
+      "term": "De-escalating a difficult customer",
+      "definition": "Staying calm and professional, not arguing or becoming defensive, not taking comments personally, acknowledging the frustration, focusing on the problem, and escalating when needed.",
+      "scenario": "handle an angry customer who is raising their voice about a repeated outage",
+      "distractors": [
+        "Arguing the facts",
+        "Ending the call",
+        "Blaming another department"
+      ],
+      "tip": "Stay calm, empathize, and focus on the PROBLEM — never argue or get defensive.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-45-13'><title id='dt-c2d4-45-13'>With an upset customer, stay calm, acknowledge the frustration, and focus on resolving the issue.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Difficult customers</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Stay calm</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>do not argue</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Empathize</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>acknowledge frustration</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Resolve or escalate</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>set expectations</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>With an upset customer, stay calm, acknowledge the frustration, and</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>focus on resolving the issue.</text></svg>"
+    },
+    {
+      "id": "c2d4-45-14",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.5",
+      "term": "Setting expectations and following up",
+      "definition": "Giving honest timeframes, explaining options such as repair or replacement, documenting the conversation, and following up afterward to confirm the customer is satisfied.",
+      "scenario": "make sure a customer knows the repair timeline and confirms satisfaction after the fix",
+      "distractors": [
+        "Closing the ticket silently",
+        "Promising an immediate fix",
+        "Skipping documentation"
+      ],
+      "tip": "Honest TIMELINES and a follow-up — over-promising or silence both erode trust.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-45-14'><title id='dt-c2d4-45-14'>Set honest expectations, keep the customer informed, and follow up after the fix.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Customer expectations</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Set expectations</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>honest timeframes</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Keep them informed</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>status updates</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Follow up</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>confirm satisfaction</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Set honest expectations, keep the customer informed, and follow up after</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>the fix.</text></svg>"
+    },
     {
       "id": "c2d4-46-6",
       "core": "core2",
@@ -7090,7 +11127,279 @@
       ],
       "tip": "Restricts WHICH scripts can RUN at all — a technical control, distinct from reviewing AI output for accuracy, which is a human judgment step."
     ,
-      "diagram": "<svg viewBox='0 0 400 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-47-6'><title id='dt-c2d4-47-6'>A safeguard, such as PowerShell&#39;s execution policy, restricting which scripts are allowed to run on a system.</title><rect x='20' y='30' width='150' height='50' rx='6' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='2'/><text x='95' y='50' font-size='7.5' fill='var(--primary)' text-anchor='middle' font-weight='700'>IT-signed script</text><text x='95' y='64' font-size='6.4' fill='var(--primary)' text-anchor='middle'>ALLOWED to run</text><rect x='210' y='30' width='150' height='50' rx='6' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.5' stroke-dasharray='2 2'/><text x='285' y='50' font-size='7.5' fill='var(--red)' text-anchor='middle' font-weight='700'>Unsigned script</text><text x='285' y='64' font-size='6.4' fill='var(--red)' text-anchor='middle'>BLOCKED from running</text><text x='190' y='100' font-size='7.3' fill='var(--text)' text-anchor='middle'>A technical control on WHICH scripts can run \u2014 distinct</text><text x='190' y='112' font-size='7.3' fill='var(--text)' text-anchor='middle'>from reviewing AI output, a human judgment step.</text><text x='16' y='143' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A safeguard, such as PowerShell&#39;s execution policy, restricting which scripts are</text><text x='16' y='155' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>allowed to run on a system.</text></svg>"}
+      "diagram": "<svg viewBox='0 0 400 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-47-6'><title id='dt-c2d4-47-6'>A safeguard, such as PowerShell&#39;s execution policy, restricting which scripts are allowed to run on a system.</title><rect x='20' y='30' width='150' height='50' rx='6' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='2'/><text x='95' y='50' font-size='7.5' fill='var(--primary)' text-anchor='middle' font-weight='700'>IT-signed script</text><text x='95' y='64' font-size='6.4' fill='var(--primary)' text-anchor='middle'>ALLOWED to run</text><rect x='210' y='30' width='150' height='50' rx='6' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.5' stroke-dasharray='2 2'/><text x='285' y='50' font-size='7.5' fill='var(--red)' text-anchor='middle' font-weight='700'>Unsigned script</text><text x='285' y='64' font-size='6.4' fill='var(--red)' text-anchor='middle'>BLOCKED from running</text><text x='190' y='100' font-size='7.3' fill='var(--text)' text-anchor='middle'>A technical control on WHICH scripts can run \u2014 distinct</text><text x='190' y='112' font-size='7.3' fill='var(--text)' text-anchor='middle'>from reviewing AI output, a human judgment step.</text><text x='16' y='143' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A safeguard, such as PowerShell&#39;s execution policy, restricting which scripts are</text><text x='16' y='155' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>allowed to run on a system.</text></svg>"},
+    {
+      "id": "c2d4-48-1",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.8",
+      "term": "Batch file (.bat)",
+      "definition": "A script of Windows command-prompt commands run by cmd.exe, often used for simple tasks such as mapping drives, copying files, and launching programs at logon.",
+      "scenario": "write a simple Windows script that maps network drives and copies a folder at logon",
+      "distractors": [
+        "A PowerShell script (.ps1)",
+        "A shell script (.sh)",
+        "A JavaScript file (.js)"
+      ],
+      "tip": ".bat is the old-school cmd.exe format — .ps1 is PowerShell and .sh is for Linux and macOS shells.",
+      "diagram": "<svg viewBox='0 0 380 156' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-48-1'><title id='dt-c2d4-48-1'>A batch file runs a series of command-prompt commands, often for simple Windows automation.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>backup.bat</text><rect x='16' y='36' width='348' height='72' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>@echo off</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>net use Z: \\\\fs01\\dept</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>robocopy C:\\Docs Z:\\Backup /E</text><text x='28' y='96' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>echo Done</text><text x='16' y='132' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>A batch file runs a series of command-prompt commands, often for simple</text><text x='16' y='144' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Windows automation.</text></svg>"
+    },
+    {
+      "id": "c2d4-48-2",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.8",
+      "term": "PowerShell script (.ps1)",
+      "definition": "A script in Microsoft's object-based shell language, used to automate Windows administration such as managing users, services, and the registry; execution is governed by the script execution policy.",
+      "scenario": "automate creating 50 user accounts and setting their group memberships on Windows",
+      "distractors": [
+        "A batch file (.bat)",
+        "A shell script (.sh)",
+        "A VBScript (.vbs)"
+      ],
+      "tip": ".ps1 is PowerShell — richer than a batch file because it works with objects, not just text.",
+      "diagram": "<svg viewBox='0 0 380 142' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-48-2'><title id='dt-c2d4-48-2'>PowerShell scripts automate Windows administration with an object-based command language.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>PowerShell</text><rect x='16' y='36' width='348' height='58' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>Get-Service -Name Spooler | Restart-Service</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>Get-LocalUser | Where-Object Enabled</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>New-LocalUser -Name &#39;jsmith&#39; -NoPassword</text><text x='16' y='118' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>PowerShell scripts automate Windows administration with an object-based</text><text x='16' y='130' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>command language.</text></svg>"
+    },
+    {
+      "id": "c2d4-48-3",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.8",
+      "term": "Shell script (.sh)",
+      "definition": "A script of commands run by a Unix shell such as Bash on Linux and macOS, used for tasks like backups, log processing, and scheduled maintenance, often started by cron.",
+      "scenario": "automate a nightly backup and log cleanup on a Linux server",
+      "distractors": [
+        "A batch file (.bat)",
+        "A PowerShell script (.ps1)",
+        "A JavaScript file (.js)"
+      ],
+      "tip": ".sh runs in Bash on Linux and macOS — .bat and .ps1 are Windows formats.",
+      "diagram": "<svg viewBox='0 0 380 142' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-48-3'><title id='dt-c2d4-48-3'>Shell scripts automate Linux and macOS tasks such as backups and cleanup.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>backup.sh</text><rect x='16' y='36' width='348' height='58' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>#!/bin/bash</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>tar czf /backup/site.tgz /var/www</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>find /backup -mtime +14 -delete</text><text x='16' y='118' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Shell scripts automate Linux and macOS tasks such as backups and</text><text x='16' y='130' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>cleanup.</text></svg>"
+    },
+    {
+      "id": "c2d4-48-4",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.8",
+      "term": "Python script (.py)",
+      "definition": "A script in the cross-platform Python language, popular for automation, data gathering, and APIs because it is readable and runs on Windows, macOS, and Linux.",
+      "scenario": "write one automation script that gathers system information and runs unchanged on Windows, macOS, and Linux",
+      "distractors": [
+        "A batch file (.bat)",
+        "A shell script (.sh)",
+        "A VBScript (.vbs)"
+      ],
+      "tip": ".py is CROSS-PLATFORM — batch files and shell scripts are tied to one OS family.",
+      "diagram": "<svg viewBox='0 0 380 130' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-48-4'><title id='dt-c2d4-48-4'>Python scripts are readable and run on Windows, macOS, and Linux alike.</title><rect x='16' y='16' width='348' height='20' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.5'/><circle cx='28' cy='26' r='3' fill='var(--red)'/><circle cx='38' cy='26' r='3' fill='var(--amber)'/><circle cx='48' cy='26' r='3' fill='var(--green)'/><text x='190' y='30' font-size='7' fill='var(--muted)' text-anchor='middle'>check.py</text><rect x='16' y='36' width='348' height='58' rx='0' fill='var(--surface-2)' stroke='var(--border)' stroke-width='1.5'/><text x='28' y='54' font-size='8' fill='var(--primary)' text-anchor='start' font-family='monospace' style='white-space:pre'>import platform, shutil</text><text x='28' y='68' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>print(platform.system())</text><text x='28' y='82' font-size='7.5' fill='var(--text)' text-anchor='start' font-family='monospace' style='white-space:pre'>print(shutil.disk_usage(\"/\").free)</text><text x='16' y='118' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Python scripts are readable and run on Windows, macOS, and Linux alike.</text></svg>"
+    },
+    {
+      "id": "c2d4-48-5",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.8",
+      "term": "VBScript and JavaScript (.vbs, .js)",
+      "definition": "VBScript (.vbs) is a legacy Windows scripting language run by Windows Script Host, while JavaScript (.js) runs in web browsers and, with Node.js, on servers; both are common vectors for malicious scripts.",
+      "scenario": "identify the file extensions for a legacy Windows scripting file and a browser-based web script",
+      "distractors": [
+        ".bat and .ps1",
+        ".sh and .py",
+        ".cmd and .reg"
+      ],
+      "tip": "VBScript is legacy WINDOWS scripting and JavaScript is the WEB language — both are also abused by malware.",
+      "diagram": "<svg viewBox='0 0 380 218' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-48-5'><title id='dt-c2d4-48-5'>VBScript and JavaScript are common script types; know which extension maps to which language.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Script file extensions</text><rect x='16' y='30' width='87' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='59.5' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Extension</text><rect x='103' y='30' width='104.4' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='155.2' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Language</text><rect x='207.4' y='30' width='156.6' height='20' rx='0' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.2'/><text x='285.7' y='43.5' font-size='7.5' fill='var(--text)' text-anchor='middle' font-weight='700'>Typically runs on</text><rect x='16' y='50' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>.bat</text><rect x='103' y='50' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='155.2' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>batch</text><rect x='207.4' y='50' width='156.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='285.7' y='63.2' font-size='7' fill='var(--text)' text-anchor='middle'>Windows cmd</text><rect x='16' y='70' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>.ps1</text><rect x='103' y='70' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='155.2' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>PowerShell</text><rect x='207.4' y='70' width='156.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='285.7' y='83.2' font-size='7' fill='var(--text)' text-anchor='middle'>Windows</text><rect x='16' y='90' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>.vbs</text><rect x='103' y='90' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='155.2' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>VBScript</text><rect x='207.4' y='90' width='156.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='285.7' y='103.2' font-size='7' fill='var(--text)' text-anchor='middle'>Windows</text><rect x='16' y='110' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='123.2' font-size='7' fill='var(--text)' text-anchor='middle'>.sh</text><rect x='103' y='110' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='155.2' y='123.2' font-size='7' fill='var(--text)' text-anchor='middle'>shell</text><rect x='207.4' y='110' width='156.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='285.7' y='123.2' font-size='7' fill='var(--text)' text-anchor='middle'>Linux, macOS</text><rect x='16' y='130' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='143.2' font-size='7' fill='var(--text)' text-anchor='middle'>.js</text><rect x='103' y='130' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='155.2' y='143.2' font-size='7' fill='var(--text)' text-anchor='middle'>JavaScript</text><rect x='207.4' y='130' width='156.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='285.7' y='143.2' font-size='7' fill='var(--text)' text-anchor='middle'>browser, Node.js</text><rect x='16' y='150' width='87' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='59.5' y='163.2' font-size='7' fill='var(--text)' text-anchor='middle'>.py</text><rect x='103' y='150' width='104.4' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='155.2' y='163.2' font-size='7' fill='var(--text)' text-anchor='middle'>Python</text><rect x='207.4' y='150' width='156.6' height='20' rx='0' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.0'/><text x='285.7' y='163.2' font-size='7' fill='var(--text)' text-anchor='middle'>any OS</text><text x='16' y='194' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>VBScript and JavaScript are common script types; know which extension</text><text x='16' y='206' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>maps to which language.</text></svg>"
+    },
+    {
+      "id": "c2d4-48-6",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.8",
+      "term": "Script risks and precautions",
+      "definition": "Running an untrusted or untested script can introduce malware, change system settings unintentionally, or crash a system by mishandling resources, so scripts should be reviewed, tested in a sandbox, and run with least privilege.",
+      "scenario": "reduce the risk of running a script downloaded from a forum on a production workstation",
+      "distractors": [
+        "Running it as administrator immediately",
+        "Disabling antivirus first",
+        "Skipping review because it is popular"
+      ],
+      "tip": "Read it and TEST it in a sandbox first — an unreviewed script has the same power as malware.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-48-6'><title id='dt-c2d4-48-6'>Review and sandbox-test scripts, and run them with least privilege, to avoid damage or malware.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Running a script safely</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Review the code</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>what does it do?</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Test in a sandbox</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>not production</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Run least privilege</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>log what changed</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Review and sandbox-test scripts, and run them with least privilege, to</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>avoid damage or malware.</text></svg>"
+    },
+    {
+      "id": "c2d4-49-1",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.9",
+      "term": "Remote Desktop Protocol (RDP)",
+      "definition": "Microsoft's protocol (TCP 3389) for a graphical remote session to a Windows PC; the host must run Pro or higher with remote connections allowed, ideally with Network Level Authentication, and it should not be exposed directly to the Internet.",
+      "scenario": "connect to a Windows PC's desktop remotely from another Windows computer on the company network",
+      "distractors": [
+        "SSH",
+        "VNC",
+        "Telnet"
+      ],
+      "tip": "Graphical Windows sessions on TCP 3389 — SSH gives a secure text-mode session, typically on TCP 22.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-49-1'><title id='dt-c2d4-49-1'>RDP gives a graphical remote session to Windows over TCP 3389; keep it behind a VPN.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Remote Desktop</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Port</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>TCP 3389</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Host</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>Windows Pro or higher</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Client</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>mstsc.exe (Remote Desktop)</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Secure it</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>NLA plus VPN, not exposed</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>RDP gives a graphical remote session to Windows over TCP 3389; keep it</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>behind a VPN.</text></svg>"
+    },
+    {
+      "id": "c2d4-49-2",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.9",
+      "term": "SSH (Secure Shell)",
+      "definition": "A protocol (TCP 22) providing encrypted remote command-line access and file transfer (SCP and SFTP) to Linux servers and network devices, often with key-based authentication, replacing the clear-text Telnet.",
+      "scenario": "securely administer a Linux server from the command line across the Internet",
+      "distractors": [
+        "Telnet",
+        "RDP",
+        "FTP"
+      ],
+      "tip": "ENCRYPTED text-mode access — Telnet sends everything, passwords included, in clear text.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-49-2'><title id='dt-c2d4-49-2'>SSH provides encrypted command-line access and file transfer, replacing clear-text Telnet.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>SSH vs Telnet</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>SSH</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>TCP port 22</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Encrypted session</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Passwords or keys</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Telnet</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>TCP port 23</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Clear text</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Obsolete for admin work</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>SSH provides encrypted command-line access and file transfer, replacing</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>clear-text Telnet.</text></svg>"
+    },
+    {
+      "id": "c2d4-49-3",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.9",
+      "term": "VNC (Virtual Network Computing)",
+      "definition": "A cross-platform remote desktop system that shares a screen between Windows, macOS, and Linux, commonly on TCP 5900; its built-in security is weak, so it should be tunneled through SSH or a VPN.",
+      "scenario": "view and control a Linux desktop from a Windows PC using a cross-platform remote desktop tool",
+      "distractors": [
+        "RDP",
+        "SSH",
+        "Telnet"
+      ],
+      "tip": "CROSS-PLATFORM screen sharing — RDP is Microsoft's, and VNC should be tunneled for security.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-49-3'><title id='dt-c2d4-49-3'>VNC shares a desktop across operating systems but needs tunneling for security.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>VNC</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Platforms</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>Windows, macOS, Linux</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Typical port</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>TCP 5900</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Weakness</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>weak native encryption</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Fix</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>tunnel through SSH or VPN</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>VNC shares a desktop across operating systems but needs tunneling for</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>security.</text></svg>"
+    },
+    {
+      "id": "c2d4-49-4",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.9",
+      "term": "RMM (remote monitoring and management)",
+      "definition": "A platform in which an agent installed on each endpoint lets IT teams and managed service providers monitor, patch, run scripts on, and remotely control many computers from one console.",
+      "scenario": "monitor, patch, and remotely support hundreds of client computers from a single console",
+      "distractors": [
+        "Quick Assist",
+        "Remote Desktop to each PC",
+        "SSH to each PC"
+      ],
+      "tip": "An AGENT on every endpoint managed from one console — Quick Assist is a one-off session.",
+      "diagram": "<svg viewBox='0 0 380 158' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-49-4'><title id='dt-c2d4-49-4'>RMM tools use an installed agent so IT can monitor, patch, and control many endpoints centrally.</title><rect x='115' y='14' width='150' height='34' rx='4' fill='var(--primary-soft)' stroke='var(--primary)' stroke-width='1.3'/><text x='190' y='27.86' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>RMM console</text><text x='190' y='39.26' font-size='6.4' fill='var(--muted)' text-anchor='middle'>one view of every endpoint</text><line x1='190' y1='48' x2='55' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='16' y='70' width='78' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='55' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Monitoring</text><text x='55' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>alerts and health</text><line x1='190' y1='48' x2='145' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='106' y='70' width='78' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='145' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Patching</text><text x='145' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>updates at scale</text><line x1='190' y1='48' x2='235' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='196' y='70' width='78' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='235' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Scripting</text><text x='235' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>run tasks remotely</text><line x1='190' y1='48' x2='325' y2='69.5' stroke='var(--border)' stroke-width='1.2'/><rect x='286' y='70' width='78' height='40' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='325' y='86.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Remote control</text><text x='325' y='97.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>fix problems</text><text x='16' y='134' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>RMM tools use an installed agent so IT can monitor, patch, and control</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>many endpoints centrally.</text></svg>"
+    },
+    {
+      "id": "c2d4-49-5",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.9",
+      "term": "Quick Assist",
+      "definition": "A built-in Windows tool in which a user shares a one-time code so a helper can view or control the screen for a support session, with the user's consent and no permanent software.",
+      "scenario": "help a user remotely, at their request, with a one-time code and no permanent software installed",
+      "distractors": [
+        "An RMM agent",
+        "Remote Desktop",
+        "A VPN"
+      ],
+      "tip": "The USER grants one-time access with a code — RMM and RDP assume standing access.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-49-5'><title id='dt-c2d4-49-5'>Quick Assist lets a user grant a helper temporary, consent-based access with a one-time code.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Quick Assist</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>User opens it</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>and gets a code</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Helper enters code</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>requests control</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>User approves</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>session starts</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Quick Assist lets a user grant a helper temporary, consent-based access</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>with a one-time code.</text></svg>"
+    },
+    {
+      "id": "c2d4-49-6",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.9",
+      "term": "Securing remote access",
+      "definition": "Remote tools should require multifactor authentication, run through a VPN or gateway, use least privilege, log sessions, require user consent where appropriate, and be disabled when not needed.",
+      "scenario": "reduce the risk from remote support tools used by technicians and outside vendors",
+      "distractors": [
+        "Exposing RDP directly to the Internet",
+        "Sharing one admin password",
+        "Turning off session logging"
+      ],
+      "tip": "MFA plus VPN plus logging plus least privilege — and never put RDP directly on the Internet.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-49-6'><title id='dt-c2d4-49-6'>Secure remote access with MFA, a VPN, least privilege, and logged sessions.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Remote access hygiene</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Authenticate</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>MFA, not just a password</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Connect</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>through a VPN or gateway</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Limit</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>least privilege and time-boxed</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Record</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>log and audit sessions</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Secure remote access with MFA, a VPN, least privilege, and logged</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>sessions.</text></svg>"
+    },
+    {
+      "id": "c2d4-410-1",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.10",
+      "term": "AI hallucination",
+      "definition": "Generative AI can state false information with confidence, such as invented commands, settings, or sources, because it predicts plausible text rather than looking up facts; output should be verified against trusted documentation.",
+      "scenario": "explain why an AI assistant gave a convincing but non-existent PowerShell command",
+      "distractors": [
+        "Training data bias",
+        "A network outage",
+        "A prompt that was too short"
+      ],
+      "tip": "Confident but FABRICATED output — always verify against official documentation.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-410-1'><title id='dt-c2d4-410-1'>AI can produce confident, plausible, but false answers, so output must be verified.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>AI hallucination</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>You ask</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>a how-to question</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Model predicts</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>plausible text</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>You verify</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>against official docs</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>AI can produce confident, plausible, but false answers, so output must</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>be verified.</text></svg>"
+    },
+    {
+      "id": "c2d4-410-2",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.10",
+      "term": "AI bias",
+      "definition": "AI models reflect biases in their training data and can produce skewed or unfair results, so decisions that affect people need human review and attention to data sources.",
+      "scenario": "explain why an AI screening tool consistently ranks candidates from one group lower than others",
+      "distractors": [
+        "AI hallucination",
+        "Data exfiltration",
+        "A slow model response"
+      ],
+      "tip": "Skew from the training DATA — hallucination is invented facts, while bias is an unfair pattern.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-410-2'><title id='dt-c2d4-410-2'>AI bias comes from skewed training data and produces systematically unfair outputs.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Two different AI limits</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Hallucination</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Invents facts</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Wrong but confident</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Verify against sources</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Bias</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Reflects skewed data</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Systematically unfair</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Needs human review</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>AI bias comes from skewed training data and produces systematically</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>unfair outputs.</text></svg>"
+    },
+    {
+      "id": "c2d4-410-3",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.10",
+      "term": "Private (enterprise) AI",
+      "definition": "An AI service hosted or contracted by the organization with controls over data retention and training, unlike public chatbots that may retain or learn from prompts; sensitive data belongs only in the private option.",
+      "scenario": "choose where it is acceptable to paste internal customer data for AI-assisted analysis",
+      "distractors": [
+        "A free public AI chatbot",
+        "A personal AI account",
+        "A browser AI extension"
+      ],
+      "tip": "Public tools may keep or learn from your prompts — sensitive data stays in a PRIVATE, governed service.",
+      "diagram": "<svg viewBox='0 0 380 165' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-410-3'><title id='dt-c2d4-410-3'>Public AI may keep or learn from prompts; sensitive data belongs only in a governed private service.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Where data may go</text><rect x='16' y='30' width='168' height='20' rx='4' fill='var(--red-soft)' stroke='var(--red)' stroke-width='1.3'/><text x='100' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Public AI</text><rect x='16' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Prompts may be retained</text><rect x='16' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>May train future models</text><rect x='16' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='100' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>No sensitive data</text><rect x='196' y='30' width='168' height='20' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='280' y='43.5' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Private AI</text><rect x='196' y='54' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='66.5' font-size='7' fill='var(--text)' text-anchor='middle'>Company-controlled</text><rect x='196' y='76' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='88.5' font-size='7' fill='var(--text)' text-anchor='middle'>Retention terms agreed</text><rect x='196' y='98' width='168' height='19' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.1'/><text x='280' y='110.5' font-size='7' fill='var(--text)' text-anchor='middle'>Sensitive data allowed by policy</text><text x='16' y='141' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>Public AI may keep or learn from prompts; sensitive data belongs only in</text><text x='16' y='153' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>a governed private service.</text></svg>"
+    },
+    {
+      "id": "c2d4-410-4",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.10",
+      "term": "AI use policy",
+      "definition": "A company policy stating which AI tools are approved, what data may or may not be entered into them, and what review is required before AI-generated content is used.",
+      "scenario": "tell employees which AI tools are approved and which company data must never be pasted into them",
+      "distractors": [
+        "A service level agreement",
+        "A backup policy",
+        "A change request"
+      ],
+      "tip": "It names WHICH tools and WHICH data — the policy turns \"be careful\" into rules.",
+      "diagram": "<svg viewBox='0 0 380 170' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-410-4'><title id='dt-c2d4-410-4'>An AI use policy sets approved tools, data limits, and review requirements.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>An AI use policy</text><rect x='16' y='30' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Approved tools</text><text x='122' y='43.5' font-size='7.3' fill='var(--text)' text-anchor='start'>the list employees may use</text><rect x='16' y='54' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Data limits</text><text x='122' y='67.5' font-size='7.3' fill='var(--text)' text-anchor='start'>what must never be entered</text><rect x='16' y='78' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Review</text><text x='122' y='91.5' font-size='7.3' fill='var(--text)' text-anchor='start'>humans verify the output</text><rect x='16' y='102' width='96' height='20' rx='4' fill='var(--blue-soft)' stroke='var(--blue)' stroke-width='1.2'/><text x='64' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Disclosure</text><text x='122' y='115.5' font-size='7.3' fill='var(--text)' text-anchor='start'>when AI use must be stated</text><text x='16' y='146' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>An AI use policy sets approved tools, data limits, and review</text><text x='16' y='158' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>requirements.</text></svg>"
+    },
+    {
+      "id": "c2d4-410-5",
+      "core": "core2",
+      "domain": "c2d4",
+      "objective": "4.10",
+      "term": "AI plagiarism and copyright risk",
+      "definition": "AI output can reproduce existing copyrighted or published text, so using it without checking sources or attributing it risks plagiarism and licensing problems.",
+      "scenario": "explain the risk of publishing AI-generated documentation without checking whether it copies existing copyrighted text",
+      "distractors": [
+        "AI hallucination",
+        "AI bias",
+        "Data retention"
+      ],
+      "tip": "The risk is COPIED material — check sources and attribution before publishing AI output.",
+      "diagram": "<svg viewBox='0 0 380 124' xmlns='http://www.w3.org/2000/svg' role='img' aria-labelledby='dt-c2d4-410-5'><title id='dt-c2d4-410-5'>AI-generated content can echo copyrighted work, so check and attribute before publishing.</title><text x='190' y='18' font-size='8' fill='var(--text)' text-anchor='middle' font-weight='700'>Plagiarism risk</text><rect x='16' y='30' width='105.333' height='46' rx='4' fill='var(--surface-3)' stroke='var(--border)' stroke-width='1.3'/><text x='68.6667' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>AI generates</text><text x='68.6667' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>text and images</text><line x1='123.333' y1='53' x2='135.333' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M131.333 50 L135.333 53 L131.333 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='137.333' y='30' width='105.333' height='46' rx='4' fill='var(--amber-soft)' stroke='var(--amber)' stroke-width='1.3'/><text x='190' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>May echo sources</text><text x='190' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>copyrighted material</text><line x1='244.667' y1='53' x2='256.667' y2='53' stroke='var(--muted)' stroke-width='1.3'/><path d='M252.667 50 L256.667 53 L252.667 56' fill='none' stroke='var(--muted)' stroke-width='1.3'/><rect x='258.667' y='30' width='105.333' height='46' rx='4' fill='var(--green-soft)' stroke='var(--green)' stroke-width='1.3'/><text x='311.333' y='49.986' font-size='7.3' fill='var(--text)' text-anchor='middle' font-weight='700'>Check and attribute</text><text x='311.333' y='60.686' font-size='6.4' fill='var(--muted)' text-anchor='middle'>before publishing</text><text x='16' y='100' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>AI-generated content can echo copyrighted work, so check and attribute</text><text x='16' y='112' font-size='8.5' fill='var(--muted-2)' text-anchor='start'>before publishing.</text></svg>"
+    }
   ]
 };
 })();

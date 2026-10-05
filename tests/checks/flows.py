@@ -86,7 +86,9 @@ def run(ctx):
         t.check("My own words about this term" in text and pages <= 3, "My notes prints with the note's text", f"{pages} pages")
         t.check("Edit note" not in text and "Add a note" not in text, "...without the edit buttons")
         pages, text = _pdf_pages(browser, "browse", "browse", out)
-        t.check(pages <= 20, "Browse cards prints as a compact table, not hundreds of sheets", f"{pages} pages")
+        # About 22 rows fit a sheet, so the limit follows the number of concepts instead of a fixed page count.
+        concepts = browser.eval("window.APLUS_DATA.concepts.length")
+        t.check(pages <= max(20, concepts * 0.06), "Browse cards prints as a compact table, not hundreds of sheets", f"{pages} pages for {concepts} concepts")
         t.check("TERM" in text.upper() and "ACCURACY" in text.upper() and "DRILL" not in text.upper().replace("DRILLING", ""), "...with its column titles and without its action buttons")
 
     # ------------------------------------------------------------------ the server goes away

@@ -6,6 +6,11 @@
 // this app having per-build version numbers at all, so their "version" is the date instead —
 // still real history, just not tagged with a build number the way later entries are.
 export const CHANGELOG = [
+  { version: 'v223', date: 'October 2026', title: 'A+ Core 2: 254 more concepts and 17 new objectives', items: [
+    "New: A+ Core 2 grew from 140 to 394 concepts, every one with its own diagram. They fill topics the exam lists that were missing: more Windows tools (Task Scheduler, Device Manager, Performance Monitor, msconfig, Services), command-line tools (nslookup, tracert, net use, gpresult, DISM), Windows networking, Control Panel utilities, file systems, macOS and Linux features, wireless and authentication protocols, malware and attack types, SOHO and browser security, backup targets (RPO and RTO), safety, scripting, remote access, and AI.",
+    "New: 17 objectives were added to Core 2 (for example Windows networking, Control Panel utilities, Wireless security protocols, Remote access technologies, AI limitations and policy), and the Study guide gained matching sections.",
+    "Heads-up: CompTIA's own 220-1202 objectives PDF could not be opened while building this, so the gaps were found by comparing with widely published outlines and the official domain weights. Treat it as a good-faith best effort and check CompTIA's current PDF before your exam."
+  ] },
   { version: 'v222', date: 'October 2026', title: 'Reset your look, a sidebar key, and a study-plan fix', items: [
     "New: Settings → Appearance → Look & feel has \"Reset\", which puts back the default theme, style, accent, font, text size, corners, and density in one click — with Undo. Accessibility options, the sidebar, and highlight colors are left as you set them.",
     "New: press \\ (backslash) to collapse or expand the sidebar to icons. It's listed in the keyboard shortcuts (?).",
