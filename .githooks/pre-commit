@@ -1,0 +1,15 @@
+#!/bin/sh
+# Cert Study pre-commit check: runs the quick tests (static + server, about 2 seconds) whenever the
+# app, server, service worker, or tests are part of the commit. The full suite (`python tests/run.py`,
+# about 4 minutes, drives a headless browser) is run on demand before shipping.
+#
+# Skip once with:  git commit --no-verify
+changed=$(git diff --cached --name-only)
+echo "$changed" | grep -qE '^(app/|server\.py|service-worker\.js|tests/)' || exit 0
+
+echo "Running quick Cert Study checks..."
+if ! python tests/run.py static server; then
+  echo ""
+  echo "Commit blocked: the quick checks failed (see above). Fix them, or use --no-verify to skip."
+  exit 1
+fi

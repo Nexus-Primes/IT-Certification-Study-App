@@ -26,7 +26,9 @@ class Sandbox:
 
     @property
     def url(self):
-        return f"http://localhost:{self.port}"
+        # 127.0.0.1, not "localhost": on Windows, resolving "localhost" tries IPv6 first and each
+        # request then waits ~2 seconds for it to fail, which made the quick checks take over a minute.
+        return f"http://127.0.0.1:{self.port}"
 
     # -- setup ------------------------------------------------------------------------------
     def _copy_code(self):
@@ -66,6 +68,19 @@ class Sandbox:
             except Exception:
                 time.sleep(0.25)
         raise RuntimeError("The sandbox server did not start.")
+
+    def pause(self):
+        """Stops just the server (data and port are kept) — to see how the app behaves when it goes away."""
+        if self.proc:
+            self.proc.terminate()
+            try:
+                self.proc.wait(timeout=10)
+            except Exception:
+                self.proc.kill()
+            self.proc = None
+
+    def resume(self):
+        return self.start()
 
     def stop(self):
         if self.proc:

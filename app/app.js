@@ -4,7 +4,7 @@ import {
   daysBetween, formatDate, formatDateKey, formatPlanDate, formatDuration, hashNumber,
   seededShuffle, recallMatchHint
 } from './utils.js?v=4';
-import { CHANGELOG } from './changelog.js?v=3';
+import { CHANGELOG } from './changelog.js?v=4';
 import { closeAnyCustomPopover, registerCustomPopover, releaseCustomPopover, setFontSuggestions, setDefaultFonts } from './controls.js?v=1';
 import { generateCrosswordLayout } from './crossword.js?v=1';
 import {
@@ -47,7 +47,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v219';
+  const APP_VERSION = 'v220';
   const DIAGNOSTIC_LEN = 15;
   let certDialogGroup = null;
   let certDialogEntryDomain = null; // domain ('certs'|'programs') the bottom "Current track" switcher is scoped to
@@ -925,6 +925,15 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
       }));
     }
     return navDefaultCache;
+  }
+
+  // Shows or hides one page in the sidebar. Hidden pages stay reachable from search, the palette,
+  // and the G shortcuts.
+  function setNavVisible(route, visible) {
+    const hidden = { ...(metaState.navHidden || {}) };
+    if (visible) delete hidden[route]; else hidden[route] = true;
+    metaState.navHidden = hidden;
+    saveMeta(); updateDomainNav();
   }
 
   function navOrderFor(group) {
@@ -3616,8 +3625,8 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
   }
 
   function browseHeadMarkup() {
-    const col = (key, label) => `<button type="button" class="browse-sort${browseSort === key ? ' active' : ''}" data-action="browse-sort" data-sort="${key}">${label}${browseSort === key ? icon('chevron') : ''}</button>`;
-    return `<div class="browse-row browse-head"><span></span>${col('term', 'Term')}<span>Status</span>${col('accuracy', 'Accuracy')}${col('interval', 'Interval')}${col('due', 'Due')}<span>Actions</span></div>`;
+    const col = (key, label) => `<button type="button" class="browse-sort print-keep${browseSort === key ? ' active' : ''}" data-action="browse-sort" data-sort="${key}">${label}${browseSort === key ? icon('chevron') : ''}</button>`;
+    return `<div class="browse-row browse-head"><span class="print-hide"></span>${col('term', 'Term')}<span>Status</span>${col('accuracy', 'Accuracy')}${col('interval', 'Interval')}${col('due', 'Due')}<span class="print-hide">Actions</span></div>`;
   }
 
   function browseRowMarkup(row) {
@@ -6446,6 +6455,14 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
     items.push({ type: 'Action', label: `Switch to ${state.settings.theme === 'dark' ? 'light' : 'dark'} theme`, icon: state.settings.theme === 'dark' ? 'sun' : 'moon', run: () => setThemeMode(state.settings.theme === 'dark' ? 'light' : 'dark') });
     items.push({ type: 'Action', label: 'Keyboard shortcuts', sub: 'Every shortcut in one place', icon: 'keyboard', run: () => openShortcuts() });
     items.push({ type: 'Action', label: sidebarRailOn() ? 'Expand the sidebar' : 'Collapse the sidebar to icons', sub: 'Icon-only sidebar', icon: 'sidebar', run: () => toggleSidebarRail() });
+    items.push({ type: 'Action', label: 'Print or save this page as a PDF', sub: 'Opens the browser print dialog', icon: 'download', run: () => window.print() });
+    // One entry per sidebar page, worded for what it will do right now.
+    navDefaults().forEach(group => group.items.forEach(item => {
+      if (domain === 'programs' && CERTS_ONLY_ROUTES.has(item.route)) return;
+      const hidden = !!(metaState.navHidden || {})[item.route];
+      items.push({ type: 'Sidebar', label: hidden ? `Show ${item.label} in the sidebar` : `Hide ${item.label} from the sidebar`, sub: group.label, icon: hidden ? 'check' : 'x',
+        run: () => { setNavVisible(item.route, hidden); toast(hidden ? `${item.label} is back in the sidebar.` : `${item.label} hidden from the sidebar — Settings → Sidebar brings it back.`, 'info'); } });
+    }));
     items.push(...settingsPaletteItems());
     items.push({ type: 'Action', label: "What's new", sub: `Changelog · ${APP_VERSION}`, icon: 'sparkles', run: () => openWhatsNew(true) });
     items.push({ type: 'Action', label: 'Export a full backup', sub: 'Download every track as JSON', icon: 'download', run: () => exportData() });
@@ -7237,10 +7254,8 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
     }
     if (event.target.id === 'setting-sidebar-rail') toggleSidebarRail(event.target.checked);
     if (event.target.matches('.nav-visible-toggle')) {
-      metaState.navHidden = { ...(metaState.navHidden || {}), [event.target.dataset.navRoute]: !event.target.checked };
-      if (event.target.checked) delete metaState.navHidden[event.target.dataset.navRoute];
+      setNavVisible(event.target.dataset.navRoute, event.target.checked);
       event.target.closest('.nav-edit-row')?.classList.toggle('is-hidden', !event.target.checked);
-      saveMeta(); updateDomainNav();
     }
     if (event.target.id === 'setting-dash-greeting') { metaState.dashboardGreeting = event.target.checked; saveMeta(); toast('Dashboard greeting ' + (event.target.checked ? 'on.' : 'off.')); }
     if (event.target.id === 'setting-dash-primary') { metaState.dashboardPrimary = event.target.value; saveMeta(); toast('Dashboard main button saved.'); }

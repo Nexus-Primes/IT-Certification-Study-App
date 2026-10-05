@@ -24,8 +24,8 @@ from lib.cdp import Browser  # noqa: E402
 from lib.framework import Reporter  # noqa: E402
 from lib.sandbox import Sandbox  # noqa: E402
 
-GROUPS = ["static", "server", "pages", "print", "interactions"]
-MODULES = {"static": "static_checks", "server": "server_checks", "pages": "pages", "print": "print_checks", "interactions": "interactions"}
+GROUPS = ["static", "server", "pages", "print", "interactions", "flows"]
+MODULES = {"static": "static_checks", "server": "server_checks", "pages": "pages", "print": "print_checks", "interactions": "interactions", "flows": "flows"}
 
 
 class Context:

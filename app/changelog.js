@@ -6,6 +6,10 @@
 // this app having per-build version numbers at all, so their "version" is the date instead —
 // still real history, just not tagged with a build number the way later entries are.
 export const CHANGELOG = [
+  { version: 'v220', date: 'October 2026', title: 'Palette shortcuts and a tidier printed Browse table', items: [
+    "New: the command palette can print or save the current page as a PDF, and can hide or show any sidebar page (type a page name, e.g. \"crossword\").",
+    "Fixed: printing Browse cards kept no column titles and wasted a column on checkboxes and buttons. It now prints a compact table with Term, Status, Accuracy, Interval, and Due, in 18 sheets instead of 29."
+  ] },
   { version: 'v219', date: 'October 2026', title: 'Restore from a saved backup', items: [
     "New: Settings → Data → \"Restore a saved backup\" lists the backups kept in your backup folder and puts one back. Your current data is saved first, a click-twice step prevents accidents, and an Undo follows. It's also in the command palette.",
     "Changed: old automatic backups are now thinned instead of piling up forever — everything is kept for 30 days, then one a week for about six months, then one a month. Nothing newer than 30 days is ever removed.",

@@ -1123,6 +1123,14 @@ html[data-rail="on"] .rail-toggle [data-icon] svg { transform: none; }
   /* Controls do nothing on paper. A few buttons are really content (the labs that teach a
      command), so those opt back in with .print-keep and print as plain text. */
   #main-content button:not(.print-keep), #main-content .field:has(> input, > select) { display: none !important; }
+  .print-hide, .browse-check { display: none !important; }
+  /* Browse cards: a compact printed table — titles kept, the select box and action columns dropped. */
+  .browse-row { grid-template-columns: 2fr 90px 100px 70px 100px; min-width: 0; padding: 3px 8px; gap: 10px; border-radius: 5px; break-inside: avoid; }
+  .browse-term strong { font-size: 10.5px; margin: 0; }
+  .browse-term small { font-size: 8.5px; }
+  .browse-list { gap: 3px; margin-top: 8px; overflow: visible; }
+  .browse-sort svg { display: none; }
+  .browse-head > span { font-size: 10px; font-weight: 600; }
   .print-keep { display: inline-flex !important; min-height: 0; padding: 0 !important; border: 0 !important; background: none !important; box-shadow: none !important; color: var(--muted) !important; font-size: 10px; font-weight: 600; }
   /* Switches become real checkboxes so a printed checklist still shows what is ticked. */
   .switch { width: 18px; height: 18px; }

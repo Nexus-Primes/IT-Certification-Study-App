@@ -8,6 +8,8 @@ python tests/run.py static server   # quick, no browser (a few seconds)
 python tests/run.py pages           # every page, both themes
 python tests/run.py print           # real PDFs
 python tests/run.py interactions    # color picker, highlights, palette, backups
+python tests/run.py flows           # a practice session, losing the server, per-track accents, sidebar, planner
+python tests/serve_sandbox.py       # an isolated copy to click around in (add --real-data for a copy of yours)
 python tests/run.py --real-data     # start from a COPY of your real progress files
 ```
 
@@ -21,8 +23,17 @@ Needs Python 3.9+ and Edge or Chrome. If the browser is not found, set `CERTSTUD
 | `server` | Saving one track never overwrites another; separate accounts; unknown account ids fall back safely; backups are named safely, retained and restored correctly. |
 | `pages` | The app boots with no JavaScript errors; all 26 pages in dark and light render, have headings, name every control, have no duplicate ids and never scroll sideways; every visible piece of text meets 4.5:1 contrast; every Tab stop shows a focus ring. |
 | `print` | Real PDFs of the glossary, reports, guide, and more: page counts stay sane, the masthead and "Page X of Y" are there, the page prints on white even from the dark theme, collapsed sections are opened for print. |
+| `flows` | A real Quick 10 from start to saved results; the app when the study server disappears and returns (banner, then nothing lost); a different accent per track; customizing the sidebar; the study plan; printing pages that have real content (reports, notes, Browse cards). |
 | `interactions` | The color picker (typing, live preview, Escape reverts, Done saves, Tab trap), avatar/icon/highlight colors, highlight readability for awkward colors in both themes, highlight undo, settings in the command palette, backup restore. |
 
 ## Adding a check
 
 Each group is a module in `tests/checks/` with a `run(ctx)` function. `ctx.fresh_sandbox()` gives an isolated app, `ctx.browser()` a headless page, and `ctx.t.check(ok, "what should be true")` records a result. Helpers for opening the app and navigating live in `tests/lib/framework.py`.
+
+## Run the quick checks automatically before every commit
+
+```
+git config core.hooksPath .githooks
+```
+
+The hook (`.githooks/pre-commit`) runs `python tests/run.py static server` (about 2 seconds) whenever the commit touches `app/`, `server.py`, `service-worker.js`, or `tests/`, and blocks the commit if they fail. Use `git commit --no-verify` to skip it once. The full suite is still worth running before you ship.
