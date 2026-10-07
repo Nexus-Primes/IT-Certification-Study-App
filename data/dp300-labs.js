@@ -415,6 +415,258 @@
       "end_bad_manual2": { "end": true, "success": false, "prompt": "A one-time manual fix without repairing the job means fragmentation simply starts climbing again on the very same schedule." }
     },
     "explanation": "Checking the actual error before acting, scoping the fix to exactly what's needed rather than over-granting access, and confirming the automated path is truly restored — not just patched once by hand — is the efficient path through this class of problem."
+  },
+  {
+    "id": "point-in-time-restore-terminal",
+    "core": "core1",
+    "domain": "p6",
+    "type": "terminal",
+    "difficulty": "Advanced",
+    "minutes": 10,
+    "title": "Restore a SQL Server database to just before a mistake",
+    "summary": "Use T-SQL to take a tail-log backup and restore to a point in time with STOPAT.",
+    "brief": "At 14:33 on 2026-10-04 someone ran a DELETE without a WHERE clause against the Sales database on SQL Server (FULL recovery model). The last full backup and the log backups are available. Recover the database to 14:32 using T-SQL. Type commands exactly, or use an accepted equivalent.",
+    "explanation": "A tail-log backup captures the latest transactions first. The full backup is restored WITH NORECOVERY so the chain stays open, and the final log is restored with STOPAT just before the mistake and WITH RECOVERY to bring the database online. DBCC CHECKDB confirms integrity afterwards.",
+    "terminal": [
+      {
+        "prompt": "First capture the transactions that have not been backed up yet with a tail-log backup that leaves the database in a restoring state.",
+        "accepts": [
+          "BACKUP LOG Sales TO DISK = 'D:\\bk\\Sales_tail.trn' WITH NORECOVERY",
+          "BACKUP LOG Sales TO DISK = 'D:\\bk\\Sales_tail.trn' WITH NORECOVERY;",
+          "BACKUP LOG Sales WITH NORECOVERY"
+        ],
+        "output": "Processed 18 pages for database 'Sales', file 'Sales_log' on file 1.\nBACKUP LOG successfully processed 18 pages in 0.021 seconds.",
+        "hint": "Use BACKUP LOG with the NORECOVERY option."
+      },
+      {
+        "prompt": "Restore the last full backup, leaving the database ready to accept more restores.",
+        "accepts": [
+          "RESTORE DATABASE Sales FROM DISK = 'D:\\bk\\Sales_full.bak' WITH NORECOVERY",
+          "RESTORE DATABASE Sales FROM DISK = 'D:\\bk\\Sales_full.bak' WITH NORECOVERY;",
+          "RESTORE DATABASE Sales WITH NORECOVERY"
+        ],
+        "output": "RESTORE DATABASE successfully processed 40932 pages in 4.118 seconds.\nThe database is in a RESTORING state.",
+        "hint": "Use RESTORE DATABASE with NORECOVERY so further restores can follow."
+      },
+      {
+        "prompt": "Restore the tail-log backup, stopping at 14:32 on 2026-10-04, and bring the database online.",
+        "accepts": [
+          "RESTORE LOG Sales FROM DISK = 'D:\\bk\\Sales_tail.trn' WITH STOPAT = '2026-10-04 14:32', RECOVERY",
+          "RESTORE LOG Sales FROM DISK = 'D:\\bk\\Sales_tail.trn' WITH STOPAT = '2026-10-04 14:32', RECOVERY;",
+          "RESTORE LOG Sales WITH STOPAT = '2026-10-04 14:32', RECOVERY"
+        ],
+        "output": "RESTORE LOG successfully processed 18 pages in 0.036 seconds.\nThe database is now online, recovered to 2026-10-04 14:32.",
+        "hint": "Use RESTORE LOG with STOPAT and RECOVERY."
+      },
+      {
+        "prompt": "Check the restored database for integrity.",
+        "accepts": [
+          "DBCC CHECKDB (Sales)",
+          "DBCC CHECKDB(Sales)",
+          "DBCC CHECKDB (Sales);",
+          "DBCC CHECKDB Sales"
+        ],
+        "output": "CHECKDB found 0 allocation errors and 0 consistency errors in database 'Sales'.",
+        "hint": "Use DBCC CHECKDB on the database."
+      }
+    ],
+    "commands": [
+      {
+        "cmd": "BACKUP LOG <db> TO DISK = '<file>' WITH NORECOVERY",
+        "desc": "Tail-log backup that leaves the database restoring"
+      },
+      {
+        "cmd": "RESTORE DATABASE <db> FROM DISK = '<file>' WITH NORECOVERY",
+        "desc": "Restore a full backup and keep the chain open"
+      },
+      {
+        "cmd": "RESTORE LOG <db> FROM DISK = '<file>' WITH STOPAT = '<time>', RECOVERY",
+        "desc": "Replay the log to a moment and finish the restore"
+      },
+      {
+        "cmd": "DBCC CHECKDB (<db>)",
+        "desc": "Check database integrity"
+      },
+      {
+        "cmd": "RESTORE VERIFYONLY",
+        "desc": "Check that a backup file is readable"
+      }
+    ]
+  },
+  {
+    "id": "rolling-patch-ag-sequence",
+    "core": "core1",
+    "domain": "p6",
+    "type": "sequence",
+    "difficulty": "Intermediate",
+    "minutes": 8,
+    "title": "Patch an availability group with minimal downtime",
+    "summary": "Order a rolling update across the replicas of an Always On availability group.",
+    "brief": "A two-replica availability group on Azure VMs needs a cumulative update. Arrange the steps from first to last.",
+    "explanation": "Patching the secondary first keeps the application online. After it resynchronizes, a planned failover (no data loss) makes it the primary, so the old primary can be patched, and the group is verified at the end.",
+    "steps": [
+      "Back up the databases and confirm the group is synchronized and healthy",
+      "Patch the secondary replica while the primary keeps serving",
+      "Wait for the secondary to resynchronize with the primary",
+      "Perform a planned manual failover to the patched secondary",
+      "Patch the former primary",
+      "Confirm that both replicas are synchronized, and validate the applications"
+    ]
+  },
+  {
+    "id": "ha-dr-design-decision",
+    "core": "core1",
+    "domain": "p6",
+    "type": "decision",
+    "difficulty": "Intermediate",
+    "minutes": 9,
+    "title": "Turn RPO and RTO into an Azure SQL design",
+    "summary": "Match three sets of recovery requirements to the right resilience options.",
+    "brief": "A company runs three Azure SQL databases with different recovery requirements, and wants the least expensive option that still meets each.",
+    "explanation": "Start with the RPO and RTO: zone redundancy for near-zero loss in a region, a failover group for seconds of loss across regions, and geo-restore when hours of loss and downtime are acceptable.",
+    "stages": [
+      {
+        "question": "The payments database must not lose any committed data when a data center in the region fails, and must stay available. What fits?",
+        "options": [
+          "A zone-redundant configuration",
+          "Geo-restore from backups",
+          "A weekly full backup",
+          "Point-in-time restore only"
+        ],
+        "correct": 0,
+        "feedback": "Zone redundancy keeps synchronous copies in multiple zones of the region, giving near-zero data loss and automatic failover inside the region."
+      },
+      {
+        "question": "The orders database must survive a whole-region outage with about five seconds of data loss and recover within about an hour, without changing connection strings. What fits?",
+        "options": [
+          "An auto-failover group with a secondary region",
+          "Geo-restore",
+          "Long-term retention backups",
+          "A larger service tier"
+        ],
+        "correct": 0,
+        "feedback": "A failover group replicates asynchronously to a secondary region and provides read-write and read-only listener endpoints that follow the failover."
+      },
+      {
+        "question": "A reporting archive can tolerate an hour of lost data and about half a day of downtime after a regional outage, and cost matters most. What fits?",
+        "options": [
+          "Geo-restore from geo-redundant backups",
+          "A failover group with a readable secondary",
+          "An elastic pool",
+          "Zone redundancy"
+        ],
+        "correct": 0,
+        "feedback": "Geo-restore is the cheapest cross-region option, with an RPO of up to about an hour and an RTO of up to about 12 hours."
+      }
+    ]
+  },
+  {
+    "id": "regional-outage-scenario",
+    "core": "core1",
+    "domain": "p6",
+    "type": "scenario",
+    "difficulty": "Advanced",
+    "minutes": 11,
+    "title": "A regional outage hits the primary database",
+    "summary": "Work through a regional failure when the database is protected by a failover group.",
+    "brief": "The primary Azure region is reporting a major outage. A critical database is in a failover group with a secondary region, using a manual failover policy. Work the incident by choosing your action at each step.",
+    "explanation": "With a manual failover group policy, you decide when to fail over. When the primary is unreachable, a forced failover accepts a small possible data loss to restore service, listener endpoints keep applications connected, and the old region is rebuilt as the new secondary afterwards.",
+    "ticket": {
+      "subject": "Primary region outage, failover group in place",
+      "details": [
+        "Reported by: Monitoring",
+        "Symptom: the primary database is unreachable",
+        "The failover group policy is manual, with a secondary region configured"
+      ]
+    },
+    "startNode": "start",
+    "nodes": {
+      "start": {
+        "prompt": "What is the best first action?",
+        "options": [
+          {
+            "label": "Confirm the outage scope and the replication state of the secondary, then decide on a failover",
+            "next": "step2",
+            "correct": true
+          },
+          {
+            "label": "Restore a geo-restore copy into a new region immediately",
+            "next": "end_bad_restore",
+            "correct": false
+          },
+          {
+            "label": "Wait for several hours without a decision",
+            "next": "end_bad_wait",
+            "correct": false
+          }
+        ]
+      },
+      "step2": {
+        "prompt": "The region outage is confirmed with no ETA, and the secondary was only seconds behind. What should you do?",
+        "options": [
+          {
+            "label": "Initiate a forced failover of the failover group, accepting a small possible data loss",
+            "next": "step3",
+            "correct": true
+          },
+          {
+            "label": "Plan a failover that waits for the primary to be reachable again",
+            "next": "end_bad_planned",
+            "correct": false
+          },
+          {
+            "label": "Change every application's connection string to the secondary server name",
+            "next": "end_bad_strings",
+            "correct": false
+          }
+        ]
+      },
+      "step3": {
+        "prompt": "The secondary is now primary and applications reconnect through the read-write listener. What next?",
+        "options": [
+          {
+            "label": "Record the data-loss window, validate the applications, and rebuild geo-replication after the original region recovers",
+            "next": "end_good",
+            "correct": true
+          },
+          {
+            "label": "Delete the old primary immediately",
+            "next": "end_bad_delete",
+            "correct": false
+          }
+        ]
+      },
+      "end_good": {
+        "end": true,
+        "success": true,
+        "prompt": "A forced failover restores service quickly when the primary cannot be reached, listener endpoints avoid connection string changes, and rebuilding replication and documenting the loss window completes the response."
+      },
+      "end_bad_restore": {
+        "end": true,
+        "success": false,
+        "prompt": "Geo-restore is slower and cheaper, designed for databases without a replica. With a failover group in place, restoring from backups wastes time and discards the replica's newer data."
+      },
+      "end_bad_wait": {
+        "end": true,
+        "success": false,
+        "prompt": "Doing nothing against a stated recovery objective prolongs the outage. A decision based on the secondary's state is needed."
+      },
+      "end_bad_planned": {
+        "end": true,
+        "success": false,
+        "prompt": "A planned failover needs both sides healthy so it can synchronize first, which is impossible while the primary is unreachable. A forced failover is the right tool."
+      },
+      "end_bad_strings": {
+        "end": true,
+        "success": false,
+        "prompt": "The failover group's listener endpoints exist so connection strings do not change; editing every application is slow and error-prone."
+      },
+      "end_bad_delete": {
+        "end": true,
+        "success": false,
+        "prompt": "Deleting the old primary destroys the data you may need to reconcile and the ability to re-establish replication."
+      }
+    }
   }
   ];
 })();

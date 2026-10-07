@@ -172,6 +172,44 @@ def run(ctx):
     t.check(all(labs[k] in done for k in ("sequence", "decision", "terminal")), "all three completed labs are saved", str(sorted(done)))
     t.check(not browser.errors(), "no JavaScript errors in the labs", "; ".join(browser.errors()[:3]))
 
+    # Every Core 2 lab (the older ones and the ones added in v226) can actually be completed by following its own answers.
+    t.suite("study: every Core 2 lab plays through")
+    browser.eval("document.querySelector('[data-action=\"exit-lab\"]')?.click()")
+    time.sleep(0.4)
+    core2 = browser.eval("window.APLUS_LABS.filter(l => l.core === 'core2' && l.type !== 'gui' && l.type !== 'scenario').map(l => ({ id: l.id, type: l.type }))")
+    stuck = []
+    for item in core2:
+        lab_id, kind = item["id"], item["type"]
+        browser.eval(f"document.querySelector('[data-action=\"start-lab\"][data-lab=\"{lab_id}\"]').click()")
+        time.sleep(0.5)
+        if kind == "sequence":
+            for step in browser.eval(f"window.APLUS_LABS.find(l => l.id === {lab_id!r}).steps"):
+                browser.eval(f"""(() => {{ const b = [...document.querySelectorAll('[data-action="move-step"][data-from="available"]')].find(x => x.textContent.includes({step[:30]!r})); if (b) b.click(); }})()""")
+                time.sleep(0.12)
+            browser.eval("document.querySelector('[data-action=\"check-sequence\"]')?.click()")
+            time.sleep(0.6)
+        elif kind == "decision":
+            for correct in browser.eval(f"window.APLUS_LABS.find(l => l.id === {lab_id!r}).stages.map(s => s.correct)"):
+                browser.eval(f"document.querySelector('[data-action=\"decision-answer\"][data-index=\"{correct}\"]')?.click()")
+                time.sleep(0.45)
+        elif kind == "terminal":
+            for command in browser.eval(f"window.APLUS_LABS.find(l => l.id === {lab_id!r}).terminal.map(s => s.accepts[0])"):
+                browser.eval(f"""(() => {{ const i = document.getElementById('terminal-command'); if (i) {{ i.value = {command!r}; document.getElementById('terminal-form').requestSubmit(); }} }})()""")
+                time.sleep(0.45)
+        elif kind == "scenario":
+            path = browser.eval(f"""(() => {{ const lab = window.APLUS_LABS.find(l => l.id === {lab_id!r}); const labels = []; let node = lab.nodes[lab.startNode];
+              while (node && !node.end) {{ const o = node.options.find(x => x.correct); labels.push(o.label); node = lab.nodes[o.next]; }} return labels; }})()""")
+            for label in path:
+                browser.eval(f"""(() => {{ const b = [...document.querySelectorAll('[data-action="scenario-choice"]')].find(x => x.dataset.label === {label!r}); if (b) b.click(); }})()""")
+                time.sleep(0.4)
+        finished = browser.eval("/complete|ticket resolved/i.test(document.getElementById('main-content').innerText)")
+        if not finished:
+            stuck.append(lab_id)
+        browser.eval("document.querySelector('[data-action=\"exit-lab\"]')?.click()")
+        time.sleep(0.35)
+    t.check(not stuck, f"all {len(core2)} Core 2 labs can be completed by giving their own correct answers", ", ".join(stuck))
+    t.check(not browser.errors(), "no JavaScript errors while playing the Core 2 labs", "; ".join(browser.errors()[:3]))
+
     # ------------------------------------------------------------------ accounts and the PIN
     t.suite("study: accounts and the PIN")
     browser.eval("document.querySelector('[data-action=\"open-account-dialog\"]').click()")

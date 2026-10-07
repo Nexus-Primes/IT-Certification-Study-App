@@ -18,6 +18,16 @@ TRACKS = [
     ("Network+", "NETPLUS_DATA", "NETPLUS_GUIDE", "core1", "nd"),
 ]
 
+LAB_FILES = [
+    ("A+", "labs.js", "APLUS_LABS", "concepts.js", "APLUS_DATA"),
+    ("Network+", "networkplus-labs.js", "NETPLUS_LABS", "networkplus.js", "NETPLUS_DATA"),
+    ("Security+", "securityplus-labs.js", "SECPLUS_LABS", "securityplus.js", "SECPLUS_DATA"),
+    ("3CX Basic", "3cx-basic-labs.js", "THREECX_BASIC_LABS", "3cx-basic.js", "THREECX_BASIC_DATA"),
+    ("3CX Advanced", "3cx-advanced-labs.js", "THREECX_ADVANCED_LABS", "3cx-advanced.js", "THREECX_ADVANCED_DATA"),
+    ("AZ-802", "winserver-hybrid-labs.js", "WINSERVER_LABS", "winserver-hybrid.js", "WINSERVER_DATA"),
+    ("DP-300", "dp300-labs.js", "DP300_LABS", "dp300.js", "DP300_DATA"),
+]
+
 SHAPE_JS = r"""
 ((dataName, guideName, strictCore, prefix, literalOk) => {
   const data = window[dataName], guide = window[guideName];
@@ -86,6 +96,23 @@ def run(ctx):
         fresh = [i for i in issues if (i[0], i[1]) not in audit.REVIEWED]
         t.check(not fresh, f"{label}: no scenario gives away its answer, repeats another, or has ambiguous options ({len(data['concepts'])} concepts)",
                 "; ".join(f"{i[0]} {i[1]}: {i[2][:60]}" for i in fresh[:6]))
+
+    # Labs: every lab is structurally sound (a decision's answer exists, a scenario's branches lead somewhere, a terminal step accepts something).
+    import inject
+    import labs_lib
+    t.suite("labs are well formed in every track")
+    for label, labs_file, labs_var, data_file, data_var in LAB_FILES:
+        text, _crlf = labs_lib.read_labs(str(APP_ROOT / "data" / labs_file))
+        labs = inject.parse_data(text, labs_var)
+        data = inject.parse_data(labs_lib.read_labs(str(APP_ROOT / "data" / data_file))[0], data_var)
+        domains = {d["id"] for core in data["certification"]["cores"].values() for d in core["domains"]}
+        problems, seen = [], set()
+        for lab in labs:
+            if lab["id"] in seen:
+                problems.append(f"duplicate lab id {lab['id']}")
+            seen.add(lab["id"])
+            problems += labs_lib.validate_lab(lab, domains)
+        t.check(not problems, f"{label}: all {len(labs)} labs are well formed", "; ".join(problems[:5]))
 
     t.suite("concept diagrams render cleanly")
     for label, data_name, _guide, _core, _prefix in TRACKS:

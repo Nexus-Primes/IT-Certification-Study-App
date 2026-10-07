@@ -6,6 +6,10 @@
 // this app having per-build version numbers at all, so their "version" is the date instead —
 // still real history, just not tagged with a build number the way later entries are.
 export const CHANGELOG = [
+  { version: 'v226', date: 'October 2026', title: '27 new hands-on labs for A+ Core 2, Network+, and DP-300', items: [
+    "New: 15 labs for A+ Core 2 (command-line and tool practice such as nslookup, net use, DISM, gpresult, bootrec, and Linux disk checks; a compromised-mailbox case study; and ordering and decision labs for hardening, offboarding, change management, and remote access), 8 for Network+ (VLSM subnetting, IPv6 address types, DHCP, switch duplex and DHCP relay fixes in a simulated switch CLI, DNS record lookups, and a Wi-Fi capacity case study), and 4 for DP-300's new HA/DR domain (point-in-time restore with STOPAT, rolling patching, designing from RPO and RTO, and a regional outage).",
+    "Heads-up: the new labs follow the same exact-command matching as the older ones, so type commands as shown in each lab's command list."
+  ] },
   { version: 'v225', date: 'October 2026', title: 'Network+: 292 more concepts and 5 new objectives', items: [
     "New: Network+ (N10-009) grew from 149 to 441 concepts, every one with its own diagram, plus 27 new Study guide sections. The topics were checked against the exam's five domains and the published outline, and the biggest gaps are now filled: the full port and protocol list, IPv6 (address types, SLAAC, dual stack, tunneling, NAT64), cabling, connectors, and Ethernet standards, the upper OSI layers, cloud service and connectivity models, routing protocols, NAT types, wireless standards, rack, power, and environment, DHCP, DNS, and time services, VPN types and remote access, and many more troubleshooting scenarios.",
     "New: 5 objectives were added (IPv6 addressing, Network types and provider links, Physical installations, IP services, and Network access and management methods). The five domain weights already matched the exam (23, 20, 19, 14, 24 percent) and are unchanged.",
