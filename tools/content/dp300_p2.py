@@ -36,7 +36,7 @@ def build(b):
           S.steps([('App Service', 'has a managed identity'), ('Database user', 'created for that identity'), ('Token sign-in', 'no password stored')], title='Passwordless access', tones=['plain', 'blue', 'green']),
           caption='A managed identity signs an Azure app in to the database without any stored password.')
 
-    b.add('2.1', 'GRANT, DENY, and REVOKE',
+    b.add('2.1', 'DENY (overrides GRANT)',
           'GRANT gives a permission, DENY explicitly blocks it and overrides any GRANT, including one inherited through a role, and REVOKE removes a previous GRANT or DENY; granting on schemas and roles supports least privilege.',
           'stop one user from reading a sensitive table even though a role they belong to can read it',
           ['REVOKE', 'GRANT', 'Removing the user from the database'],
@@ -69,7 +69,7 @@ def build(b):
           S.compare(('Cell-level encryption', ['T-SQL ENCRYPTBYKEY', 'Server holds the keys', 'Admins may decrypt']), ('Always Encrypted', ['Client driver encrypts', 'Server never sees plaintext', 'Protects from DBAs']), title='Who holds the keys'),
           caption='Cell-level encryption uses server-side keys; Always Encrypted keeps the keys with the client.')
 
-    b.add('2.2', 'Deterministic vs randomized encryption',
+    b.add('2.2', 'Deterministic encryption',
           'Always Encrypted can use deterministic encryption, where the same plaintext always yields the same ciphertext so equality lookups, joins, and grouping work, or randomized encryption, which is stronger but cannot be searched.',
           'choose an Always Encrypted type for a column that must still support equality lookups such as WHERE SSN = @ssn',
           ['Randomized encryption', 'Transparent data encryption', 'Dynamic data masking'],
@@ -151,10 +151,10 @@ def build(b):
           S.compare(('Service endpoint', ['VNet rule allows a subnet', 'Server keeps its public IP', 'No extra IP address']), ('Private endpoint', ['Private IP in your VNet', 'Public access can be off', 'Needs private DNS']), title='Service vs private endpoint'),
           caption='Service endpoints allow a subnet over the public endpoint; private endpoints give a private IP.')
 
-    b.add('2.4', 'Connection policy (Redirect vs Proxy)',
+    b.add('2.4', 'Proxy connection policy',
           'With Redirect, clients connect straight to the node hosting the database after the gateway handshake (ports 11000 to 11999 must be open), while Proxy sends every packet through the gateway on port 1433; Default uses Redirect from inside Azure and Proxy from outside.',
           'choose the policy that works for clients behind a firewall that only allows outbound port 1433',
-          ['Redirect', 'Private endpoint', 'Service endpoint'],
+          ['Redirect connection policy', 'Private endpoint', 'Service endpoint'],
           'Proxy keeps everything on port 1433 through the gateway — Redirect is faster but needs 11000 to 11999 open.',
           S.compare(('Proxy', ['All traffic via the gateway', 'Only port 1433 needed', 'Higher latency']), ('Redirect', ['Direct to the database node', 'Ports 11000 to 11999 too', 'Lower latency']), title='Connection policy'),
           caption='Proxy routes through the gateway on 1433; Redirect connects directly but needs extra ports open.')

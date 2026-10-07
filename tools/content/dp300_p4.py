@@ -22,7 +22,7 @@ def build(b):
     # ------------------------------------------------------------------------------------------ 4.2
     b.add('4.2', 'Key lookup',
           'An execution-plan operator that fetches extra columns from the clustered index for each row found through a nonclustered index; many lookups over large row counts suggest adding INCLUDE columns so the index covers the query.',
-          'remove an expensive key lookup in a plan that seeks a nonclustered index and then fetches columns row by row',
+          'remove the row-by-row fetches of extra columns that follow a nonclustered index seek in an execution plan',
           ['A table scan', 'A hash match', 'A sort spill'],
           'A seek plus a lookup PER ROW — INCLUDE the missing columns to make the index covering.',
           S.steps([('Index seek', 'finds matching keys'), ('Key lookup', 'row-by-row fetch'), ('Fix', 'INCLUDE the columns')], title='Key lookup', tones=['blue', 'amber', 'green']),

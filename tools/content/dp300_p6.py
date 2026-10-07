@@ -23,7 +23,7 @@ def build(b):
           S.table(['Requirement', 'Typical option'], [('Near-zero loss in region', 'zone-redundant tier'), ('Seconds of loss, region failure', 'failover group'), ('Undo a mistake, same region', 'point-in-time restore'), ('Hours of loss and downtime', 'geo-restore')], title='From RPO and RTO to a design', col_widths=[0.5, 0.5]),
           caption='RPO and RTO decide which Azure SQL resilience option fits, balancing protection against cost.')
 
-    b.add('6.1', 'Planned vs forced failover',
+    b.add('6.1', 'Planned failover',
           'A planned failover waits for the secondary to synchronize so no data is lost and is used for maintenance and DR drills, whereas a forced failover switches immediately when the primary is unavailable and can lose recent transactions.',
           'fail over a failover group for a DR drill with no data loss while both regions are healthy',
           ['Forced failover', 'Geo-restore', 'Point-in-time restore'],

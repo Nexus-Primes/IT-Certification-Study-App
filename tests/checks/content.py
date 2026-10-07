@@ -1,9 +1,12 @@
 """The generated concept data (A+ Core 2 and DP-300): structure, quiz-readiness, and how every diagram renders in both themes."""
+import sys
+
 from lib.diagram_check import run_check
 from lib.framework import open_app
+from lib.sandbox import APP_ROOT
 
-# Diagrams that were already in the data before the checker existed and have a known, accepted quirk.
-KNOWN_DIAGRAM_ISSUES = {"c2d1-12-4", "p4-42-3", "p1-13-6"}
+# Diagrams that were already in the data before the checker existed and have a known, accepted quirk (none at the moment).
+KNOWN_DIAGRAM_ISSUES = set()
 
 # Hand-made diagrams that use a literal color on purpose (a dark check mark on a teal chip, readable in both themes).
 LITERAL_COLOR_OK = {"c2d2-22-3"}
@@ -12,6 +15,7 @@ LITERAL_COLOR_OK = {"c2d2-22-3"}
 TRACKS = [
     ("A+", "APLUS_DATA", "APLUS_GUIDE", "core2", "c2"),
     ("DP-300", "DP300_DATA", "DP300_GUIDE", "core1", "p"),
+    ("Network+", "NETPLUS_DATA", "NETPLUS_GUIDE", "core1", "nd"),
 ]
 
 SHAPE_JS = r"""
@@ -72,6 +76,16 @@ def run(ctx):
         t.check(not shape["unguided"], "every objective is covered by a study-guide section", ", ".join(shape["unguided"]))
         t.check(all(total == 100 for total in shape["weightSums"]), "each exam's domain weights add up to 100", str(shape["weightSums"]))
         t.check(shape["strict"] == shape["strictDiagrams"], f"every concept has a diagram ({shape['strictDiagrams']}/{shape['strict']})")
+
+    # Question quality across every track: answers given away by the scenario, malformed scenarios, duplicates, ambiguous options.
+    sys.path.insert(0, str(APP_ROOT / "tools" / "content"))
+    import audit
+    t.suite("question quality across all tracks")
+    for label, filename, var in audit.TRACKS:
+        data, issues = audit.audit_track(label, filename, var)
+        fresh = [i for i in issues if (i[0], i[1]) not in audit.REVIEWED]
+        t.check(not fresh, f"{label}: no scenario gives away its answer, repeats another, or has ambiguous options ({len(data['concepts'])} concepts)",
+                "; ".join(f"{i[0]} {i[1]}: {i[2][:60]}" for i in fresh[:6]))
 
     t.suite("concept diagrams render cleanly")
     for label, data_name, _guide, _core, _prefix in TRACKS:

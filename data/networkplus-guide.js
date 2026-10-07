@@ -29,6 +29,51 @@
         "heading": "Cloud, topologies, and where networking is heading",
         "objectives": ["1.3", "1.6", "1.8"],
         "body": "The cloud service models describe how much of the stack you manage versus how much your provider manages. With IaaS (Infrastructure as a Service) you get raw virtual machines and networking and manage the OS and everything above it yourself. With PaaS (Platform as a Service) the provider also manages the OS and runtime, and you just deploy your application code. With SaaS (Software as a Service) you're just a user of a finished application — think webmail. A hybrid cloud deployment keeps some resources on-premises and some in the cloud, connected together, usually because of cost, latency, or compliance reasons that make a full cloud move impractical. SD-WAN (Software-Defined WAN) is the modern way of connecting multiple sites together — it intelligently routes traffic over whichever available link (MPLS, broadband, LTE) is performing best at that moment, instead of locking you into one expensive dedicated circuit.\n\nOn network design, a star topology — every device connects to one central point like a switch — is the standard for a modern LAN because a single cable failure only takes down one device instead of the whole network. In a data center, spine-leaf architecture takes that same principle further: every 'leaf' switch connects to every 'spine' switch, so traffic between any two devices is always the same short number of hops away, which keeps performance predictable as things scale.\n\nFinally, a handful of terms describe where the field is heading: SDN (Software-Defined Networking) separates the control logic of a network from the physical hardware forwarding the traffic, letting you manage the whole network's behavior from software instead of configuring each device by hand. Zero trust assumes no device or user is automatically trusted just because it's inside the network perimeter — every request gets verified regardless of where it comes from. Infrastructure as code means defining network configuration in text files that can be version-controlled and deployed automatically, the same way application code is."
+      },
+      {
+        "heading": "The upper OSI layers and the TCP/IP model",
+        "objectives": ["1.1"],
+        "body": "Layers 5 through 7 complete the OSI picture. The Session layer manages the dialogue between two applications (setup, maintenance, and teardown), the Presentation layer handles data format, compression, and encryption, and the Application layer provides the network services applications call on, such as HTTP, SMTP, DNS, and FTP. Remember that Layer 7 is the protocol layer, not the application program itself.\n\nThe TCP/IP model that the Internet actually uses has four layers: Network Access (OSI 1 and 2), Internet (OSI 3), Transport (OSI 4), and Application (OSI 5 through 7). Exam questions often ask you to place a protocol or device in the right layer of either model."
+      },
+      {
+        "heading": "Appliances and storage",
+        "objectives": ["1.2"],
+        "body": "A stateful firewall tracks connections in a state table so return traffic is allowed automatically, while a stateless packet filter judges each packet alone. A VPN headend terminates remote-access and site-to-site tunnels, a CDN serves cached content from edge servers close to users, and the IP time-to-live field is decremented at each router so loops end and traceroute can reveal each hop.\n\nNetwork storage comes in two forms. A NAS shares files (SMB or NFS) over the normal LAN, whereas a SAN presents block-level storage over Fibre Channel or iSCSI so servers see it as a local disk."
+      },
+      {
+        "heading": "Cloud service, deployment, and connectivity concepts",
+        "objectives": ["1.3"],
+        "body": "Service models differ in what you manage: in PaaS the provider runs the servers, operating system, and runtime and you manage only the application, between IaaS (you manage the operating system) and SaaS (you manage nothing). Deployment models are public (shared provider infrastructure), private (dedicated to one organization), and hybrid (both, connected). Scalability is the ability to add capacity, elasticity is automatic growth and shrinkage with demand, and multitenancy is many customers sharing infrastructure with logical isolation.\n\nIn a public cloud you build a virtual private cloud with your own subnets, routes, and security rules; a NAT gateway gives private subnets outbound-only Internet access while an Internet gateway allows two-way access. To reach the cloud you can use a VPN across the Internet or a private direct connection (such as Direct Connect or ExpressRoute) for predictable latency."
+      },
+      {
+        "heading": "Ports, protocols, and traffic types",
+        "objectives": ["1.4"],
+        "body": "Learn ports as pairs of secure and insecure services: FTP (20 and 21) versus SFTP and SSH (22), Telnet (23) versus SSH, HTTP (80) versus HTTPS (443), POP3 (110) and IMAP (143) versus their TLS versions, LDAP (389) versus LDAPS (636), and SMTP (25) for server relay with 587 or 465 for client submission. Other common ones: TFTP 69 (UDP, no authentication), DHCP 67 and 68, NTP 123, SNMP 161 and 162, SMB 445, Syslog 514, SQL Server 1433, RDP 3389, and SIP 5060 and 5061.\n\nIP protocols are not ports: ICMP (protocol 1) carries diagnostics, GRE (47) tunnels traffic without encrypting it, and IPsec uses ESP (50) to encrypt and authenticate or AH (51) to authenticate only. Traffic types are unicast (one to one), broadcast (one to all in the domain), multicast (to a group), and anycast (one address on many servers, delivered to the nearest)."
+      },
+      {
+        "heading": "Cabling, connectors, and Ethernet standards",
+        "objectives": ["1.5"],
+        "body": "Match the medium to the job. Shielded twisted pair resists interference where unshielded is cheaper, coaxial cable (F-type and BNC connectors) still carries cable broadband and CCTV, plenum-rated jackets are required in air-handling spaces, and direct attach cables serve short in-rack links. Know the connectors: RJ45 for Ethernet and the smaller RJ11 for telephone and DSL; LC (small, SFP), SC (square, push-pull), ST (round, bayonet), and MPO (multi-fiber) for fiber.\n\nTransceivers follow speed: SFP is 1 Gb/s, SFP+ is 10, QSFP+ is 40 (four lanes), and QSFP28 is 100. BiDi optics use two wavelengths on one strand, CWDM carries a few widely spaced wavelengths cheaply, and DWDM packs many tightly for long haul. Standards: 1000BASE-T is Gigabit over Cat 5e, 10GBASE-T needs Cat 6a for 100 m, SR variants use multimode fiber and LR variants use single-mode. Cables end on patch panels or 110 blocks (the 66 block is the legacy telephone one), and T568B is the common RJ45 pin-out, with T568A swapping the orange and green pairs."
+      },
+      {
+        "heading": "Topologies and IPv4 addressing details",
+        "objectives": ["1.6", "1.7"],
+        "body": "In a full mesh every node links to every other (n(n-1)/2 links) for maximum redundancy, a bus shares one terminated cable, a ring links each node to two neighbors, and hub-and-spoke connects branches only to a central site, which becomes the single point of failure. A collapsed core merges the core and distribution layers, and spine-leaf favors east-west (server-to-server) traffic over north-south traffic.\n\nFor addressing, know the classful ranges (A 1 to 126, B 128 to 191, C 192 to 223, D multicast, E experimental), the loopback block 127.0.0.0/8 for testing the local stack, and 100.64.0.0/10 for carrier-grade NAT. VLSM sizes each subnet with its own mask, usable hosts equal 2 to the host bits minus 2, the first address is the network and the last is the broadcast, and a virtual IP is shared or moved between devices."
+      },
+      {
+        "heading": "Automation concepts and modern network environments",
+        "objectives": ["1.8"],
+        "body": "VXLAN carries Layer 2 over UDP on a Layer 3 network using a 24-bit segment ID, about 16 million segments versus the 4,094 VLAN IDs. SASE combines SD-WAN with cloud-delivered security (secure web gateway, CASB, zero trust access), so branch and remote users are protected without backhauling traffic.\n\nInfrastructure as code brings software practices to networks: source control keeps a central history with branches and conflict identification, playbooks apply reusable tasks to many devices, a dynamic inventory is built from live sources, and automation reduces configuration drift, which is the gradual divergence of real settings from the approved template."
+      },
+      {
+        "heading": "IPv6 addressing",
+        "objectives": ["1.9"],
+        "body": "An IPv6 address is 128 bits written in hexadecimal, usually a /64 prefix plus a 64-bit interface ID. Shorten it by dropping leading zeros and using a double colon once for one run of zero groups. Types: global unicast (2000::/3) is routable on the Internet, link-local (fe80::/10) is automatic and never routed, unique local (fc00::/7) is the private range, and multicast (ff00::/8) replaces broadcast, which IPv6 does not have.\n\nNeighbor Discovery Protocol (ICMPv6) replaces ARP and lets hosts find routers. For the transition, dual stack runs IPv4 and IPv6 together, tunneling wraps IPv6 inside IPv4 to cross IPv4-only networks, and NAT64 translates between IPv6-only clients and IPv4-only servers."
+      },
+      {
+        "heading": "Network types and provider links",
+        "objectives": ["1.10"],
+        "body": "By scope: a PAN is a person's devices over Bluetooth, a LAN covers a site, a WLAN is Wi-Fi, a CAN joins the buildings of a campus, a MAN covers a city, and a WAN spans cities or countries. Provider services include MPLS (label switching with QoS), leased lines (dedicated, symmetric, with an SLA), metro Ethernet over fiber, DSL (telephone copper, speed falls with distance), and cable broadband (shared coax).\n\nSatellite reaches remote sites but geostationary links add 500 to 700 ms of latency, and cellular 4G or 5G works as primary access or as a failover link. A colocation facility rents space, power, cooling, and connectivity for equipment you own, unlike IaaS, which rents the provider's hardware."
       }
     ]
   },
@@ -55,6 +100,26 @@
         "heading": "Installing wireless",
         "objectives": ["2.4"],
         "body": "An SSID (Service Set Identifier) is simply the network name a wireless network broadcasts, and WPA3 is the current standard for actually securing that network — encrypting traffic and requiring authentication so only intended users can join. Modern wireless operates across three frequency bands: 2.4GHz reaches further and passes through walls better but is slower and more congested (shared with lots of consumer devices); 5GHz is faster with far more available channels but has shorter range; 6GHz (added with Wi-Fi 6E) is the newest, fastest, and least congested band, at the cost of the shortest range of the three.\n\nGetting a wireless deployment right in anything bigger than a single room requires more than plugging in an access point. A site survey — physically walking the space and measuring signal strength, interference, and channel usage — is how you figure out how many access points you actually need and where they should go, accounting for walls, floors, and existing interference. Antenna choice matters too: an omnidirectional antenna spreads signal evenly in all directions (typical for a single AP covering an open area), while a directional antenna focuses signal in one direction for longer point-to-point range, like linking two buildings."
+      },
+      {
+        "heading": "Routing protocols, route selection, and NAT",
+        "objectives": ["2.2"],
+        "body": "Interior protocols run inside an autonomous system: RIP counts hops (15 maximum), OSPF is link-state and builds a full topology map, and EIGRP is Cisco's advanced distance-vector protocol using bandwidth and delay (administrative distance 90). BGP is the exterior protocol between autonomous systems and runs on TCP 179. A router chooses routes by longest prefix first, then administrative distance (which ranks protocols), then metric (which ranks routes within a protocol).\n\nNAT comes in three useful forms: static NAT maps one private address to one public address, PAT (NAT overload) shares one public address among many hosts using port numbers, and destination NAT (port forwarding) publishes an internal service. First-hop redundancy (HSRP, VRRP, GLBP) shares a virtual gateway address, subinterfaces (\"router on a stick\") route between VLANs over one trunk, an SVI does it on a Layer 3 switch, and convergence is the time until every router agrees after a change."
+      },
+      {
+        "heading": "More Ethernet switching features",
+        "objectives": ["2.1", "2.3"],
+        "body": "A hub repeats every signal to every port in one collision domain, whereas each switch port is its own collision domain; broadcast domains are separated only by VLANs and routers. A switch learns source MAC addresses into its MAC address table, forwards known unicast out one port, and floods unknown unicast and broadcast; ARP resolves IPv4 to MAC on the local segment.\n\nUseful features: port mirroring copies traffic to an analyzer, BPDU guard err-disables an edge port that receives a BPDU, the root bridge is the lowest bridge ID, RSTP converges in seconds instead of 30 to 50, access ports carry one untagged VLAN while trunks carry many tagged VLANs, a voice VLAN separates phones, auto-MDIX fixes cable pairs and auto-negotiation fixes speed and duplex. For PoE, 802.3af gives 15.4 W, 802.3at 30 W, and 802.3bt 60 or 90 W."
+      },
+      {
+        "heading": "Wireless standards and technologies",
+        "objectives": ["2.4"],
+        "body": "Know the generations: 802.11n (Wi-Fi 4) introduced MIMO on 2.4 and 5 GHz, 802.11ac (Wi-Fi 5) is 5 GHz only with downlink MU-MIMO, 802.11ax (Wi-Fi 6 and 6E) adds OFDMA and the 6 GHz band, and 802.11be (Wi-Fi 7) adds 320 MHz channels and Multi-Link Operation. Legacy: 802.11b and g use 2.4 GHz, and 802.11a uses 5 GHz.\n\nWider channels (channel bonding) raise throughput but leave fewer clean channels, MIMO sends several streams to one client while MU-MIMO serves several clients at once, and beamforming focuses the signal at a client. Roaming needs the same SSID and security on every AP, a BSSID identifies one AP radio, a captive portal gates guests with a web page, directional antennas suit point-to-point links, and good signal means both strong RSSI and a high SNR. WPA-Enterprise uses 802.1X and RADIUS for unique per-user credentials."
+      },
+      {
+        "heading": "Physical installation: closets, racks, power, and environment",
+        "objectives": ["2.5"],
+        "body": "The MDF is the central wiring room where carrier circuits and backbone cabling terminate, and an IDF is a per-floor closet that connects back to it. Racks are measured in units (1U = 1.75 inches, commonly 42U), and switch airflow (port-side exhaust or intake) must match the hot aisle and cold aisle layout so hot and cold air do not mix.\n\nA UPS provides battery power through outages, while a PDU distributes and can meter and switch power inside the rack. Keep loads within capacity and connect dual power supplies to separate A and B feeds. Rooms should stay roughly 18 to 27 °C at 40 to 60 percent humidity, and server rooms should use clean-agent (gas) fire suppression rather than water."
       }
     ]
   },
@@ -81,6 +146,41 @@
         "heading": "Physical security and monitoring",
         "objectives": ["3.5", "3.6"],
         "body": "Physical security devices exist because network security means nothing if someone can just walk up to the equipment. Badge readers and biometrics (fingerprint or retina scanners) control who can physically enter a space like a server room. CCTV cameras provide both deterrence and an after-the-fact record of who was where. Asset tags — physical labels with tracking IDs — let an organization keep an accurate inventory of its equipment and notice quickly if something goes missing.\n\nOn the monitoring side, SNMP (Simple Network Management Protocol) lets network devices report their status and statistics to a central monitoring system, so an administrator has one place to check the health of the entire network instead of logging into every device individually. Syslog is a standard for devices to send log messages to a central server, which matters enormously for troubleshooting and security investigations after the fact — logs kept only on the device itself can be lost if that device fails or is compromised. NetFlow captures metadata about traffic flows (who talked to whom, how much data, for how long) without capturing the full packet contents, which is efficient enough to run continuously and is often how unusual traffic patterns get noticed in the first place. A baseline is simply a recorded picture of what 'normal' looks like for a given network, which is what makes it possible to recognize 'abnormal' at all — you can't spot something unusual without first knowing what usual looks like."
+      },
+      {
+        "heading": "More network documentation and lifecycle",
+        "objectives": ["3.1"],
+        "body": "Documentation answers different questions. A rack diagram shows which device sits in which rack unit, a cable map traces each cable end to end between jacks, patch panels, and switch ports, a wireless heat map shows coverage from a site survey, an asset inventory records hardware, software, licenses, and warranties, and IPAM manages subnets, DHCP, and DNS to avoid duplicate addresses. An SLA is a contract with measurable service levels and remedies.\n\nLifecycle matters too: end of sale means a product can no longer be bought, but end of support means it gets no more patches, so replace it. Patch through testing, backups, a maintenance window, and a rollback plan; keep versioned configuration backups and a golden baseline for fast replacement and drift detection; and decommission devices by wiping them and updating every record."
+      },
+      {
+        "heading": "Recovery objectives, redundancy, and testing",
+        "objectives": ["3.2"],
+        "body": "RPO is the data loss you can tolerate (it drives backup or replication frequency) and RTO is the downtime you can tolerate (it drives the standby site choice). In active-active designs every unit carries traffic and shares load, while in active-passive a standby waits idle until failover. Multihoming to two ISPs, not just two cables, protects against a provider outage.\n\nTest the plan in stages: a tabletop exercise is a safe discussion of a scenario to find gaps, and a failover test actually moves services to the standby to measure the real recovery time against the RTO and RPO before a failback and a review."
+      },
+      {
+        "heading": "Software and command tools",
+        "objectives": ["3.3"],
+        "body": "Match the tool to the question. arp -a lists IP-to-MAC mappings (duplicates suggest conflicts or spoofing), netstat shows listening ports and connections on a host, route shows or edits the host routing table, nmap scans other hosts for open ports and services (only with permission), and tcpdump captures packets from the command line where Wireshark provides a graphical view. LLDP (standard) and CDP (Cisco) show directly connected neighbors, a speed test measures throughput, and a Wi-Fi analyzer shows channels and signal levels.\n\nDevice commands: show interfaces reports status, speed, duplex, and error counters such as CRC errors, show mac address-table maps MAC addresses to ports, show ip route displays routes and next hops, and show running-config displays the active configuration in RAM, which must be saved to startup to persist."
+      },
+      {
+        "heading": "Cable and fiber hardware tools",
+        "objectives": ["3.4"],
+        "body": "A crimping tool attaches connectors, while a punchdown tool seats wires into a block. For fiber, an OTDR analyzes light reflections to locate breaks, splices, and bends along a long run and measure their distance, whereas a visual fault locator shines visible red light to show short-range faults. A loopback plug tests a port by returning its transmit signal to its receiver, and a network tap is inline hardware that copies all traffic to a monitoring port, unlike a switch SPAN port that can drop traffic."
+      },
+      {
+        "heading": "Monitoring: SNMP, logs, counters, and alerting",
+        "objectives": ["3.6"],
+        "body": "SNMPv1 and v2c send community strings in clear text, while SNMPv3 adds authentication and encryption. Managers poll agents on UDP 161, and agents send traps on UDP 162 when something happens; a MIB is the database of manageable objects and an OID is the dotted numeric address of one of them. A SIEM goes beyond a syslog server by correlating events across many sources, and APIs and streaming telemetry return structured data without parsing the CLI.\n\nInterface counters are clues: rising CRC errors mean corrupted frames from bad cabling, interference, or a duplex mismatch. Environmental sensors watch temperature, humidity, power, and leaks, anomaly-based alerts compare against the baseline instead of a fixed limit, and availability is measured in nines (99.99% allows about 53 minutes of downtime per year)."
+      },
+      {
+        "heading": "DHCP, DNS, and time services",
+        "objectives": ["3.7"],
+        "body": "DHCP leases through Discover, Offer, Request, and Acknowledge. A scope is the lease range, exclusions keep static addresses out of it, a reservation always gives one MAC the same address, options carry the gateway, DNS, and other settings, and a relay agent (IP helper) forwards broadcasts to a server on another subnet. In IPv6, SLAAC lets hosts build their own address from the router's prefix.\n\nDNS record types: A (IPv4), AAAA (IPv6), CNAME (alias), MX (mail servers with priority), TXT (SPF, DKIM, DMARC, verification), NS (authoritative servers), and PTR (reverse lookups). DNSSEC signs answers for authenticity, while DoH and DoT encrypt queries. Authoritative servers hold zone data and recursive resolvers look answers up and cache them; the hosts file is a local override. For time, NTP strata count hops from the reference clock, PTP gives sub-microsecond accuracy, and NTS authenticates NTP."
+      },
+      {
+        "heading": "VPNs, remote access, and AAA",
+        "objectives": ["3.8"],
+        "body": "A site-to-site VPN joins two networks gateway to gateway, a client-to-site VPN lets one device tunnel in with client software, and a clientless VPN uses a browser portal for specific resources. A split tunnel sends only corporate traffic through the VPN, whereas a full tunnel sends everything for inspection; IPsec tunnel mode wraps the whole original packet and transport mode protects only the payload.\n\nFor management, a jump box is a hardened, logged entry point, out-of-band management uses a separate path (such as a console server) that works when production is down, and REST APIs enable automation. For authentication, RADIUS suits user network access (UDP 1812 and 1813), TACACS+ suits device administration with per-command authorization (TCP 49), Kerberos issues time-limited tickets that need synchronized clocks, and SSO gives access to many systems from one sign-in."
       }
     ]
   },
@@ -102,6 +202,21 @@
         "heading": "Security features and defense techniques",
         "objectives": ["4.3"],
         "body": "ACLs (Access Control Lists) are rule sets — usually on a router or firewall — that explicitly permit or deny traffic based on criteria like source/destination address or port, forming the most basic building block of network-level access control. NAC (Network Access Control) goes a step further, checking a device's security posture (patch level, antivirus status, and so on) before it's even allowed onto the network at all, not just filtering its traffic once it's already connected.\n\nA DMZ (Demilitarized Zone) is a separate network segment that sits between the internet and an organization's internal network, hosting public-facing services (like a web server) so that if one of those services is compromised, the attacker still doesn't have a direct path into the internal network. A honeypot is a decoy system deliberately made to look valuable and vulnerable, deployed specifically to attract and study attackers — or simply to catch a real intrusion attempt early, away from anything that actually matters.\n\n802.1X is a standard for port-based network access control, typically requiring a device to authenticate before a switch port or wireless connection will pass any traffic at all. MFA (Multi-Factor Authentication) requires more than one form of proof of identity — something you know (a password) plus something you have (a phone) or something you are (a fingerprint) — so a stolen password alone isn't enough to gain access."
+      },
+      {
+        "heading": "Security concepts: encryption, PKI, access models, and segmentation",
+        "objectives": ["4.1"],
+        "body": "Encrypt data in two places: in transit (TLS, IPsec, SSH) while it crosses the network, and at rest (disk and database encryption) while it is stored. PKI relies on certificate authorities that sign certificates binding public keys to identities, with revocation through CRLs or OCSP. Role-based access control assigns permissions to roles that users are given, and posture assessment checks an endpoint's patches and antivirus before it is allowed on the network.\n\nSegmentation divides the network into zones with VLANs, subnets, and firewalls so a breach is contained. Compliance rules such as PCI DSS (cards), HIPAA (health), and GDPR (EU personal data) shape controls, and data sovereignty can dictate which country or cloud region may store data."
+      },
+      {
+        "heading": "More attack types",
+        "objectives": ["4.2"],
+        "body": "Layer 2 and name-resolution attacks each have a signature. MAC flooding overflows a switch's MAC table so it floods frames like a hub (defense: port security), and DNS poisoning plants forged records in a resolver cache (defense: DNSSEC and secure resolvers). On wireless networks, an evil twin copies a legitimate SSID to trap clients, a rogue access point is an unauthorized AP connected to your own network, and a deauthentication attack disconnects clients with forged management frames (defense: 802.11w).\n\nRansomware encrypts files and demands payment, so tested offline backups, segmentation, and patching are the real defenses."
+      },
+      {
+        "heading": "More defenses and hardening",
+        "objectives": ["4.3"],
+        "body": "Harden devices by changing default credentials, disabling unused ports and services, patching, and restricting management access, and replace insecure protocols with encrypted ones (Telnet to SSH, HTTP to HTTPS, FTP to SFTP, SNMPv1 or v2c to SNMPv3). Firewall and ACL rules are evaluated top-down with the first match winning, and anything not permitted is dropped by implicit deny. URL and content filtering blocks sites by category, while MAC filtering is a weak control because addresses can be spoofed.\n\nOn switches, DHCP snooping trusts only the real DHCP server's port (stopping rogue DHCP servers) and builds a binding table that dynamic ARP inspection uses to drop spoofed ARP packets. Key management covers generating, storing, rotating, and revoking keys and certificates."
       }
     ]
   },
@@ -128,6 +243,26 @@
         "heading": "Performance issues",
         "objectives": ["5.4"],
         "body": "Latency is the delay before data arrives — it doesn't necessarily mean anything is broken, but high latency degrades real-time traffic like voice and video noticeably even when everything is technically 'working.' Jitter is the variation in that latency over time — even moderate latency is manageable if it's consistent, but inconsistent latency is what actually makes a VoIP call choppy or a video call stutter.\n\nCongestion is simply more traffic trying to use a link than that link can carry, and it's the root cause behind most latency and jitter complaints on an otherwise healthy network. A broadcast storm is a runaway flood of broadcast traffic, often caused by a switching loop with no STP protection, and it can consume enough bandwidth to make a network effectively unusable very quickly. Packet loss means data is being dropped somewhere along the path rather than just delayed — a small amount is often invisible to users, but even a few percent of loss can badly degrade real-time applications while barely being noticeable on a simple file download. Distinguishing between these symptoms in a scenario — is this delay, inconsistency, overload, or actual loss? — is usually the key to identifying the right root cause instead of just throwing bandwidth at a problem that bandwidth alone won't fix."
+      },
+      {
+        "heading": "Cabling, fiber, and hardware faults",
+        "objectives": ["5.2"],
+        "body": "Work from the physical layer up. A cable tester shows opens (broken conductors) and shorts (touching conductors), and EMI from motors and power cables corrupts copper, which you fix by rerouting, shielding, or using fiber. On fiber, clean and inspect dirty connector end faces first, match transceiver type, wavelength, and fiber (single-mode versus multimode) at both ends, and respect the minimum bend radius of about ten times the cable diameter.\n\nPort LEDs give a quick answer: no link light points to the cable, port, or transceiver, which you isolate by moving one variable at a time. A switch can run out of PoE budget and drop devices, a rollover cable connects to the console port, a crossover cable swaps TX and RX for like devices, and failed fans or blocked airflow overheat equipment and cause reboots."
+      },
+      {
+        "heading": "Switching, routing, and addressing problems",
+        "objectives": ["5.3"],
+        "body": "A Layer 2 loop with no working STP creates a broadcast storm with saturated links and blinking port LEDs. A device in the wrong VLAN gets addressing from the wrong subnet, a mistyped static address or overlapping subnets cause reachability problems, and a missing default route leaves remote and Internet destinations unreachable while local ones work.\n\nIf a host can ping an IP address but not a name, check the DNS server settings it received. Compare each host's address, mask, and gateway against the plan and test outward: the gateway first, then a remote address, then a name."
+      },
+      {
+        "heading": "Wireless and performance issues",
+        "objectives": ["5.4"],
+        "body": "Separate coverage from capacity: dead spots are a coverage problem solved with a site survey and added or moved APs, whereas strong signal with slow speeds in a crowded room is a capacity problem solved by adding APs and channels. Clients that drop repeatedly point to signal, interference, load, or roaming, and roaming needs the same SSID, security, and VLAN on every AP plus sensible power levels.\n\nBandwidth is the rated capacity of a link while throughput is what is actually delivered after overhead, congestion, and retransmissions. Choppy voice during file transfers usually means QoS is missing or marks are being stripped, so voice waits behind bulk traffic."
+      },
+      {
+        "heading": "More configuration issues",
+        "objectives": ["5.5"],
+        "body": "Several faults hide behind a working link. Bad NAT rules or interfaces stop Internet access or published services, a trunk that does not allow a VLAN (or has a native VLAN mismatch) drops that VLAN silently, and a port security violation can err-disable a port when an unexpected MAC appears. A new VLAN whose clients all show 169.254.x.x addresses usually has no DHCP relay (IP helper) toward the server.\n\nSpanning tree elects the root by the lowest bridge ID, so leave defaults in place and a random access switch can become root and cause inefficient paths: set a low priority on the intended core switch, and a backup, deliberately."
       }
     ]
   }

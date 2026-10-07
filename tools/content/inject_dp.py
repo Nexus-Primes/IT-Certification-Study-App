@@ -70,11 +70,14 @@ def _span(text, start, key):
 
 
 def _domain_at(text, domain_id):
-    return text.index('"id": "%s", "number"' % domain_id)
+    """Start of a domain's header, whether its fields share one line (DP-300) or each have their own (Network+)."""
+    match = re.search(r'"id": "%s",\s*"number"' % domain_id, text)
+    assert match, domain_id
+    return match.start()
 
 
 def set_weight(text, domain_id, weight):
-    pattern = re.compile(r'("id": "%s", "number": "[\d.]+", "name": "[^"]+", "weight": )\d+' % domain_id)
+    pattern = re.compile(r'("id": "%s",\s*"number": "[\d.]+",\s*"name": "[^"]+",\s*"weight": )\d+' % domain_id)
     assert pattern.search(text), domain_id
     return pattern.sub(lambda m: m.group(1) + str(weight), text, 1)
 
