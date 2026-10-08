@@ -53,6 +53,68 @@ def run(ctx):
     t.check(code == 404, "unknown paths return 404", f"HTTP {code}")
     run_backup_retention(ctx)
     run_backup_api(ctx)
+    run_offsite_backup(ctx)
+
+
+def run_offsite_backup(ctx):
+    """tools/offsite_backup.py against a made-up app folder: what it copies, what it refuses, and that it only ever prunes its own zips."""
+    import datetime as dt
+    import shutil
+    import subprocess
+    import sys
+    import tempfile
+    import zipfile
+    from pathlib import Path
+
+    t = ctx.t
+    sys.path.insert(0, str(APP_ROOT / "tools"))
+    import offsite_backup as ob
+
+    t.suite("offsite backup tool")
+    with tempfile.TemporaryDirectory() as tmp:
+        root, dest = Path(tmp) / "app", Path(tmp) / "elsewhere"
+        for name, text in {"data/progress.json": "{}", "data/progress-pabc123.json": '{"a":1}', "data/profiles.json": "{}", "data/concepts.js": "not personal",
+                           "backup/b.json": "{}", "files/doc.pdf": "pdf", "app/app.js": "const APP_VERSION = 'v9';"}.items():
+            (root / name).parent.mkdir(parents=True, exist_ok=True)
+            (root / name).write_text(text)
+        have_git = shutil.which("git") is not None
+        if have_git:
+            git = ["git", "-C", str(root), "-c", "user.name=t", "-c", "user.email=t@t"]
+            subprocess.run(git + ["init", "-q"], check=True)
+            subprocess.run(git + ["add", "-A"], check=True)
+            subprocess.run(git + ["commit", "-q", "-m", "x"], check=True)
+        else:
+            t.warn("git is not installed, so the code bundle part of the backup tool was not tested")
+
+        dry = ob.make_backup(root, dest, dry_run=True, allow_same_disk=True)
+        t.check(sorted(dry["names"]) == ["backup/b.json", "data/profiles.json", "data/progress-pabc123.json", "data/progress.json", "files/doc.pdf"],
+                "it picks up progress, the PIN registry, backups, and files, and nothing else from data/", str(dry.get("names")))
+        t.check(not dest.exists(), "a dry run writes nothing")
+        refused = []
+        for label, target, flag in (("inside the app folder", root / "out", True), ("on the same disk", dest, False)):
+            try:
+                ob.make_backup(root, target, allow_same_disk=flag)
+            except ValueError:
+                refused.append(label)
+        t.check(refused == ["inside the app folder", "on the same disk"], "a destination inside the app, or on the same disk without the flag, is refused", str(refused))
+
+        first = ob.make_backup(root, dest, keep=2, allow_same_disk=True, now=dt.datetime(2026, 1, 1, 9, 0, 0))
+        with zipfile.ZipFile(first["zip"]) as archive:
+            names = set(archive.namelist())
+            t.check({"data/progress.json", "backup/b.json", "files/doc.pdf", "MANIFEST.txt"} <= names and "data/concepts.js" not in names, "the zip holds the personal files and a manifest, not app data files")
+            t.check(archive.read("data/progress-pabc123.json") == b'{"a":1}', "files come back byte for byte")
+            if have_git:
+                t.check("code.bundle" in names and first["note"] is None, "the code history is included as a git bundle", str(first["note"]))
+        slim = ob.make_backup(root, Path(tmp) / "slim", include_files=False, allow_same_disk=True, now=dt.datetime(2026, 1, 1, 9, 0, 1))
+        with zipfile.ZipFile(slim["zip"]) as archive:
+            t.check(not any(n.startswith("files/") for n in archive.namelist()), "--no-files leaves the user-supplied files out")
+
+        (dest / "notes.txt").write_text("mine")
+        for second in (1, 2, 3):
+            last = ob.make_backup(root, dest, keep=2, allow_same_disk=True, now=dt.datetime(2026, 1, 2, 9, 0, second))
+        left = sorted(p.name for p in dest.iterdir())
+        t.check(len([n for n in left if n.endswith(".zip")]) == 2 and "notes.txt" in left, "only the newest zips are kept, and unrelated files in the destination are never touched", str(left))
+        t.check(last["zip"].endswith("2026-01-02_090003.zip"), "the newest zip is the one kept")
 
 
 def _load_server_module():

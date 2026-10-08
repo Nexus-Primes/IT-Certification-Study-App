@@ -22,7 +22,7 @@ Needs Python 3.9+ and Edge or Chrome. If the browser is not found, set `CERTSTUD
 | Group | Checks |
 |---|---|
 | `static` | `APP_VERSION` matches the service worker cache name; every script/stylesheet/data file (and every module import) is precached so the app still works offline after an update; `server.py` compiles. |
-| `server` | Saving one track never overwrites another; separate accounts; unknown account ids fall back safely; backups are named safely, retained and restored correctly. |
+| `server` | Saving one track never overwrites another; separate accounts; unknown account ids fall back safely; backups are named safely, retained and restored correctly; and `tools/offsite_backup.py` copies the right files, includes the git history, refuses unsafe destinations, and prunes only its own zips. |
 | `pages` | The app boots with no JavaScript errors; all 26 pages in dark and light render, have headings, name every control, have no duplicate ids and never scroll sideways; every visible piece of text meets 4.5:1 contrast; every Tab stop shows a focus ring. |
 | `print` | Real PDFs of the glossary, reports, guide, and more: page counts stay sane, the masthead and "Page X of Y" are there, the page prints on white even from the dark theme, collapsed sections are opened for print. |
 | `flows` | A real Quick 10 from start to saved results; the app when the study server disappears and returns (banner, then nothing lost); a different accent per track; customizing the sidebar; the study plan; printing pages that have real content (reports, notes, Browse cards). |

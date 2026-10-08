@@ -1,1 +1,4 @@
+# Keep every text file LF in the repository and in the working tree, so Git stops warning about CRLF on Windows.
+* text=auto eol=lf
+*.lnk binary
 .githooks/* text eol=lf
