@@ -1,4 +1,4 @@
-"""The generated concept data (A+ Core 2 and DP-300): structure, quiz-readiness, and how every diagram renders in both themes."""
+"""The generated concept data (A+ Core 2, DP-300, Network+, and AZ-802): structure, quiz-readiness, and how every diagram renders in both themes."""
 import sys
 
 from lib.diagram_check import run_check
@@ -16,6 +16,7 @@ TRACKS = [
     ("A+", "APLUS_DATA", "APLUS_GUIDE", "core2", "c2"),
     ("DP-300", "DP300_DATA", "DP300_GUIDE", "core1", "p"),
     ("Network+", "NETPLUS_DATA", "NETPLUS_GUIDE", "core1", "nd"),
+    ("AZ-802", "WINSERVER_DATA", "WINSERVER_GUIDE", "core1", "ws"),
 ]
 
 LAB_FILES = [

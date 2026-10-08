@@ -30,6 +30,9 @@ REVIEWED = {
     ('sd1-13-4', 'distractor overlaps the answer'),    # impact analysis vs business impact analysis
     ('sd5-55-3', 'distractor overlaps the answer'),    # known vs partially known environment test
     ('ws5-53-2', 'distractor overlaps the answer'),    # Storage Spaces vs Storage Spaces Direct
+    ('ws6-61-17', 'distractor overlaps the answer'),   # Credential Guard vs Remote Credential Guard
+    ('ws7-73-11', 'distractor overlaps the answer'),   # authoritative vs non-authoritative restore
+    ('ws7-73-12', 'distractor overlaps the answer'),
 }
 
 STOP = {'the', 'and', 'for', 'with', 'from', 'that', 'this', 'type', 'layer', 'protocol', 'server', 'service', 'network', 'attack', 'model', 'record', 'file', 'cable', 'port', 'rule', 'tool', 'command'}
