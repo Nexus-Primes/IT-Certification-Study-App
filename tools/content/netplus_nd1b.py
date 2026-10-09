@@ -553,6 +553,46 @@ def build(b):
           S.compare(('Colocation', ['You own the hardware', 'Provider supplies space and power', 'Carrier-neutral connectivity']), ('IaaS', ['Provider owns the hardware', 'You rent virtual machines', 'No rack to manage']), title='Colocation vs IaaS'),
           caption='Colocation rents rack space, power, and connectivity for equipment you own.')
 
+    b.add('1.5', 'Fibre Channel (FC)',
+          'A high-speed, lossless networking technology used mainly for storage area networks, carrying SCSI commands over fiber (or copper) at speeds such as 8, 16, 32, and 64 Gb/s through dedicated FC switches and host bus adapters.',
+          'connect servers to a storage array over a dedicated, lossless fabric using host bus adapters instead of Ethernet NICs',
+          ['iSCSI', 'Direct attach cable (DAC)', 'Network-attached storage (NAS)'],
+          'A dedicated STORAGE fabric with HBAs — iSCSI carries the same storage commands over ordinary Ethernet.',
+          S.compare(('Fibre Channel', ['Dedicated FC fabric', 'HBAs and FC switches', 'Lossless by design']), ('iSCSI', ['Runs over Ethernet and IP', 'Standard NICs and switches', 'Lower cost']), title='Storage fabrics'),
+          caption='Fibre Channel is a dedicated, lossless fabric for storage; iSCSI carries storage over Ethernet.')
+
+    b.add('1.6', 'Hybrid topology',
+          'A network that combines two or more basic topologies, for example a star of switches in each building joined by a partial mesh or ring backbone, which is how most real networks are built.',
+          'describe a campus where each building is a star of switches and the buildings are joined in a partial mesh',
+          ['Mesh topology', 'Bus topology', 'Ring topology'],
+          'MORE than one topology combined — real networks are almost always hybrids.',
+          S.hub(('Hybrid network',), [('Star', 'inside buildings'), ('Partial mesh', 'between buildings')], title='A hybrid design'),
+          caption='A hybrid topology combines basic topologies, such as stars joined by a mesh.')
+
+    b.add('1.8', 'Zero-touch provisioning (ZTP)',
+          'An automated process in which a new device powers on, finds its configuration server, for example through DHCP options, and downloads its software image and configuration with no manual setup, so branch devices can be shipped straight to a site.',
+          'ship a new branch router to a remote office where non-technical staff only plug it in and it configures itself',
+          ['Dynamic inventory', 'Version control for network configurations', 'Configuration drift'],
+          'Plug in and it CONFIGURES ITSELF — no engineer needed on site.',
+          S.steps([('Device powers on', 'finds config server'), ('Downloads config', 'image and settings'), ('Joins the network', 'no manual setup')], title='Zero-touch provisioning', tones=['plain', 'blue', 'green']),
+          caption='ZTP lets a new device configure itself by downloading its image and settings automatically.')
+
+    b.add('1.8', 'Transport agnostic (SD-WAN)',
+          'An SD-WAN property in which the overlay works the same over any underlay link, such as MPLS, broadband, or LTE and 5G, so traffic can be steered across them by policy without caring which carrier provides each path.',
+          'use a leased MPLS circuit, cable broadband, and a cellular backup together under one set of routing policies',
+          ['Application aware routing', 'Central policy management', 'Zero-touch provisioning (ZTP)'],
+          'Any UNDERLAY link works — the overlay applies one policy across all of them.',
+          S.compare(('Underlay links', ['MPLS circuit', 'Cable or DSL broadband', 'LTE or 5G']), ('SD-WAN overlay', ['One policy for all links', 'Steers by application', 'Ignores the carrier']), title='Transport agnostic'),
+          caption='A transport-agnostic SD-WAN overlay works over MPLS, broadband, or cellular links alike.')
+
+    b.add('1.8', 'Data center interconnect (DCI)',
+          'High-capacity links between data centers, often dark fiber or DWDM carrying Layer 2 or Layer 3 traffic and sometimes VXLAN, so workloads can move and data can replicate between sites.',
+          'link two data centers with very high bandwidth so virtual machines can move and storage can replicate between them',
+          ['Content delivery network (CDN)', 'Colocation facility', 'East-west traffic'],
+          'Big pipes BETWEEN data centers — east-west traffic stays inside one.',
+          S.steps([('Data center A', 'VMs and storage'), ('DCI link', 'dark fiber or DWDM'), ('Data center B', 'VMs and storage')], title='Data center interconnect', tones=['blue', 'primary', 'blue']),
+          caption='DCI links data centers with high-capacity connections so workloads and data can move between them.')
+
     # ------------------------------------------------------------------------------------------ guide
     b.section('Cabling, connectors, and Ethernet standards', ['1.5'],
               'Match the medium to the job. Shielded twisted pair resists interference where unshielded is cheaper, coaxial cable (F-type and BNC connectors) still carries cable broadband and CCTV, plenum-rated jackets are required in air-handling spaces, and direct attach cables serve short in-rack links. Know the connectors: RJ45 for Ethernet and the smaller RJ11 for telephone and DSL; LC (small, SFP), SC (square, push-pull), ST (round, bayonet), and MPO (multi-fiber) for fiber.\n\n'
@@ -569,3 +609,5 @@ def build(b):
     b.section('Network types and provider links', ['1.10'],
               'By scope: a PAN is a person\'s devices over Bluetooth, a LAN covers a site, a WLAN is Wi-Fi, a CAN joins the buildings of a campus, a MAN covers a city, and a WAN spans cities or countries. Provider services include MPLS (label switching with QoS), leased lines (dedicated, symmetric, with an SLA), metro Ethernet over fiber, DSL (telephone copper, speed falls with distance), and cable broadband (shared coax).\n\n'
               'Satellite reaches remote sites but geostationary links add 500 to 700 ms of latency, and cellular 4G or 5G works as primary access or as a failover link. A colocation facility rents space, power, cooling, and connectivity for equipment you own, unlike IaaS, which rents the provider\'s hardware.')
+    b.section('Fibre Channel, hybrid designs, and SD-WAN details', ['1.5', '1.6', '1.8'],
+              'Fibre Channel is a dedicated, lossless fabric for storage using host bus adapters; iSCSI carries storage over ordinary Ethernet. Most real networks are hybrid topologies, such as stars at each site joined by a partial mesh. SD-WAN is transport agnostic, so an overlay can use MPLS, broadband, and cellular links under one policy, and zero-touch provisioning lets a new device download its own configuration. Data center interconnect links data centers with dark fiber or DWDM so workloads can move between them.')

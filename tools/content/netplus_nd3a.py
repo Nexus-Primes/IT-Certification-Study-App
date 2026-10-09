@@ -76,7 +76,7 @@ def build(b):
           caption='Patch network devices through testing, backups, a maintenance window, and a rollback plan.')
 
     b.add('3.1', 'Configuration backups and golden configurations',
-          'Regularly saved copies of device configurations, together with a approved baseline (golden) configuration used as the template for new or replaced devices, so a failed device can be restored quickly and drift detected.',
+          'Regularly saved copies of device configurations, together with an approved baseline (golden) configuration used as the template for new or replaced devices, so a failed device can be restored quickly and drift detected.',
           'replace a failed switch quickly with the exact approved configuration the old one had',
           ['A cable map', 'A SNMP trap', 'A wireless survey'],
           'A saved GOLDEN configuration restores a replacement in minutes and shows later drift.',
@@ -294,6 +294,46 @@ def build(b):
           S.steps([('Device A', 'normal traffic'), ('Tap inline', 'passes and copies traffic'), ('Monitoring port', 'analyzer sees all')], title='Network tap', tones=['plain', 'primary', 'green']),
           caption='A network tap copies all traffic on a link to a monitoring port without interrupting it.')
 
+    b.add('3.1', 'End of life (EOL)',
+          'The vendor milestone at which a product is withdrawn from sale and development, announced in advance, after which support continues only until the end-of-support date, so replacements should be planned before it arrives.',
+          'plan the replacement of a switch model that the manufacturer has announced it will no longer sell',
+          ['End of support (EOS)', 'Device decommissioning', 'Firmware and patch management'],
+          'No longer SOLD — end of support is when patches and help stop.',
+          S.steps([('End of life', 'no longer sold'), ('Support continues', 'patches until EOS'), ('End of support', 'no patches or help')], title='Product life cycle', tones=['amber', 'blue', 'red']),
+          caption='End of life means the vendor stops selling a product; end of support comes later.')
+
+    b.add('3.1', 'End user license agreement (EULA)',
+          'The legal agreement that sets how software may be used, including how many users or devices a license covers and limits on copying; network teams track licenses so installations stay within their terms.',
+          'check how many devices a purchased network management license allows before installing the software on more servers',
+          ['Service-level agreement (SLA)', 'Asset inventory', 'Acceptable use policy (AUP)'],
+          'The LICENSE terms for software — an SLA covers service levels, not software use.',
+          S.compare(('EULA', ['Software license terms', 'Users or devices covered', 'Copying limits']), ('SLA', ['Service levels promised', 'Uptime and response', 'Credits if missed']), title='EULA vs. SLA'),
+          caption='A EULA sets the terms and limits for using licensed software.')
+
+    b.add('3.3', 'show arp',
+          'A device command that lists the ARP table of IP-to-MAC mappings that a router or Layer 3 switch has learned, used to confirm a neighbor is reachable at Layer 2 or to spot duplicate IP addresses.',
+          "confirm which MAC address a router has learned for a server's IP address",
+          ['show mac address-table', 'show ip route', 'show interfaces'],
+          'IP to MAC on the DEVICE — the MAC address table maps MACs to switch PORTS.',
+          S.terminal(['show arp', 'Protocol  Address     Age  Hardware Addr', 'Internet  10.0.1.25    3   aabb.cc00.0102', 'Internet  10.0.1.30    5   aabb.cc00.0230'], title='Router CLI'),
+          caption='show arp lists the IP-to-MAC mappings a device has learned.')
+
+    b.add('3.3', 'show vlan',
+          'A switch command, typically show vlan brief, that lists each VLAN with its name, status, and the access ports assigned to it, used to verify VLAN membership.',
+          'list each VLAN with the access ports assigned to it from the command line',
+          ['show mac address-table', 'show interfaces', 'show ip route'],
+          'VLANs and their PORTS — a port missing from its VLAN here explains many connectivity problems.',
+          S.terminal(['show vlan brief', 'VLAN Name     Status   Ports', '10   Sales    active   Fa0/1, Fa0/2', '20   Voice    active   Fa0/3'], title='Switch CLI'),
+          caption='show vlan brief lists each VLAN and the access ports assigned to it.')
+
+    b.add('3.3', 'show power',
+          'A command such as show power inline that displays PoE status, including the total power budget, the power drawn by each port, and which devices are powered, used to find an exhausted PoE budget.',
+          "see how much of a switch's PoE budget is used and which ports are powering phones and access points",
+          ['show interfaces', 'show running-config', 'show mac address-table'],
+          'PoE BUDGET and per-port draw — the first place to look when a powered device will not start.',
+          S.terminal(['show power inline', 'Available:370.0W  Used:305.4W  Remaining:64.6W', 'Fa0/1  on   15.4W  IP Phone', 'Fa0/2  on   30.0W  Access Point'], title='Switch CLI'),
+          caption='show power inline shows the PoE budget and what each port is drawing.')
+
     # ------------------------------------------------------------------------------------------ guide
     b.section('More network documentation and lifecycle', ['3.1'],
               'Documentation answers different questions. A rack diagram shows which device sits in which rack unit, a cable map traces each cable end to end between jacks, patch panels, and switch ports, a wireless heat map shows coverage from a site survey, an asset inventory records hardware, software, licenses, and warranties, and IPAM manages subnets, DHCP, and DNS to avoid duplicate addresses. An SLA is a contract with measurable service levels and remedies.\n\n'
@@ -306,3 +346,5 @@ def build(b):
               'Device commands: show interfaces reports status, speed, duplex, and error counters such as CRC errors, show mac address-table maps MAC addresses to ports, show ip route displays routes and next hops, and show running-config displays the active configuration in RAM, which must be saved to startup to persist.')
     b.section('Cable and fiber hardware tools', ['3.4'],
               'A crimping tool attaches connectors, while a punchdown tool seats wires into a block. For fiber, an OTDR analyzes light reflections to locate breaks, splices, and bends along a long run and measure their distance, whereas a visual fault locator shines visible red light to show short-range faults. A loopback plug tests a port by returning its transmit signal to its receiver, and a network tap is inline hardware that copies all traffic to a monitoring port, unlike a switch SPAN port that can drop traffic.')
+    b.section('Life-cycle terms, licenses, and more show commands', ['3.1', '3.3'],
+              'End of life means a product is no longer sold, and end of support, which comes later, means patches and help stop; plan replacements before either. A EULA sets the terms and limits of software licenses, which is why license counts belong in the asset inventory. For command-line checks, show arp lists IP-to-MAC mappings on the device, show vlan brief lists VLANs with their access ports, and show power inline shows the PoE budget and per-port draw.')

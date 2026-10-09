@@ -51,6 +51,11 @@
         "body": "Learn ports as pairs of secure and insecure services: FTP (20 and 21) versus SFTP and SSH (22), Telnet (23) versus SSH, HTTP (80) versus HTTPS (443), POP3 (110) and IMAP (143) versus their TLS versions, LDAP (389) versus LDAPS (636), and SMTP (25) for server relay with 587 or 465 for client submission. Other common ones: TFTP 69 (UDP, no authentication), DHCP 67 and 68, NTP 123, SNMP 161 and 162, SMB 445, Syslog 514, SQL Server 1433, RDP 3389, and SIP 5060 and 5061.\n\nIP protocols are not ports: ICMP (protocol 1) carries diagnostics, GRE (47) tunnels traffic without encrypting it, and IPsec uses ESP (50) to encrypt and authenticate or AH (51) to authenticate only. Traffic types are unicast (one to one), broadcast (one to all in the domain), multicast (to a group), and anycast (one address on many servers, delivered to the nearest)."
       },
       {
+        "heading": "Cloud filtering, IPsec key exchange, and storage types",
+        "objectives": ["1.2", "1.3", "1.4"],
+        "body": "Cloud traffic is filtered at two levels: a network security group is a (usually stateful) rule set attached to individual resources, and a network security list filters a whole subnet. Network functions virtualization runs routers, firewalls, and load balancers as software on standard servers. For storage, direct-attached storage connects to one server, a NAS shares files, and a SAN presents block storage. IPsec tunnels are set up by the Internet Key Exchange (UDP 500, or 4500 through NAT), after which ESP encrypts the data."
+      },
+      {
         "heading": "Cabling, connectors, and Ethernet standards",
         "objectives": ["1.5"],
         "body": "Match the medium to the job. Shielded twisted pair resists interference where unshielded is cheaper, coaxial cable (F-type and BNC connectors) still carries cable broadband and CCTV, plenum-rated jackets are required in air-handling spaces, and direct attach cables serve short in-rack links. Know the connectors: RJ45 for Ethernet and the smaller RJ11 for telephone and DSL; LC (small, SFP), SC (square, push-pull), ST (round, bayonet), and MPO (multi-fiber) for fiber.\n\nTransceivers follow speed: SFP is 1 Gb/s, SFP+ is 10, QSFP+ is 40 (four lanes), and QSFP28 is 100. BiDi optics use two wavelengths on one strand, CWDM carries a few widely spaced wavelengths cheaply, and DWDM packs many tightly for long haul. Standards: 1000BASE-T is Gigabit over Cat 5e, 10GBASE-T needs Cat 6a for 100 m, SR variants use multimode fiber and LR variants use single-mode. Cables end on patch panels or 110 blocks (the 66 block is the legacy telephone one), and T568B is the common RJ45 pin-out, with T568A swapping the orange and green pairs."
@@ -74,6 +79,11 @@
         "heading": "Network types and provider links",
         "objectives": ["1.10"],
         "body": "By scope: a PAN is a person's devices over Bluetooth, a LAN covers a site, a WLAN is Wi-Fi, a CAN joins the buildings of a campus, a MAN covers a city, and a WAN spans cities or countries. Provider services include MPLS (label switching with QoS), leased lines (dedicated, symmetric, with an SLA), metro Ethernet over fiber, DSL (telephone copper, speed falls with distance), and cable broadband (shared coax).\n\nSatellite reaches remote sites but geostationary links add 500 to 700 ms of latency, and cellular 4G or 5G works as primary access or as a failover link. A colocation facility rents space, power, cooling, and connectivity for equipment you own, unlike IaaS, which rents the provider's hardware."
+      },
+      {
+        "heading": "Fibre Channel, hybrid designs, and SD-WAN details",
+        "objectives": ["1.5", "1.6", "1.8"],
+        "body": "Fibre Channel is a dedicated, lossless fabric for storage using host bus adapters; iSCSI carries storage over ordinary Ethernet. Most real networks are hybrid topologies, such as stars at each site joined by a partial mesh. SD-WAN is transport agnostic, so an overlay can use MPLS, broadband, and cellular links under one policy, and zero-touch provisioning lets a new device download its own configuration. Data center interconnect links data centers with dark fiber or DWDM so workloads can move between them."
       }
     ]
   },
@@ -120,6 +130,11 @@
         "heading": "Physical installation: closets, racks, power, and environment",
         "objectives": ["2.5"],
         "body": "The MDF is the central wiring room where carrier circuits and backbone cabling terminate, and an IDF is a per-floor closet that connects back to it. Racks are measured in units (1U = 1.75 inches, commonly 42U), and switch airflow (port-side exhaust or intake) must match the hot aisle and cold aisle layout so hot and cold air do not mix.\n\nA UPS provides battery power through outages, while a PDU distributes and can meter and switch power inside the rack. Keep loads within capacity and connect dual power supplies to separate A and B feeds. Rooms should stay roughly 18 to 27 °C at 40 to 60 percent humidity, and server rooms should use clean-agent (gas) fire suppression rather than water."
+      },
+      {
+        "heading": "Wireless modes, band steering, and installation details",
+        "objectives": ["2.3", "2.4", "2.5"],
+        "body": "The VLAN database lists the VLAN IDs and names on a switch, and a VLAN must exist there before ports can join it. In wireless, infrastructure mode connects clients through access points (a basic service set, or an extended service set when APs share one ESSID, with each AP radio having its own BSSID), while an ad hoc network connects devices directly. Band steering pushes dual-band clients to 5 or 6 GHz, and WPS lets devices join by button or PIN but its PIN method should be disabled. In the closet, a fiber distribution panel terminates fiber trunks and patches strands to equipment, and equipment must match the voltage, amperage, and plug type of its power feed."
       }
     ]
   },
@@ -168,6 +183,11 @@
         "body": "A crimping tool attaches connectors, while a punchdown tool seats wires into a block. For fiber, an OTDR analyzes light reflections to locate breaks, splices, and bends along a long run and measure their distance, whereas a visual fault locator shines visible red light to show short-range faults. A loopback plug tests a port by returning its transmit signal to its receiver, and a network tap is inline hardware that copies all traffic to a monitoring port, unlike a switch SPAN port that can drop traffic."
       },
       {
+        "heading": "Life-cycle terms, licenses, and more show commands",
+        "objectives": ["3.1", "3.3"],
+        "body": "End of life means a product is no longer sold, and end of support, which comes later, means patches and help stop; plan replacements before either. A EULA sets the terms and limits of software licenses, which is why license counts belong in the asset inventory. For command-line checks, show arp lists IP-to-MAC mappings on the device, show vlan brief lists VLANs with their access ports, and show power inline shows the PoE budget and per-port draw."
+      },
+      {
         "heading": "Monitoring: SNMP, logs, counters, and alerting",
         "objectives": ["3.6"],
         "body": "SNMPv1 and v2c send community strings in clear text, while SNMPv3 adds authentication and encryption. Managers poll agents on UDP 161, and agents send traps on UDP 162 when something happens; a MIB is the database of manageable objects and an OID is the dotted numeric address of one of them. A SIEM goes beyond a syslog server by correlating events across many sources, and APIs and streaming telemetry return structured data without parsing the CLI.\n\nInterface counters are clues: rising CRC errors mean corrupted frames from bad cabling, interference, or a duplex mismatch. Environmental sensors watch temperature, humidity, power, and leaks, anomaly-based alerts compare against the baseline instead of a fixed limit, and availability is measured in nines (99.99% allows about 53 minutes of downtime per year)."
@@ -181,6 +201,11 @@
         "heading": "VPNs, remote access, and AAA",
         "objectives": ["3.8"],
         "body": "A site-to-site VPN joins two networks gateway to gateway, a client-to-site VPN lets one device tunnel in with client software, and a clientless VPN uses a browser portal for specific resources. A split tunnel sends only corporate traffic through the VPN, whereas a full tunnel sends everything for inspection; IPsec tunnel mode wraps the whole original packet and transport mode protects only the payload.\n\nFor management, a jump box is a hardened, logged entry point, out-of-band management uses a separate path (such as a console server) that works when production is down, and REST APIs enable automation. For authentication, RADIUS suits user network access (UDP 1812 and 1813), TACACS+ suits device administration with per-command authorization (TCP 49), Kerberos issues time-limited tickets that need synchronized clocks, and SSO gives access to many systems from one sign-in."
+      },
+      {
+        "heading": "Traffic analysis, performance monitoring, and DNS zones",
+        "objectives": ["3.6", "3.7"],
+        "body": "Traffic analysis uses flow data (NetFlow, sFlow, IPFIX) to show which hosts and applications use the bandwidth, while performance monitoring graphs utilization, latency, errors, CPU, and memory over time against a baseline. In DNS, a forward lookup zone maps names to addresses and a reverse zone maps addresses to names with PTR records; the SOA record at the top of each zone carries the serial number and the timers that secondary servers use to decide when to refresh."
       }
     ]
   },
@@ -217,6 +242,11 @@
         "heading": "More defenses and hardening",
         "objectives": ["4.3"],
         "body": "Harden devices by changing default credentials, disabling unused ports and services, patching, and restricting management access, and replace insecure protocols with encrypted ones (Telnet to SSH, HTTP to HTTPS, FTP to SFTP, SNMPv1 or v2c to SNMPv3). Firewall and ACL rules are evaluated top-down with the first match winning, and anything not permitted is dropped by implicit deny. URL and content filtering blocks sites by category, while MAC filtering is a weak control because addresses can be spoofed.\n\nOn switches, DHCP snooping trusts only the real DHCP server's port (stopping rogue DHCP servers) and builds a binding table that dynamic ARP inspection uses to drop spoofed ARP packets. Key management covers generating, storing, rotating, and revoking keys and certificates."
+      },
+      {
+        "heading": "Identity, policies, physical threats, and 802.1X",
+        "objectives": ["4.1", "4.2", "4.3"],
+        "body": "Identity and access management covers the whole identity life cycle, and access can also depend on time (login hours or one-time codes) or place (geofencing). A self-signed certificate encrypts but is not trusted by default. Keep SCADA, ICS, and OT networks segmented from the IT network, put BYOD devices under enrollment and a separate VLAN, and use an acceptable use policy and data loss prevention to govern what users do and what leaves. A honeynet is a network of decoy honeypots. Know risk (likelihood times impact), vulnerability (the weakness), exploit (the method), and threat (who or what could cause harm).\n\nPhysical social engineering includes dumpster diving (discarded information), shoulder surfing (watching entry of secrets), and tailgating (following someone through a door). In 802.1X, EAPoL carries the authentication between the supplicant and the switch or access point, which relays it to RADIUS, and a unified threat management appliance combines firewall, intrusion prevention, filtering, and antivirus."
       }
     ]
   },
@@ -263,6 +293,11 @@
         "heading": "More configuration issues",
         "objectives": ["5.5"],
         "body": "Several faults hide behind a working link. Bad NAT rules or interfaces stop Internet access or published services, a trunk that does not allow a VLAN (or has a native VLAN mismatch) drops that VLAN silently, and a port security violation can err-disable a port when an unexpected MAC appears. A new VLAN whose clients all show 169.254.x.x addresses usually has no DHCP relay (IP helper) toward the server.\n\nSpanning tree elects the root by the lowest bridge ID, so leave defaults in place and a random access switch can become root and cause inefficient paths: set a low priority on the intended core switch, and a backup, deliberately."
+      },
+      {
+        "heading": "Methodology approaches and interface states",
+        "objectives": ["5.1", "5.2"],
+        "body": "When identifying a problem, gather information, question users, find out what changed, and try to reproduce it. To form a theory, work bottom-to-top (cabling and hardware suspected), top-to-bottom (one application misbehaving), or divide and conquer by starting in the middle with a ping. On interfaces, administratively down means someone ran shutdown (fix with no shutdown), down/down is a physical problem, error-disabled is a protective shutdown, and a suspended port is a link aggregation member whose settings do not match the rest of the bundle."
       }
     ]
   }

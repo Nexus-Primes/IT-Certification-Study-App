@@ -238,6 +238,46 @@ def build(b):
           S.steps([('Default priorities', '32768 on every switch'), ('Lowest MAC wins root', 'an access switch'), ('Lower core priority', 'core becomes root')], title='STP root placement', tones=['plain', 'amber', 'green']),
           caption='Set a low STP priority on the intended core switch so a random switch does not become root.')
 
+    b.add('5.1', 'Gather information and question users',
+          'Early in troubleshooting, collect symptoms, error messages, and logs, ask users what they were doing and what changed, and try to reproduce the problem, while treating several problems one at a time.',
+          'interview the affected employees and review the logs to learn what happened and what changed before forming any theory',
+          ['Establish a theory of probable cause', 'Test the theory to determine cause', 'Establish a plan of action and identify potential effects'],
+          'Collect FACTS before theories — ask what changed and try to reproduce the problem.',
+          S.steps([('Question users', 'what changed?'), ('Gather evidence', 'logs and symptoms'), ('Reproduce it', 'if possible')], title='Identifying the problem', tones=['plain', 'blue', 'green']),
+          caption='Identifying a problem means gathering evidence, questioning users, and finding what changed.')
+
+    b.add('5.1', 'Top-to-bottom and bottom-to-top troubleshooting',
+          'Two ways to work through the OSI model when forming a theory: bottom-to-top starts at the physical layer, good for suspected cabling or hardware faults, and top-to-bottom starts at the application layer, good when one application misbehaves.',
+          'decide which OSI direction to troubleshoot in when a single application fails but everything else on the network works',
+          ['Divide and conquer', 'Question the obvious', 'Escalate to the vendor'],
+          'ONE application failing → start at the top; suspected cabling or hardware → start at the bottom.',
+          S.compare(('Bottom-to-top', ['Start at Layer 1', 'Cables and ports first', 'Link or device faults']), ('Top-to-bottom', ['Start at Layer 7', 'Application settings first', 'One app misbehaving']), title='OSI troubleshooting directions'),
+          caption='Bottom-to-top starts at the physical layer; top-to-bottom starts at the application layer.')
+
+    b.add('5.1', 'Divide and conquer',
+          'Starting in the middle of the stack, such as testing Layer 3 with a ping, and then moving up or down depending on the result, which narrows the search faster than starting at either end.',
+          'start troubleshooting by pinging a remote host to decide whether to look at the lower or upper layers next',
+          ['Top-to-bottom and bottom-to-top troubleshooting', 'Question the obvious', 'Duplicate the problem'],
+          'Begin in the MIDDLE and halve the search — a ping success points up the stack, a failure points down.',
+          S.flow_split(('Ping the remote host', 'Layer 3 test'), [('Ping works', 'look at upper layers'), ('Ping fails', 'look at lower layers')], title='Divide and conquer', tones=['green', 'amber']),
+          caption='Divide and conquer starts mid-stack and moves up or down based on the result.')
+
+    b.add('5.2', 'Administratively down',
+          'An interface status meaning the port was deliberately disabled with the shutdown command, so show interfaces reports administratively down; the fix is no shutdown, unlike a physical fault, which shows down/down.',
+          'bring back a switch port that an engineer turned off on purpose and forgot to re-enable',
+          ['Error disabled port', 'Failed switch port', 'Port security violation'],
+          'Turned off by the SHUTDOWN command — the cure is no shutdown, not a new cable.',
+          S.table(['Status', 'Meaning'], [('up/up', 'working normally'), ('down/down', 'physical problem'), ('administratively down', 'shutdown command issued')], title='Interface status', col_widths=[0.45, 0.55]),
+          caption='Administratively down means the port was disabled with the shutdown command.')
+
+    b.add('5.2', 'Suspended port',
+          'A port held out of a link aggregation bundle because its settings, such as speed, duplex, VLANs, or LACP mode, do not match the other members or the peer, so it passes no traffic until the mismatch is fixed.',
+          'work out why one member of a bundled uplink pair carries no traffic after its speed setting was changed',
+          ['Administratively down', 'Error disabled port', 'Switching loop (STP failure)'],
+          'Mismatched LAG settings put a member in SUSPENDED state — make the members identical.',
+          S.steps([('Member setting differs', 'speed or VLANs'), ('Bundle rejects it', 'port suspended'), ('Settings matched', 'port rejoins')], title='Suspended bundle member', tones=['amber', 'red', 'green']),
+          caption='A suspended port is held out of a link aggregation bundle because its settings do not match.')
+
     # ------------------------------------------------------------------------------------------ guide
     b.section('Cabling, fiber, and hardware faults', ['5.2'],
               'Work from the physical layer up. A cable tester shows opens (broken conductors) and shorts (touching conductors), and EMI from motors and power cables corrupts copper, which you fix by rerouting, shielding, or using fiber. On fiber, clean and inspect dirty connector end faces first, match transceiver type, wavelength, and fiber (single-mode versus multimode) at both ends, and respect the minimum bend radius of about ten times the cable diameter.\n\n'
@@ -251,3 +291,5 @@ def build(b):
     b.section('More configuration issues', ['5.5'],
               'Several faults hide behind a working link. Bad NAT rules or interfaces stop Internet access or published services, a trunk that does not allow a VLAN (or has a native VLAN mismatch) drops that VLAN silently, and a port security violation can err-disable a port when an unexpected MAC appears. A new VLAN whose clients all show 169.254.x.x addresses usually has no DHCP relay (IP helper) toward the server.\n\n'
               'Spanning tree elects the root by the lowest bridge ID, so leave defaults in place and a random access switch can become root and cause inefficient paths: set a low priority on the intended core switch, and a backup, deliberately.')
+    b.section('Methodology approaches and interface states', ['5.1', '5.2'],
+              'When identifying a problem, gather information, question users, find out what changed, and try to reproduce it. To form a theory, work bottom-to-top (cabling and hardware suspected), top-to-bottom (one application misbehaving), or divide and conquer by starting in the middle with a ping. On interfaces, administratively down means someone ran shutdown (fix with no shutdown), down/down is a physical problem, error-disabled is a protective shutdown, and a suspended port is a link aggregation member whose settings do not match the rest of the bundle.')

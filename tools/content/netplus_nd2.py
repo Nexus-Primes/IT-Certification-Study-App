@@ -447,6 +447,70 @@ def build(b):
           S.compare(('Wet-pipe sprinklers', ['Water in the pipes', 'Can damage equipment', 'Common in offices']), ('Clean agent', ['Gas, no water', 'Equipment survives', 'Server rooms']), title='Fire suppression', tones=('amber', 'green')),
           caption='Clean-agent suppression extinguishes fires with gas so server equipment is not drenched.')
 
+    b.add('2.3', 'VLAN database',
+          'The list of VLAN IDs and names stored on a switch, such as vlan.dat on Cisco devices, which must contain a VLAN before access ports can be assigned to it; show vlan brief displays it with the ports in each VLAN.',
+          'create VLAN 20 with the name Voice on a switch so that ports can be assigned to it afterward',
+          ['MAC address table', 'Switch virtual interface (SVI)', 'Trunk port'],
+          'A VLAN must EXIST in the database before a port can join it.',
+          S.terminal(['show vlan brief', 'VLAN Name     Status   Ports', '10   Sales    active   Fa0/1, Fa0/2', '20   Voice    active   Fa0/3'], title='Switch CLI'),
+          caption='The VLAN database lists the VLAN IDs and names defined on a switch.')
+
+    b.add('2.4', 'Band steering',
+          'An access point feature that nudges dual-band clients toward the less crowded 5 GHz or 6 GHz band, for example by delaying its responses on 2.4 GHz, to relieve congestion and raise throughput.',
+          'move capable clients off a congested 2.4 GHz network onto a faster radio without asking users to pick a band',
+          ['Channel bonding (channel width)', 'Wireless roaming', 'Beamforming'],
+          'Pushes capable clients to the FASTER band — it is not roaming between access points.',
+          S.flow_split(('Dual-band client',), [('2.4 GHz', 'crowded, slower'), ('5 or 6 GHz', 'steered here')], title='Band steering', tones=['amber', 'green']),
+          caption='Band steering moves dual-band clients from crowded 2.4 GHz onto 5 or 6 GHz.')
+
+    b.add('2.4', 'Ad hoc wireless network',
+          'A peer-to-peer wireless network, an independent basic service set, in which devices connect directly to each other without an access point, useful for quick temporary sharing but limited in range, security, and scale.',
+          'let two laptops exchange files over Wi-Fi in a room that has no access point or router',
+          ['Infrastructure mode (wireless)', 'Wireless mesh network', 'Wireless point-to-point link'],
+          'Device to device with NO access point — infrastructure mode uses an AP.',
+          S.compare(('Ad hoc', ['Devices connect directly', 'No access point', 'Temporary and small']), ('Infrastructure', ['Clients join an AP', 'AP links to the wired LAN', 'Normal Wi-Fi design']), title='Wireless network modes'),
+          caption='An ad hoc wireless network connects devices directly with no access point.')
+
+    b.add('2.4', 'Infrastructure mode (wireless)',
+          'The normal Wi-Fi arrangement in which clients associate with an access point that connects them to the wired network, forming a basic service set; several access points sharing one SSID form an extended service set.',
+          'connect laptops and phones to an office network through access points that attach to the wired switches',
+          ['Ad hoc wireless network', 'Wireless mesh network', 'Wireless point-to-point link'],
+          'Clients talk through an ACCESS POINT — ad hoc devices talk directly to each other.',
+          S.steps([('Client', 'laptop or phone'), ('Access point', 'one BSS'), ('Wired LAN', 'switches and servers')], title='Infrastructure mode', tones=['plain', 'primary', 'blue']),
+          caption='In infrastructure mode, clients join an access point that links them to the wired network.')
+
+    b.add('2.4', 'Extended service set identifier (ESSID)',
+          'The network name shared by every access point in an extended service set, which is what users see as the SSID, so clients can roam between access points; each AP radio still has its own BSSID.',
+          'give every access point in a building the same network name so devices can move between them',
+          ['BSSID', 'Captive portal', 'Wireless roaming'],
+          'SAME name on every AP — the BSSID is unique to each AP radio.',
+          S.hub(('ESSID: CorpWiFi',), [('AP 1', 'BSSID 00:1A:01'), ('AP 2', 'BSSID 00:1A:02'), ('AP 3', 'BSSID 00:1A:03')], title='One ESSID, many BSSIDs'),
+          caption='An ESSID is the one name shared by all APs in an extended service set; each AP has its own BSSID.')
+
+    b.add('2.4', 'Wi-Fi Protected Setup (WPS)',
+          'A convenience feature that joins a device by pressing a button or entering a short PIN instead of typing the passphrase; the PIN method can be brute-forced, so WPS should normally be disabled.',
+          'join a device to the wireless network by pushing a button on the access point instead of typing the passphrase',
+          ['Captive portal', 'WPA-Enterprise (802.1X with RADIUS)', 'MAC filtering'],
+          'Easy join, weak PIN — the PIN method is brute-forceable, so DISABLE it.',
+          S.steps([('Press WPS button', 'on the access point'), ('Device joins', 'passphrase shared'), ('PIN method risk', 'can be brute-forced')], title='Wi-Fi Protected Setup', tones=['plain', 'blue', 'red']),
+          caption='WPS joins devices with a button or PIN; the PIN method is weak and usually disabled.')
+
+    b.add('2.5', 'Fiber distribution panel',
+          'A rack-mounted enclosure where incoming fiber trunk cables terminate on connectors or splice trays and short fiber patch cords connect each port to equipment, organizing and protecting fiber much as a patch panel does for copper.',
+          "terminate a building's incoming fiber backbone in the rack and connect each strand to switch optics with short jumpers",
+          ['Patch panel', '110 punchdown block', 'Main distribution frame (MDF)'],
+          'The FIBER version of a patch panel — trunk fibers end at the back, jumpers at the front.',
+          S.steps([('Fiber trunk', 'from another room'), ('Distribution panel', 'connectors or splices'), ('Jumpers', 'to switch transceivers')], title='Fiber distribution panel', tones=['plain', 'primary', 'green']),
+          caption='A fiber distribution panel terminates fiber trunks and patches each strand to equipment.')
+
+    b.add('2.5', 'Voltage and circuit requirements',
+          'Rack equipment must match the voltage, amperage, and plug type of its power feed, such as 120 V versus 208 or 240 V circuits; high-density racks often use 208 V feeds, and the circuit must be sized for the total load.',
+          "confirm that a rack's power feed and plug type suit a new switch whose power supplies accept only a certain voltage range",
+          ['Power load and redundant power feeds', 'Uninterruptible power supply (UPS)', 'Power distribution unit (PDU)'],
+          'Check voltage, plug, and amperage BEFORE racking — a mismatch can trip breakers or damage gear.',
+          S.table(['Feed', 'Typical use'], [('120 V', 'office-style circuits'), ('208 V', 'data center rack PDUs'), ('240 V', 'high-power equipment')], title='Common feeds', col_widths=[0.3, 0.7]),
+          caption='Equipment must match the voltage, amperage, and plug type of its power feed.')
+
     # ------------------------------------------------------------------------------------------ guide
     b.section('Routing protocols, route selection, and NAT', ['2.2'],
               'Interior protocols run inside an autonomous system: RIP counts hops (15 maximum), OSPF is link-state and builds a full topology map, and EIGRP is Cisco\'s advanced distance-vector protocol using bandwidth and delay (administrative distance 90). BGP is the exterior protocol between autonomous systems and runs on TCP 179. A router chooses routes by longest prefix first, then administrative distance (which ranks protocols), then metric (which ranks routes within a protocol).\n\n'
@@ -460,3 +524,5 @@ def build(b):
     b.section('Physical installation: closets, racks, power, and environment', ['2.5'],
               'The MDF is the central wiring room where carrier circuits and backbone cabling terminate, and an IDF is a per-floor closet that connects back to it. Racks are measured in units (1U = 1.75 inches, commonly 42U), and switch airflow (port-side exhaust or intake) must match the hot aisle and cold aisle layout so hot and cold air do not mix.\n\n'
               'A UPS provides battery power through outages, while a PDU distributes and can meter and switch power inside the rack. Keep loads within capacity and connect dual power supplies to separate A and B feeds. Rooms should stay roughly 18 to 27 °C at 40 to 60 percent humidity, and server rooms should use clean-agent (gas) fire suppression rather than water.')
+    b.section('Wireless modes, band steering, and installation details', ['2.3', '2.4', '2.5'],
+              'The VLAN database lists the VLAN IDs and names on a switch, and a VLAN must exist there before ports can join it. In wireless, infrastructure mode connects clients through access points (a basic service set, or an extended service set when APs share one ESSID, with each AP radio having its own BSSID), while an ad hoc network connects devices directly. Band steering pushes dual-band clients to 5 or 6 GHz, and WPS lets devices join by button or PIN but its PIN method should be disabled. In the closet, a fiber distribution panel terminates fiber trunks and patches strands to equipment, and equipment must match the voltage, amperage, and plug type of its power feed.')

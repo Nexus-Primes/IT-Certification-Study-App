@@ -180,6 +180,134 @@ def build(b):
           S.steps([('Generate and store', 'protected, ideally an HSM'), ('Distribute and use', 'least exposure'), ('Rotate or revoke', 'on schedule or compromise')], title='Key life cycle', tones=['blue', 'plain', 'amber']),
           caption='Key management covers generating, storing, rotating, and revoking cryptographic keys.')
 
+    b.add('4.1', 'Self-signed certificate',
+          'A certificate signed with its own private key instead of by a certificate authority, so it still encrypts traffic but is not trusted by clients by default and triggers browser warnings; it suits labs and internal devices but not public sites.',
+          "secure a lab device's web interface with encryption when no certificate authority has signed a certificate for it",
+          ['Public key infrastructure (PKI)', 'Certificate revocation list', 'Pre-shared key'],
+          'Encrypts, but nobody VOUCHES for it — expect trust warnings unless clients import it.',
+          S.compare(('CA-signed', ['Signed by a trusted authority', 'Browsers trust it', 'Public sites']), ('Self-signed', ['Signed by itself', 'Trust warnings appear', 'Labs and internal use']), title='Certificate trust'),
+          caption='A self-signed certificate encrypts traffic but is not trusted by clients by default.')
+
+    b.add('4.1', 'Identity and access management (IAM)',
+          'The policies, processes, and tools that manage digital identities and control what each identity can access, covering provisioning, authentication, authorization, access reviews, and removal across on-premises and cloud systems.',
+          'oversee every user, service, and device identity from creation through access reviews and removal across on-premises and cloud systems',
+          ['Role-based access control (RBAC)', 'Network access control (NAC)', 'Single sign-on (SSO)'],
+          'The whole IDENTITY life cycle — RBAC is only one way it assigns permissions.',
+          S.steps([('Provision identity', 'create and assign roles'), ('Check access', 'authenticate, authorize'), ('Review and remove', 'when roles end')], title='IAM life cycle', tones=['blue', 'plain', 'green']),
+          caption='IAM manages identities and their access from creation through review and removal.')
+
+    b.add('4.1', 'Time-based authentication',
+          'Access controls that depend on time, such as allowing sign-ins only during working hours or requiring time-based one-time passwords that change every 30 seconds.',
+          'permit an account to sign in only between seven in the morning and six in the evening on weekdays',
+          ['Geofencing', 'Multifactor authentication (MFA)', 'Least privilege'],
+          'The CLOCK is part of the decision — login hours, or codes that expire in seconds.',
+          S.compare(('Login hours', ['Allowed only in a window', 'Blocks off-hours access', 'Set per account']), ('One-time codes', ['Change every 30 seconds', 'Authenticator app', 'Expire quickly']), title='Time-based controls'),
+          caption='Time-based authentication limits sign-ins by time of day or uses short-lived one-time codes.')
+
+    b.add('4.1', 'Geofencing',
+          'Restricting access based on physical location, using GPS, Wi-Fi, or IP geolocation, so a device or user is allowed only inside a defined area, such as a campus, or is blocked from certain countries.',
+          'block sign-ins that come from outside the country and let a tablet work only while it is on the hospital campus',
+          ['Time-based authentication', 'MAC filtering', 'Network segmentation'],
+          'WHERE you are decides access — a virtual boundary around a place.',
+          S.flow_split(('Access request', 'location checked'), [('Inside the fence', 'allowed'), ('Outside the fence', 'blocked')], title='Geofencing', tones=['green', 'red']),
+          caption='Geofencing allows or blocks access based on a device or user\'s physical location.')
+
+    b.add('4.1', 'Honeynet',
+          'A decoy network of several honeypots and supporting systems that imitates a real environment so defenders can observe how attackers move and which tools they use, in an isolated and monitored setting.',
+          'build an isolated fake network of many decoy servers to study how an attacker moves between systems',
+          ['Honeypot', 'Screened subnet (DMZ)', 'Network tap'],
+          'A whole decoy NETWORK — a honeypot is just one decoy system.',
+          S.compare(('Honeypot', ['One decoy system', 'Lures attackers', 'Logs their actions']), ('Honeynet', ['Many decoys together', 'Imitates a real network', 'Shows attacker movement']), title='Deception technologies'),
+          caption='A honeynet is a network of honeypots that imitates a real environment to study attackers.')
+
+    b.add('4.1', 'SCADA, ICS, and OT networks',
+          'Operational technology controls physical processes through industrial control systems such as SCADA, including industrial IoT (IIoT) devices, often with legacy protocols and equipment that cannot be patched or rebooted easily, so they are isolated from the IT network by segmentation and strict firewall rules.',
+          'protect the controllers that run a factory floor and a water-treatment plant from threats on the corporate office network',
+          ['Internet of Things (IoT) devices', 'Guest network segmentation', 'Bring your own device (BYOD)'],
+          'Physical-process controllers that cannot take patches easily — SEGMENT them from the IT network.',
+          S.layers([('IT network', 'offices, email, servers', 'blue'), ('Firewall', 'strict allow rules only', 'amber'), ('OT network', 'SCADA, PLCs, sensors', 'red')], title='Separating IT and OT'),
+          caption='SCADA, ICS, and OT networks control physical processes and should be segmented from the IT network.')
+
+    b.add('4.1', 'Bring your own device (BYOD)',
+          'A policy that allows employees to connect personal phones, tablets, and laptops to company resources, usually requiring enrollment, mobile device management, a separate network or VLAN, and posture checks to limit risk.',
+          'let employees use their own phones on the office Wi-Fi while keeping them apart from internal servers and requiring enrollment',
+          ['Guest network', 'Network access control (NAC)', 'Posture assessment'],
+          'PERSONAL devices on company resources — control them with enrollment, MDM, and segmentation.',
+          S.steps([('Employee enrolls', 'personal device'), ('Posture checked', 'MDM and policy'), ('Placed on BYOD VLAN', 'limited access')], title='BYOD onboarding', tones=['plain', 'blue', 'green']),
+          caption='BYOD lets personal devices connect to company resources under enrollment and segmentation controls.')
+
+    b.add('4.1', 'Acceptable use policy (AUP)',
+          'A written policy that states what users may and may not do with company networks and devices, such as prohibiting illegal downloads or personal servers, which they acknowledge before being given access.',
+          'give new employees a document that spells out permitted and forbidden uses of company computers and the network, which they must sign',
+          ['Service-level agreement (SLA)', 'End user license agreement (EULA)', 'Standard operating procedure (SOP)'],
+          'Rules for USERS of the network — an SLA is a contract about service levels.',
+          S.steps([('Policy written', 'allowed and forbidden uses'), ('User acknowledges', 'signs or accepts'), ('Access granted', 'violations enforced')], title='Acceptable use policy', tones=['blue', 'plain', 'green']),
+          caption='An acceptable use policy defines permitted and forbidden uses of company networks and devices.')
+
+    b.add('4.1', 'Data loss prevention (DLP)',
+          'Controls that detect and block sensitive data, such as card numbers or personal records, from leaving the organization through email, uploads, removable media, or cloud sharing, based on content and policy.',
+          'stop an employee from emailing a spreadsheet of customer card numbers to a personal account',
+          ['Content filtering', 'Intrusion prevention system (IPS)', 'Encryption in transit'],
+          'Watches data LEAVING by content — a firewall rule only looks at ports and addresses.',
+          S.steps([('User sends data', 'email or upload'), ('DLP inspects content', 'card numbers found'), ('Transfer blocked', 'alert raised')], title='Data loss prevention', tones=['plain', 'blue', 'red']),
+          caption='DLP inspects outgoing data and blocks sensitive content from leaving the organization.')
+
+    b.add('4.1', 'Risk',
+          'The likelihood that a threat will exploit a vulnerability, combined with the impact if it does; risk is reduced with controls, or it can be accepted, transferred, or avoided.',
+          'weigh the chance that an attacker will take advantage of an unpatched router against the damage that would follow',
+          ['Threat', 'Vulnerability', 'Exploit'],
+          'LIKELIHOOD times IMPACT — a vulnerability alone is not a risk until a threat can use it.',
+          S.steps([('Threat', 'who or what could harm'), ('Vulnerability', 'the weakness'), ('Risk', 'likelihood and impact')], title='How risk arises', tones=['red', 'amber', 'primary']),
+          caption='Risk is the likelihood that a threat exploits a vulnerability, combined with the resulting impact.')
+
+    b.add('4.1', 'Exploit',
+          'A technique or piece of code that takes advantage of a vulnerability to compromise a system, such as a crafted packet that triggers a bug in a device\'s firmware.',
+          "identify the code an attacker runs to take advantage of a known flaw in a device's firmware",
+          ['Threat', 'Vulnerability', 'Risk'],
+          'The METHOD that uses the weakness — the vulnerability is the weakness itself.',
+          S.steps([('Vulnerability exists', 'unpatched firmware'), ('Exploit delivered', 'crafted traffic'), ('System compromised', 'attacker gains access')], title='From flaw to compromise', tones=['amber', 'red', 'plain']),
+          caption='An exploit is the technique or code that takes advantage of a vulnerability.')
+
+    b.add('4.2', 'Dumpster diving',
+          'Searching a company\'s trash or recycling for discarded documents, drives, or notes that reveal passwords, network diagrams, or other sensitive information; shredding and secure disposal prevent it.',
+          'recover printed network diagrams and password notes that were thrown out without being shredded',
+          ['Shoulder surfing', 'Tailgating', 'Social engineering / phishing'],
+          'Reads what was THROWN AWAY — shred documents and wipe drives before disposal.',
+          S.steps([('Documents discarded', 'not shredded'), ('Attacker digs', 'finds diagrams, notes'), ('Information misused', 'used for later attacks')], title='Dumpster diving', tones=['plain', 'amber', 'red']),
+          caption='Dumpster diving recovers sensitive information from discarded trash; shredding prevents it.')
+
+    b.add('4.2', 'Shoulder surfing',
+          'Watching someone enter a password, PIN, or other sensitive data by looking over their shoulder or at their screen, in person or with a camera; privacy screens and angling the display away reduce it.',
+          'read a password as an employee types it on a laptop in a crowded coffee shop',
+          ['Dumpster diving', 'Tailgating', 'Social engineering / phishing'],
+          'Looking at the SCREEN or keyboard as it is used — a privacy filter is the defense.',
+          S.compare(('Exposed screen', ['Visible from behind', 'Passwords seen as typed', 'Easy to observe']), ('Privacy screen', ['Narrow viewing angle', 'Others see black', 'Hides sensitive data']), title='Shoulder surfing'),
+          caption='Shoulder surfing watches someone enter sensitive data; privacy screens reduce the risk.')
+
+    b.add('4.2', 'Tailgating',
+          'Following an authorized person through a secured door without presenting your own credentials; mantraps, badge readers with anti-passback, and staff awareness prevent it.',
+          'enter a locked server room by walking in right behind an employee who holds the door open',
+          ['Shoulder surfing', 'Dumpster diving', 'Social engineering / phishing'],
+          'Walks in on SOMEONE ELSE\'S badge — a mantrap lets only one person through at a time.',
+          S.steps([('Employee badges in', 'door opens'), ('Intruder follows', 'no credentials shown'), ('Secured area entered', 'access control bypassed')], title='Tailgating', tones=['blue', 'amber', 'red']),
+          caption='Tailgating follows an authorized person through a secured door without credentials.')
+
+    b.add('4.3', 'EAP over LAN (EAPoL)',
+          'The encapsulation that carries the Extensible Authentication Protocol between a supplicant and the authenticator, a switch or access point, in 802.1X, before the authenticator relays the exchange to the RADIUS server.',
+          'identify what carries the authentication messages between a laptop and the switch port before any network access is granted',
+          ['RADIUS', 'Kerberos', 'TACACS+'],
+          'EAP carried over the LAN between CLIENT and SWITCH — RADIUS then carries it to the server.',
+          S.steps([('Supplicant', 'laptop, EAPoL'), ('Authenticator', 'switch or AP'), ('RADIUS server', 'allows or denies')], title='802.1X message path', tones=['plain', 'blue', 'green']),
+          caption='EAPoL carries 802.1X authentication between a client and the switch or access point.')
+
+    b.add('4.3', 'Unified threat management (UTM)',
+          'An all-in-one security appliance that combines a firewall with functions such as intrusion prevention, antivirus, URL and content filtering, and VPN under one management interface, popular in small and midsize networks.',
+          'protect a small branch with a single device that handles firewalling, intrusion prevention, web filtering, and antivirus',
+          ['Stateful firewall', 'VPN headend (concentrator)', 'Load balancer'],
+          'Many security functions in ONE box — a plain firewall does only one of them.',
+          S.hub(('UTM appliance',), [('Firewall', 'stateful rules'), ('IPS', 'attack blocking'), ('Web filter', 'URL categories'), ('Antivirus', 'malware scanning')], title='Inside a UTM'),
+          caption='A UTM appliance combines firewalling, intrusion prevention, filtering, and antivirus in one device.')
+
     # ------------------------------------------------------------------------------------------ guide
     b.section('Security concepts: encryption, PKI, access models, and segmentation', ['4.1'],
               'Encrypt data in two places: in transit (TLS, IPsec, SSH) while it crosses the network, and at rest (disk and database encryption) while it is stored. PKI relies on certificate authorities that sign certificates binding public keys to identities, with revocation through CRLs or OCSP. Role-based access control assigns permissions to roles that users are given, and posture assessment checks an endpoint\'s patches and antivirus before it is allowed on the network.\n\n'
@@ -190,3 +318,6 @@ def build(b):
     b.section('More defenses and hardening', ['4.3'],
               'Harden devices by changing default credentials, disabling unused ports and services, patching, and restricting management access, and replace insecure protocols with encrypted ones (Telnet to SSH, HTTP to HTTPS, FTP to SFTP, SNMPv1 or v2c to SNMPv3). Firewall and ACL rules are evaluated top-down with the first match winning, and anything not permitted is dropped by implicit deny. URL and content filtering blocks sites by category, while MAC filtering is a weak control because addresses can be spoofed.\n\n'
               'On switches, DHCP snooping trusts only the real DHCP server\'s port (stopping rogue DHCP servers) and builds a binding table that dynamic ARP inspection uses to drop spoofed ARP packets. Key management covers generating, storing, rotating, and revoking keys and certificates.')
+    b.section('Identity, policies, physical threats, and 802.1X', ['4.1', '4.2', '4.3'],
+              'Identity and access management covers the whole identity life cycle, and access can also depend on time (login hours or one-time codes) or place (geofencing). A self-signed certificate encrypts but is not trusted by default. Keep SCADA, ICS, and OT networks segmented from the IT network, put BYOD devices under enrollment and a separate VLAN, and use an acceptable use policy and data loss prevention to govern what users do and what leaves. A honeynet is a network of decoy honeypots. Know risk (likelihood times impact), vulnerability (the weakness), exploit (the method), and threat (who or what could cause harm).\n\n'
+              'Physical social engineering includes dumpster diving (discarded information), shoulder surfing (watching entry of secrets), and tailgating (following someone through a door). In 802.1X, EAPoL carries the authentication between the supplicant and the switch or access point, which relays it to RADIUS, and a unified threat management appliance combines firewall, intrusion prevention, filtering, and antivirus.')

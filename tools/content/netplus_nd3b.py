@@ -92,10 +92,10 @@ def build(b):
 
     # ------------------------------------------------------------------------------------------ 3.7 IP services
     b.add('3.7', 'DHCP DORA process',
-          'The four-step DHCP lease exchange: the client broadcasts a Discover, a server replies with an Offer, the client sends a Request for the offered address, and the server confirms with an Acknowledgment.',
+          'The four-step DHCP lease exchange: the client broadcasts a Discover, a server replies with an Offer, the client broadcasts a Request for the offered address, and the server confirms with an Acknowledgment.',
           'identify the four messages exchanged when a client obtains an address from a DHCP server',
           ['SYN, SYN-ACK, ACK', 'Request, Reply, Release, Renew', 'Query, Response, Update, Notify'],
-          'Discover, Offer, Request, Acknowledge — and only the first message is a broadcast.',
+          'Discover, Offer, Request, Acknowledge — and the client sends both Discover and Request as broadcasts.',
           S.steps([('Discover', 'client broadcasts'), ('Offer', 'server proposes'), ('Request', 'client accepts'), ('Acknowledge', 'lease confirmed')], title='DHCP DORA', tones=['plain', 'blue', 'amber', 'green']),
           caption='DHCP assigns addresses through Discover, Offer, Request, and Acknowledge.')
 
@@ -364,6 +364,38 @@ def build(b):
           S.steps([('User signs in once', 'to the identity provider'), ('Token issued', 'SAML, OIDC, or Kerberos'), ('Apps accept it', 'no further passwords')], title='Single sign-on', tones=['plain', 'blue', 'green']),
           caption='SSO lets one authentication grant access to many applications.')
 
+    b.add('3.6', 'Traffic analysis',
+          'Examining flow data from NetFlow, sFlow, or IPFIX, or packet captures, to see which hosts, applications, and protocols use bandwidth and when, so congestion, unusual transfers, and capacity needs can be identified.',
+          'find out which hosts and applications are using the most WAN bandwidth during the afternoon slowdown',
+          ['Performance monitoring', 'Availability monitoring', 'Configuration monitoring'],
+          'WHO is using the bandwidth — performance monitoring tracks how the device or link itself is doing.',
+          S.steps([('Devices export flows', 'NetFlow, sFlow, IPFIX'), ('Collector aggregates', 'hosts, apps, ports'), ('Top talkers shown', 'congestion explained')], title='Traffic analysis', tones=['plain', 'blue', 'green']),
+          caption='Traffic analysis uses flow data to show which hosts and applications consume bandwidth.')
+
+    b.add('3.6', 'Performance monitoring',
+          'Continuously collecting metrics such as interface utilization, latency, packet loss, errors, CPU, and memory so trends against a baseline can be graphed and alerts raised before users are affected.',
+          'graph interface utilization, processor load, and error counts over several weeks so trends and capacity needs show up',
+          ['Traffic analysis', 'Availability monitoring', 'Network discovery'],
+          'HOW HEALTHY and loaded a device or link is over time — availability monitoring only asks if it is up.',
+          S.table(['Metric', 'Why it matters'], [('Utilization', 'capacity and congestion'), ('Latency and loss', 'user experience'), ('Errors and discards', 'cabling or duplex faults'), ('CPU and memory', 'device health')], title='Performance metrics', col_widths=[0.4, 0.6]),
+          caption='Performance monitoring graphs utilization, latency, errors, and device load against a baseline.')
+
+    b.add('3.7', 'Forward lookup zone',
+          'A DNS zone holding records, such as A, AAAA, CNAME, and MX, that map names to addresses and other data; a reverse lookup zone maps addresses back to names with PTR records.',
+          'host the records that turn names such as www into IP addresses for a company domain',
+          ['Reverse lookup zone', 'Stub zone', 'Hosts file'],
+          'NAME to ADDRESS — the reverse zone goes the other way with PTR records.',
+          S.compare(('Forward zone', ['Name to address', 'A, AAAA, CNAME, MX', 'contoso.com']), ('Reverse zone', ['Address to name', 'PTR records', 'in-addr.arpa']), title='DNS zone types'),
+          caption='A forward lookup zone maps names to addresses; a reverse zone maps addresses to names.')
+
+    b.add('3.7', 'SOA record',
+          'The start of authority record at the top of every DNS zone, naming the primary name server and the zone administrator and holding the serial number and the refresh, retry, expire, and minimum TTL timers that secondary servers use.',
+          'find the DNS record that carries the zone serial number a secondary server compares to decide whether to refresh',
+          ['NS record', 'PTR record', 'TXT record'],
+          'The SERIAL number lives here — raise it after a change so secondaries refresh.',
+          S.facts([('Serial', 'version of the zone'), ('Refresh', 'how often to check'), ('Retry', 'if a check fails'), ('Expire', 'when to stop answering')], title='SOA record fields'),
+          caption='The SOA record holds the zone serial and the timers secondary servers use.')
+
     # ------------------------------------------------------------------------------------------ guide
     b.section('Monitoring: SNMP, logs, counters, and alerting', ['3.6'],
               'SNMPv1 and v2c send community strings in clear text, while SNMPv3 adds authentication and encryption. Managers poll agents on UDP 161, and agents send traps on UDP 162 when something happens; a MIB is the database of manageable objects and an OID is the dotted numeric address of one of them. A SIEM goes beyond a syslog server by correlating events across many sources, and APIs and streaming telemetry return structured data without parsing the CLI.\n\n'
@@ -374,3 +406,5 @@ def build(b):
     b.section('VPNs, remote access, and AAA', ['3.8'],
               'A site-to-site VPN joins two networks gateway to gateway, a client-to-site VPN lets one device tunnel in with client software, and a clientless VPN uses a browser portal for specific resources. A split tunnel sends only corporate traffic through the VPN, whereas a full tunnel sends everything for inspection; IPsec tunnel mode wraps the whole original packet and transport mode protects only the payload.\n\n'
               'For management, a jump box is a hardened, logged entry point, out-of-band management uses a separate path (such as a console server) that works when production is down, and REST APIs enable automation. For authentication, RADIUS suits user network access (UDP 1812 and 1813), TACACS+ suits device administration with per-command authorization (TCP 49), Kerberos issues time-limited tickets that need synchronized clocks, and SSO gives access to many systems from one sign-in.')
+    b.section('Traffic analysis, performance monitoring, and DNS zones', ['3.6', '3.7'],
+              'Traffic analysis uses flow data (NetFlow, sFlow, IPFIX) to show which hosts and applications use the bandwidth, while performance monitoring graphs utilization, latency, errors, CPU, and memory over time against a baseline. In DNS, a forward lookup zone maps names to addresses and a reverse zone maps addresses to names with PTR records; the SOA record at the top of each zone carries the serial number and the timers that secondary servers use to decide when to refresh.')

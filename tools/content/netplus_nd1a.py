@@ -200,7 +200,7 @@ def build(b):
          [('Transport', 'TCP'), ('Port', '23'), ('Risk', 'passwords sent in clear text'), ('Replace with', 'SSH on port 22')], 'Telnet',
          'Telnet on TCP 23 sends everything in clear text and should be replaced by SSH.')
     port('Port 25 (SMTP)',
-         'SMTP relays email between mail servers on TCP 25, while mail clients submit messages on port 587 (STARTTLS) or 465 (implicit TLS).',
+         'SMTP relays email between mail servers on TCP 25, while mail clients submit messages on port 587 (STARTTLS) or 465 (implicit TLS), both of which are often called SMTPS.',
          'identify the port mail servers use to pass messages to each other',
          ['Port 110 (POP3)', 'Port 143 (IMAP)', 'Port 993 (IMAPS)'],
          'Server-to-server RELAY on 25 — POP3 and IMAP are how clients retrieve mail.',
@@ -354,6 +354,46 @@ def build(b):
           S.hub(('One anycast address', 'shared by many servers'), [('Server in Asia', 'nearest to Asian users'), ('Server in Europe', 'nearest to European users'), ('Server in US', 'nearest to US users')]),
           caption='Anycast shares one address across servers and routes each client to the nearest.')
 
+    b.add('1.2', 'Direct-attached storage (DAS)',
+          'Storage connected directly to a single server, such as internal drives or an external SAS or USB enclosure, with no network in between, so only that server can use it.',
+          'give one database server fast local disk capacity that no other computer will share',
+          ['Network-attached storage (NAS)', 'Storage area network (SAN)', 'Content delivery network (CDN)'],
+          'Cabled to ONE server — a NAS shares files over the network and a SAN shares block storage.',
+          S.table(['Storage type', 'Connected through'], [('DAS', 'a direct cable or bus'), ('NAS', 'Ethernet, file level'), ('SAN', 'dedicated fabric, block level')], title='Storage connectivity', col_widths=[0.4, 0.6]),
+          caption='DAS attaches storage directly to one server; NAS and SAN share it over a network.')
+
+    b.add('1.3', 'Network functions virtualization (NFV)',
+          'Running network functions such as routers, firewalls, and load balancers as software on standard servers or in virtual machines instead of dedicated hardware appliances, which speeds deployment and lets capacity scale on demand.',
+          'replace a rack of single-purpose firewall and load balancer boxes with software instances running on general-purpose servers',
+          ['Software-defined networking (SDN)', 'Virtual private cloud (VPC)', 'Content delivery network (CDN)'],
+          'Network functions become SOFTWARE on commodity servers — SDN separates the control plane instead.',
+          S.compare(('Hardware appliance', ['Dedicated box per function', 'Slow to deploy or scale', 'Fixed capacity']), ('NFV', ['Software on standard servers', 'Deployed in minutes', 'Scales on demand']), title='Appliance vs. NFV'),
+          caption='NFV runs network functions as software on standard servers instead of dedicated appliances.')
+
+    b.add('1.3', 'Network security group',
+          'A set of inbound and outbound rules, usually stateful, attached to cloud network interfaces, virtual machines, or subnets that allows or denies traffic by source, destination, protocol, and port; it acts as a virtual firewall for cloud resources.',
+          'allow only HTTPS from the Internet and SSH from the admin subnet to a group of cloud virtual machines',
+          ['Network security list', 'NAT gateway (cloud)', 'Internet gateway'],
+          'Filters traffic to cloud RESOURCES — usually stateful, so return traffic is allowed automatically.',
+          S.steps([('Packet arrives', 'at the virtual NIC'), ('Rules evaluated', 'source, port, protocol'), ('Allowed or denied', 'return traffic follows')], title='Network security group', tones=['plain', 'blue', 'green']),
+          caption='A network security group filters traffic to cloud resources with source, destination, and port rules.')
+
+    b.add('1.3', 'Network security list',
+          'A subnet-level set of ingress and egress rules in some cloud platforms, such as Oracle security lists and similar to AWS network ACLs, that filters everything entering or leaving a subnet, whereas a network security group applies to individual resources.',
+          'apply one rule set that filters everything entering and leaving a whole cloud subnet rather than individual machines',
+          ['Network security group', 'Internet gateway', 'Virtual private cloud (VPC)'],
+          'Works at the SUBNET boundary — a security group follows each individual resource.',
+          S.layers([('Security list', 'filters the whole subnet', 'blue'), ('Security group', 'filters each resource', 'green'), ('Workload', 'the protected instance', 'plain')], title='Layers of cloud filtering'),
+          caption='A network security list filters a whole subnet; a network security group filters individual resources.')
+
+    b.add('1.4', 'Internet Key Exchange (IKE)',
+          'The protocol that authenticates the two IPsec peers and negotiates the security associations and keys that protect the traffic, using UDP port 500, or UDP 4500 when NAT traversal is needed; IKEv2 is the current version.',
+          'find the protocol that sets up the keys and parameters before an IPsec tunnel can carry traffic',
+          ['IPsec ESP', 'IPsec AH', 'GRE (Generic Routing Encapsulation)'],
+          'IKE NEGOTIATES the keys on UDP 500 — ESP then encrypts the data.',
+          S.steps([('Peers authenticate', 'IKE exchange'), ('Keys negotiated', 'security associations'), ('Traffic protected', 'ESP encrypts data')], title='IPsec tunnel setup', tones=['plain', 'blue', 'green']),
+          caption='IKE authenticates IPsec peers and negotiates the keys that ESP then uses.')
+
     # ------------------------------------------------------------------------------------------ guide
     b.section('The upper OSI layers and the TCP/IP model', ['1.1'],
               'Layers 5 through 7 complete the OSI picture. The Session layer manages the dialogue between two applications (setup, maintenance, and teardown), the Presentation layer handles data format, compression, and encryption, and the Application layer provides the network services applications call on, such as HTTP, SMTP, DNS, and FTP. Remember that Layer 7 is the protocol layer, not the application program itself.\n\n'
@@ -367,3 +407,5 @@ def build(b):
     b.section('Ports, protocols, and traffic types', ['1.4'],
               'Learn ports as pairs of secure and insecure services: FTP (20 and 21) versus SFTP and SSH (22), Telnet (23) versus SSH, HTTP (80) versus HTTPS (443), POP3 (110) and IMAP (143) versus their TLS versions, LDAP (389) versus LDAPS (636), and SMTP (25) for server relay with 587 or 465 for client submission. Other common ones: TFTP 69 (UDP, no authentication), DHCP 67 and 68, NTP 123, SNMP 161 and 162, SMB 445, Syslog 514, SQL Server 1433, RDP 3389, and SIP 5060 and 5061.\n\n'
               'IP protocols are not ports: ICMP (protocol 1) carries diagnostics, GRE (47) tunnels traffic without encrypting it, and IPsec uses ESP (50) to encrypt and authenticate or AH (51) to authenticate only. Traffic types are unicast (one to one), broadcast (one to all in the domain), multicast (to a group), and anycast (one address on many servers, delivered to the nearest).')
+    b.section('Cloud filtering, IPsec key exchange, and storage types', ['1.2', '1.3', '1.4'],
+              'Cloud traffic is filtered at two levels: a network security group is a (usually stateful) rule set attached to individual resources, and a network security list filters a whole subnet. Network functions virtualization runs routers, firewalls, and load balancers as software on standard servers. For storage, direct-attached storage connects to one server, a NAS shares files, and a SAN presents block storage. IPsec tunnels are set up by the Internet Key Exchange (UDP 500, or 4500 through NAT), after which ESP encrypts the data.')
