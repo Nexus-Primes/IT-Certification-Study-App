@@ -4,7 +4,7 @@ import {
   daysBetween, formatDate, formatDateKey, formatPlanDate, formatDuration, hashNumber,
   seededShuffle, recallMatchHint
 } from './utils.js?v=4';
-import { CHANGELOG } from './changelog.js?v=15';
+import { CHANGELOG } from './changelog.js?v=16';
 import { closeAnyCustomPopover, registerCustomPopover, releaseCustomPopover, setFontSuggestions, setDefaultFonts } from './controls.js?v=1';
 import { generateCrosswordLayout } from './crossword.js?v=1';
 import { createHighlightPalette, HIGHLIGHT_COLORS, HIGHLIGHT_DEFAULT_NAMES, guideHighlightColor, highlightCustomVars } from './highlights.js?v=1';
@@ -55,7 +55,7 @@ import { createTools } from './tools.js?v=1';
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v232';
+  const APP_VERSION = 'v233';
   const DIAGNOSTIC_LEN = 15;
   let certDialogGroup = null;
   let certDialogEntryDomain = null; // domain ('certs'|'programs') the bottom "Current track" switcher is scoped to
@@ -104,7 +104,9 @@ import { createTools } from './tools.js?v=1';
     packet: ['Study packet', 'One domain, ready to print or save offline'],
     finalreview: ['Final review sheet', 'Your worst mix-ups and remaining gaps, one page'],
     search: ['Search', 'Find anything across the guide, glossary, and labs'],
-    runbooks: ['Runbooks', 'Tick-off checklists for jobs you repeat']
+    runbooks: ['Runbooks', 'Tick-off checklists for jobs you repeat'],
+    netsheet: ['Network sheet', 'VLANs, devices, extensions, and DIDs in one place'],
+    calculators: ['Calculators', 'Subnets, address plans, and 3CX sizing']
   };
 
   // iconPaths/icon/hydrateIcons now live in utils.js (imported above).
@@ -2053,7 +2055,7 @@ import { createTools } from './tools.js?v=1';
     flashcards: 'study', browse: 'study', crossword: 'study', cloze: 'study', glossary: 'study', guide: 'study', notes: 'study',
     practice: 'practice', exams: 'practice', labs: 'practice', casestudies: 'practice', sandbox: 'practice',
     objectives: 'plan', history: 'plan', planner: 'plan', achievements: 'plan',
-    runbooks: 'tools'
+    runbooks: 'tools', netsheet: 'tools', calculators: 'tools'
   };
   let navOpenGroups;
   try {

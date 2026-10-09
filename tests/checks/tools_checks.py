@@ -174,3 +174,6 @@ def run(ctx):
     browser = ctx.browser()
     open_app(browser, sandbox)
     run_runbooks(ctx, sandbox, browser)
+    from checks.tools_calc_net import run_calculators, run_network  # imported here: that module imports helpers from this one
+    run_calculators(ctx, sandbox, browser)
+    run_network(ctx, sandbox, browser)
