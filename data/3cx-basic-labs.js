@@ -85,10 +85,10 @@
       "Create the call queue and set its ring/queue strategy",
       "Add the agent extensions as members of the queue",
       "Set the queue's SLA threshold and hold music/announcements",
-      "Point an inbound rule for the support DID to the new queue",
+      "Assign the support DID to the new queue",
       "Test the queue with a live call and confirm the wallboard shows it correctly"
     ],
-    "explanation": "Agents need to exist before they can be added to a queue, the queue itself needs to exist before agents can be assigned or an inbound rule can point to it, and testing only makes sense once every piece is wired together."
+    "explanation": "Agents need to exist before they can be added to a queue, the queue itself needs to exist before agents can be assigned or the support DID can be assigned to it, and testing only makes sense once every piece is wired together."
   },
   {
     "id": "ivr-business-hours-sequence",
@@ -105,10 +105,10 @@
       "Build the IVR menu options and map each digit to its destination",
       "Define the business hours schedule for the week",
       "Add any holiday/special day exceptions to the schedule",
-      "Point the inbound rule for the main DID to the IVR during open hours and to voicemail after hours",
+      "Assign the main DID to the IVR, whose department hours send after-hours calls to voicemail",
       "Call the main number at different times to confirm it behaves correctly for open, closed, and holiday scenarios"
     ],
-    "explanation": "The IVR's content and structure need to exist before it can be scheduled, the weekly hours and holiday exceptions both need to be defined before the inbound rule can reference them correctly, and testing across all three states is the only way to confirm the whole chain actually works."
+    "explanation": "The IVR's content and structure need to exist before it can be scheduled, the weekly hours and holiday exceptions both need to be defined before the IVR's department hours can apply them correctly, and testing across all three states is the only way to confirm the whole chain actually works."
   },
   {
     "id": "no-outbound-calls-scenario",

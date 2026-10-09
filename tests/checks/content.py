@@ -17,6 +17,8 @@ TRACKS = [
     ("DP-300", "DP300_DATA", "DP300_GUIDE", "core1", "p"),
     ("Network+", "NETPLUS_DATA", "NETPLUS_GUIDE", "core1", "nd"),
     ("AZ-802", "WINSERVER_DATA", "WINSERVER_GUIDE", "core1", "ws"),
+    ("3CX Basic", "THREECX_BASIC_DATA", "THREECX_BASIC_GUIDE", "core1", "b"),
+    ("3CX Advanced", "THREECX_ADVANCED_DATA", "THREECX_ADVANCED_GUIDE", "core1", "a"),
 ]
 
 LAB_FILES = [

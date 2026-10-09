@@ -26,6 +26,18 @@ TRACKS = {
                   '3.1': 6, '3.2': 6, '3.3': 6, '3.4': 6, '3.5': 5, '3.6': 5, '4.1': 8, '4.2': 8, '4.3': 8,
                   '5.1': 8, '5.2': 8, '5.3': 8, '5.4': 8, '5.5': 9},
     },
+    'cxbasic': {
+        'data': '3cx-basic.js', 'guide': '3cx-basic-guide.js', 'var': 'THREECX_BASIC_DATA', 'gvar': 'THREECX_BASIC_GUIDE',
+        'modules': ['cx_basic_b1', 'cx_basic_b2', 'cx_basic_b3', 'cx_basic_b4'],
+        'start': {'1.1': 6, '1.2': 6, '1.3': 7, '2.1': 5, '2.2': 4, '2.3': 6, '2.4': 5, '2.5': 6, '3.1': 6, '3.2': 6, '3.3': 6, '3.4': 5,
+                  '4.1': 5, '4.2': 5, '4.3': 6, '4.4': 3},
+    },
+    'cxadvanced': {
+        'data': '3cx-advanced.js', 'guide': '3cx-advanced-guide.js', 'var': 'THREECX_ADVANCED_DATA', 'gvar': 'THREECX_ADVANCED_GUIDE',
+        'modules': ['cx_adv_a1', 'cx_adv_a2', 'cx_adv_a3', 'cx_adv_a4', 'cx_adv_a5'],
+        'start': {'1.1': 5, '1.2': 6, '2.1': 5, '2.2': 5, '2.3': 6, '2.4': 4, '3.1': 6, '3.2': 6, '3.3': 5, '3.4': 4, '4.1': 5, '4.2': 5,
+                  '4.3': 5, '4.4': 5, '5.1': 5, '5.2': 4, '5.3': 4, '5.4': 5},
+    },
     'winserver': {
         'data': 'winserver-hybrid.js', 'guide': 'winserver-hybrid-guide.js', 'var': 'WINSERVER_DATA', 'gvar': 'WINSERVER_GUIDE',
         'modules': ['winserver_ws1', 'winserver_ws2', 'winserver_ws3', 'winserver_ws4', 'winserver_ws5', 'winserver_ws6', 'winserver_ws7'],
