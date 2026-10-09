@@ -382,7 +382,13 @@ def run(ctx):
     browser.eval("(() => { const c = document.getElementById('setting-reading-mode'); if (c) { c.checked = true; c.dispatchEvent(new Event('change', { bubbles: true })); } })()")
     time.sleep(0.5)
     _open_settings(browser, "appearance")
+    # Saving is debounced, so wait (up to 5 s) for the last change to reach the server rather than trusting a fixed sleep.
+    wanted = {"themeMode": "light", "themePreset": "sand", "accentColor": "rose", "cornerStyle": "sharp", "density": "compact"}
+    deadline = time.time() + 5
     changed = sandbox.progress()["app-meta"]["appearance"]
+    while time.time() < deadline and any(changed.get(k) != v for k, v in wanted.items()):
+        time.sleep(0.25)
+        changed = sandbox.progress()["app-meta"]["appearance"]
     t.check(changed["themeMode"] == "light" and changed["themePreset"] == "sand" and changed["accentColor"] == "rose" and changed["cornerStyle"] == "sharp" and changed["density"] == "compact",
             "(setup) a non-default look is saved", str({k: changed[k] for k in ("themeMode", "themePreset", "accentColor", "cornerStyle", "density")}))
     t.check(browser.eval("!document.querySelector('[data-action=\"reset-look\"]').disabled"), "Reset is available once the look differs from the defaults")
