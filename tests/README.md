@@ -10,6 +10,7 @@ python tests/run.py print           # real PDFs
 python tests/run.py interactions    # color picker, highlights, palette, backups
 python tests/run.py flows           # a practice session, losing the server, per-track accents, sidebar, planner
 python tests/run.py study surfaces  # which questions are served, mock exams, labs, accounts; dialogs and pop-ups in four themes
+python tests/run.py tools           # the Tools pages (runbooks so far): behavior, saving, exports, print, both themes
 python tests/run.py content         # the generated concept data, the question audit, every lab's structure, and every diagram in both themes
 python tests/serve_sandbox.py       # an isolated copy to click around in (add --real-data for a copy of yours)
 python tests/run.py --real-data     # start from a COPY of your real progress files
@@ -28,7 +29,8 @@ Needs Python 3.9+ and Edge or Chrome. If the browser is not found, set `CERTSTUD
 | `flows` | A real Quick 10 from start to saved results; the app when the study server disappears and returns (banner, then nothing lost); a different accent per track; customizing the sidebar; the study plan; printing pages that have real content (reports, notes, Browse cards). |
 | `study` | Quick 10, Today's session, Spaced review, and Adaptive skip completed domains (and explicit picks and mock exams still include them); mock exams, labs, and switching accounts with a PIN; and every A+ Core 2 and AZ-802 lab, case studies included, is completed by following its own answers and its completion is saved. |
 | `surfaces` | Every dialog opens as a labelled modal, takes focus, closes on Escape, and meets 4.5:1 contrast in four theme/style combinations; so do pop-ups, toasts, and banners. |
-| `content` | The generated concept data (A+ Core 2, DP-300, Network+, AZ-802) is complete and quiz-ready (three distinct distractors, real objectives, unique terms, a study-guide section for every objective); the question-quality audit finds nothing new in any track; every lab in every track is well formed; and every diagram renders without clipped, overlapping, or low-contrast text in dark and light. |
+| `tools` | The Tools section: each tool's behavior, that its data reaches the progress file and survives a reload, exports, printing, and the page sweep in both themes. Pure functions are checked by importing the module in the page. |
+| `content` | The generated concept data (A+ Core 2, DP-300, Network+, AZ-802, 3CX) is complete and quiz-ready (three distinct distractors, real objectives, unique terms, a study-guide section for every objective); the question-quality audit finds nothing new in any track; every lab in every track is well formed; and every diagram renders without clipped, overlapping, or low-contrast text in dark and light. |
 | `interactions` | The color picker (typing, live preview, Escape reverts, Done saves, Tab trap), avatar/icon/highlight colors, highlight readability for awkward colors in both themes, highlight undo, settings in the command palette, backup restore. |
 
 ## Adding a check

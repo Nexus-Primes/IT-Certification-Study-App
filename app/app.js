@@ -4,7 +4,7 @@ import {
   daysBetween, formatDate, formatDateKey, formatPlanDate, formatDuration, hashNumber,
   seededShuffle, recallMatchHint
 } from './utils.js?v=4';
-import { CHANGELOG } from './changelog.js?v=14';
+import { CHANGELOG } from './changelog.js?v=15';
 import { closeAnyCustomPopover, registerCustomPopover, releaseCustomPopover, setFontSuggestions, setDefaultFonts } from './controls.js?v=1';
 import { generateCrosswordLayout } from './crossword.js?v=1';
 import { createHighlightPalette, HIGHLIGHT_COLORS, HIGHLIGHT_DEFAULT_NAMES, guideHighlightColor, highlightCustomVars } from './highlights.js?v=1';
@@ -18,6 +18,8 @@ import {
   relLuminance, contrastRatio, readableTextOn, colorNameFor, highlightMixFor
 } from './color.js?v=1';
 import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accentVarsFor } from './themes.js?v=1';
+import { defaultTools, toolsFromRemote } from './tools-core.js?v=1';
+import { createTools } from './tools.js?v=1';
 
 (function () {
   'use strict';
@@ -53,7 +55,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v231';
+  const APP_VERSION = 'v232';
   const DIAGNOSTIC_LEN = 15;
   let certDialogGroup = null;
   let certDialogEntryDomain = null; // domain ('certs'|'programs') the bottom "Current track" switcher is scoped to
@@ -101,7 +103,8 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
     mistakes: ['Mistake patterns', "What keeps tripping you up, not just where"],
     packet: ['Study packet', 'One domain, ready to print or save offline'],
     finalreview: ['Final review sheet', 'Your worst mix-ups and remaining gaps, one page'],
-    search: ['Search', 'Find anything across the guide, glossary, and labs']
+    search: ['Search', 'Find anything across the guide, glossary, and labs'],
+    runbooks: ['Runbooks', 'Tick-off checklists for jobs you repeat']
   };
 
   // iconPaths/icon/hydrateIcons now live in utils.js (imported above).
@@ -335,6 +338,16 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
     persist(META_KEY, metaState);
   }
 
+  // ---------- Tools data (account-level, like the plan and meta: runbooks, network sheet, timers…) ----------
+  const TOOLS_KEY = 'app-tools';
+  let toolsState = defaultTools();
+  function saveTools() {
+    remoteProgress[TOOLS_KEY] = toolsState;
+    persist(TOOLS_KEY, toolsState);
+    tools.updateBadges();
+  }
+  const tools = createTools({ main, icon, hydrateIcons, escapeHtml, toast, getTools: () => toolsState, saveTools, navigate, todayKey });
+
   // The default account's photo keeps living at the original fixed path (data/avatar.jpg) —
   // untouched by multi-account support — so any already-uploaded photo keeps working with zero
   // migration. Every other account gets its own id-suffixed file (mirrors server.py's
@@ -368,6 +381,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
     }
     planState = planFromRemote(remoteProgress[PLAN_KEY]);
     metaState = metaFromRemote(remoteProgress[META_KEY]);
+    toolsState = toolsFromRemote(remoteProgress[TOOLS_KEY]);
     return true;
   }
 
@@ -1842,6 +1856,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
     if (streakPillEl) streakPillEl.title = state.streakFreezes > 0 ? `${state.streakFreezes} streak freeze${state.streakFreezes === 1 ? '' : 's'} banked — covers one missed day automatically.` : '';
     const dueEl = document.getElementById('due-badge');
     if (dueEl) dueEl.textContent = getDueCards(false).length || Math.min(20, allConcepts().filter(c => !state.flashcards[c.id]).length);
+    tools.updateBadges();
     const notesEl = document.getElementById('notes-badge');
     if (notesEl) {
       const n = noteCount();
@@ -2022,7 +2037,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
   // ---------- Print ----------
   // See print.js: it draws the masthead and handles before/afterprint; this just says what page it is.
   const printInfo = () => ({
-    pageTitle: (routeMeta[currentRoute()] || routeMeta.dashboard)[0], trackName: CERT.name,
+    pageTitle: (routeMeta[currentRoute()] || routeMeta.dashboard)[0], trackName: tools.routes.has(currentRoute()) ? 'Tools' : CERT.name,
     owner: (metaState.displayName || '').trim() || (currentProfile().name || '').trim(), hasOwnHeader: !!main.querySelector('.report-head')
   });
   initPrint(printInfo);
@@ -2037,7 +2052,8 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
   const ROUTE_GROUP = {
     flashcards: 'study', browse: 'study', crossword: 'study', cloze: 'study', glossary: 'study', guide: 'study', notes: 'study',
     practice: 'practice', exams: 'practice', labs: 'practice', casestudies: 'practice', sandbox: 'practice',
-    objectives: 'plan', history: 'plan', planner: 'plan', achievements: 'plan'
+    objectives: 'plan', history: 'plan', planner: 'plan', achievements: 'plan',
+    runbooks: 'tools'
   };
   let navOpenGroups;
   try {
@@ -2106,6 +2122,7 @@ import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accent
     else if (activeCrossword && route === 'crossword') renderCrosswordPlay();
     else if (clozeSession && route === 'cloze') renderClozePlay();
     else if (activeReview && route === 'history') renderStoredReview(activeReview);
+    else if (tools.routes.has(route)) tools.render(route);
     else ({ dashboard: renderDashboard, planner: renderPlanner, practice: renderPractice, exams: renderExams, flashcards: renderFlashcards,
       crossword: renderCrosswordHub, cloze: renderClozeHub, browse: renderBrowse, notes: renderNotes,
       glossary: renderGlossary, guide: renderStudyGuide, labs: renderLabs, casestudies: renderCaseStudiesHub, sandbox: renderSandbox, commands: renderCommandReference, objectives: renderObjectives, history: renderHistory, settings: renderSettings,

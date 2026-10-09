@@ -1404,3 +1404,38 @@ body.focus-active .app-shell { grid-template-columns: minmax(0, 1fr); }
 .eyebrow-link { padding: 0; border: 0; background: none; color: var(--primary); font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; }
 .eyebrow-link:hover { text-decoration: underline; }
 .eyebrow-link:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 3px; }
+
+/* ---------- Tools (runbooks, network sheet, calculators, timers, shelf, text tools) ---------- */
+.tool-page { display: block; }
+.muted-line { margin: 0; color: var(--muted); font-size: 12px; }
+.tool-list { display: grid; gap: 10px; }
+.tool-card { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 11px; background: var(--surface-2); }
+.tool-card-main { display: grid; flex: 1; min-width: 0; gap: 3px; }
+.tool-card-main small { color: var(--muted); font-size: 11px; }
+.tool-card-side { display: flex; flex: 0 0 auto; align-items: center; gap: 10px; }
+.tool-template { min-height: 0; }
+.tool-template .tag { align-self: flex-start; margin-bottom: 14px; }
+.rb-name { width: 100%; padding: 6px 10px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--text); font-size: 18px; font-weight: 750; }
+.rb-name:hover, .rb-name:focus { border-color: var(--border); background: var(--surface-2); }
+.rb-progress { display: grid; flex: 0 0 auto; gap: 6px; min-width: 150px; text-align: right; font-size: 12px; }
+.rb-section { margin: 20px 0 8px; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+.rb-steps { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.rb-step { display: flex; align-items: flex-start; gap: 12px; padding: 9px 10px; border-radius: 9px; }
+.rb-step:hover { background: var(--surface-2); }
+.rb-step .switch { margin-top: 1px; }
+.rb-step-body { display: grid; flex: 1; min-width: 0; gap: 3px; }
+.rb-text { font-size: 13px; }
+.rb-step.is-done .rb-text { color: var(--muted); text-decoration: line-through; }
+.rb-hint { color: var(--muted); font-size: 11px; overflow-wrap: anywhere; }
+.rb-when { color: var(--muted-2); font-size: 10px; }
+.rb-note { width: 100%; margin-top: 4px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-2); color: var(--text); font-size: 12px; resize: vertical; }
+.rb-edit-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; }
+.field textarea.rb-edit-text { min-height: 320px; padding: 12px; font-family: "Cascadia Code", Consolas, monospace; font-size: 13px; line-height: 1.5; }
+@media print {
+  .tool-page .rb-name { padding: 0; border: 0; font-size: 18px; }
+  .rb-note { padding: 0 0 0 2px; border: 0; background: none; resize: none; font-size: 10px; }
+  .rb-note:placeholder-shown { display: none; }
+  .rb-step { padding: 3px 4px; break-inside: avoid; }
+  .rb-section { break-after: avoid; }
+  .rb-progress .progress-track { display: none; }
+}
