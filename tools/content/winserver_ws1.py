@@ -374,7 +374,7 @@ def build(b):
           caption='A gMSA is created once and installed on each allowed host in the farm.')
 
     b.add('1.3', 'Delegated managed service account (dMSA)',
-          'A Windows Server 2025 account type that binds authentication to specific machine identities, has no password for an attacker to steal, and lets an existing traditional service account migrate to it, which reduces Kerberoasting exposure.',
+          'A Windows Server 2025 account type that binds authentication to specific machine identities, uses managed random keys that Credential Guard can protect, and lets an existing traditional service account migrate to it (a gMSA or sMSA cannot be migrated), which disables the old account password and reduces Kerberoasting exposure.',
           'replace a traditional service account on a Windows Server 2025 domain with one bound to its machine identity to resist credential theft',
           ['Group managed service account (gMSA)', 'Standalone managed service account (sMSA)', 'Protected Users group'],
           'Newest option — keys are tied to the MACHINE, and a legacy account can migrate to it.',

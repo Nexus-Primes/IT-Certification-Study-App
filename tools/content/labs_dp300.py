@@ -50,10 +50,10 @@ def labs():
         [
             ('The payments database must not lose any committed data when a data center in the region fails, and must stay available. What fits?', ['A zone-redundant configuration', 'Geo-restore from backups', 'A weekly full backup', 'Point-in-time restore only'], 0,
              'Zone redundancy keeps synchronous copies in multiple zones of the region, giving near-zero data loss and automatic failover inside the region.'),
-            ('The orders database must survive a whole-region outage with about five seconds of data loss and recover within about an hour, without changing connection strings. What fits?', ['An auto-failover group with a secondary region', 'Geo-restore', 'Long-term retention backups', 'A larger service tier'], 0,
+            ('The orders database must survive a whole-region outage with very little data loss and recover within a minute or two, without changing connection strings. What fits?', ['An auto-failover group with a secondary region', 'Geo-restore', 'Long-term retention backups', 'A larger service tier'], 0,
              'A failover group replicates asynchronously to a secondary region and provides read-write and read-only listener endpoints that follow the failover.'),
-            ('A reporting archive can tolerate an hour of lost data and about half a day of downtime after a regional outage, and cost matters most. What fits?', ['Geo-restore from geo-redundant backups', 'A failover group with a readable secondary', 'An elastic pool', 'Zone redundancy'], 0,
-             'Geo-restore is the cheapest cross-region option, with an RPO of up to about an hour and an RTO of up to about 12 hours.'),
+            ('A reporting archive can tolerate losing some recent data and several hours of downtime after a regional outage, and cost matters most. What fits?', ['Geo-restore from geo-redundant backups', 'A failover group with a readable secondary', 'An elastic pool', 'Zone redundancy'], 0,
+             'Geo-restore is the cheapest cross-region option, which typically takes minutes or hours to recover and may lose some recent data.'),
         ],
         'Start with the RPO and RTO: zone redundancy for near-zero loss in a region, a failover group for seconds of loss across regions, and geo-restore when hours of loss and downtime are acceptable.'))
 

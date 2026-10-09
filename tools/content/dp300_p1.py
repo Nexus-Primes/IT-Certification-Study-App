@@ -110,11 +110,11 @@ def build(b):
           caption='DMS assesses and migrates SQL Server databases to Azure SQL, offline or online.')
 
     b.add('1.6', 'Log Replay Service (LRS)',
-          'A service that migrates databases to SQL Managed Instance by continuously restoring native full and log backups from Blob storage, allowing a controlled cutover at a time you choose.',
+          'A service that migrates databases to SQL Managed Instance by continuously restoring native full, differential, and log backups from Blob storage, finishing automatically (autocomplete mode) or at a cutover you trigger yourself (continuous mode); a single job runs for at most 30 days.',
           'migrate a large database to Managed Instance by restoring backups from Blob storage and cutting over at a chosen moment',
           ['A BACPAC import', 'Managed Instance link', 'An Azure Data Factory copy'],
           'It keeps RESTORING backups from storage until you cut over — the MI link uses a distributed availability group instead.',
-          S.steps([('Backups', 'to Blob storage'), ('LRS restores', 'full, then log backups'), ('Cutover', 'complete and switch')], title='Log Replay Service', tones=['plain', 'blue', 'green']),
+          S.steps([('Backups', 'to Blob storage'), ('LRS restores', 'full, diff, and log'), ('Cutover', 'complete and switch')], title='Log Replay Service', tones=['plain', 'blue', 'green']),
           caption='Log Replay Service restores backups from Blob storage continuously until you complete the cutover.')
 
     b.add('1.6', 'Managed Instance link',

@@ -130,7 +130,7 @@ def build(b):
           caption='Secure Boot needs the right template: Windows for Windows guests, UEFI CA for most Linux.')
 
     b.add('3.1', 'Planned failover',
-          'A Hyper-V Replica operation run when both sides are healthy: the primary VM is shut down, the last changes are sent, the replica starts with no data loss, and replication can be reversed.',
+          'A Hyper-V Replica operation run from the primary host when both sides are healthy: the primary VM is shut down, the last changes are sent, the replica starts with no data loss, and replication can be reversed.',
           'move a virtual machine to its replica site for maintenance with zero data loss',
           ['Unplanned failover', 'Test failover', 'Live migration'],
           'Both sides HEALTHY and NO data loss — the primary is shut down first.',

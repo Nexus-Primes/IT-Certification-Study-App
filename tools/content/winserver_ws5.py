@@ -51,10 +51,10 @@ def build(b):
           caption='Soft delete keeps a deleted share for a retention period so it can be restored.')
 
     b.add('5.1', 'Microsoft Entra Kerberos for Azure Files',
-          'An identity option that lets hybrid users on Entra-joined or hybrid-joined devices obtain Kerberos tickets for an Azure file share without a line of sight to a domain controller.',
+          'An identity option in which Microsoft Entra ID issues the Kerberos tickets, so hybrid and cloud-only users on Entra-joined or hybrid-joined devices can reach an Azure file share without a line of sight to a domain controller; setting Windows ACLs for hybrid identities still needs a client that can reach one, and a storage account can use only one identity source.',
           'let hybrid users on cloud-joined laptops open a cloud file share with Kerberos when they cannot reach a domain controller',
           ['On-premises AD DS authentication', 'Microsoft Entra Domain Services', 'Shared access signature (SAS)'],
-          'No line of sight to a DC needed — the Kerberos tickets come from Microsoft Entra ID.',
+          'ACCESS needs no line of sight to a DC — Entra ID issues the tickets — but setting ACLs for hybrid users does.',
           S.steps([('Entra-joined laptop', 'off the corporate LAN'), ('Entra Kerberos ticket', 'for the storage account'), ('Share mounted', 'no DC connection')], title='Entra Kerberos', tones=['plain', 'blue', 'green']),
           caption='Entra Kerberos gives hybrid users access to Azure Files without domain controller connectivity.')
 

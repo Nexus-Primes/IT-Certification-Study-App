@@ -5,41 +5,41 @@ DOMAIN = 'ws6'
 
 
 def build(b):
-    b.topics['6.1'] = ['Exploit protection XML', 'App Control audit and supplemental policies', 'AppLocker', 'VBS and HVCI', 'Remote Credential Guard', 'OSConfig drift control', 'LAPS retrieval', 'Defender plans', 'Firewall profiles', 'Domain isolation']
+    b.topics['6.1'] = ['Exploit protection XML', 'Application Control audit and supplemental policies', 'AppLocker', 'VBS and HVCI', 'Remote Credential Guard', 'OSConfig drift control', 'LAPS retrieval', 'Defender plans', 'Firewall profiles', 'Domain isolation']
     b.topics['6.2'] = ['Fine-grained password policies', 'Lockout', 'Tiered administration and PAWs', 'Authentication policy silos', 'AdminSDHolder', 'NTLM, Kerberos, LDAP hardening', 'Time-based membership', 'Auditing']
 
     # ------------------------------------------------------------------------------------------ 6.1
     b.add('6.1', 'Exploit protection XML deployment',
           'Exploit protection settings, such as DEP, ASLR, and Control Flow Guard, can be exported to an XML file with Get-ProcessMitigation or the Windows Security app and then applied to many servers through Group Policy or Set-ProcessMitigation.',
           'apply the same memory-corruption mitigations to every server through policy instead of configuring each by hand',
-          ['Attack surface reduction rules', 'App Control audit mode', 'Microsoft Defender SmartScreen'],
+          ['Attack surface reduction rules', 'Application Control audit mode', 'Microsoft Defender SmartScreen'],
           'Export the settings to XML ONCE, then deploy that file with Group Policy.',
           S.steps([('Tune on one server', 'system and per-app'), ('Export to XML', 'settings file'), ('Deploy with GPO', 'common settings path')], title='Exploit protection deployment', tones=['blue', 'plain', 'green']),
           caption='Exploit protection settings are exported to XML and distributed with Group Policy.')
 
-    b.add('6.1', 'App Control audit mode',
-          'Running an App Control for Windows policy in audit mode so applications that would be blocked are only logged, letting administrators refine the allow-list before switching to enforced mode.',
+    b.add('6.1', 'Application Control audit mode',
+          'Running an Application Control for Windows policy (App Control for Business, formerly WDAC) in audit mode so applications that would be blocked are only logged, letting administrators refine the allow-list before switching to enforced mode.',
           'test a new allow-list policy by logging what it would block without actually blocking anything',
           ['Supplemental application control policies', 'AppLocker', 'Exploit protection XML deployment'],
           'AUDIT logs would-be blocks; ENFORCED blocks them — always audit first.',
-          S.steps([('Deploy in audit mode', 'nothing blocked'), ('Review events', 'would-be blocks'), ('Switch to enforced', 'after refining the policy')], title='Rolling out App Control', tones=['blue', 'amber', 'green']),
+          S.steps([('Deploy in audit mode', 'nothing blocked'), ('Review events', 'would-be blocks'), ('Switch to enforced', 'after refining the policy')], title='Rolling out Application Control', tones=['blue', 'amber', 'green']),
           caption='Audit mode logs what an application control policy would block before enforcement.')
 
     b.add('6.1', 'Supplemental application control policies',
-          'Additional App Control for Windows policies that extend a base policy for specific devices or roles, so extra applications can be allowed without editing the base allow-list.',
+          'Additional Application Control for Windows policies that extend a base policy for specific devices or roles, so extra applications can be allowed without editing the base allow-list.',
           'allow one more application on a single group of servers without changing the shared base allow-list',
-          ['App Control audit mode', 'AppLocker', 'Exploit protection XML deployment'],
+          ['Application Control audit mode', 'AppLocker', 'Exploit protection XML deployment'],
           'EXTENDS a base policy — add an exception without touching the base.',
           S.hub(('Base policy',), [('Supplemental A', 'finance servers'), ('Supplemental B', 'build servers')], title='Base and supplemental policies'),
-          caption='Supplemental policies extend a base App Control policy for specific devices.')
+          caption='Supplemental policies extend a base Application Control policy for specific devices.')
 
     b.add('6.1', 'AppLocker',
-          'A rule-based feature that allows or blocks executables, scripts, installers, DLLs, and packaged apps by path, publisher, or hash, and can target specific users or groups; it works in user mode only and is a complement to App Control for Windows.',
+          'A rule-based feature that allows or blocks executables, scripts, installers, DLLs, and packaged apps by path, publisher, or hash, and can target specific users or groups; it works in user mode only and is a complement to Application Control for Windows.',
           'restrict which applications a specific user group may run by using publisher rules',
-          ['App Control audit mode', 'Supplemental application control policies', 'Microsoft Defender SmartScreen'],
-          'Rules can target USERS and GROUPS — App Control for Windows applies to the whole device.',
-          S.compare(('AppLocker', ['Per user or group rules', 'Path, publisher, hash', 'User mode only']), ('App Control (WDAC)', ['Whole-device policy', 'Kernel and user mode', 'Stronger protection']), title='AppLocker vs. App Control'),
-          caption='AppLocker rules can target users and groups; App Control applies device-wide.')
+          ['Application Control audit mode', 'Supplemental application control policies', 'Microsoft Defender SmartScreen'],
+          'Rules can target USERS and GROUPS — Application Control for Windows applies to the whole device.',
+          S.compare(('AppLocker', ['Per user or group rules', 'Path, publisher, hash', 'User mode only']), ('Application Control (WDAC)', ['Whole-device policy', 'Kernel and user mode', 'Stronger protection']), title='AppLocker vs. Application Control'),
+          caption='AppLocker rules can target users and groups; Application Control applies device-wide.')
 
     b.add('6.1', 'Virtualization-based security (VBS)',
           'A hardware-backed isolation layer that uses the hypervisor to create a protected region of memory the operating system kernel cannot reach, hosting protections such as Credential Guard and memory integrity.',
@@ -284,7 +284,7 @@ def build(b):
 
     # ------------------------------------------------------------------------------------------ guide
     b.section('Operating system protections in depth', ['6.1'],
-              'Exploit protection mitigations (DEP, ASLR, Control Flow Guard) can be tuned on one server, exported to XML, and deployed with Group Policy. App Control for Windows is a device-wide allow-list: test it in audit mode, refine it, enforce it, and extend it with supplemental policies, while AppLocker targets users and groups in user mode. Virtualization-based security isolates memory with the hypervisor and underpins Credential Guard and memory integrity (HVCI), and Remote Credential Guard keeps credentials on the client during RDP.\n\n'
+              'Exploit protection mitigations (DEP, ASLR, Control Flow Guard) can be tuned on one server, exported to XML, and deployed with Group Policy. Application Control for Windows is a device-wide allow-list: test it in audit mode, refine it, enforce it, and extend it with supplemental policies, while AppLocker targets users and groups in user mode. Virtualization-based security isolates memory with the hypervisor and underpins Credential Guard and memory integrity (HVCI), and Remote Credential Guard keeps credentials on the client during RDP.\n\n'
               'OSConfig applies and, with drift control, re-applies a security baseline; the Security Compliance Toolkit provides baseline GPOs and Policy Analyzer. Windows LAPS stores managed local administrator passwords in AD or Entra ID (read with Get-LapsADPassword) and can reset them after use. Defender for Servers Plan 2 adds JIT access and file integrity monitoring to Plan 1. Windows Firewall applies the Domain, Private, or Public profile by network, New-NetFirewallRule scripts rules, and domain isolation uses connection security rules so only authenticated domain members connect. Secured-core hardware adds firmware and TPM protection, Defender Antivirus auto-excludes server role files, and tamper protection stops settings being switched off.')
     b.section('Securing AD DS in depth', ['6.2'],
               'Fine-grained password policies (Password Settings Objects) give specific users or global groups their own password and lockout rules, with the lowest precedence number winning. Account lockout uses a threshold, duration, and reset window (event 4740). Entra Password Protection needs a DC agent on every domain controller and a proxy service on a member server, and supports a custom banned list.\n\n'

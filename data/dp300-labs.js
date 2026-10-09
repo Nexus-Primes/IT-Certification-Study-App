@@ -537,7 +537,7 @@
         "feedback": "Zone redundancy keeps synchronous copies in multiple zones of the region, giving near-zero data loss and automatic failover inside the region."
       },
       {
-        "question": "The orders database must survive a whole-region outage with about five seconds of data loss and recover within about an hour, without changing connection strings. What fits?",
+        "question": "The orders database must survive a whole-region outage with very little data loss and recover within a minute or two, without changing connection strings. What fits?",
         "options": [
           "An auto-failover group with a secondary region",
           "Geo-restore",
@@ -548,7 +548,7 @@
         "feedback": "A failover group replicates asynchronously to a secondary region and provides read-write and read-only listener endpoints that follow the failover."
       },
       {
-        "question": "A reporting archive can tolerate an hour of lost data and about half a day of downtime after a regional outage, and cost matters most. What fits?",
+        "question": "A reporting archive can tolerate losing some recent data and several hours of downtime after a regional outage, and cost matters most. What fits?",
         "options": [
           "Geo-restore from geo-redundant backups",
           "A failover group with a readable secondary",
@@ -556,7 +556,7 @@
           "Zone redundancy"
         ],
         "correct": 0,
-        "feedback": "Geo-restore is the cheapest cross-region option, with an RPO of up to about an hour and an RTO of up to about 12 hours."
+        "feedback": "Geo-restore is the cheapest cross-region option, which typically takes minutes or hours to recover and may lose some recent data."
       }
     ]
   },

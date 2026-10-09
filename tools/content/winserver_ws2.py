@@ -18,11 +18,11 @@ def build(b):
           caption='Windows Admin Center runs as a desktop app, a shared gateway server, or inside the Azure portal.')
 
     b.add('2.1', 'Windows Admin Center in the Azure portal',
-          'Managing an Arc-enabled server or Azure VM from the browser in the Azure portal, authorized with Azure roles such as Windows Admin Center Administrator Login; Azure VMs need inbound TCP 6516 allowed, while Arc-enabled servers connect through the Arc agent.',
+          'Managing an Arc-enabled server or Azure VM from the browser in the Azure portal, authorized by the Windows Admin Center Administrator Login Azure role; Arc-enabled servers need no inbound ports because the Arc agent opens an outbound reverse proxy, while an Azure VM is reached on the extension port (6516 by default), preferably over a private IP address in its virtual network.',
           'open a management console for an Arc-connected server from the Azure portal without a VPN',
           ['Azure Bastion', 'Just-in-time (JIT) VM access', 'Azure Automation runbooks'],
-          'Authorized by AZURE roles — and Azure VMs need TCP 6516 reachable.',
-          S.steps([('Azure portal', 'sign in with Entra ID'), ('Admin Center blade', 'Azure role checked'), ('Managed server', 'Arc agent or port 6516')], title='Admin Center in Azure', tones=['blue', 'primary', 'green']),
+          'Authorized by an AZURE role — Arc servers need no inbound ports; Azure VMs use port 6516 by default.',
+          S.steps([('Azure portal', 'sign in with Entra ID'), ('Admin Center blade', 'Azure role checked'), ('Managed server', 'no inbound ports on Arc')], title='Admin Center in Azure', tones=['blue', 'primary', 'green']),
           caption='The Azure portal hosts Windows Admin Center for Arc-enabled servers and Azure VMs.')
 
     b.add('2.1', 'Remote Server Administration Tools (RSAT)',
@@ -179,7 +179,7 @@ def build(b):
           caption='A one-time deployment installs updates immediately on selected machines.')
 
     b.add('2.2', 'Hotpatch',
-          'Installing security updates in memory without restarting, available for Windows Server 2025 through Azure Arc enablement or on Azure Edition VMs; baseline months, typically four a year, still require a restart.',
+          'Installing security updates in memory without restarting, available for Windows Server 2025 through Azure Arc enablement or on Azure Edition VMs; the quarterly baseline months (four a year), the occasional unplanned baseline, and non-security, .NET, and driver updates still require a restart.',
           'apply monthly security updates to a Windows Server 2025 machine without rebooting it in most months',
           ['One-time update deployment', 'Maintenance configurations', 'Periodic assessment'],
           'Most months NO reboot — the periodic BASELINE months still need one.',
@@ -236,7 +236,7 @@ def build(b):
 
     # ------------------------------------------------------------------------------------------ guide
     b.section('Remote management in depth', ['2.1'],
-              'Windows Admin Center runs in desktop mode on a client, gateway mode on a shared server that administrators reach over HTTPS, or in the Azure portal for Arc-enabled servers and Azure VMs, where Azure roles authorize access (Azure VMs need TCP 6516). RSAT installs consoles and modules on a Windows client, and Server Manager manages many servers from one console.\n\n'
+              'Windows Admin Center runs in desktop mode on a client, gateway mode on a shared server that administrators reach over HTTPS, or in the Azure portal for Arc-enabled servers and Azure VMs, where an Azure role authorizes access (Arc-enabled servers need no inbound ports; Azure VMs are reached on port 6516 by default, preferably over a private IP). RSAT installs consoles and modules on a Windows client, and Server Manager manages many servers from one console.\n\n'
               'PowerShell remoting uses WinRM on TCP 5985 (HTTP) and 5986 (HTTPS); Invoke-Command runs a script block on many computers at once and Enter-PSSession opens one interactive shell. The double-hop problem is solved with CredSSP (works but sends reusable credentials) or resource-based Kerberos constrained delegation (preferred), and JEA limits what a remote user can do through .psrc role capability files and a .pssc session configuration. PowerShell 7 can remote over SSH with -HostName. Network Level Authentication makes users authenticate before an RDP session is built, Remote Desktop Gateway tunnels RDP over HTTPS on 443, and the Remote Desktop Users and Remote Management Users groups grant RDP and WinRM access without administrator rights.')
     b.section('Azure Arc, Update Manager, and Automation in depth', ['2.2'],
               'The Connected Machine agent needs only outbound HTTPS. Onboard servers at scale with a service principal that holds the onboarding role, then use extensions (for example the Custom Script Extension) to push configuration, Azure Policy to audit compliance, and the machine\'s managed identity so apps can reach Azure services without secrets.\n\n'

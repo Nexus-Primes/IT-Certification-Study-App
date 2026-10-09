@@ -26,7 +26,7 @@ START = {code: 7 for code in ('1.1', '1.2', '1.3', '2.1', '2.2', '2.3', '3.1', '
 
 DESCRIPTION = ("Plan and implement Azure SQL data platform resources, secure the environment, monitor and optimize operations, tune query performance, "
                "automate database tasks, and plan and configure high availability and disaster recovery. Organized to follow Microsoft's published skills outline "
-               "(effective October 27, 2026), except that \\\"Monitor, configure, and optimize\\\" is split into two domains here. Microsoft can change the outline, "
+               "(effective October 27, 2026), except that \\\"Monitor, configure, and optimize\\\" is split into two domains here. Backup, failover, and recovery figures in the added concepts were checked against Microsoft Learn on 2026-10-09, and the rest is best-effort. Microsoft can change the outline, "
                "so check learn.microsoft.com for the current version before relying on it for exam scope.")
 
 

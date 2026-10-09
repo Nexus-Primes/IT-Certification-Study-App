@@ -27,12 +27,12 @@ def build(b):
           caption='Platform metrics come from Azure Monitor automatically; DMVs and Query Store show what inside the database caused them.')
 
     b.add('3.1', 'Database watcher',
-          'A managed monitoring solution that collects detailed workload data from DMVs for Azure SQL Database, Managed Instance, and elastic pools into a central data store with ready-made dashboards, without agents or custom collection scripts.',
+          'A managed monitoring solution, currently in preview, that collects detailed workload data from DMVs for Azure SQL Database (including elastic pools) and Managed Instance into a data store in your subscription, Azure Data Explorer or Real-Time Analytics in Fabric, with ready-made dashboards; you create a watcher resource instead of installing agents.',
           'monitor a large fleet of Azure SQL databases in one set of dashboards without deploying agents',
           ['Query Performance Insight', 'SQL Server Profiler', 'Intelligent Insights'],
           'Fleet-wide DMV collection into a central store with dashboards — Query Performance Insight looks at one database.',
           S.steps([('Watcher', 'collects DMV data'), ('Data store', 'Data Explorer or Fabric'), ('Dashboards', 'fleet and single database')], title='Database watcher', tones=['plain', 'blue', 'green']),
-          caption='Database watcher collects DMV data from many Azure SQL resources into central dashboards without agents.')
+          caption='Database watcher collects DMV data from many Azure SQL resources into central dashboards.')
 
     b.add('3.1', 'Intelligent Insights',
           'Built-in intelligence that detects disruptive events in Azure SQL Database, such as reaching resource limits, locking, and plan regressions, and writes a diagnostics log with root-cause analysis once the SQLInsights log is enabled.',

@@ -40,10 +40,10 @@ def build(b):
           caption='Regular DR drills measure the real RTO and RPO and give you a documented, rehearsed procedure.')
 
     b.add('6.1', 'Geo-restore',
-          'Restoring an Azure SQL Database from geo-redundant backup copies into any region when the primary region is unavailable and no geo-replica exists; it is the lowest-cost recovery option but has the longest RTO (up to about 12 hours) and an RPO of up to about an hour.',
+          'Restoring an Azure SQL Database from geo-redundant backup copies into any region when the primary region is unavailable and no geo-replica exists; it is the lowest-cost recovery option but also the slowest, typically taking minutes or hours depending on database size and storage replication, with some data loss.',
           'recover in another region after a regional outage when no geo-replica or failover group was configured',
           ['Point-in-time restore in the same region', 'Active geo-replication', 'Zone-redundant configuration'],
-          'Cheapest but slowest — roughly an hour of RPO and up to about 12 hours of RTO; geo-replication is the fast option.',
+          'Cheapest but slowest — typically minutes or hours to recover; a failover group recovers in about a minute.',
           S.steps([('Regional outage', 'primary unavailable'), ('Geo-restore', 'from geo-redundant backup'), ('New database', 'in another region')], title='Geo-restore', tones=['red', 'blue', 'green']),
           caption='Geo-restore rebuilds a database in another region from geo-redundant backups, slowly and cheaply.')
 
@@ -162,11 +162,11 @@ def build(b):
           caption='Log shipping backs up, copies, and restores logs on a schedule to keep a warm standby.')
 
     b.add('6.3', 'Failover group grace period and policy',
-          'A failover group can fail over manually or automatically; with the automatic policy, the grace period sets how long the service tries to recover the primary before forcing a failover that may lose recent data, one hour by default.',
+          'A failover group uses a customer-managed (manual, recommended) or a Microsoft-managed (automatic) failover policy; with the Microsoft-managed policy, the grace period with data loss sets how long Azure waits before forcing a failover that may lose recent data, and it cannot be set below one hour.',
           'configure how long Azure waits before automatically forcing a failover that may lose data',
           ['The read-only listener', 'A planned failover', 'Backup retention'],
           'The GRACE PERIOD is how long recovery is attempted before a forced failover — it ties the policy to your acceptable data loss.',
-          S.facts([('Policy', 'manual or automatic'), ('Grace period', 'wait before a forced failover'), ('Default', 'one hour'), ('Trade-off', 'shorter risks more data loss')], title='Failover group settings'),
+          S.facts([('Policy', 'customer or Microsoft managed'), ('Grace period', 'wait before a forced failover'), ('Minimum', 'one hour'), ('Trade-off', 'shorter risks more data loss')], title='Failover group settings'),
           caption='The grace period controls how long Azure waits before forcing an automatic failover.')
 
     b.add('6.3', 'WSFC quorum and Cloud Witness',
@@ -203,11 +203,11 @@ def build(b):
 
     # ------------------------------------------------------------------------------------------ guide
     b.section('Turning RPO and RTO into a design', ['6.1'],
-              'Start from the two numbers the business gives you: how much data can be lost (RPO) and how long it can be unavailable (RTO). Zone redundancy covers near-zero loss within a region, geo-replication or a failover group covers seconds of loss across regions, point-in-time restore undoes mistakes in the same region, and geo-restore, the cheapest and slowest option, suits hours of loss and downtime (about an hour of RPO and up to about 12 hours of RTO).\n\n'
+              'Start from the two numbers the business gives you: how much data can be lost (RPO) and how long it can be unavailable (RTO). Zone redundancy covers near-zero loss within a region, geo-replication or a failover group covers seconds of loss across regions, point-in-time restore undoes mistakes in the same region, and geo-restore, the cheapest and slowest option, suits hours of loss and downtime (typically minutes or hours to recover).\n\n'
               'A planned failover waits for synchronization and loses no data, so use it for drills and maintenance; a forced failover switches immediately and accepts data loss. Rehearse the design: define success criteria, fail over in a window, validate connectivity through the listener or failover group endpoint, measure the real RTO and RPO, document them, and fail back.')
     b.section('Backup and restore', ['6.2'],
               'The FULL recovery model keeps the log until it is backed up, which makes log backups and point-in-time restore possible; SIMPLE allows neither. A typical chain is weekly full, daily differential, and frequent log backups, and the log interval sets the RPO. Azure SQL takes these automatically (weekly full, 12 or 24-hour differential, roughly 10-minute log) with 1 to 35 days of point-in-time restore, and a long-term retention policy (W, M, Y) keeps fulls for up to 10 years.\n\n'
               'On SQL Server and Managed Instance, restore with NORECOVERY until the last step, use STOPAT to stop before a mistake, and take a tail-log backup first so the latest transactions are not lost. BACKUP TO URL writes to Blob storage using a credential, a deleted Azure SQL database can be restored within retention, and RESTORE VERIFYONLY only checks readability, so schedule real test restores followed by DBCC CHECKDB.')
     b.section('Availability technologies and their health', ['6.3'],
               'An availability group keeps separate copies of databases on replicas that fail over together: synchronous commit waits for the secondary (no data loss, required for automatic failover), asynchronous commit does not (lower latency, possible loss, suits remote regions), and the listener gives clients one name that follows the primary. A failover cluster instance instead moves one instance between nodes on shared storage, with a single copy of the data, and both rely on cluster quorum, where a Cloud Witness is the easy extra vote on Azure. Log shipping keeps a warm standby with scheduled backup, copy, and restore jobs and a manual failover.\n\n'
-              'For failover groups, the grace period sets how long Azure tries to recover before forcing a failover that may lose data. Monitor with the availability group dashboard and sys.dm_hadr_database_replica_states (a growing log send queue means network trouble, a growing redo queue means a slow secondary) and with replication lag from sys.dm_geo_replication_link_status. A primary log that keeps growing can be held by a lagging replica: log_reuse_wait_desc shows AVAILABILITY_REPLICA.')
+              'For failover groups, prefer the customer-managed (manual) policy; with the Microsoft-managed policy, the grace period, never below one hour, sets how long Azure waits before forcing a failover that may lose data. Monitor with the availability group dashboard and sys.dm_hadr_database_replica_states (a growing log send queue means network trouble, a growing redo queue means a slow secondary) and with replication lag from sys.dm_geo_replication_link_status. A primary log that keeps growing can be held by a lagging replica: log_reuse_wait_desc shows AVAILABILITY_REPLICA.')
