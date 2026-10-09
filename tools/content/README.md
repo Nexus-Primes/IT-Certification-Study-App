@@ -10,7 +10,7 @@ python tools/content/build_dp300.py            # rebuild the DP-300 additions (m
 python tools/content/build_track.py netplus    # Network+ (modules netplus_nd1a ... nd5); `winserver` builds AZ-802 (modules winserver_ws1 ... ws7)
 python tools/content/smoke.py c2d2             # list every diagram whose text does not fit, without writing anything (A+ domains only)
 python tools/content/smoke_track.py winserver  # the same for a build_track.py track (add a module name to check just one)
-python tools/content/build_labs.py             # add the generated labs (labs_aplus.py, labs_netplus.py, labs_dp300.py); validates each lab first
+python tools/content/build_labs.py             # add the generated labs (labs_aplus.py, labs_netplus.py, labs_dp300.py, labs_winserver.py); validates each lab first
 python tools/content/audit.py                  # question-quality sweep over every track (--strict exits 1 on a finding; the content tests run it)
 python tests/run.py content                    # data checks plus a browser render of every diagram (dark and light)
 ```

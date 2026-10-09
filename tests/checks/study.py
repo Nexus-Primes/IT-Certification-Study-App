@@ -172,43 +172,70 @@ def run(ctx):
     t.check(all(labs[k] in done for k in ("sequence", "decision", "terminal")), "all three completed labs are saved", str(sorted(done)))
     t.check(not browser.errors(), "no JavaScript errors in the labs", "; ".join(browser.errors()[:3]))
 
-    # Every Core 2 lab (the older ones and the ones added in v226) can actually be completed by following its own answers.
-    t.suite("study: every Core 2 lab plays through")
-    browser.eval("document.querySelector('[data-action=\"exit-lab\"]')?.click()")
-    time.sleep(0.4)
-    core2 = browser.eval("window.APLUS_LABS.filter(l => l.core === 'core2' && l.type !== 'gui' && l.type !== 'scenario').map(l => ({ id: l.id, type: l.type }))")
-    stuck = []
-    for item in core2:
-        lab_id, kind = item["id"], item["type"]
-        browser.eval(f"document.querySelector('[data-action=\"start-lab\"][data-lab=\"{lab_id}\"]').click()")
-        time.sleep(0.5)
-        if kind == "sequence":
-            for step in browser.eval(f"window.APLUS_LABS.find(l => l.id === {lab_id!r}).steps"):
-                browser.eval(f"""(() => {{ const b = [...document.querySelectorAll('[data-action="move-step"][data-from="available"]')].find(x => x.textContent.includes({step[:30]!r})); if (b) b.click(); }})()""")
-                time.sleep(0.12)
-            browser.eval("document.querySelector('[data-action=\"check-sequence\"]')?.click()")
-            time.sleep(0.6)
-        elif kind == "decision":
-            for correct in browser.eval(f"window.APLUS_LABS.find(l => l.id === {lab_id!r}).stages.map(s => s.correct)"):
-                browser.eval(f"document.querySelector('[data-action=\"decision-answer\"][data-index=\"{correct}\"]')?.click()")
-                time.sleep(0.45)
-        elif kind == "terminal":
-            for command in browser.eval(f"window.APLUS_LABS.find(l => l.id === {lab_id!r}).terminal.map(s => s.accepts[0])"):
-                browser.eval(f"""(() => {{ const i = document.getElementById('terminal-command'); if (i) {{ i.value = {command!r}; document.getElementById('terminal-form').requestSubmit(); }} }})()""")
-                time.sleep(0.45)
-        elif kind == "scenario":
-            path = browser.eval(f"""(() => {{ const lab = window.APLUS_LABS.find(l => l.id === {lab_id!r}); const labels = []; let node = lab.nodes[lab.startNode];
-              while (node && !node.end) {{ const o = node.options.find(x => x.correct); labels.push(o.label); node = lab.nodes[o.next]; }} return labels; }})()""")
-            for label in path:
-                browser.eval(f"""(() => {{ const b = [...document.querySelectorAll('[data-action="scenario-choice"]')].find(x => x.dataset.label === {label!r}); if (b) b.click(); }})()""")
-                time.sleep(0.4)
-        finished = browser.eval("/complete|ticket resolved/i.test(document.getElementById('main-content').innerText)")
-        if not finished:
-            stuck.append(lab_id)
+    # Every lab of the tracks that were expanded (A+ Core 2 and AZ-802) can actually be completed by following its own answers.
+    def play_labs(lab_global, only_core2=False):
         browser.eval("document.querySelector('[data-action=\"exit-lab\"]')?.click()")
-        time.sleep(0.35)
-    t.check(not stuck, f"all {len(core2)} Core 2 labs can be completed by giving their own correct answers", ", ".join(stuck))
+        time.sleep(0.4)
+        keep = "l.core === 'core2' && " if only_core2 else ""
+        items = browser.eval(f"window.{lab_global}.filter(l => {keep}l.type !== 'gui').map(l => ({{ id: l.id, type: l.type }}))")
+        stuck = []
+        for item in items:
+            lab_id, kind = item["id"], item["type"]
+            go(browser, "dashboard", wait=0.2)                                           # leave the route first: after a case study the hash stays #labs while the hub is showing
+            go(browser, "casestudies" if kind == "scenario" else "labs", wait=0.5)      # scenario labs are started from the Case studies page
+            browser.eval(f"document.querySelector('[data-action=\"start-lab\"][data-lab=\"{lab_id}\"]')?.click()")
+            time.sleep(0.5)
+            if kind == "sequence":
+                for step in browser.eval(f"window.{lab_global}.find(l => l.id === {lab_id!r}).steps"):
+                    browser.eval(f"""(() => {{ const b = [...document.querySelectorAll('[data-action="move-step"][data-from="available"]')].find(x => x.textContent.includes({step[:30]!r})); if (b) b.click(); }})()""")
+                    time.sleep(0.12)
+                browser.eval("document.querySelector('[data-action=\"check-sequence\"]')?.click()")
+                time.sleep(0.6)
+            elif kind == "decision":
+                for correct in browser.eval(f"window.{lab_global}.find(l => l.id === {lab_id!r}).stages.map(s => s.correct)"):
+                    browser.eval(f"document.querySelector('[data-action=\"decision-answer\"][data-index=\"{correct}\"]')?.click()")
+                    time.sleep(0.45)
+            elif kind == "terminal":
+                for command in browser.eval(f"window.{lab_global}.find(l => l.id === {lab_id!r}).terminal.map(s => s.accepts[0])"):
+                    browser.eval(f"""(() => {{ const i = document.getElementById('terminal-command'); if (i) {{ i.value = {command!r}; document.getElementById('terminal-form').requestSubmit(); }} }})()""")
+                    time.sleep(0.45)
+            elif kind == "scenario":
+                path = browser.eval(f"""(() => {{ const lab = window.{lab_global}.find(l => l.id === {lab_id!r}); const labels = []; let node = lab.nodes[lab.startNode];
+                  while (node && !node.end) {{ const o = node.options.find(x => x.correct); labels.push(o.label); node = lab.nodes[o.next]; }} return labels; }})()""")
+                for label in path:
+                    browser.eval(f"""(() => {{ const b = [...document.querySelectorAll('[data-action="scenario-choice"]')].find(x => x.dataset.label === {label!r}); if (b) b.click(); }})()""")
+                    time.sleep(0.4)
+            if not browser.eval("/complete|ticket resolved/i.test(document.getElementById('main-content').innerText)"):
+                stuck.append(lab_id)
+            browser.eval("document.querySelector('[data-action=\"exit-lab\"]')?.click()")
+            time.sleep(0.35)
+        return items, stuck
+
+    def switch_cert(cert_id):
+        browser.eval(f"(() => {{ const b = document.createElement('button'); b.dataset.action = 'switch-cert'; b.dataset.certId = {cert_id!r}; document.body.appendChild(b); b.click(); b.remove(); }})()")
+        time.sleep(1.5)
+
+    t.suite("study: every Core 2 lab plays through")
+    items, stuck = play_labs("APLUS_LABS", only_core2=True)
+    t.check(not stuck, f"all {len(items)} Core 2 labs can be completed by giving their own correct answers", ", ".join(stuck))
+    time.sleep(1.2)
+    saved = sandbox.progress().get("comptia-a-plus", {}).get("completedLabs", [])
+    missing = [item["id"] for item in items if item["id"] not in saved]
+    t.check(not missing, "every Core 2 lab completion was saved to progress", ", ".join(missing))
     t.check(not browser.errors(), "no JavaScript errors while playing the Core 2 labs", "; ".join(browser.errors()[:3]))
+
+    t.suite("study: every AZ-802 lab plays through")
+    switch_cert("winserver-hybrid")
+    go(browser, "labs", wait=0.8)
+    items, stuck = play_labs("WINSERVER_LABS")
+    t.check(len(items) >= 30 and not stuck, f"all {len(items)} AZ-802 labs can be completed by giving their own correct answers", ", ".join(stuck))
+    t.check(not browser.errors(), "no JavaScript errors while playing the AZ-802 labs", "; ".join(browser.errors()[:3]))
+    time.sleep(1.2)
+    saved = sandbox.progress().get("winserver-hybrid", {}).get("completedLabs", [])
+    missing = [item["id"] for item in items if item["id"] not in saved]
+    t.check(not missing, "every AZ-802 lab completion was saved to progress", ", ".join(missing))
+    switch_cert("aplus")
+    go(browser, "dashboard", wait=0.8)
 
     # ------------------------------------------------------------------ accounts and the PIN
     t.suite("study: accounts and the PIN")
