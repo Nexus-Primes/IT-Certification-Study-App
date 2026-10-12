@@ -35,7 +35,7 @@ class Reporter:
 
 ROUTES = ["dashboard", "flashcards", "browse", "crossword", "cloze", "glossary", "guide", "notes", "practice", "exams",
           "labs", "casestudies", "sandbox", "commands", "objectives", "history", "planner", "achievements", "settings",
-          "search", "report", "examday", "mistakes", "finalreview", "guide-digest", "packet", "runbooks", "netsheet", "calculators", "timers", "texttools"]
+          "search", "report", "examday", "mistakes", "finalreview", "guide-digest", "packet", "runbooks", "netsheet", "calculators", "timers", "shelf", "texttools"]
 SLOW_ROUTES = {"glossary", "packet", "browse", "guide"}
 
 

@@ -25,6 +25,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(ROOT, "data")
 PROGRESS_FILE = os.path.join(DATA_DIR, "progress.json")
 BACKUP_DIR = os.path.join(ROOT, "backup")
+FILES_DIR = os.path.join(ROOT, "files")
 AVATAR_FILE = os.path.join(DATA_DIR, "avatar.jpg")
 PROFILES_FILE = os.path.join(DATA_DIR, "profiles.json")
 # The very first account this app ever had. Its data stays in the original progress.json /
@@ -120,6 +121,40 @@ def avatar_path_for(profile_id):
     if profile_id == DEFAULT_PROFILE_ID:
         return AVATAR_FILE
     return os.path.join(DATA_DIR, f"avatar-{profile_id}.jpg")
+
+
+# ---- Document shelf: a read-only listing of the files/ folder -------------------------------
+# The Tools > Document shelf page lists whatever you drop into files/ (the files themselves are served
+# as ordinary static files at /files/<path>). Nothing here takes input from the request: it walks one
+# fixed folder, skips hidden files, folders, and links, and never reports an absolute path.
+SHELF_MAX_DEPTH = 4
+SHELF_MAX_FILES = 2000
+
+
+def list_shelf_files():
+    base = os.path.realpath(FILES_DIR)
+    if not os.path.isdir(base):
+        return []
+    found = []
+    for dirpath, dirnames, filenames in os.walk(base):
+        rel_dir = os.path.relpath(dirpath, base)
+        depth = 0 if rel_dir == "." else rel_dir.count(os.sep) + 1
+        dirnames[:] = [] if depth >= SHELF_MAX_DEPTH else [d for d in dirnames if not d.startswith(".") and not os.path.islink(os.path.join(dirpath, d))]
+        for name in filenames:
+            full = os.path.join(dirpath, name)
+            if name.startswith(".") or os.path.islink(full):
+                continue
+            try:
+                info = os.stat(full)
+            except OSError:
+                continue
+            found.append({"path": os.path.relpath(full, base).replace(os.sep, "/"), "name": name, "size": info.st_size, "modified": int(info.st_mtime)})
+            if len(found) >= SHELF_MAX_FILES:
+                break
+        if len(found) >= SHELF_MAX_FILES:
+            break
+    found.sort(key=lambda item: item["path"].lower())
+    return found
 
 
 # ---- Saved backups: naming, listing, and thinning ------------------------------------------
@@ -245,6 +280,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             # The hash itself never leaves the server — the client only ever needs to know
             # whether switching is currently PIN-gated at all.
             return self._send_json({"profiles": registry["profiles"], "defaultId": DEFAULT_PROFILE_ID, "hasPin": bool(registry.get("pinHash"))})
+        if path == "/api/files":
+            return self._send_json({"files": list_shelf_files(), "folderExists": os.path.isdir(FILES_DIR)})
         if path == "/api/backups":
             profile_id = resolve_profile_id((query.get("profile") or [None])[0])
             with backup_lock:

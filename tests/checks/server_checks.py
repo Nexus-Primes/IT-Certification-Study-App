@@ -54,6 +54,7 @@ def run(ctx):
     run_backup_retention(ctx)
     run_backup_api(ctx)
     run_offsite_backup(ctx)
+    run_shelf_api(ctx)
 
 
 def run_offsite_backup(ctx):
@@ -187,3 +188,31 @@ def run_backup_api(ctx):
     t.check(code == 404, "one account cannot read another account's backup")
     t.check(sandbox.get_json(f"/api/backups?profile={made}")["backups"] == [], "...or see it in its list")
     t.check(os.path.exists(os.path.join(sandbox.dir, "backup")) and True, "backups live in the backup/ folder")
+
+
+def run_shelf_api(ctx):
+    t = ctx.t
+    sandbox = ctx.fresh_sandbox()
+    t.suite("server: document shelf listing")
+    t.check(sandbox.get_json("/api/files") == {"files": [], "folderExists": False}, "with no files folder the listing is empty")
+    folder = sandbox.dir / "files"
+    (folder / "sub" / "deep" / "deeper" / "deepest" / "too").mkdir(parents=True)
+    (folder / "Guide.pdf").write_bytes(b"%PDF-1.4 test")
+    (folder / ".hidden.pdf").write_bytes(b"x")
+    (folder / "Résumé guide.pdf").write_bytes(b"unicode")
+    (folder / "sub" / "Notes.txt").write_text("hello")
+    (folder / "sub" / "deep" / "deeper" / "deepest" / "a.txt").write_text("four deep")
+    (folder / "sub" / "deep" / "deeper" / "deepest" / "too" / "b.txt").write_text("five deep")
+    reply = sandbox.get_json("/api/files")
+    paths = [f["path"] for f in reply["files"]]
+    t.check(reply["folderExists"] and paths == ["Guide.pdf", "Résumé guide.pdf", "sub/deep/deeper/deepest/a.txt", "sub/Notes.txt"],
+            "files are listed with forward-slash paths, sorted, skipping hidden files and anything deeper than four folders", str(paths))
+    guide = next(f for f in reply["files"] if f["name"] == "Guide.pdf")
+    t.check(guide["size"] == 13 and isinstance(guide["modified"], int) and guide["modified"] > 1_000_000_000, "each entry has its size and modified time")
+    raw = json.dumps(reply, ensure_ascii=False)
+    t.check(str(sandbox.dir) not in raw and "\\" not in raw and ":/" not in raw, "the listing never reveals an absolute path")
+    code, body = _status(sandbox.url + "/files/Guide.pdf")
+    t.check(code == 200 and body == b"%PDF-1.4 test", "a listed file is served from /files/")
+    code, body = _status(sandbox.url + "/files/R%C3%A9sum%C3%A9%20guide.pdf")
+    t.check(code == 200 and body == b"unicode", "...including one with spaces and accents in its name")
+

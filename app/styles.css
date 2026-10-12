@@ -1507,3 +1507,18 @@ select.t-input { padding-right: 24px; }
 .tx-passwords li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 9px; background: var(--surface-2); }
 .tx-pw { overflow-wrap: anywhere; font-size: 14px; letter-spacing: .03em; }
 .muted-line.is-error { color: var(--red); font-weight: 700; }
+.shelf-controls { display: grid; grid-template-columns: minmax(220px, 2fr) minmax(140px, 1fr); gap: 14px; margin-bottom: 12px; }
+.shelf-list { display: grid; gap: 8px; }
+.shelf-item { display: flex; align-items: flex-start; gap: 14px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 11px; background: var(--surface-2); }
+.shelf-item.is-missing { border-style: dashed; }
+.shelf-icon { display: grid; flex: 0 0 auto; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: var(--primary-soft); color: var(--primary); }
+.shelf-icon svg { width: 17px; height: 17px; }
+.shelf-main { display: grid; flex: 1; min-width: 0; gap: 4px; }
+.shelf-main small { color: var(--muted); font-size: 11px; }
+.shelf-name { color: var(--text); font-weight: 700; font-size: 13px; overflow-wrap: anywhere; text-decoration: none; }
+.shelf-name:hover { color: var(--primary); text-decoration: underline; }
+.shelf-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 2px; }
+.shelf-tag { display: inline-flex; align-items: center; gap: 4px; min-height: 26px; padding: 0 6px 0 10px; cursor: default; }
+.shelf-tag button { padding: 0 4px; border: 0; background: none; color: var(--muted); font-size: 14px; line-height: 1; cursor: pointer; }
+.shelf-tag button:hover { color: var(--red); }
+.shelf-tag-input { width: 110px; min-height: 26px; border-color: var(--border-soft); font-size: 11px; }

@@ -180,3 +180,5 @@ def run(ctx):
     from checks.tools_time_text import run_text, run_timers
     run_timers(ctx, sandbox, browser)
     run_text(ctx, sandbox, browser)
+    from checks.tools_shelf_checks import run_shelf
+    run_shelf(ctx, sandbox, browser)

@@ -8,8 +8,9 @@ import { createNetwork } from './tools-network.js?v=1';
 import { createCalculators } from './tools-calc.js?v=1';
 import { createTimers } from './tools-timers.js?v=1';
 import { createTextTools } from './tools-text.js?v=1';
+import { createShelf } from './tools-shelf.js?v=1';
 
-export const TOOL_ROUTES = ['runbooks', 'netsheet', 'calculators', 'timers', 'texttools'];
+export const TOOL_ROUTES = ['runbooks', 'netsheet', 'calculators', 'timers', 'shelf', 'texttools'];
 
 export function createTools(ctx) {
   const runbooks = createRunbooks(ctx);
@@ -17,7 +18,8 @@ export function createTools(ctx) {
   const calculators = createCalculators(ctx);
   const timers = createTimers(ctx);
   const textTools = createTextTools(ctx);
-  const pages = { runbooks: runbooks.render, netsheet: network.render, calculators: calculators.render, timers: timers.render, texttools: textTools.render };
+  const shelf = createShelf(ctx);
+  const pages = { runbooks: runbooks.render, netsheet: network.render, calculators: calculators.render, timers: timers.render, shelf: shelf.render, texttools: textTools.render };
 
   function setBadge(id, count) {
     const el = document.getElementById(id);

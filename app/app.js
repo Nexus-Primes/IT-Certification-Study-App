@@ -4,7 +4,7 @@ import {
   daysBetween, formatDate, formatDateKey, formatPlanDate, formatDuration, hashNumber,
   seededShuffle, recallMatchHint
 } from './utils.js?v=4';
-import { CHANGELOG } from './changelog.js?v=17';
+import { CHANGELOG } from './changelog.js?v=18';
 import { closeAnyCustomPopover, registerCustomPopover, releaseCustomPopover, setFontSuggestions, setDefaultFonts } from './controls.js?v=1';
 import { generateCrosswordLayout } from './crossword.js?v=1';
 import { createHighlightPalette, HIGHLIGHT_COLORS, HIGHLIGHT_DEFAULT_NAMES, guideHighlightColor, highlightCustomVars } from './highlights.js?v=1';
@@ -55,7 +55,7 @@ import { createTools } from './tools.js?v=1';
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v234';
+  const APP_VERSION = 'v235';
   const DIAGNOSTIC_LEN = 15;
   let certDialogGroup = null;
   let certDialogEntryDomain = null; // domain ('certs'|'programs') the bottom "Current track" switcher is scoped to
@@ -108,6 +108,7 @@ import { createTools } from './tools.js?v=1';
     netsheet: ['Network sheet', 'VLANs, devices, extensions, and DIDs in one place'],
     calculators: ['Calculators', 'Subnets, address plans, and 3CX sizing'],
     timers: ['Timers', 'Stopwatch, countdowns, and dates to count down to'],
+    shelf: ['Document shelf', 'Your reference files, searchable and tagged'],
     texttools: ['Text tools', 'Regex, encoding, hashes, JSON, and passwords: all local']
   };
 
@@ -2057,7 +2058,7 @@ import { createTools } from './tools.js?v=1';
     flashcards: 'study', browse: 'study', crossword: 'study', cloze: 'study', glossary: 'study', guide: 'study', notes: 'study',
     practice: 'practice', exams: 'practice', labs: 'practice', casestudies: 'practice', sandbox: 'practice',
     objectives: 'plan', history: 'plan', planner: 'plan', achievements: 'plan',
-    runbooks: 'tools', netsheet: 'tools', calculators: 'tools', timers: 'tools', texttools: 'tools'
+    runbooks: 'tools', netsheet: 'tools', calculators: 'tools', timers: 'tools', shelf: 'tools', texttools: 'tools'
   };
   let navOpenGroups;
   try {
