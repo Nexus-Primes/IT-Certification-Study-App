@@ -6,14 +6,18 @@
 import { createRunbooks } from './tools-runbooks.js?v=1';
 import { createNetwork } from './tools-network.js?v=1';
 import { createCalculators } from './tools-calc.js?v=1';
+import { createTimers } from './tools-timers.js?v=1';
+import { createTextTools } from './tools-text.js?v=1';
 
-export const TOOL_ROUTES = ['runbooks', 'netsheet', 'calculators'];
+export const TOOL_ROUTES = ['runbooks', 'netsheet', 'calculators', 'timers', 'texttools'];
 
 export function createTools(ctx) {
   const runbooks = createRunbooks(ctx);
   const network = createNetwork(ctx);
   const calculators = createCalculators(ctx);
-  const pages = { runbooks: runbooks.render, netsheet: network.render, calculators: calculators.render };
+  const timers = createTimers(ctx);
+  const textTools = createTextTools(ctx);
+  const pages = { runbooks: runbooks.render, netsheet: network.render, calculators: calculators.render, timers: timers.render, texttools: textTools.render };
 
   function setBadge(id, count) {
     const el = document.getElementById(id);
@@ -22,8 +26,12 @@ export function createTools(ctx) {
     el.classList.toggle('hidden', !count);
   }
 
+  let started = false;
   function updateBadges() {
     setBadge('runbooks-badge', runbooks.badge());
+    setBadge('timers-badge', timers.badge());
+    // The timer clock starts the first time the app has real data to look at (this runs on every render).
+    if (!started) { started = true; timers.start(); }
   }
 
   function render(route) {

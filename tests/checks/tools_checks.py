@@ -177,3 +177,6 @@ def run(ctx):
     from checks.tools_calc_net import run_calculators, run_network  # imported here: that module imports helpers from this one
     run_calculators(ctx, sandbox, browser)
     run_network(ctx, sandbox, browser)
+    from checks.tools_time_text import run_text, run_timers
+    run_timers(ctx, sandbox, browser)
+    run_text(ctx, sandbox, browser)
