@@ -140,7 +140,7 @@ def run_network(ctx, sandbox, browser):
     t.check("listed twice" in joined("dids") and "E.164" in joined("dids"), "a DID written two ways is caught as a duplicate, and a short number as invalid")
     t.check(r["clean"] == [], "a consistent sheet raises no warnings")
     t.check(r["mac"] == [True, True, True, True, False, False] and r["digits"] == "aabbccddeeff", "MAC addresses are accepted in the common notations")
-    t.check(r["csv"].splitlines()[0] == "Extension,Name,Department,Role,Phone model,MAC address,Assigned DID,Notes" and '"Smith, Jo"' in r["csv"] and '"say ""hi"""' in r["csv"],
+    t.check(r["csv"].splitlines()[0] == "Extension,Name,Email,Mobile,Department,Role,Phone model,MAC address,Assigned DID,Notes" and '"Smith, Jo"' in r["csv"] and '"say ""hi"""' in r["csv"],
             "the CSV export has the column names and quotes commas and quotes")
     t.check(r["rows"] == [["Switch 1", "10.0.0.2"], ["Core, A", "10.0.0.3"]] and r["noHeader"] == 0, "the CSV import maps columns by name, skips blank rows, and ignores files without matching columns")
 

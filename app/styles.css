@@ -1531,3 +1531,7 @@ select.t-input { padding-right: 24px; }
 .today-chip strong { font-size: 12px; }
 .today-chip small { color: var(--muted); font-size: 11px; }
 @media print { .today-strip { display: none !important; } }
+.net-3cx { margin: 0 0 14px; padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-2); font-size: 12px; }
+.net-3cx summary { display: flex; align-items: center; gap: 8px; font-weight: 700; cursor: pointer; }
+.net-3cx summary svg { width: 15px; height: 15px; flex: 0 0 auto; color: var(--primary); }
+.net-3cx-notes { margin: 8px 0 0 18px; padding: 0; color: var(--muted); }

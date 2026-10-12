@@ -39,7 +39,7 @@ Configure the emergency numbers under System > Emergency :: One mandatory route 
 Set the departments, office hours, breaks, time zones, and holidays :: In V20 the hours of the destination's department apply
 Build the IVRs, ring groups, and queues :: IVR prompts must be PCM WAV, 8 kHz, 16-bit, mono
 ## Users and phones
-Create the users with email, role, main department, and assigned DID :: Each user is sent a welcome email
+Create the users with email, role, main department, and assigned DID :: Each user is sent a welcome email; for many users, fill the Extensions table on the Network sheet and use its Export for 3CX bulk import
 Add each phone to its user with the MAC address (no dashes or colons) :: Then connect it by RPS (within 14 days), PnP, or DHCP option 66
 Plan router phones or SBCs for any remote site :: A cloud-hosted PBX needs one; on premise can use Local LAN/VPN
 Install the Windows and mobile apps and check that push notifications ring

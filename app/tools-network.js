@@ -6,6 +6,8 @@
 
 import { uid, debounce, hashParams, parseCsv, buildCsv, downloadText, fileStamp } from './tools-core.js?v=1';
 import { parseIPv4, parseCidr, subnetInfo, inSubnet, overlaps } from './tools-calc.js?v=1';
+import { validMac, macDigits, validDid, validEmail } from './tools-validate.js?v=1';
+import { build3cxImport, parseTemplate } from './tools-3cx.js?v=1';
 
 const DEVICE_TYPES = ['Server', 'Virtual machine', 'Switch', 'Router', 'Firewall', 'Access point', 'IP phone', 'Printer', 'PBX', 'Other'];
 
@@ -18,7 +20,7 @@ export const TABLES = {
     { k: 'mac', label: 'MAC address', width: 150 }, { k: 'vlan', label: 'VLAN', width: 70 }, { k: 'location', label: 'Location', width: 130 },
     { k: 'model', label: 'Make and model', width: 150 }, { k: 'serial', label: 'Serial number', width: 130 }, { k: 'notes', label: 'Notes', width: 200 }] },
   extensions: { label: 'Extensions', cols: [
-    { k: 'ext', label: 'Extension', width: 90 }, { k: 'name', label: 'Name', width: 150 }, { k: 'department', label: 'Department', width: 130 },
+    { k: 'ext', label: 'Extension', width: 90 }, { k: 'name', label: 'Name', width: 150 }, { k: 'email', label: 'Email', width: 190 }, { k: 'mobile', label: 'Mobile', width: 130 }, { k: 'department', label: 'Department', width: 130 },
     { k: 'role', label: 'Role', width: 150, options: ['User', 'Receptionist', 'Supervisor', 'Department Administrator', 'Manager', 'Owner', 'System Administrator', 'System Owner'] },
     { k: 'phone', label: 'Phone model', width: 140 }, { k: 'mac', label: 'MAC address', width: 150 }, { k: 'did', label: 'Assigned DID', width: 150 }, { k: 'notes', label: 'Notes', width: 200 }] },
   dids: { label: 'DIDs & trunks', cols: [
@@ -26,12 +28,7 @@ export const TABLES = {
 };
 
 // ---------------- checks (pure) ----------------
-export function validMac(text) {
-  const t = String(text || '').trim();
-  return /^[0-9a-f]{12}$/i.test(t) || /^([0-9a-f]{2}[:-]){5}[0-9a-f]{2}$/i.test(t) || /^([0-9a-f]{4}\.){2}[0-9a-f]{4}$/i.test(t);
-}
-export const macDigits = text => String(text || '').toLowerCase().replace(/[^0-9a-f]/g, '');
-export const validDid = text => /^\+[1-9]\d{6,14}$/.test(String(text || '').replace(/[\s().-]/g, ''));
+export { validMac, macDigits, validDid, validEmail };
 const blank = value => String(value == null ? '' : value).trim() === '';
 
 // Returns { messages: [{ table, text }], flags: { "rowId:key": "why" } }.
@@ -87,6 +84,7 @@ export function findNetworkWarnings(network) {
       if (!validMac(r.mac)) flag('extensions', r, 'mac', `${label(r, 'name')}: "${r.mac}" is not a valid MAC address.`);
       else if (seenExtMac[macDigits(r.mac)]) flag('extensions', r, 'mac', `MAC ${r.mac.trim()} is used by two extensions.`); else seenExtMac[macDigits(r.mac)] = r;
     }
+    if (!blank(r.email) && !validEmail(r.email)) flag('extensions', r, 'email', `${label(r, 'name')}: "${r.email}" is not a valid email address.`);
     if (!blank(r.did) && !validDid(r.did)) flag('extensions', r, 'did', `${label(r, 'name')}: "${r.did}" should be a number in E.164 form, like +441632960123.`);
   });
 
@@ -166,6 +164,28 @@ export function createNetwork(ctx) {
       <table class="net-table"><thead><tr>${t.cols.map(c => `<th>${esc(c.label)}</th>`).join('')}</tr></thead><tbody>${rowsOf(name).map(r => `<tr>${t.cols.map(c => `<td>${esc(r[c.k] || '')}</td>`).join('')}</tr>`).join('')}</tbody></table>`).join('') || '<p>Nothing recorded yet.</p>';
   }
 
+  const threeCxPanel = () => `<details class="net-3cx print-hide"><summary>${icon('download')} Export for 3CX bulk import</summary>
+    <p class="muted-line" style="margin-top:10px">Builds the CSV for <strong>Admin &gt; Users &gt; Import</strong> from this table: name, email, mobile, extension, role, department, DID, and phone. It follows 3CX's bulk import guide (updated 10 September 2026) but has not been tried against your system, so import two or three rows first. Import only creates new extensions.</p>
+    <div class="calc-two" style="margin-top:12px"><div class="field"><label for="net-3cx-file">Your own 3CX export (recommended)</label><input id="net-3cx-file" type="file" accept=".csv,text/csv"><small class="muted-line">In 3CX, make one example user with the settings you want and export your users, then choose that file. Its columns and default settings are used for everyone.</small></div>
+      <div class="field"><label for="net-3cx-template">Phone template file name (optional)</label><input id="net-3cx-template" type="text" placeholder="yealinkT4x.ph.xml" autocomplete="off"><small class="muted-line">Applied to every row that has a MAC address. The phone model must match the template's model name.</small></div></div>
+    <div class="button-row" style="margin-top:12px"><button class="primary small" data-net="export-3cx">Download 3CX import CSV</button></div><div id="net-3cx-report" role="status" style="margin-top:12px"></div></details>`;
+
+  async function exportFor3cx() {
+    const box = document.getElementById('net-3cx-report');
+    const problem = text => { box.innerHTML = `<div class="notice">${icon('alert')}<span>${esc(text)}</span></div>`; };
+    const file = document.getElementById('net-3cx-file').files[0];
+    let template = null;
+    if (file) {
+      const parsed = parseTemplate(await file.text());
+      if (!parsed.ok) { problem(parsed.error); return; }
+      template = parsed;
+    }
+    const result = build3cxImport(rowsOf('extensions'), { template, templateFile: document.getElementById('net-3cx-template').value });
+    if (!result.ok) { problem(result.error); return; }
+    downloadText(result.csv, 'text/csv', `3cx-user-import-${fileStamp()}.csv`);
+    box.innerHTML = `<p class="calc-probe-result is-yes">Exported ${result.exported} extension${result.exported === 1 ? '' : 's'}${result.skipped ? `; ${result.skipped} left out` : ''}${template ? ', using your 3CX export for the other settings' : ''}.</p><ul class="net-3cx-notes">${result.warnings.map(w => `<li>${esc(w)}</li>`).join('')}</ul>`;
+  }
+
   function render() {
     const tab = TABLES[hashParams().tab] ? hashParams().tab : 'subnets';
     const { messages, flags } = findNetworkWarnings(net());
@@ -178,6 +198,7 @@ export function createNetwork(ctx) {
         <div class="net-toolbar"><div class="field net-search"><label for="net-filter">Filter rows</label><input id="net-filter" type="search" data-net="filter" value="${esc(filter)}" placeholder="Type to filter…" autocomplete="off"></div>
           <div class="button-row"><button class="primary small" data-net="add">Add row</button><button class="secondary small" data-net="import">Import CSV</button><button class="secondary small" data-net="export">Export CSV</button><input id="net-file" data-net="file" type="file" accept=".csv,text/csv" hidden aria-label="Choose a CSV file to import"></div></div>
         <div id="net-warnings">${warningsHtml(tab, messages)}</div>
+        ${tab === 'extensions' ? threeCxPanel() : ''}
         <div id="net-table">${tableHtml(tab, flags)}</div></div></section>
       <div class="print-only net-print">${printHtml()}</div></div>`;
     applyFilter();
@@ -234,6 +255,7 @@ export function createNetwork(ctx) {
         if (!rowsOf(tab).length) { toast('Nothing to export yet.', 'info'); return; }
         downloadText(tableToCsv(tab, rowsOf(tab)), 'text/csv', `network-${tab}-${fileStamp()}.csv`); toast(`${TABLES[tab].label} exported as CSV.`);
       } else if (act === 'import') document.getElementById('net-file').click();
+      else if (act === 'export-3cx') exportFor3cx();
       else if (act === 'print') window.print();
     });
     root.addEventListener('input', event => {

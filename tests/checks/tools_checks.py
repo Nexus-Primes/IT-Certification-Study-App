@@ -184,3 +184,5 @@ def run(ctx):
     run_shelf(ctx, sandbox, browser)
     from checks.tools_today import run_today
     run_today(ctx, browser)
+    from checks.tools_3cx_checks import run_3cx_export
+    run_3cx_export(ctx, sandbox, browser)
