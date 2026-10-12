@@ -234,6 +234,17 @@ def run(ctx):
     saved = sandbox.progress().get("winserver-hybrid", {}).get("completedLabs", [])
     missing = [item["id"] for item in items if item["id"] not in saved]
     t.check(not missing, "every AZ-802 lab completion was saved to progress", ", ".join(missing))
+    for label, cert_id, labs_global, minimum in (("3CX Basic", "3cx-basic", "THREECX_BASIC_LABS", 16), ("3CX Advanced", "3cx-advanced", "THREECX_ADVANCED_LABS", 16)):
+        t.suite(f"study: every {label} lab plays through")
+        switch_cert(cert_id)
+        go(browser, "labs", wait=0.8)
+        items, stuck = play_labs(labs_global)
+        t.check(len(items) >= minimum and not stuck, f"all {len(items)} {label} labs can be completed by giving their own correct answers", ", ".join(stuck))
+        t.check(not browser.errors(), f"no JavaScript errors while playing the {label} labs", "; ".join(browser.errors()[:3]))
+        time.sleep(1.2)
+        saved = sandbox.progress().get(cert_id, {}).get("completedLabs", [])
+        missing = [item["id"] for item in items if item["id"] not in saved]
+        t.check(not missing, f"every {label} lab completion was saved to progress", ", ".join(missing))
     switch_cert("aplus")
     go(browser, "dashboard", wait=0.8)
 

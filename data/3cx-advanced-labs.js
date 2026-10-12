@@ -363,6 +363,444 @@
       { "controlId": "tenant-domain", "notEquals": "", "label": "Tenant subdomain is set.", "hint": "Set a tenant subdomain, it is currently blank, so the customer has no portal URL yet." }
     ],
     "explanation": "Hosted tenants need their limits actually matched to what was sold, calls, extensions, and optional features like recording, and their branding and subdomain configured before go-live. Leaving any of these at their unconfigured defaults either blocks the customer from taking calls, over- or under-delivers on the contract, or leaves them without a working portal URL."
+  },
+  {
+    "id": "boss-secretary-decision",
+    "core": "core1",
+    "domain": "a1",
+    "type": "decision",
+    "difficulty": "Intermediate",
+    "minutes": 8,
+    "title": "Screen an executive's calls with Boss-Secretary",
+    "summary": "Know what wins when forwarding rules collide, and which setting solves each request.",
+    "brief": "An executive wants an assistant to screen calls. For each situation, choose the right setting or the right outcome.",
+    "explanation": "Forwarding is evaluated in order: Allowed Direct Callers, then Boss-Secretary logic (which stops any further forwarding), then the ordinary forwarding exceptions and rules. CID rules are inbound rules that match the caller's number.",
+    "stages": [
+      {
+        "question": "A call matches both a Boss-Secretary rule and an ordinary forwarding exception. Which one applies?",
+        "options": [
+          "The forwarding exception",
+          "Whichever was created first",
+          "Both, one after the other",
+          "The Boss-Secretary rule"
+        ],
+        "correct": 3,
+        "feedback": "Boss-Secretary rules have the highest priority and, once they forward a call, no other forwarding rule is applied to it."
+      },
+      {
+        "question": "A few VIP callers must still ring the executive directly.",
+        "options": [
+          "Add them as Allowed Direct Callers",
+          "Add them to a ring group",
+          "Create a CID rule for each",
+          "Turn off Boss-Secretary during the day"
+        ],
+        "correct": 0,
+        "feedback": "Allowed Direct Callers bypass all forwarding and Boss-Secretary rules and ring the boss directly."
+      },
+      {
+        "question": "The assistant should screen only outside callers, and only during working hours.",
+        "options": [
+          "Create two queues",
+          "Set the screening hours and choose external calls only",
+          "Screen all calls all day",
+          "Use Do Not Disturb"
+        ],
+        "correct": 1,
+        "feedback": "Boss-Secretary lets you choose the hours and whether internal, external, or all calls are screened."
+      },
+      {
+        "question": "The executive's staff keep changing their own forwarding rules by mistake. How do you stop that?",
+        "options": [
+          "Disable their voicemail",
+          "Change them to the User role",
+          "Enable Hide Call Forwarding Rules under Users > Options > Restrictions",
+          "Remove them from their department"
+        ],
+        "correct": 2,
+        "feedback": "Hiding the forwarding rules in the user's Options > Restrictions stops them being edited."
+      },
+      {
+        "question": "Calls from a known customer's numbers should go straight to an account manager.",
+        "options": [
+          "An outbound rule",
+          "A Boss-Secretary rule",
+          "A queue callback",
+          "A CID rule matching the caller's number"
+        ],
+        "correct": 3,
+        "feedback": "CID rules match the caller's number, exactly or with a wildcard, and route to a destination."
+      }
+    ]
+  },
+  {
+    "id": "m365-sync-decision",
+    "core": "core1",
+    "domain": "a2",
+    "type": "decision",
+    "difficulty": "Intermediate",
+    "minutes": 8,
+    "title": "Predict what Microsoft 365 sync will do",
+    "summary": "Learn the direction, schedule, and limits of the user sync, and fix a presence loop.",
+    "brief": "The company syncs its users from Microsoft 365. Answer how the sync behaves.",
+    "explanation": "Microsoft 365 user sync is one way (to 3CX), nightly, limited to 650 users, and never removes a user for you. Presence can sync either way or both, but the two mappings must agree or the systems will loop.",
+    "stages": [
+      {
+        "question": "A person leaves and their account is deleted in Microsoft 365. What happens to their 3CX user?",
+        "options": [
+          "It stays until someone removes it from 3CX by hand",
+          "It is deleted automatically that night",
+          "It is disabled automatically",
+          "It becomes a System Owner"
+        ],
+        "correct": 0,
+        "feedback": "Deleting or disabling a user in Microsoft 365 does not remove the 3CX user; that has to be done manually."
+      },
+      {
+        "question": "An administrator deletes a synced user in 3CX but the person still exists in Microsoft 365.",
+        "options": [
+          "They are blocked from sign-in",
+          "They reappear the next day",
+          "They are gone permanently",
+          "They are moved to another department"
+        ],
+        "correct": 1,
+        "feedback": "The sync is one way and runs nightly, so a user deleted only in 3CX returns the next day."
+      },
+      {
+        "question": "Which direction does user synchronization run, and how many users can it handle?",
+        "options": [
+          "One way, 3CX to Microsoft 365, up to 50 users",
+          "Both ways, up to 650 users",
+          "One way, Microsoft 365 to 3CX, up to 650 users",
+          "Both ways, unlimited users"
+        ],
+        "correct": 2,
+        "feedback": "Users sync one way from Microsoft 365 to 3CX, nightly, for up to 650 users."
+      },
+      {
+        "question": "With two-way presence sync, a user's status keeps flipping between Away and Do Not Disturb. What is the fix?",
+        "options": [
+          "Turn off the Teams license",
+          "Delete and re-import the user",
+          "Switch the user to SSO",
+          "Make both directions map to the same status"
+        ],
+        "correct": 3,
+        "feedback": "If 3CX Away becomes Teams Away but Teams Away becomes 3CX Do Not Disturb, each side overrides the other; map both to the same status."
+      },
+      {
+        "question": "A company wants only the sales and support groups created in 3CX.",
+        "options": [
+          "Sync only the selected Microsoft 365 departments",
+          "Import the whole directory and delete the rest",
+          "Create the departments first with the same names",
+          "Use a CSV import"
+        ],
+        "correct": 0,
+        "feedback": "You can limit the sync to chosen departments; new 3CX departments are created from the Microsoft 365 group names and existing ones are not overwritten."
+      }
+    ]
+  },
+  {
+    "id": "ip-blacklist-scenario",
+    "core": "core1",
+    "domain": "a3",
+    "type": "scenario",
+    "difficulty": "Intermediate",
+    "minutes": 10,
+    "title": "A phone suddenly cannot register",
+    "summary": "Find out why one device cannot register when nothing on the network changed.",
+    "brief": "A desk phone worked on Friday and has not registered since Monday morning. Nothing on the network changed.",
+    "explanation": "Anti-hacking adds an address to the IP Blacklist after more than 10 wrong passwords or more than 5 incorrect registrations. When a device can no longer authenticate, check the list, fix the cause, and remove the entry; an Allow entry exempts only addresses you trust.",
+    "ticket": {
+      "subject": "A phone will not register",
+      "details": [
+        "It worked on Friday",
+        "A user mistyped the password many times over the weekend",
+        "Other phones on the same network are fine"
+      ]
+    },
+    "startNode": "start",
+    "nodes": {
+      "start": {
+        "prompt": "Nothing changed on the network. Where do you look?",
+        "options": [
+          {
+            "label": "The IP Blacklist under Admin > Advanced",
+            "next": "list",
+            "correct": true
+          },
+          {
+            "label": "Replace the phone",
+            "next": "bad_phone",
+            "correct": false
+          }
+        ]
+      },
+      "list": {
+        "prompt": "The phone's address is on the blacklist. Why was it put there?",
+        "options": [
+          {
+            "label": "Anti-hacking blocks an address after more than 10 wrong passwords or more than 5 incorrect registrations",
+            "next": "fix",
+            "correct": true
+          },
+          {
+            "label": "Someone deleted the extension",
+            "next": "bad_ext",
+            "correct": false
+          }
+        ]
+      },
+      "fix": {
+        "prompt": "What do you do?",
+        "options": [
+          {
+            "label": "Correct the phone's credentials, then remove the blacklist entry",
+            "next": "done",
+            "correct": true
+          },
+          {
+            "label": "Whitelist the address without finding out why it failed",
+            "next": "bad_white",
+            "correct": false
+          },
+          {
+            "label": "Switch off anti-hacking",
+            "next": "bad_off",
+            "correct": false
+          }
+        ]
+      },
+      "done": {
+        "end": true,
+        "success": true,
+        "prompt": "With the right credentials set and the entry removed, the phone registers again and anti-hacking stays on."
+      },
+      "bad_phone": {
+        "end": true,
+        "success": false,
+        "prompt": "The phone was fine; the PBX was refusing it. The IP Blacklist lists addresses blocked after repeated failures."
+      },
+      "bad_ext": {
+        "end": true,
+        "success": false,
+        "prompt": "A deleted extension would not explain a blocked address. Check the blacklist and the failed attempts."
+      },
+      "bad_white": {
+        "end": true,
+        "success": false,
+        "prompt": "Whitelisting skips the anti-hacking checks for that address. Only do that for an address you trust, and fix the credentials first."
+      },
+      "bad_off": {
+        "end": true,
+        "success": false,
+        "prompt": "Anti-hacking protects the whole system. Remove the one entry instead of weakening everything."
+      }
+    }
+  },
+  {
+    "id": "secure-sip-fqdn-sequence",
+    "core": "core1",
+    "domain": "a3",
+    "type": "sequence",
+    "difficulty": "Advanced",
+    "minutes": 8,
+    "title": "Turn on Secure SIP for a custom domain name",
+    "summary": "Put the steps for TLS on a PBX with its own domain name in order.",
+    "brief": "The PBX uses the company's own FQDN instead of one provided by 3CX. Put the steps for enabling Secure SIP in order.",
+    "explanation": "A custom FQDN needs a static public IP, a domain you control, and a certificate from an authority devices trust (a self-signed one must be imported on every endpoint). The certificate and key go into Advanced > Secure SIP and the services are restarted; supported trunks then use TLS as their transport.",
+    "steps": [
+      "Confirm a static public IP and control of the domain's DNS records",
+      "Obtain a certificate from an authority your phones already trust",
+      "Keep the certificate, private key, and CA bundle files safe",
+      "Open Admin > Advanced > Secure SIP and enable it",
+      "Paste the certificate and the key into their fields",
+      "Restart the PBX services when prompted",
+      "Choose TLS as the transport on each supported trunk"
+    ]
+  },
+  {
+    "id": "failover-setup-sequence",
+    "core": "core1",
+    "domain": "a3",
+    "type": "sequence",
+    "difficulty": "Advanced",
+    "minutes": 10,
+    "title": "Set up active-passive failover",
+    "summary": "Put the steps for a standby PBX that takes over automatically in order.",
+    "brief": "The company wants a second PBX ready to take over if the first fails. Put the setup steps in order.",
+    "explanation": "Failover needs an AI edition license (and is not supported on Hosted by 3CX), two PBXs with identical settings and their own public IPs, and split DNS. The passive server monitors the active one, restores each backup shortly after it is made, and runs scripts that update DNS when it takes over; the old active server must be shut down so two servers do not conflict.",
+    "steps": [
+      "Confirm an AI edition license and that the PBX is not Hosted by 3CX",
+      "Install two PBXs with identical settings, each with its own public IP",
+      "Set up remote storage and a daily off-hours backup on the active server",
+      "Enable failover on the active server and choose Active",
+      "On the passive server enter the active server's IP and choose the services to monitor",
+      "Set the heartbeat interval and the failover scripts",
+      "Schedule the automatic restore a few minutes after each backup",
+      "Test a failover and shut down the previous active server"
+    ]
+  },
+  {
+    "id": "bridge-or-sbc-decision",
+    "core": "core1",
+    "domain": "a4",
+    "type": "decision",
+    "difficulty": "Intermediate",
+    "minutes": 8,
+    "title": "Choose between a bridge and an SBC",
+    "summary": "Decide how to connect each site, and fix the dialing problems that bridges bring.",
+    "brief": "The company is adding sites. For each, choose the right way to connect it or the right fix.",
+    "explanation": "Choose by where call control should live: a bridge links separate PBXs that stay independent, while an SBC connects a site's phones to one remote or cloud PBX without creating a second PBX.",
+    "stages": [
+      {
+        "question": "Two offices each need their own trunks, queues, and administrators, but must call each other's extensions for free.",
+        "options": [
+          "Merge them into one multi-tenant system",
+          "Bridge the two systems",
+          "Install an SBC at each office",
+          "Use a router phone"
+        ],
+        "correct": 1,
+        "feedback": "A bridge keeps separate PBXs separate while letting them dial each other over the internet."
+      },
+      {
+        "question": "A small branch needs only desk phones connected to the head-office PBX in the cloud.",
+        "options": [
+          "A second PBX",
+          "A SIP trunk",
+          "A router phone or the 3CX apps",
+          "A bridge"
+        ],
+        "correct": 2,
+        "feedback": "Phones that just need to reach a central PBX use an SBC component; for small sites a router phone is enough."
+      },
+      {
+        "question": "A large remote office with many phones needs a dedicated component to reach the central PBX.",
+        "options": [
+          "A bridge",
+          "Local LAN/VPN on a cloud PBX",
+          "DHCP option 66 at head office",
+          "A 3CX SBC on Windows, Debian, or a Raspberry Pi"
+        ],
+        "correct": 3,
+        "feedback": "A standalone SBC does the router phone's job for every phone at a larger site."
+      },
+      {
+        "question": "Staff at one site cannot see whether colleagues at the other bridged site are available.",
+        "options": [
+          "Enable Publish and Receive Information on the bridge",
+          "Turn on Do Not Disturb",
+          "Add them to a ring group",
+          "Enable Switch Status"
+        ],
+        "correct": 0,
+        "feedback": "Presence only crosses a bridge when the bridge is set to publish and receive it."
+      },
+      {
+        "question": "Dialing the bridge prefix plus a remote extension is blocked, although the bridge is connected.",
+        "options": [
+          "Create a CID rule",
+          "Check Allowed Country Codes for a clash with the extension number",
+          "Replace the authentication password",
+          "Restart the tunnel"
+        ],
+        "correct": 1,
+        "feedback": "Allowed Country Codes can read a prefix plus extension as an international number and block it."
+      }
+    ]
+  },
+  {
+    "id": "bridge-setup-sequence",
+    "core": "core1",
+    "domain": "a4",
+    "type": "sequence",
+    "difficulty": "Advanced",
+    "minutes": 10,
+    "title": "Connect two 3CX systems with a bridge",
+    "summary": "Put the steps for linking two PBXs in order.",
+    "brief": "Head office and a branch each run their own 3CX. Put the steps for connecting them with a Master and Slave bridge in order.",
+    "explanation": "A bridge needs secure FQDNs on both systems (an IP address cannot be used). The Master is created first; the Slave repeats its virtual extension, prefix, and password and points at the Master's FQDN. Each side needs an outbound rule for the prefix that strips the prefix digit, and presence is shared only if you enable it.",
+    "steps": [
+      "Make sure both systems have a secure FQDN, not an IP address",
+      "Create a Master bridge and note its virtual extension number",
+      "Set the outbound rule prefix, maximum calls, and authentication password",
+      "Create a Slave bridge with the same virtual extension, prefix, and password",
+      "Enter the Master's FQDN and port on the Slave",
+      "Add an outbound rule on each side that sends the prefix to its bridge and strips one digit",
+      "Enable Publish and Receive Information if users should see presence"
+    ]
+  },
+  {
+    "id": "report-choice-decision",
+    "core": "core1",
+    "domain": "a5",
+    "type": "decision",
+    "difficulty": "Intermediate",
+    "minutes": 8,
+    "title": "Pick the right report or feed for each question",
+    "summary": "Match SLA Breaches, Abandoned Calls, Agent Login History, the CDR service, and scheduled reports to what is being asked.",
+    "brief": "Management keeps asking questions about the phone system. For each, choose the report or feature that answers it.",
+    "explanation": "The Reports menu offers queue statistics (abandoned calls, answered by waiting time, callbacks, SLA Statistics and Breaches), agent reports such as Agent Login History, and logs, while the CDR service streams raw call records and scheduled reports arrive by email with a CSV.",
+    "stages": [
+      {
+        "question": "How many callers waited longer than the service level target?",
+        "options": [
+          "The CDR service",
+          "SLA Breaches",
+          "Abandoned Queue Calls",
+          "Agent Login History"
+        ],
+        "correct": 1,
+        "feedback": "SLA Breaches counts calls that waited longer than the configured SLA time."
+      },
+      {
+        "question": "How many callers gave up before an agent answered?",
+        "options": [
+          "Queue Callbacks",
+          "Extension Statistics",
+          "SLA Breaches",
+          "Abandoned Queue Calls"
+        ],
+        "correct": 3,
+        "feedback": "Abandoned Queue Calls counts callers who entered the queue but were never answered."
+      },
+      {
+        "question": "When was a particular agent logged in to the queue yesterday?",
+        "options": [
+          "SLA Statistics",
+          "Call Distribution",
+          "The Audit Log",
+          "Agent Login History"
+        ],
+        "correct": 3,
+        "feedback": "Agent Login History shows an agent's queue login and logout history."
+      },
+      {
+        "question": "Every call record must reach the finance system as soon as the call ends.",
+        "options": [
+          "The CDR service pushing over TCP",
+          "A scheduled report each Monday",
+          "The Inbound Rules report",
+          "A packet capture"
+        ],
+        "correct": 0,
+        "feedback": "The CDR service writes call records to a file or pushes each one to another application over TCP."
+      },
+      {
+        "question": "A manager wants the queue report in a spreadsheet every Monday for Power BI.",
+        "options": [
+          "Agent Login History",
+          "A scheduled report, which is emailed with a CSV",
+          "The CDR service",
+          "The Event log"
+        ],
+        "correct": 1,
+        "feedback": "Scheduled reports are emailed as a link with a CSV attached, which suits BI tools."
+      }
+    ]
   }
 ];
 })();

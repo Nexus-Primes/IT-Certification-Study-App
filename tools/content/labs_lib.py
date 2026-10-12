@@ -30,6 +30,19 @@ def decision(lab_id, core, domain, difficulty, minutes, title, summary, brief, s
     return lab
 
 
+def spread_answers(lab):
+    """Rotates each decision stage's options by a fixed, id-based amount so the right answer is not always first.
+    Deterministic, so rebuilding gives the same labs."""
+    if lab['type'] == 'decision':
+        for i, stage in enumerate(lab['stages']):
+            n = len(stage['options'])
+            shift = (sum(ord(ch) for ch in lab['id']) + i * 3) % n
+            if shift:
+                stage['options'] = stage['options'][shift:] + stage['options'][:shift]
+                stage['correct'] = (stage['correct'] - shift) % n
+    return lab
+
+
 def terminal(lab_id, core, domain, difficulty, minutes, title, summary, brief, steps, commands, explanation):
     """steps: [(prompt, [accepted commands], output, hint), ...]; commands: [(cmd, description), ...]"""
     lab = _base(lab_id, core, domain, 'terminal', difficulty, minutes, title, summary, brief, explanation)

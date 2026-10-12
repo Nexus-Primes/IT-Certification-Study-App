@@ -12,7 +12,7 @@ python tools/content/build_track.py cxbasic    # 3CX Basic (cx_basic_b1 ... b4);
 python tools/content/cx_corrections.py         # one-off fixes to hand-written 3CX concepts and guide sentences the 2026 admin manual contradicts (idempotent)
 python tools/content/smoke.py c2d2             # list every diagram whose text does not fit, without writing anything (A+ domains only)
 python tools/content/smoke_track.py winserver  # the same for a build_track.py track (add a module name to check just one)
-python tools/content/build_labs.py             # add the generated labs (labs_aplus.py, labs_netplus.py, labs_dp300.py, labs_winserver.py); validates each lab first
+python tools/content/build_labs.py             # add the generated labs (labs_aplus.py, labs_netplus.py, labs_dp300.py, labs_winserver.py, labs_3cx_basic.py, labs_3cx_advanced.py); validates each lab first
 python tools/content/audit.py                  # question-quality sweep over every track (--strict exits 1 on a finding; the content tests run it)
 python tests/run.py content                    # data checks plus a browser render of every diagram (dark and light)
 ```

@@ -21,6 +21,8 @@ TRACKS = {
     'aplus': {'labs': 'labs.js', 'var': 'APLUS_LABS', 'data': 'concepts.js', 'dvar': 'APLUS_DATA', 'module': 'labs_aplus'},
     'netplus': {'labs': 'networkplus-labs.js', 'var': 'NETPLUS_LABS', 'data': 'networkplus.js', 'dvar': 'NETPLUS_DATA', 'module': 'labs_netplus'},
     'dp300': {'labs': 'dp300-labs.js', 'var': 'DP300_LABS', 'data': 'dp300.js', 'dvar': 'DP300_DATA', 'module': 'labs_dp300'},
+    'cxbasic': {'labs': '3cx-basic-labs.js', 'var': 'THREECX_BASIC_LABS', 'data': '3cx-basic.js', 'dvar': 'THREECX_BASIC_DATA', 'module': 'labs_3cx_basic'},
+    'cxadvanced': {'labs': '3cx-advanced-labs.js', 'var': 'THREECX_ADVANCED_LABS', 'data': '3cx-advanced.js', 'dvar': 'THREECX_ADVANCED_DATA', 'module': 'labs_3cx_advanced'},
     'winserver': {'labs': 'winserver-hybrid-labs.js', 'var': 'WINSERVER_LABS', 'data': 'winserver-hybrid.js', 'dvar': 'WINSERVER_DATA', 'module': 'labs_winserver'},
 }
 
