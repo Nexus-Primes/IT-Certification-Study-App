@@ -182,3 +182,5 @@ def run(ctx):
     run_text(ctx, sandbox, browser)
     from checks.tools_shelf_checks import run_shelf
     run_shelf(ctx, sandbox, browser)
+    from checks.tools_today import run_today
+    run_today(ctx, browser)

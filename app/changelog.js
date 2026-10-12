@@ -6,6 +6,9 @@
 // this app having per-build version numbers at all, so their "version" is the date instead —
 // still real history, just not tagged with a build number the way later entries are.
 export const CHANGELOG = [
+  { version: 'v236', date: 'October 2026', title: 'A Today strip on the Dashboard', items: [
+    "New: a slim Today strip at the top of the Dashboard that pulls your Tools together. It shows runbooks you have under way (with how many steps are done), how many timers are running and when the next one ends, your two nearest dates from Timers, and a warning if the Network sheet has something to check. Each item opens the page it describes. When nothing is open the strip does not appear, so a quiet day looks exactly as it did before. It also shows on the Programs dashboard, and it does not print."
+  ] },
   { version: 'v235', date: 'October 2026', title: 'Tools: Document shelf (restart your server once)', items: [
     "New: Document shelf (Tools group). It lists whatever you put in the files folder next to the app, subfolders included, and lets you add tags and a note to each file, then search across names, tags, and notes, filter by tag or type, and sort by name, date, or size. Each name opens the file in a new tab. Tags and notes belong to your account and are saved with your other data; the files themselves are never copied or changed, and a file you remove from the folder is listed separately so you can forget its tags.",
     "Heads-up: this release adds a file listing to the study server, so close the server window and run server.py again once. Until you do, the shelf shows a message saying so and everything else works as before. Searching covers file names, tags, and your notes, not the text inside the documents.",

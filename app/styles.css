@@ -1522,3 +1522,12 @@ select.t-input { padding-right: 24px; }
 .shelf-tag button { padding: 0 4px; border: 0; background: none; color: var(--muted); font-size: 14px; line-height: 1; cursor: pointer; }
 .shelf-tag button:hover { color: var(--red); }
 .shelf-tag-input { width: 110px; min-height: 26px; border-color: var(--border-soft); font-size: 11px; }
+.today-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 16px; padding: 10px 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+.today-label { color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.today-chip { display: inline-flex; align-items: center; gap: 10px; padding: 7px 12px; border: 1px solid var(--border-soft); border-radius: 10px; background: var(--surface-2); color: var(--text); text-align: left; cursor: pointer; }
+.today-chip:hover { border-color: var(--primary); }
+.today-chip svg { width: 16px; height: 16px; flex: 0 0 auto; color: var(--primary); }
+.today-chip span { display: grid; gap: 1px; min-width: 0; }
+.today-chip strong { font-size: 12px; }
+.today-chip small { color: var(--muted); font-size: 11px; }
+@media print { .today-strip { display: none !important; } }
