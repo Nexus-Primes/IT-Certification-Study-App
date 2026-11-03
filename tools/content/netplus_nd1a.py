@@ -200,10 +200,10 @@ def build(b):
          [('Transport', 'TCP'), ('Port', '23'), ('Risk', 'passwords sent in clear text'), ('Replace with', 'SSH on port 22')], 'Telnet',
          'Telnet on TCP 23 sends everything in clear text and should be replaced by SSH.')
     port('Port 25 (SMTP)',
-         'SMTP relays email between mail servers on TCP 25, while mail clients submit messages on port 587 (STARTTLS) or 465 (implicit TLS), both of which are often called SMTPS.',
+         'SMTP relays email between mail servers on TCP 25, while mail clients submit messages on port 587 (STARTTLS, the port CompTIA lists as SMTPS) or 465 (implicit TLS).',
          'identify the port mail servers use to pass messages to each other',
          ['Port 110 (POP3)', 'Port 143 (IMAP)', 'Port 993 (IMAPS)'],
-         'Server-to-server RELAY on 25 — POP3 and IMAP are how clients retrieve mail.',
+         'Server-to-server RELAY on 25 — clients submit outgoing mail on 587 (SMTPS), and POP3 and IMAP are how they retrieve it.',
          [('Transport', 'TCP'), ('Port 25', 'server-to-server relay'), ('Ports 587, 465', 'client submission with TLS'), ('Direction', 'sending only')], 'SMTP',
          'SMTP sends and relays email, using TCP 25 between servers.')
     port('Port 69 (TFTP)',
@@ -300,9 +300,9 @@ def build(b):
 
     b.add('1.4', 'ICMP',
           'The Internet Control Message Protocol (IP protocol 1) carries diagnostics and error messages such as echo request and reply, destination unreachable, and time exceeded; it has no port numbers.',
-          'identify the protocol behind ping and traceroute responses',
+          'identify the protocol that carries echo requests and replies and the Time Exceeded messages routers send when a TTL reaches zero',
           ['TCP', 'UDP', 'GRE'],
-          'Diagnostics and errors with NO port number — ping and traceroute depend on it.',
+          'Diagnostics and errors with NO port number — ping and the replies traceroute collects both depend on it.',
           S.steps([('Echo request', 'ping sends it'), ('Echo reply', 'the host answers'), ('Time exceeded', 'router at TTL zero')], title='ICMP messages', tones=['plain', 'green', 'amber']),
           caption='ICMP carries ping, unreachable, and time-exceeded messages and has no ports.')
 
@@ -324,9 +324,9 @@ def build(b):
 
     b.add('1.4', 'IPsec AH',
           'Authentication Header (IP protocol 51) proves a packet came from the claimed sender and was not altered, but it does not encrypt the contents.',
-          'identify the IPsec protocol that proves a packet was not altered but does not hide its contents',
+          'choose the IPsec protocol that proves a packet came from the claimed sender and was not altered, while leaving its payload readable',
           ['IPsec ESP', 'GRE', 'TLS'],
-          'AH authenticates but does NOT encrypt — ESP is the one that hides the payload.',
+          'AH (protocol 51) authenticates the packet but does NOT encrypt — ESP (protocol 50) is the one that hides the payload.',
           S.facts([('IP protocol', '51'), ('Provides', 'integrity and authentication'), ('Does not provide', 'encryption'), ('Alternative', 'ESP (protocol 50)')], title='Authentication Header'),
           caption='AH gives IPsec integrity and authentication but no encryption.')
 
@@ -394,6 +394,23 @@ def build(b):
           S.steps([('Peers authenticate', 'IKE exchange'), ('Keys negotiated', 'security associations'), ('Traffic protected', 'ESP encrypts data')], title='IPsec tunnel setup', tones=['plain', 'blue', 'green']),
           caption='IKE authenticates IPsec peers and negotiates the keys that ESP then uses.')
 
+    # ------------------------------------------------------------------------------------------ added 2026-11-03 (official-objective gaps)
+    b.add('1.3', 'Internet gateway (cloud)',
+          'A cloud gateway attached to a virtual private cloud that gives public resources two-way connectivity with the Internet: instances with public addresses can both start connections and receive them, unlike a NAT gateway, which only lets private subnets reach out.',
+          'let a public web server in a cloud network accept connections from Internet users and also reach the Internet itself',
+          ['NAT gateway (cloud)', 'Private direct connection to the cloud', 'Network security list'],
+          'TWO-WAY Internet access for public resources — a NAT gateway lets private subnets reach out but lets nothing reach in.',
+          S.compare(('Internet gateway', ['Two-way Internet access', 'For public subnets', 'Needs public addresses']), ('NAT gateway', ['Outbound only', 'For private subnets', 'Hides private addresses']), title='Cloud gateways'),
+          caption='An Internet gateway gives public cloud resources two-way Internet access; a NAT gateway is outbound-only.')
+
+    port('Port 587 (SMTPS)',
+         'The port mail clients use to submit outgoing email to their mail server over an encrypted (STARTTLS) connection, which CompTIA lists as SMTPS; server-to-server relay stays on port 25, and some systems still use 465 for implicit TLS.',
+         'identify the port a mail client uses to send a message securely to its mail server',
+         ['Port 25 (SMTP)', 'Port 443 (HTTPS)', 'Port 22 (SSH and SFTP)'],
+         'SMTPS on 587 is the CLIENT submission port — plain SMTP on 25 relays between servers.',
+         [('Transport', 'TCP'), ('Port 587', 'client submission, STARTTLS'), ('Port 25', 'server-to-server relay'), ('CompTIA name', 'SMTPS')], 'SMTPS',
+         'SMTPS on TCP 587 is where mail clients submit outgoing mail securely.')
+
     # ------------------------------------------------------------------------------------------ guide
     b.section('The upper OSI layers and the TCP/IP model', ['1.1'],
               'Layers 5 through 7 complete the OSI picture. The Session layer manages the dialogue between two applications (setup, maintenance, and teardown), the Presentation layer handles data format, compression, and encryption, and the Application layer provides the network services applications call on, such as HTTP, SMTP, DNS, and FTP. Remember that Layer 7 is the protocol layer, not the application program itself.\n\n'
@@ -405,7 +422,7 @@ def build(b):
               'Service models differ in what you manage: in PaaS the provider runs the servers, operating system, and runtime and you manage only the application, between IaaS (you manage the operating system) and SaaS (you manage nothing). Deployment models are public (shared provider infrastructure), private (dedicated to one organization), and hybrid (both, connected). Scalability is the ability to add capacity, elasticity is automatic growth and shrinkage with demand, and multitenancy is many customers sharing infrastructure with logical isolation.\n\n'
               'In a public cloud you build a virtual private cloud with your own subnets, routes, and security rules; a NAT gateway gives private subnets outbound-only Internet access while an Internet gateway allows two-way access. To reach the cloud you can use a VPN across the Internet or a private direct connection (such as Direct Connect or ExpressRoute) for predictable latency.')
     b.section('Ports, protocols, and traffic types', ['1.4'],
-              'Learn ports as pairs of secure and insecure services: FTP (20 and 21) versus SFTP and SSH (22), Telnet (23) versus SSH, HTTP (80) versus HTTPS (443), POP3 (110) and IMAP (143) versus their TLS versions, LDAP (389) versus LDAPS (636), and SMTP (25) for server relay with 587 or 465 for client submission. Other common ones: TFTP 69 (UDP, no authentication), DHCP 67 and 68, NTP 123, SNMP 161 and 162, SMB 445, Syslog 514, SQL Server 1433, RDP 3389, and SIP 5060 and 5061.\n\n'
+              'Learn ports as pairs of secure and insecure services: FTP (20 and 21) versus SFTP and SSH (22), Telnet (23) versus SSH, HTTP (80) versus HTTPS (443), LDAP (389) versus LDAPS (636), and SMTP (25) for server relay versus SMTPS (587) for secure client submission. Other common ones: TFTP 69 (UDP, no authentication), DHCP 67 and 68, NTP 123, SNMP 161 and 162, SMB 445, Syslog 514, SQL Server 1433, RDP 3389, and SIP 5060 and 5061.\n\n'
               'IP protocols are not ports: ICMP (protocol 1) carries diagnostics, GRE (47) tunnels traffic without encrypting it, and IPsec uses ESP (50) to encrypt and authenticate or AH (51) to authenticate only. Traffic types are unicast (one to one), broadcast (one to all in the domain), multicast (to a group), and anycast (one address on many servers, delivered to the nearest).')
     b.section('Cloud filtering, IPsec key exchange, and storage types', ['1.2', '1.3', '1.4'],
               'Cloud traffic is filtered at two levels: a network security group is a (usually stateful) rule set attached to individual resources, and a network security list filters a whole subnet. Network functions virtualization runs routers, firewalls, and load balancers as software on standard servers. For storage, direct-attached storage connects to one server, a NAS shares files, and a SAN presents block storage. IPsec tunnels are set up by the Internet Key Exchange (UDP 500, or 4500 through NAT), after which ESP encrypts the data.')

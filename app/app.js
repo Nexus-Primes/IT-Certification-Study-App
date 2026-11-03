@@ -4,7 +4,7 @@ import {
   daysBetween, formatDate, formatDateKey, formatPlanDate, formatDuration, hashNumber,
   seededShuffle, recallMatchHint
 } from './utils.js?v=4';
-import { CHANGELOG } from './changelog.js?v=21';
+import { CHANGELOG } from './changelog.js?v=22';
 import { closeAnyCustomPopover, registerCustomPopover, releaseCustomPopover, setFontSuggestions, setDefaultFonts } from './controls.js?v=1';
 import { generateCrosswordLayout } from './crossword.js?v=1';
 import { createHighlightPalette, HIGHLIGHT_COLORS, HIGHLIGHT_DEFAULT_NAMES, guideHighlightColor, highlightCustomVars } from './highlights.js?v=1';
@@ -55,7 +55,7 @@ import { createTools } from './tools.js?v=1';
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v238';
+  const APP_VERSION = 'v239';
   const DIAGNOSTIC_LEN = 15;
   let certDialogGroup = null;
   let certDialogEntryDomain = null; // domain ('certs'|'programs') the bottom "Current track" switcher is scoped to

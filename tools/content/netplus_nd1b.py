@@ -6,9 +6,9 @@ DOMAIN = 'nd1'
 
 def build(b):
     b.objective('1.9', 'IPv6 addressing', ['Address format', 'Address types', 'Neighbor Discovery', 'Dual stack', 'Tunneling and NAT64'])
-    b.objective('1.10', 'Network types and provider links', ['WAN, MAN, PAN, CAN, WLAN', 'MPLS', 'DSL and cable', 'Leased lines', 'Satellite and cellular', 'Colocation'])
+    b.objective('1.10', 'Network types and WAN links', ['WAN and WLAN', 'MPLS', 'Satellite and cellular'])
     b.topics['1.4'] = ['TCP handshake', 'UDP', 'Well-known ports', 'Multicast/unicast/broadcast', 'Secure vs insecure ports', 'ICMP, GRE, IPsec']
-    b.topics['1.5'] = ['Single-mode fiber', 'Multimode fiber', 'SFP', 'Cat 6a', 'Connectors', 'Ethernet standards', 'Termination blocks']
+    b.topics['1.5'] = ['Single-mode fiber', 'Multimode fiber', 'SFP', 'Cable categories', 'Connectors', 'Ethernet standards', 'Patch panels']
     b.topics['1.7'] = ['CIDR', 'RFC 1918', 'Subnet mask', 'Gateway', 'NAT', 'Classful ranges', 'VLSM']
 
     # ------------------------------------------------------------------------------------------ 1.5 media
@@ -264,9 +264,9 @@ def build(b):
     # ------------------------------------------------------------------------------------------ 1.7 IPv4
     b.add('1.7', 'Classful IPv4 ranges',
           'The original address classes by first octet: Class A 1 to 126 (/8), Class B 128 to 191 (/16), Class C 192 to 223 (/24), Class D 224 to 239 (multicast), and Class E 240 to 255 (experimental), with 127 reserved for loopback.',
-          'identify the class of 172.20.5.10 and the default mask that class implies',
-          ['Class A with a /8 mask', 'Class C with a /24 mask', 'Class D, a multicast address'],
-          'First octet 128 to 191 is CLASS B with a /16 default mask.',
+          'recall the original IPv4 scheme that grouped addresses by their first octet into Classes A through E, each with a default mask',
+          ['Variable-length subnet masking (VLSM)', 'CIDR notation', 'Private IP address space (RFC 1918)'],
+          'The FIRST OCTET picks the class — 172.20.5.10 starts with 172, so it is Class B with a /16 default mask.',
           S.table(['Class', 'First octet', 'Default mask'], [('A', '1 to 126', '/8'), ('B', '128 to 191', '/16'), ('C', '192 to 223', '/24'), ('D (multicast)', '224 to 239', 'n/a'), ('E (experimental)', '240 to 255', 'n/a')], title='Classful address ranges', col_widths=[0.4, 0.3, 0.3]),
           caption='Classful addressing divides IPv4 by first octet into Classes A through E.')
 
@@ -312,7 +312,7 @@ def build(b):
 
     b.add('1.7', 'Virtual IP (VIP)',
           'An address that is not tied to one physical interface and can be shared by, or moved between, devices, such as a load balancer front end or a first-hop redundancy gateway, so clients keep using one address.',
-          'give clients one gateway address that stays the same even when the active router fails over to its partner',
+          'present one stable address for a pool of web servers behind a load balancer, however many servers or which unit is active',
           ['A loopback address', 'An APIPA address', 'A broadcast address'],
           'The address belongs to a SERVICE, not a single interface — it moves when the active device changes.',
           S.steps([('Clients', 'use one VIP'), ('Active device', 'owns the VIP now'), ('On failure', 'standby takes the VIP')], title='Virtual IP', tones=['plain', 'blue', 'amber']),
@@ -378,8 +378,8 @@ def build(b):
 
     b.add('1.9', 'IPv6 shorthand notation',
           'Leading zeros in each group may be dropped, and one run of consecutive all-zero groups may be replaced by a double colon, but only once per address.',
-          'shorten the address 2001:0db8:0000:0000:0000:0000:0000:0001 to its compact form',
-          ['2001:db8::1', '2001:db8::0::1', '2001:0db8::0001'],
+          'write 2001:0db8:0000:0000:0000:0000:0000:0001 compactly as 2001:db8::1',
+          ['EUI-64 interface identifier', 'IPv6 prefix length notation', 'A link-local zone index'],
           'Drop leading zeros and use :: ONCE for a run of zero groups — two :: would be ambiguous.',
           S.terminal(['2001:0db8:0000:0000:0000:0000:0000:0001', '-> drop leading zeros: 2001:db8:0:0:0:0:0:1', '-> collapse one zero run: 2001:db8::1'], title='Shortening an address'),
           caption='IPv6 shorthand drops leading zeros and replaces one run of zero groups with a double colon.')
@@ -593,21 +593,62 @@ def build(b):
           S.steps([('Data center A', 'VMs and storage'), ('DCI link', 'dark fiber or DWDM'), ('Data center B', 'VMs and storage')], title='Data center interconnect', tones=['blue', 'primary', 'blue']),
           caption='DCI links data centers with high-capacity connections so workloads and data can move between them.')
 
+    # ------------------------------------------------------------------------------------------ added 2026-11-03 (official-objective gaps)
+    b.add('1.5', 'Twisted-pair cable categories and speeds',
+          'The category number sets the speed and distance a twisted-pair cable is rated for: Cat 5e carries 1 Gb/s to 100 m, Cat 6 carries 10 Gb/s to about 55 m, Cat 6a and Cat 7 carry 10 Gb/s to 100 m (Cat 7 is fully shielded), and Cat 8 carries 25 or 40 Gb/s to about 30 m.',
+          'compare the speed and distance that each numbered rating of copper network cabling supports before specifying a new installation',
+          ['Fiber transceiver form factors', 'The T568A and T568B wiring standards', 'Plenum and riser jacket ratings'],
+          'The NUMBER sets speed and range — Cat 5e 1 Gb, Cat 6 10 Gb to 55 m, Cat 6a and 7 10 Gb to 100 m, Cat 8 25 or 40 Gb to 30 m.',
+          S.table(['Category', 'Speed', 'Max run'], [('Cat 5e', '1 Gb/s', '100 m'), ('Cat 6', '10 Gb/s', 'about 55 m'), ('Cat 6a', '10 Gb/s', '100 m'), ('Cat 7', '10 Gb/s, shielded', '100 m'), ('Cat 8', '25 or 40 Gb/s', 'about 30 m')], title='Twisted-pair categories', col_widths=[0.26, 0.44, 0.30]),
+          caption='The category number of twisted-pair cable sets the speed and distance it supports.')
+
+    b.add('1.6', 'Point-to-point topology',
+          'A dedicated link between exactly two endpoints, such as a circuit between two offices, a wireless bridge between two buildings, or a router-to-router link; it is the simplest topology, with nothing shared and no other devices on the path.',
+          'connect a headquarters router to one branch router with a single dedicated link that no other site shares',
+          ['Mesh topology', 'Star topology', 'Bus topology'],
+          'EXACTLY two endpoints — a star puts many devices around a center and a mesh links them all to each other.',
+          S.steps([('Site A', 'router'), ('Dedicated link', 'no other devices'), ('Site B', 'router')], title='Point-to-point', tones=['blue', 'primary', 'blue']),
+          caption='A point-to-point topology joins exactly two endpoints with a dedicated link.')
+
+    b.add('1.8', 'Application-aware routing (SD-WAN)',
+          'An SD-WAN capability that recognizes the application behind each flow, such as voice, video, SaaS, or bulk transfer, and steers it over the best path for its needs, judged in real time by latency, loss, and jitter, instead of treating all traffic the same.',
+          'send voice calls over the lowest-latency WAN link while large backups use the cheapest one',
+          ['Transport agnostic (SD-WAN)', 'Zero-touch provisioning (ZTP)', 'Central policy management (SD-WAN)'],
+          'Routes by the APPLICATION and the live quality of each link — transport agnostic only means any kind of link can be used.',
+          S.flow_split(('SD-WAN edge', 'classifies each flow'), [('Voice and video', 'lowest-latency link'), ('Business apps', 'best measured path'), ('Bulk transfers', 'cheapest link')], title='Application-aware routing', tones=['blue', 'green', 'amber']),
+          caption='Application-aware routing steers each application over the best WAN path for its needs.')
+
+    b.add('1.8', 'Central policy management (SD-WAN)',
+          'An SD-WAN capability in which one controller or portal defines the routing, security, and quality-of-service policies once and pushes them to every site, so branches are managed together instead of device by device.',
+          'change a WAN traffic policy once and have it apply to all forty branch routers without logging in to each one',
+          ['Zero-touch provisioning (ZTP)', 'Transport agnostic (SD-WAN)', 'Application-aware routing (SD-WAN)'],
+          'ONE place defines policy for every site — zero-touch provisioning is how a new device first gets its configuration.',
+          S.hub(('Central controller', 'one policy'), [('Branch A', 'policy applied'), ('Branch B', 'policy applied'), ('Branch C', 'policy applied')], title='Central policy management'),
+          caption='Central policy management defines SD-WAN policy once and applies it at every site.')
+
+    b.add('1.8', 'Security Service Edge (SSE)',
+          'The security half of SASE: cloud-delivered security services such as a secure web gateway, a cloud access security broker (CASB), zero trust network access, and firewall as a service, without the SD-WAN networking part.',
+          'add cloud-delivered web filtering and zero trust access for remote users without changing the existing WAN',
+          ['Secure access service edge (SASE)', 'Data center interconnect (DCI)', 'Network functions virtualization (NFV)'],
+          'SSE is SECURITY only — SASE adds the SD-WAN networking on top of it.',
+          S.compare(('SASE', ['SD-WAN networking', 'Plus cloud security', 'The whole edge as a service']), ('SSE', ['Cloud security only', 'Web gateway, CASB, ZTNA', 'The security half']), title='SASE and SSE'),
+          caption='SSE is the cloud-delivered security half of SASE, without the SD-WAN networking.')
+
     # ------------------------------------------------------------------------------------------ guide
     b.section('Cabling, connectors, and Ethernet standards', ['1.5'],
-              'Match the medium to the job. Shielded twisted pair resists interference where unshielded is cheaper, coaxial cable (F-type and BNC connectors) still carries cable broadband and CCTV, plenum-rated jackets are required in air-handling spaces, and direct attach cables serve short in-rack links. Know the connectors: RJ45 for Ethernet and the smaller RJ11 for telephone and DSL; LC (small, SFP), SC (square, push-pull), ST (round, bayonet), and MPO (multi-fiber) for fiber.\n\n'
-              'Transceivers follow speed: SFP is 1 Gb/s, SFP+ is 10, QSFP+ is 40 (four lanes), and QSFP28 is 100. BiDi optics use two wavelengths on one strand, CWDM carries a few widely spaced wavelengths cheaply, and DWDM packs many tightly for long haul. Standards: 1000BASE-T is Gigabit over Cat 5e, 10GBASE-T needs Cat 6a for 100 m, SR variants use multimode fiber and LR variants use single-mode. Cables end on patch panels or 110 blocks (the 66 block is the legacy telephone one), and T568B is the common RJ45 pin-out, with T568A swapping the orange and green pairs.')
+              'Match the medium to the job. Shielded twisted pair resists interference where unshielded is cheaper, coaxial cable (F-type and BNC connectors) still carries cable broadband and CCTV, plenum-rated jackets are required in air-handling spaces, and direct attach cables serve short in-rack links. Know the connectors: RJ45 for Ethernet and the smaller RJ11 for telephone lines; LC (small, SFP), SC (square, push-pull), ST (round, bayonet), and MPO (multi-fiber) for fiber. Know the category ratings too: Cat 5e is 1 Gb/s, Cat 6 is 10 Gb/s to about 55 m, Cat 6a and Cat 7 are 10 Gb/s to 100 m, and Cat 8 is 25 or 40 Gb/s to about 30 m.\n\n'
+              'Transceivers follow speed: SFP is 1 Gb/s, SFP+ is 10, QSFP+ is 40 (four lanes), and QSFP28 is 100. Standards: 1000BASE-T is Gigabit over Cat 5e, 10GBASE-T needs Cat 6a for 100 m, SR variants use multimode fiber and LR variants use single-mode. Copper runs end on patch panels (fiber on fiber distribution panels), and T568B is the common RJ45 pin-out, with T568A swapping the orange and green pairs.')
     b.section('Topologies and IPv4 addressing details', ['1.6', '1.7'],
-              'In a full mesh every node links to every other (n(n-1)/2 links) for maximum redundancy, a bus shares one terminated cable, a ring links each node to two neighbors, and hub-and-spoke connects branches only to a central site, which becomes the single point of failure. A collapsed core merges the core and distribution layers, and spine-leaf favors east-west (server-to-server) traffic over north-south traffic.\n\n'
+              'In a full mesh every node links to every other (n(n-1)/2 links) for maximum redundancy, a bus shares one terminated cable, a ring links each node to two neighbors, a point-to-point link joins exactly two endpoints, and hub-and-spoke connects branches only to a central site, which becomes the single point of failure. A collapsed core merges the core and distribution layers, and spine-leaf favors east-west (server-to-server) traffic over north-south traffic.\n\n'
               'For addressing, know the classful ranges (A 1 to 126, B 128 to 191, C 192 to 223, D multicast, E experimental), the loopback block 127.0.0.0/8 for testing the local stack, and 100.64.0.0/10 for carrier-grade NAT. VLSM sizes each subnet with its own mask, usable hosts equal 2 to the host bits minus 2, the first address is the network and the last is the broadcast, and a virtual IP is shared or moved between devices.')
     b.section('Automation concepts and modern network environments', ['1.8'],
-              'VXLAN carries Layer 2 over UDP on a Layer 3 network using a 24-bit segment ID, about 16 million segments versus the 4,094 VLAN IDs. SASE combines SD-WAN with cloud-delivered security (secure web gateway, CASB, zero trust access), so branch and remote users are protected without backhauling traffic.\n\n'
+              'VXLAN carries Layer 2 over UDP on a Layer 3 network using a 24-bit segment ID, about 16 million segments versus the 4,094 VLAN IDs. SASE combines SD-WAN with cloud-delivered security (secure web gateway, CASB, zero trust access), so branch and remote users are protected without backhauling traffic; SSE is the security half on its own. SD-WAN itself is application aware (it steers each application over the best path), transport agnostic, centrally managed from one policy, and set up with zero-touch provisioning.\n\n'
               'Infrastructure as code brings software practices to networks: source control keeps a central history with branches and conflict identification, playbooks apply reusable tasks to many devices, a dynamic inventory is built from live sources, and automation reduces configuration drift, which is the gradual divergence of real settings from the approved template.')
     b.section('IPv6 addressing', ['1.9'],
               'An IPv6 address is 128 bits written in hexadecimal, usually a /64 prefix plus a 64-bit interface ID. Shorten it by dropping leading zeros and using a double colon once for one run of zero groups. Types: global unicast (2000::/3) is routable on the Internet, link-local (fe80::/10) is automatic and never routed, unique local (fc00::/7) is the private range, and multicast (ff00::/8) replaces broadcast, which IPv6 does not have.\n\n'
               'Neighbor Discovery Protocol (ICMPv6) replaces ARP and lets hosts find routers. For the transition, dual stack runs IPv4 and IPv6 together, tunneling wraps IPv6 inside IPv4 to cross IPv4-only networks, and NAT64 translates between IPv6-only clients and IPv4-only servers.')
     b.section('Network types and provider links', ['1.10'],
-              'By scope: a PAN is a person\'s devices over Bluetooth, a LAN covers a site, a WLAN is Wi-Fi, a CAN joins the buildings of a campus, a MAN covers a city, and a WAN spans cities or countries. Provider services include MPLS (label switching with QoS), leased lines (dedicated, symmetric, with an SLA), metro Ethernet over fiber, DSL (telephone copper, speed falls with distance), and cable broadband (shared coax).\n\n'
-              'Satellite reaches remote sites but geostationary links add 500 to 700 ms of latency, and cellular 4G or 5G works as primary access or as a failover link. A colocation facility rents space, power, cooling, and connectivity for equipment you own, unlike IaaS, which rents the provider\'s hardware.')
+              'By scope: a LAN covers a site, a WLAN is the same idea over Wi-Fi, and a WAN spans cities or countries over carrier links. MPLS is a provider WAN technology that forwards by labels with QoS and traffic engineering, and SD-WAN is the overlay many organizations now use instead.\n\n'
+              'Satellite reaches remote sites but geostationary links add 500 to 700 ms of latency, and cellular 4G or 5G works as primary access or as a failover link.')
     b.section('Fibre Channel, hybrid designs, and SD-WAN details', ['1.5', '1.6', '1.8'],
-              'Fibre Channel is a dedicated, lossless fabric for storage using host bus adapters; iSCSI carries storage over ordinary Ethernet. Most real networks are hybrid topologies, such as stars at each site joined by a partial mesh. SD-WAN is transport agnostic, so an overlay can use MPLS, broadband, and cellular links under one policy, and zero-touch provisioning lets a new device download its own configuration. Data center interconnect links data centers with dark fiber or DWDM so workloads can move between them.')
+              'Fibre Channel is a dedicated, lossless fabric for storage using host bus adapters; iSCSI carries storage over ordinary Ethernet. Most real networks are hybrid topologies, such as stars at each site joined by a partial mesh. SD-WAN is transport agnostic, so an overlay can use MPLS, broadband, and cellular links under one policy, and zero-touch provisioning lets a new device download its own configuration. Data center interconnect links data centers with high-capacity circuits such as dark fiber so workloads can move between them.')

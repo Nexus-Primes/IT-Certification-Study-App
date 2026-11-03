@@ -5,8 +5,8 @@ DOMAIN = 'nd5'
 
 
 def build(b):
-    b.topics['5.2'] = ['Attenuation', 'Crosstalk', 'Wrong pinout', 'Duplex mismatch', 'Bad SFP', 'Open and short', 'Dirty fiber', 'LEDs', 'PoE budget']
-    b.topics['5.3'] = ['DHCP exhaustion', 'APIPA', 'DNS failure', 'Bad gateway', 'NTP drift', 'Switching loops', 'Wrong VLAN', 'Overlapping subnets']
+    b.topics['5.2'] = ['Attenuation', 'Crosstalk', 'Improper termination', 'Incorrect cable', 'Wrong pinout', 'Duplex mismatch', 'Bad SFP', 'Open and short', 'Dirty fiber', 'LEDs', 'CRC, runts, giants, drops', 'Error-disabled ports', 'PoE budget and standard', 'Optical power']
+    b.topics['5.3'] = ['DHCP exhaustion', 'APIPA', 'DNS failure', 'Bad gateway', 'NTP drift', 'Switching loops', 'STP port roles and states', 'Wrong VLAN', 'Overlapping subnets']
     b.topics['5.4'] = ['Latency', 'Jitter', 'Congestion', 'Broadcast storm', 'Packet loss', 'Wireless coverage', 'Roaming', 'AP capacity']
     b.topics['5.5'] = ['VLAN mismatch', 'Bad subnet mask', 'Routing loop', 'MTU mismatch', 'Bad ACL', 'NAT misconfiguration', 'Port security violation']
 
@@ -278,12 +278,93 @@ def build(b):
           S.steps([('Member setting differs', 'speed or VLANs'), ('Bundle rejects it', 'port suspended'), ('Settings matched', 'port rejoins')], title='Suspended bundle member', tones=['amber', 'red', 'green']),
           caption='A suspended port is held out of a link aggregation bundle because its settings do not match.')
 
+    # ------------------------------------------------------------------------------------------ added 2026-11-03 (official-objective gaps)
+    b.add('5.1', 'Question the obvious',
+          'While building a theory, check the simple, common explanations first, such as whether the device is powered on, the cable is plugged in, the port is enabled, and a recent change touched it, before investigating complex causes.',
+          'check that the cable is plugged in and the port is enabled before suspecting a routing fault in a user\'s no-connection report',
+          ['Divide and conquer', 'Top-to-bottom and bottom-to-top troubleshooting', 'Duplicate the problem'],
+          'Check the SIMPLE things first (power, cable, settings) — divide and conquer is about where in the stack to start.',
+          S.steps([('Simple checks', 'power, cable, enabled?'), ('Common causes', 'recent changes'), ('Complex causes', 'only if those pass')], title='Question the obvious', tones=['green', 'blue', 'amber']),
+          caption='Question the obvious means checking simple, common causes before investigating complex ones.')
+
+    b.add('5.2', 'Improper termination',
+          'A cable end that is wired or terminated badly: wires untwisted too far, pairs in the wrong order or split across pairs, poor crimps or punchdowns, or loose connectors, which causes crosstalk, high error rates, or an open; a wire map or cable tester shows it, and the fix is to re-terminate.',
+          'explain why a newly terminated wall jack passes some pairs but shows errors and a failed wire map on the cable tester',
+          ['Attenuation', 'Electromagnetic interference (EMI)', 'Cable length exceeds standard'],
+          'A bad TERMINATION — redo the crimp or punchdown, because the cable itself may be fine.',
+          S.compare(('Good termination', ['Pairs in T568 order', 'Twists kept to the end', 'Passes a wire map']), ('Improper termination', ['Wrong or split pairs', 'Untwisted too far', 'Opens, shorts, errors']), title='Terminating a cable', tones=('green', 'red')),
+          caption='Improper termination, such as wrong pairs or untwisted ends, causes opens, shorts, and errors.')
+
+    b.add('5.2', 'Incorrect cable type',
+          'Using a cable that does not match the link: multimode fiber with a single-mode transceiver (or the reverse), a category too low for the speed (for example Cat 5e for 10 Gb/s), or unshielded twisted pair where interference calls for shielded cable or fiber.',
+          'find why a 10 Gb link over old Cat 5e cabling shows many errors even though the cable passes a continuity test',
+          ['Duplex mismatch', 'Cable length exceeds standard', 'Administratively down'],
+          'The cable does not match the SPEED, FIBER MODE, or SHIELDING the link needs — continuity can pass and it still fails at speed.',
+          S.table(['Link need', 'Wrong cable', 'Right cable'], [('10 Gb/s copper', 'Cat 5e', 'Cat 6a'), ('Single-mode optics', 'Multimode', 'Single-mode'), ('Noisy area', 'UTP', 'STP or fiber')], title='Matching the cable to the link', col_widths=[0.38, 0.30, 0.32]),
+          caption='An incorrect cable type does not match the speed, fiber mode, or shielding the link needs.')
+
+    b.add('5.2', 'Runts',
+          'Frames shorter than the 64-byte Ethernet minimum, counted on an interface as runts; they usually come from collisions on a half-duplex link, a duplex mismatch, or a faulty NIC or port, and a rising count means the link is unhealthy.',
+          'identify the interface counter that rises when frames arrive smaller than the 64-byte Ethernet minimum',
+          ['Giants', 'CRC errors', 'Output drops'],
+          'RUNTS are too SMALL (under 64 bytes) — giants are too big, and CRC errors are the right size but corrupted.',
+          S.facts([('Counter', 'runts'), ('Meaning', 'frames under 64 bytes'), ('Common cause', 'collisions, duplex mismatch'), ('Also check', 'the NIC, port, and cable')], title='Runts'),
+          caption='A runt is an Ethernet frame under the 64-byte minimum, often from collisions or a duplex mismatch.')
+
+    b.add('5.2', 'Giants',
+          'Frames larger than the maximum Ethernet size (1518 bytes, or 1522 with a VLAN tag), counted as giants; they appear when jumbo frames reach a port not configured for them, when there is an MTU mismatch, or when a NIC malfunctions.',
+          'identify the interface counter that rises when a port receives frames larger than its maximum allowed size after a jumbo-frame change',
+          ['Runts', 'CRC errors', 'Output drops'],
+          'GIANTS are too BIG — look for jumbo frames sent to a port that is not set for them, or an MTU mismatch.',
+          S.facts([('Counter', 'giants'), ('Meaning', 'frames above the maximum size'), ('Normal maximum', '1518 bytes (1522 tagged)'), ('Common cause', 'jumbo frames, MTU mismatch')], title='Giants'),
+          caption='Giants are frames larger than the Ethernet maximum, often from jumbo frames or an MTU mismatch.')
+
+    b.add('5.2', 'Interface drops (discards)',
+          'A counter of frames the interface discarded without forwarding, such as output drops when a queue is full during congestion or input drops when a device cannot keep up; rising drops point to congestion, an oversubscribed uplink, or missing QoS.',
+          'see why an uplink counter keeps climbing with frames that were discarded because the outbound queue was full during peak traffic',
+          ['CRC errors', 'Runts', 'Giants'],
+          'Frames DISCARDED, not corrupted — look for congestion, an oversubscribed link, or QoS that is not protecting the traffic.',
+          S.steps([('Traffic bursts', 'above the link speed'), ('Queue fills', 'the buffer is full'), ('Drops counted', 'frames discarded')], title='Output drops', tones=['amber', 'blue', 'red']),
+          caption='Interface drops count frames discarded when queues fill, usually from congestion.')
+
+    b.add('5.2', 'Error disabled port',
+          'A protective shutdown in which a switch disables a port after a violation, such as a port security violation, a BPDU guard trigger, or a detected loop; the port shows err-disabled and stays down until the cause is fixed and the port is re-enabled, manually or by an automatic recovery timer.',
+          'bring back a port that went down by itself after someone connected an unauthorized switch to an access port that has BPDU guard enabled',
+          ['Administratively down', 'Suspended port', 'Failed switch port'],
+          'The SWITCH shut it for a violation — administratively down means a person ran shutdown, and the cause must be removed first.',
+          S.steps([('Violation', 'port security or BPDU'), ('Err-disabled', 'switch shuts the port'), ('Fix the cause', 'then re-enable it')], title='Error-disabled port', tones=['amber', 'red', 'green']),
+          caption='An error-disabled port was shut down by the switch after a violation and must be re-enabled.')
+
+    b.add('5.2', 'Incorrect PoE standard',
+          'A device needs more power than the switch port can supply because its standard is higher than the port\'s: 802.3af provides 15.4 W, 802.3at (PoE+) 30 W, and 802.3bt (PoE++) 60 or 90 W, so a camera or access point may reboot or not power on until the port, a midspan injector, or the switch is upgraded.',
+          'work out why a high-power ceiling camera keeps rebooting when plugged into an older switch port that supplies only 15.4 watts',
+          ['PoE budget exceeded', 'Duplex mismatch', 'Failed switch port'],
+          'The PORT standard is too LOW for the device — a budget problem is the switch running out of total power across all its ports.',
+          S.table(['Standard', 'Power per port'], [('802.3af (PoE)', '15.4 W'), ('802.3at (PoE+)', '30 W'), ('802.3bt (PoE++)', '60 or 90 W')], title='PoE standards', col_widths=[0.5, 0.5]),
+          caption='A device that needs more power than the port standard supplies will not run correctly.')
+
+    b.add('5.2', 'Transceiver signal strength (optical power)',
+          'The light level a fiber transceiver sends and receives, shown as transmit and receive power in dBm by the switch (digital optical monitoring) or measured with an optical power meter; a receive level below the transceiver\'s sensitivity points to a dirty connector, too much loss, a tight bend, or a failing optic.',
+          'check whether a flapping fiber link is receiving too little light by reading the transceiver\'s receive power or measuring with a power meter',
+          ['Signal strength (RSSI) and SNR', 'Visual fault locator', 'CRC errors'],
+          'Compare RECEIVE power with the optic\'s sensitivity — low light means dirt, bends, loss, or a failing transceiver.',
+          S.steps([('Transmit power', 'light leaving the optic'), ('Link loss', 'dirt, bends, splices'), ('Receive power', 'must exceed sensitivity')], title='Optical power budget', tones=['green', 'amber', 'blue']),
+          caption='Low receive power on a fiber link points to dirt, bends, loss, or a failing transceiver.')
+
+    b.add('5.3', 'STP port roles and states',
+          'Spanning tree gives each port a role and a state: the root port is a non-root switch\'s best path to the root bridge, designated ports forward toward the segments below them, and alternate or backup ports are standbys; classic states are blocking, listening, learning, and forwarding, while RSTP uses discarding, learning, and forwarding.',
+          'explain which switch ports forward traffic and which are held in a blocking or discarding standby state in a loop-free spanning tree',
+          ['Root bridge (STP)', 'BPDU guard', 'Link Aggregation (LACP)'],
+          'Roles say WHAT a port does (root, designated, alternate); states say whether it forwards — only forwarding ports pass user traffic.',
+          S.table(['Port role', 'Typical state'], [('Root port', 'forwarding'), ('Designated port', 'forwarding'), ('Alternate or backup', 'blocking or discarding')], title='STP port roles', col_widths=[0.5, 0.5]),
+          caption='Each STP port has a role and a state; only forwarding ports carry user traffic.')
+
     # ------------------------------------------------------------------------------------------ guide
     b.section('Cabling, fiber, and hardware faults', ['5.2'],
               'Work from the physical layer up. A cable tester shows opens (broken conductors) and shorts (touching conductors), and EMI from motors and power cables corrupts copper, which you fix by rerouting, shielding, or using fiber. On fiber, clean and inspect dirty connector end faces first, match transceiver type, wavelength, and fiber (single-mode versus multimode) at both ends, and respect the minimum bend radius of about ten times the cable diameter.\n\n'
-              'Port LEDs give a quick answer: no link light points to the cable, port, or transceiver, which you isolate by moving one variable at a time. A switch can run out of PoE budget and drop devices, a rollover cable connects to the console port, a crossover cable swaps TX and RX for like devices, and failed fans or blocked airflow overheat equipment and cause reboots.')
+              'Installation faults show up on a cable tester or wire map: improper termination (wrong or split pairs, untwisted ends) and an incorrect cable type (wrong category, fiber mode, or shielding for the link). Interface counters add clues: CRC errors are corrupted frames, runts are under 64 bytes, giants exceed the maximum size, and drops are frames discarded when a queue fills. A fiber transceiver reports receive power, and low light means dirt, bends, loss, or a failing optic. Port LEDs give a quick answer: no link light points to the cable, port, or transceiver, which you isolate by moving one variable at a time. A switch can run out of PoE budget and drop devices, a device can need a higher PoE standard than the port supplies (af 15.4 W, at 30 W, bt 60 or 90 W), a switch can error-disable a port after a violation such as port security or BPDU guard, a rollover cable connects to the console port, a crossover cable swaps TX and RX for like devices, and failed fans or blocked airflow overheat equipment and cause reboots.')
     b.section('Switching, routing, and addressing problems', ['5.3'],
-              'A Layer 2 loop with no working STP creates a broadcast storm with saturated links and blinking port LEDs. A device in the wrong VLAN gets addressing from the wrong subnet, a mistyped static address or overlapping subnets cause reachability problems, and a missing default route leaves remote and Internet destinations unreachable while local ones work.\n\n'
+              'A Layer 2 loop with no working STP creates a broadcast storm with saturated links and blinking port LEDs; in a healthy spanning tree each port has a role (root, designated, alternate) and a state (forwarding, or blocking and discarding as standby). A device in the wrong VLAN gets addressing from the wrong subnet, a mistyped static address or overlapping subnets cause reachability problems, and a missing default route leaves remote and Internet destinations unreachable while local ones work.\n\n'
               'If a host can ping an IP address but not a name, check the DNS server settings it received. Compare each host\'s address, mask, and gateway against the plan and test outward: the gateway first, then a remote address, then a name.')
     b.section('Wireless and performance issues', ['5.4'],
               'Separate coverage from capacity: dead spots are a coverage problem solved with a site survey and added or moved APs, whereas strong signal with slow speeds in a crowded room is a capacity problem solved by adding APs and channels. Clients that drop repeatedly point to signal, interference, load, or roaming, and roaming needs the same SSID, security, and VLAN on every AP plus sensible power levels.\n\n'
@@ -292,4 +373,4 @@ def build(b):
               'Several faults hide behind a working link. Bad NAT rules or interfaces stop Internet access or published services, a trunk that does not allow a VLAN (or has a native VLAN mismatch) drops that VLAN silently, and a port security violation can err-disable a port when an unexpected MAC appears. A new VLAN whose clients all show 169.254.x.x addresses usually has no DHCP relay (IP helper) toward the server.\n\n'
               'Spanning tree elects the root by the lowest bridge ID, so leave defaults in place and a random access switch can become root and cause inefficient paths: set a low priority on the intended core switch, and a backup, deliberately.')
     b.section('Methodology approaches and interface states', ['5.1', '5.2'],
-              'When identifying a problem, gather information, question users, find out what changed, and try to reproduce it. To form a theory, work bottom-to-top (cabling and hardware suspected), top-to-bottom (one application misbehaving), or divide and conquer by starting in the middle with a ping. On interfaces, administratively down means someone ran shutdown (fix with no shutdown), down/down is a physical problem, error-disabled is a protective shutdown, and a suspended port is a link aggregation member whose settings do not match the rest of the bundle.')
+              'When identifying a problem, gather information, question users, find out what changed, and try to reproduce it. To form a theory, question the obvious first (power, cabling, and settings), then work bottom-to-top (cabling and hardware suspected), top-to-bottom (one application misbehaving), or divide and conquer by starting in the middle with a ping. On interfaces, administratively down means someone ran shutdown (fix with no shutdown), down/down is a physical problem, error-disabled is a protective shutdown, and a suspended port is a link aggregation member whose settings do not match the rest of the bundle.')

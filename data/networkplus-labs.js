@@ -221,8 +221,8 @@
       "Test the theory to determine the actual cause",
       "Establish a plan of action and identify potential effects",
       "Implement the solution or escalate as necessary",
-      "Verify full system functionality",
-      "Document findings, actions, and outcomes"
+      "Verify full system functionality and implement preventive measures if applicable",
+      "Document findings, actions, outcomes, and lessons learned"
     ],
     "explanation": "This is the standard seven-step troubleshooting methodology: understand the problem before theorizing, confirm the theory before acting, plan before implementing, and always verify and document after the fix is in place."
   },
@@ -246,7 +246,7 @@
       {
         "prompt": "Check the firewall's active access list to see what's being permitted or denied on this path.",
         "accepts": ["show access-list", "show access-lists"],
-        "output": "Standard IP access list DB-ACCESS\n    10 deny ip any any (142 matches)\n    20 permit ip host 10.10.20.5 host 10.10.30.8 (0 matches)",
+        "output": "Extended IP access list DB-ACCESS\n    10 deny ip any any (142 matches)\n    20 permit ip host 10.10.20.5 host 10.10.30.8 (0 matches)",
         "hint": "Use the show access-list command."
       },
       {

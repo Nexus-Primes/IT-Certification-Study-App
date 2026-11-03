@@ -5,10 +5,10 @@ DOMAIN = 'nd3'
 
 
 def build(b):
-    b.topics['3.1'] = ['Physical/logical diagrams', 'SOPs', 'Change management', 'Labeling', 'Rack and cable diagrams', 'Asset inventory', 'IPAM', 'SLA', 'Life cycle']
+    b.topics['3.1'] = ['Physical/logical diagrams', 'Diagrams by layer', 'SOPs', 'Change management', 'Labeling', 'Rack and cable diagrams', 'Asset inventory', 'IPAM', 'SLA', 'Life cycle']
     b.topics['3.2'] = ['MTTR', 'MTBF', 'Hot/warm/cold sites', 'RPO and RTO', 'Active-active vs active-passive', 'Tabletop exercises']
-    b.topics['3.3'] = ['ping', 'traceroute', 'nslookup', 'Protocol analyzer', 'ipconfig', 'arp and netstat', 'nmap', 'LLDP and CDP', 'show commands']
-    b.topics['3.4'] = ['Cable tester', 'Tone generator', 'Cable certifier', 'TDR', 'Punchdown tool', 'OTDR', 'Loopback plug', 'Network tap']
+    b.topics['3.3'] = ['ping', 'traceroute', 'nslookup', 'Protocol analyzer', 'ipconfig', 'arp and netstat', 'nmap', 'LLDP and CDP', 'Spectrum analyzer', 'show commands']
+    b.topics['3.4'] = ['Cable tester', 'Tone generator', 'Crimping tool', 'Punchdown tool', 'Visual fault locator', 'Loopback plug', 'Network tap']
 
     # ------------------------------------------------------------------------------------------ 3.1 documentation
     b.add('3.1', 'Rack diagram',
@@ -62,7 +62,7 @@ def build(b):
     b.add('3.1', 'End of support (EOS)',
           'The vendor milestone after which a product no longer receives security patches, bug fixes, or technical support; it follows end of sale (no longer sold), and devices still in service after it are a security and reliability risk.',
           'identify the milestone after which a vendor provides no further security patches or technical support for a switch model',
-          ['End of life (EOL) announcement only', 'End of sale', 'Long-term support release'],
+          ['End of sale', 'A vendor warranty extension', 'Long-term support release'],
           'No more PATCHES or support — end of sale only means it can no longer be bought.',
           S.steps([('End of sale', 'no longer sold'), ('Support period', 'patches and help continue'), ('End of support', 'no patches, replace it')], title='Product life cycle', tones=['amber', 'blue', 'red']),
           caption='After end of support a vendor provides no patches or help, so the device should be replaced.')
@@ -76,9 +76,9 @@ def build(b):
           caption='Patch network devices through testing, backups, a maintenance window, and a rollback plan.')
 
     b.add('3.1', 'Configuration backups and golden configurations',
-          'Regularly saved copies of device configurations, together with an approved baseline (golden) configuration used as the template for new or replaced devices, so a failed device can be restored quickly and drift detected.',
+          'Regularly saved copies of device configurations, together with an approved baseline (golden) configuration used as the template for new or replaced devices, so a failed device can be restored quickly and drift detected; the production configuration is what the device runs now, the backup is a saved copy, and the baseline is the approved standard.',
           'replace a failed switch quickly with the exact approved configuration the old one had',
-          ['A cable map', 'A SNMP trap', 'A wireless survey'],
+          ['A cable map', 'An SNMP trap', 'A wireless survey'],
           'A saved GOLDEN configuration restores a replacement in minutes and shows later drift.',
           S.steps([('Approved baseline', 'golden configuration'), ('Automated backups', 'versioned copies'), ('Replace or restore', 'apply the saved config')], title='Configuration management', tones=['green', 'blue', 'primary']),
           caption='Saved and baseline configurations let you restore or replace a device quickly and spot drift.')
@@ -334,17 +334,42 @@ def build(b):
           S.terminal(['show power inline', 'Available:370.0W  Used:305.4W  Remaining:64.6W', 'Fa0/1  on   15.4W  IP Phone', 'Fa0/2  on   30.0W  Access Point'], title='Switch CLI'),
           caption='show power inline shows the PoE budget and what each port is drawing.')
 
+    # ------------------------------------------------------------------------------------------ added 2026-11-03 (official-objective gaps)
+    b.add('3.1', 'Network diagrams by layer (1, 2, and 3)',
+          'A network can be diagrammed one layer at a time: a Layer 1 diagram shows the physical devices, cables, and ports; a Layer 2 diagram shows switches, VLANs, and trunks; and a Layer 3 diagram shows subnets, routers, and routing paths.',
+          'document one network in three views: the cabling and ports, the switching and VLANs, and the subnets and routing',
+          ['A rack diagram', 'A wireless heat map', 'An asset inventory'],
+          'One network, three VIEWS — Layer 1 cables and ports, Layer 2 switches and VLANs, Layer 3 subnets and routes.',
+          S.layers([('Layer 3 diagram', 'subnets, routers, and routes', 'green'), ('Layer 2 diagram', 'switches, VLANs, and trunks', 'blue'), ('Layer 1 diagram', 'devices, cables, and ports', 'amber')], title='Diagrams by layer'),
+          caption='A network can be diagrammed by layer: cables and ports, switches and VLANs, then subnets and routes.')
+
+    b.add('3.3', 'Spectrum analyzer',
+          'A tool that displays radio energy across a range of frequencies, showing non-Wi-Fi interference sources such as microwave ovens, cordless phones, and wireless cameras that a Wi-Fi analyzer cannot identify.',
+          'find the source of intermittent interference that is not another Wi-Fi network but still disrupts the 2.4 GHz band',
+          ['Wi-Fi analyzer', 'Protocol analyzer', 'Visual fault locator'],
+          'Shows RAW radio energy by frequency — a Wi-Fi analyzer only lists the Wi-Fi networks it can decode.',
+          S.compare(('Wi-Fi analyzer', ['Lists SSIDs and channels', 'Shows signal strength', 'Sees Wi-Fi only']), ('Spectrum analyzer', ['Shows all RF energy', 'Finds microwaves, phones', 'Identifies non-Wi-Fi noise']), title='Wireless tools'),
+          caption='A spectrum analyzer shows all radio energy by frequency, so it can find non-Wi-Fi interference.')
+
+    b.add('3.5', 'Physical locks (lockable racks and doors)',
+          'Physical locks keep unauthorized people away from network equipment: lockable racks and cabinets, keyed or keypad (cipher) locks on wiring closets, and badge-controlled or biometric doors; an access control vestibule, also called a mantrap, adds a two-door entry that admits one person at a time.',
+          'keep anyone without authorization from touching the switches in a shared wiring closet',
+          ['Security camera (CCTV)', 'Asset tag', 'Environmental sensors'],
+          'LOCKS prevent access — a camera only records it, and an asset tag only identifies the equipment.',
+          S.layers([('Building door', 'badge reader or biometric', 'blue'), ('Wiring closet', 'keyed or keypad lock', 'green'), ('Rack or cabinet', 'lockable front and back doors', 'amber')], title='Layers of physical locks'),
+          caption='Locks on doors, closets, and racks stop unauthorized people from reaching network equipment.')
+
     # ------------------------------------------------------------------------------------------ guide
     b.section('More network documentation and lifecycle', ['3.1'],
-              'Documentation answers different questions. A rack diagram shows which device sits in which rack unit, a cable map traces each cable end to end between jacks, patch panels, and switch ports, a wireless heat map shows coverage from a site survey, an asset inventory records hardware, software, licenses, and warranties, and IPAM manages subnets, DHCP, and DNS to avoid duplicate addresses. An SLA is a contract with measurable service levels and remedies.\n\n'
-              'Lifecycle matters too: end of sale means a product can no longer be bought, but end of support means it gets no more patches, so replace it. Patch through testing, backups, a maintenance window, and a rollback plan; keep versioned configuration backups and a golden baseline for fast replacement and drift detection; and decommission devices by wiping them and updating every record.')
+              'Documentation answers different questions. Network diagrams can be drawn by layer (Layer 1 cables and ports, Layer 2 switches and VLANs, Layer 3 subnets and routes). A rack diagram shows which device sits in which rack unit, a cable map traces each cable end to end between jacks, patch panels, and switch ports, a wireless heat map shows coverage from a site survey, an asset inventory records hardware, software, licenses, and warranties, and IPAM manages subnets, DHCP, and DNS to avoid duplicate addresses. An SLA is a contract with measurable service levels and remedies.\n\n'
+              'Lifecycle matters too: end of sale means a product can no longer be bought, but end of support means it gets no more patches, so replace it. Patch through testing, backups, a maintenance window, and a rollback plan; keep versioned configuration backups and a golden baseline for fast replacement and drift detection (the production configuration is what runs now, the backup is a saved copy); and decommission devices by wiping them and updating every record.')
     b.section('Recovery objectives, redundancy, and testing', ['3.2'],
               'RPO is the data loss you can tolerate (it drives backup or replication frequency) and RTO is the downtime you can tolerate (it drives the standby site choice). In active-active designs every unit carries traffic and shares load, while in active-passive a standby waits idle until failover. Multihoming to two ISPs, not just two cables, protects against a provider outage.\n\n'
               'Test the plan in stages: a tabletop exercise is a safe discussion of a scenario to find gaps, and a failover test actually moves services to the standby to measure the real recovery time against the RTO and RPO before a failback and a review.')
     b.section('Software and command tools', ['3.3'],
-              'Match the tool to the question. arp -a lists IP-to-MAC mappings (duplicates suggest conflicts or spoofing), netstat shows listening ports and connections on a host, route shows or edits the host routing table, nmap scans other hosts for open ports and services (only with permission), and tcpdump captures packets from the command line where Wireshark provides a graphical view. LLDP (standard) and CDP (Cisco) show directly connected neighbors, a speed test measures throughput, and a Wi-Fi analyzer shows channels and signal levels.\n\n'
+              'Match the tool to the question. A spectrum analyzer shows all radio energy by frequency, so it finds non-Wi-Fi interference (microwaves, cordless phones) that a Wi-Fi analyzer cannot. arp -a lists IP-to-MAC mappings (duplicates suggest conflicts or spoofing), netstat shows listening ports and connections on a host, route shows or edits the host routing table, nmap scans other hosts for open ports and services (only with permission), and tcpdump captures packets from the command line where Wireshark provides a graphical view. LLDP (standard) and CDP (Cisco) show directly connected neighbors, a speed test measures throughput, and a Wi-Fi analyzer shows channels and signal levels.\n\n'
               'Device commands: show interfaces reports status, speed, duplex, and error counters such as CRC errors, show mac address-table maps MAC addresses to ports, show ip route displays routes and next hops, and show running-config displays the active configuration in RAM, which must be saved to startup to persist.')
     b.section('Cable and fiber hardware tools', ['3.4'],
-              'A crimping tool attaches connectors, while a punchdown tool seats wires into a block. For fiber, an OTDR analyzes light reflections to locate breaks, splices, and bends along a long run and measure their distance, whereas a visual fault locator shines visible red light to show short-range faults. A loopback plug tests a port by returning its transmit signal to its receiver, and a network tap is inline hardware that copies all traffic to a monitoring port, unlike a switch SPAN port that can drop traffic.')
+              'A crimping tool attaches connectors, while a punchdown tool seats wires into a block, and a tone generator and probe trace a cable through walls. For fiber, a visual fault locator shines visible red light so breaks, tight bends, and bad connectors glow. A loopback plug tests a port by returning its transmit signal to its receiver, and a network tap is inline hardware that copies all traffic to a monitoring port, unlike a switch SPAN port that can drop traffic.')
     b.section('Life-cycle terms, licenses, and more show commands', ['3.1', '3.3'],
               'End of life means a product is no longer sold, and end of support, which comes later, means patches and help stop; plan replacements before either. A EULA sets the terms and limits of software licenses, which is why license counts belong in the asset inventory. For command-line checks, show arp lists IP-to-MAC mappings on the device, show vlan brief lists VLANs with their access ports, and show power inline shows the PoE budget and per-port draw.')

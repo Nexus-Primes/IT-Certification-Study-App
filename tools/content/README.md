@@ -10,6 +10,7 @@ python tools/content/build_dp300.py            # rebuild the DP-300 additions (m
 python tools/content/build_track.py netplus    # Network+ (modules netplus_nd1a ... nd5); `winserver` builds AZ-802 (modules winserver_ws1 ... ws7)
 python tools/content/build_track.py cxbasic    # 3CX Basic (cx_basic_b1 ... b4); `cxadvanced` builds 3CX Advanced (cx_adv_a1 ... a5, one module per domain)
 python tools/content/cx_corrections.py         # one-off fixes to hand-written 3CX concepts and guide sentences the 2026 admin manual contradicts (idempotent)
+python tools/content/netplus_corrections.py    # the same for hand-written Network+ concepts, guide sentences, and lab text (run after build_track.py netplus; idempotent)
 python tools/content/smoke.py c2d2             # list every diagram whose text does not fit, without writing anything (A+ domains only)
 python tools/content/smoke_track.py winserver  # the same for a build_track.py track (add a module name to check just one)
 python tools/content/build_labs.py             # add the generated labs (labs_aplus.py, labs_netplus.py, labs_dp300.py, labs_winserver.py, labs_3cx_basic.py, labs_3cx_advanced.py); validates each lab first
@@ -27,6 +28,8 @@ python tests/run.py content                    # data checks plus a browser rend
 | `build_core2.py`, `build_dp300.py`, `build_track.py` | Apply every batch, validate ids, objectives, terms, distractors, weights, and guide coverage, and only then write the files. `build_track.py` takes the track name and holds each track's first free number per objective (`start`). |
 | `netplus_nd*.py`, `winserver_ws*.py`, `dp300_p*.py` | The content for those tracks, in the same `b.add(...)` form. A new objective needs `b.objective(...)`; a changed topic list needs `b.topics[...]`. |
 | `cx_basic_b*.py`, `cx_adv_a*.py` | The 3CX content, checked against 3CX's admin manual. A module writes one domain only (`DOMAIN`), so each domain has its own file. |
+| `netplus_retired.py` | `RETIRED = {id: reason}` for Network+ questions taken out of the bank (checked against CompTIA's N10-009 objectives). `build_track.py` drops them after building; generated ones stay in their `netplus_nd*.py` module so the numbers after them do not move, hand-written ones are removed from the data file. Never reuse a retired id. |
+| `netplus_corrections.py` | Replaces fields of named hand-written Network+ concepts (a renamed term keeps its id) and swaps study-guide sentences and lab strings. Run it after `build_track.py netplus`. |
 | `cx_corrections.py`, `cx_guide_edits.py` | Replaces fields of named hand-written 3CX concepts (a changed term keeps its id) and swaps outdated guide sentences. `build_track.py` never touches hand-written concepts, so these survive a rebuild. |
 | `labs_lib.py`, `build_labs.py`, `labs_*.py` | Lab constructors (`sequence`, `decision`, `terminal`, `scenario`) with structural validation, the idempotent injector, and the lab content. Scenario labs appear on the Case studies page. |
 | `audit.py` | Finds scenarios that give away their answer, duplicate scenarios or definitions, near-duplicate or overlapping options, and malformed scenarios. Pairs that were read and accepted go in `REVIEWED`. |

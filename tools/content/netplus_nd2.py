@@ -272,9 +272,9 @@ def build(b):
 
     b.add('2.4', 'Legacy 802.11a, b, and g',
           'Older standards: 802.11b (2.4 GHz, 11 Mb/s), 802.11g (2.4 GHz, 54 Mb/s), and 802.11a (5 GHz, 54 Mb/s); 802.11g is backward compatible with 802.11b, while 802.11a is not compatible with either because it uses 5 GHz.',
-          'identify the legacy standard that runs at 54 Mb/s in the 5 GHz band',
-          ['802.11b', '802.11g', '802.11n'],
-          '802.11a is the 5 GHz one — b and g both use 2.4 GHz.',
+          'identify the older Wi-Fi standards, from before 802.11n, that top out at 11 or 54 Mb/s',
+          ['IEEE 802.11n (Wi-Fi 4)', 'IEEE 802.11ac (Wi-Fi 5)', 'IEEE 802.11ax (Wi-Fi 6 and 6E)'],
+          'a, b, and g are the generation before Wi-Fi 4 — 802.11a is the 5 GHz one, while b and g both use 2.4 GHz.',
           S.table(['Standard', 'Band', 'Max rate'], [('802.11b', '2.4 GHz', '11 Mb/s'), ('802.11g', '2.4 GHz', '54 Mb/s'), ('802.11a', '5 GHz', '54 Mb/s')], title='Legacy Wi-Fi', col_widths=[0.35, 0.3, 0.35]),
           caption='802.11b and g use 2.4 GHz; 802.11a uses 5 GHz; the legacy rates top out at 54 Mb/s.')
 
@@ -511,6 +511,47 @@ def build(b):
           S.table(['Feed', 'Typical use'], [('120 V', 'office-style circuits'), ('208 V', 'data center rack PDUs'), ('240 V', 'high-power equipment')], title='Common feeds', col_widths=[0.3, 0.7]),
           caption='Equipment must match the voltage, amperage, and plug type of its power feed.')
 
+    # ------------------------------------------------------------------------------------------ added 2026-11-03 (official-objective gaps)
+    b.add('2.4', 'Non-overlapping channels (1, 6, 11)',
+          'In the 2.4 GHz band only channels 1, 6, and 11 (in the US) sit far enough apart not to overlap, so neighboring access points should use those three; the 5 GHz band offers many more non-overlapping 20 MHz channels.',
+          'plan the channels of three neighboring 2.4 GHz access points so their signals do not interfere with one another',
+          ['Channel bonding (channel width)', 'Band steering', 'Beamforming'],
+          'On 2.4 GHz the clean set is 1, 6, and 11 — neighboring channels such as 1 and 2 overlap and interfere.',
+          S.steps([('Channel 1', '2412 MHz'), ('Channel 6', '2437 MHz'), ('Channel 11', '2462 MHz')], title='2.4 GHz non-overlapping channels', tones=['blue', 'green', 'amber']),
+          caption='On 2.4 GHz, channels 1, 6, and 11 do not overlap, so neighboring APs should use them.')
+
+    b.add('2.4', 'IEEE 802.11h (DFS and TPC)',
+          'An amendment that lets 5 GHz Wi-Fi share spectrum with radar and satellite systems: dynamic frequency selection (DFS) makes an access point move off a channel when it detects radar, and transmit power control (TPC) keeps power within regulatory limits; it is an example of regulatory impacts on channel choice.',
+          'explain why an access point suddenly leaves a 5 GHz channel when it detects a weather radar signal',
+          ['Band steering', 'Wireless roaming', 'Channel bonding (channel width)'],
+          'REGULATIONS shape channels — DFS vacates a channel when radar appears, and TPC limits transmit power.',
+          S.facts([('Standard', 'IEEE 802.11h'), ('DFS', 'leave the channel when radar is heard'), ('TPC', 'keep power within legal limits'), ('Where', '5 GHz bands shared with radar')], title='802.11h'),
+          caption='802.11h adds DFS and TPC so 5 GHz Wi-Fi can share spectrum with radar.')
+
+    b.add('2.4', 'Wireless mesh network',
+          'A wireless network in which access points or nodes link to each other over radio, relaying traffic hop by hop to the one or two nodes that have a wired Internet connection, so coverage extends without running cable to every node.',
+          'cover a large warehouse yard with Wi-Fi when only one access point can be cabled to the switch',
+          ['Ad hoc wireless network', 'Infrastructure mode (wireless)', 'Wireless point-to-point link'],
+          'Nodes RELAY for each other over radio — only the gateway nodes need cabling, and each extra hop can cut throughput.',
+          S.steps([('Wired node', 'connected to the switch'), ('Mesh node', 'relays by radio'), ('Mesh node', 'relays by radio')], title='Wireless mesh', tones=['primary', 'blue', 'blue']),
+          caption='In a wireless mesh, nodes relay traffic over radio to the few that have a wired uplink.')
+
+    b.add('2.4', 'Wireless point-to-point link',
+          'A dedicated radio link between two fixed locations, using directional antennas aimed at each other, to bridge two buildings or sites without cabling; it needs line of sight and careful alignment, and no clients roam onto either end.',
+          'bridge two networks wirelessly as one fixed link between a pair of radios, with no clients associating to either end',
+          ['Wireless mesh network', 'Ad hoc wireless network', 'Omnidirectional antenna'],
+          'A FIXED pair of radios, two ends only — a mesh relays through many nodes and infrastructure mode serves roaming clients.',
+          S.steps([('Site A radio', 'directional antenna'), ('Line of sight', 'aimed at each other'), ('Site B radio', 'directional antenna')], title='Wireless point-to-point', tones=['blue', 'amber', 'blue']),
+          caption='A wireless point-to-point link joins two fixed sites with aimed directional antennas.')
+
+    b.add('2.4', 'WPA2',
+          'The previous generation of Wi-Fi Protected Access, using AES-CCMP encryption with either a pre-shared key (WPA2-Personal) or 802.1X authentication (WPA2-Enterprise); it is still widely deployed, but WPA3 adds protection against offline password guessing.',
+          'identify the widely deployed AES-based wireless security standard that came before WPA3',
+          ['WEP', 'WPA3 encryption', 'Open authentication'],
+          'AES-CCMP security that WPA3 replaces — WEP is the broken predecessor, and WPA2 can be Personal (PSK) or Enterprise (802.1X).',
+          S.compare(('WPA2', ['AES-CCMP encryption', 'Personal (PSK) or Enterprise', 'Offline guessing possible']), ('WPA3', ['Stronger encryption', 'SAE replaces the PSK exchange', 'Resists offline guessing']), title='WPA2 and WPA3', tones=('amber', 'green')),
+          caption='WPA2 uses AES-CCMP with a pre-shared key or 802.1X; WPA3 strengthens it against guessing.')
+
     # ------------------------------------------------------------------------------------------ guide
     b.section('Routing protocols, route selection, and NAT', ['2.2'],
               'Interior protocols run inside an autonomous system: RIP counts hops (15 maximum), OSPF is link-state and builds a full topology map, and EIGRP is Cisco\'s advanced distance-vector protocol using bandwidth and delay (administrative distance 90). BGP is the exterior protocol between autonomous systems and runs on TCP 179. A router chooses routes by longest prefix first, then administrative distance (which ranks protocols), then metric (which ranks routes within a protocol).\n\n'
@@ -519,8 +560,8 @@ def build(b):
               'A hub repeats every signal to every port in one collision domain, whereas each switch port is its own collision domain; broadcast domains are separated only by VLANs and routers. A switch learns source MAC addresses into its MAC address table, forwards known unicast out one port, and floods unknown unicast and broadcast; ARP resolves IPv4 to MAC on the local segment.\n\n'
               'Useful features: port mirroring copies traffic to an analyzer, BPDU guard err-disables an edge port that receives a BPDU, the root bridge is the lowest bridge ID, RSTP converges in seconds instead of 30 to 50, access ports carry one untagged VLAN while trunks carry many tagged VLANs, a voice VLAN separates phones, auto-MDIX fixes cable pairs and auto-negotiation fixes speed and duplex. For PoE, 802.3af gives 15.4 W, 802.3at 30 W, and 802.3bt 60 or 90 W.')
     b.section('Wireless standards and technologies', ['2.4'],
-              'Know the generations: 802.11n (Wi-Fi 4) introduced MIMO on 2.4 and 5 GHz, 802.11ac (Wi-Fi 5) is 5 GHz only with downlink MU-MIMO, 802.11ax (Wi-Fi 6 and 6E) adds OFDMA and the 6 GHz band, and 802.11be (Wi-Fi 7) adds 320 MHz channels and Multi-Link Operation. Legacy: 802.11b and g use 2.4 GHz, and 802.11a uses 5 GHz.\n\n'
-              'Wider channels (channel bonding) raise throughput but leave fewer clean channels, MIMO sends several streams to one client while MU-MIMO serves several clients at once, and beamforming focuses the signal at a client. Roaming needs the same SSID and security on every AP, a BSSID identifies one AP radio, a captive portal gates guests with a web page, directional antennas suit point-to-point links, and good signal means both strong RSSI and a high SNR. WPA-Enterprise uses 802.1X and RADIUS for unique per-user credentials.')
+              'Know the generations: 802.11n (Wi-Fi 4) introduced MIMO on 2.4 and 5 GHz, 802.11ac (Wi-Fi 5) is 5 GHz only with downlink MU-MIMO, 802.11ax (Wi-Fi 6 and 6E) adds OFDMA and the 6 GHz band, and 802.11be (Wi-Fi 7) adds 320 MHz channels and Multi-Link Operation. Legacy: 802.11b and g use 2.4 GHz, and 802.11a uses 5 GHz. WPA2 (AES-CCMP) is the previous security generation that WPA3 replaces.\n\n'
+              'Wider channels (channel bonding) raise throughput but leave fewer clean channels, MIMO sends several streams to one client while MU-MIMO serves several clients at once, and beamforming focuses the signal at a client. Roaming needs the same SSID and security on every AP, a BSSID identifies one AP radio, a captive portal gates guests with a web page, directional antennas suit point-to-point links, and good signal means both strong RSSI and a high SNR. WPA-Enterprise uses 802.1X and RADIUS for unique per-user credentials. On 2.4 GHz only channels 1, 6, and 11 do not overlap, and 802.11h makes an access point leave a 5 GHz channel when it detects radar (DFS). A wireless mesh relays traffic between nodes over radio, and a wireless point-to-point link joins two fixed sites with aimed antennas.')
     b.section('Physical installation: closets, racks, power, and environment', ['2.5'],
               'The MDF is the central wiring room where carrier circuits and backbone cabling terminate, and an IDF is a per-floor closet that connects back to it. Racks are measured in units (1U = 1.75 inches, commonly 42U), and switch airflow (port-side exhaust or intake) must match the hot aisle and cold aisle layout so hot and cold air do not mix.\n\n'
               'A UPS provides battery power through outages, while a PDU distributes and can meter and switch power inside the rack. Keep loads within capacity and connect dual power supplies to separate A and B feeds. Rooms should stay roughly 18 to 27 °C at 40 to 60 percent humidity, and server rooms should use clean-agent (gas) fire suppression rather than water.')

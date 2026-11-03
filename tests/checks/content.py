@@ -99,6 +99,10 @@ def run(ctx):
         fresh = [i for i in issues if (i[0], i[1]) not in audit.REVIEWED]
         t.check(not fresh, f"{label}: no scenario gives away its answer, repeats another, or has ambiguous options ({len(data['concepts'])} concepts)",
                 "; ".join(f"{i[0]} {i[1]}: {i[2][:60]}" for i in fresh[:6]))
+        if label == "Network+":
+            import netplus_retired
+            back = sorted({c["id"] for c in data["concepts"]} & set(netplus_retired.RETIRED))
+            t.check(not back, f"Network+: none of the {len(netplus_retired.RETIRED)} retired questions has come back into the data", ", ".join(back))
 
     # Labs: every lab is structurally sound (a decision's answer exists, a scenario's branches lead somewhere, a terminal step accepts something).
     import inject

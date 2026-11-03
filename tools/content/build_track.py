@@ -21,6 +21,7 @@ TRACKS = {
     'netplus': {
         'data': 'networkplus.js', 'guide': 'networkplus-guide.js', 'var': 'NETPLUS_DATA', 'gvar': 'NETPLUS_GUIDE',
         'modules': ['netplus_nd1a', 'netplus_nd1b', 'netplus_nd2', 'netplus_nd3a', 'netplus_nd3b', 'netplus_nd4', 'netplus_nd5'],
+        'retired': 'netplus_retired',   # concept ids dropped after the build (see that file for the reasons)
         # first free number per objective in the shipped data
         'start': {'1.1': 6, '1.2': 6, '1.3': 5, '1.4': 6, '1.5': 5, '1.6': 4, '1.7': 6, '1.8': 4, '2.1': 9, '2.2': 8, '2.3': 9, '2.4': 8,
                   '3.1': 6, '3.2': 6, '3.3': 6, '3.4': 6, '3.5': 5, '3.6': 5, '4.1': 8, '4.2': 8, '4.3': 8,
@@ -123,6 +124,8 @@ def main(argv):
             gtext = dp.add_guide_sections(gtext, module.DOMAIN, b.guide)
         new.extend(b.concepts)
     text = dp.insert_concepts(text, pristine, new)
+    retired = sorted(importlib.import_module(config['retired']).RETIRED) if config.get('retired') else []
+    text = dp.remove_concepts(text, retired)                  # 3. drop retired concepts (generated ones keep their numbers)
 
     data = dp.parse_data(text, config['var'])
     guide = dp.parse_data(gtext, config['gvar'])
@@ -135,7 +138,8 @@ def main(argv):
     dp.write(data_path, text)
     dp.write(guide_path, gtext)
     objectives = sum(len(d['objectives']) for core in data['certification']['cores'].values() for d in core['domains'])
-    print(f'wrote {len(new)} generated concepts; {argv[0]} now has {len(data["concepts"])} concepts and {objectives} objectives')
+    kept = len([c for c in new if c['id'] not in retired])
+    print(f'wrote {kept} generated concepts ({len(new) - kept} retired); {argv[0]} now has {len(data["concepts"])} concepts and {objectives} objectives')
     return 0
 
 

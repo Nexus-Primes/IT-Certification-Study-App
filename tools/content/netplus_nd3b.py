@@ -5,9 +5,9 @@ DOMAIN = 'nd3'
 
 
 def build(b):
-    b.objective('3.7', 'IP services (DHCP, DNS, time)', ['DHCP scopes and reservations', 'DHCP relay', 'SLAAC', 'DNS record types', 'DNSSEC, DoH, DoT', 'NTP, PTP, NTS'])
-    b.objective('3.8', 'Network access and management methods', ['Site-to-site and client-to-site VPN', 'Split and full tunnel', 'Out-of-band management', 'Jump boxes', 'RADIUS and TACACS+'])
-    b.topics['3.6'] = ['SNMP', 'Syslog', 'NetFlow', 'Baselines', 'SNMPv3 and traps', 'MIB and OID', 'SIEM', 'Interface counters', 'Availability']
+    b.objective('3.7', 'IP services (DHCP, DNS, time)', ['DHCP scopes and reservations', 'DHCP relay', 'SLAAC', 'DNS record types', 'DNS zones and servers', 'DNSSEC, DoH, DoT', 'NTP, PTP, NTS'])
+    b.objective('3.8', 'Network access and management methods', ['Site-to-site and client-to-site VPN', 'Split and full tunnel', 'Console and GUI access', 'Out-of-band management', 'Jump boxes', 'RADIUS and TACACS+'])
+    b.topics['3.6'] = ['SNMP', 'Syslog', 'NetFlow', 'Baselines', 'SNMPv3 and traps', 'Community strings', 'MIB and OID', 'SIEM', 'Network discovery', 'Configuration monitoring', 'Interface counters', 'Availability']
 
     # ------------------------------------------------------------------------------------------ 3.6 monitoring
     b.add('3.6', 'SNMPv3',
@@ -212,10 +212,10 @@ def build(b):
           caption='DoH and DoT encrypt DNS queries between client and resolver for privacy.')
 
     b.add('3.7', 'Authoritative DNS server',
-          'A DNS server that holds the actual records for a zone and gives definitive answers about it, in contrast to a recursive resolver that looks answers up on behalf of clients.',
+          'A DNS server that holds the actual records for a zone and gives definitive (authoritative) answers about it, in contrast to a recursive resolver, whose cached answers for other zones are marked non-authoritative.',
           'identify the server that holds the real records for example.com and answers definitively for that zone',
           ['A recursive resolver', 'A DNS forwarder', 'A root hint'],
-          'It OWNS the zone data — a resolver only asks around and caches the answers.',
+          'It OWNS the zone data — a resolver only asks around and caches, so its answers show up as "non-authoritative".',
           S.compare(('Authoritative', ['Holds the zone records', 'Definitive answers', 'Primary and secondary']), ('Recursive resolver', ['Asks on the client\'s behalf', 'Caches answers', 'Walks the hierarchy']), title='DNS server roles'),
           caption='An authoritative server holds a zone\'s records and gives definitive answers.')
 
@@ -396,15 +396,72 @@ def build(b):
           S.facts([('Serial', 'version of the zone'), ('Refresh', 'how often to check'), ('Retry', 'if a check fails'), ('Expire', 'when to stop answering')], title='SOA record fields'),
           caption='The SOA record holds the zone serial and the timers secondary servers use.')
 
+    # ------------------------------------------------------------------------------------------ added 2026-11-03 (official-objective gaps)
+    b.add('3.6', 'Network discovery (ad hoc and scheduled)',
+          'Finding the devices on a network and recording what they are: an ad hoc discovery runs on demand, for example after a new subnet is added, while a scheduled discovery repeats automatically so new, moved, or rogue devices and topology changes show up in the monitoring system and the inventory.',
+          'have the monitoring system automatically find the new switches and access points that were plugged in since last week',
+          ['Performance monitoring', 'Traffic analysis', 'Port mirroring'],
+          'Finds WHAT is on the network — ad hoc runs on demand, scheduled runs repeat so nothing new goes unnoticed.',
+          S.compare(('Ad hoc discovery', ['Run on demand', 'After a change or incident', 'A one-time snapshot']), ('Scheduled discovery', ['Runs automatically', 'Catches new or rogue devices', 'Keeps inventory current']), title='Network discovery'),
+          caption='Network discovery finds devices on demand (ad hoc) or on a schedule to keep the inventory current.')
+
+    b.add('3.6', 'Configuration monitoring',
+          'Watching device configurations for change: the system compares each running configuration with the approved baseline or the last backup, alerts on any difference, and keeps a history so unauthorized or accidental changes and configuration drift are caught and can be rolled back.',
+          'be alerted when someone changes a router\'s running configuration outside an approved change window',
+          ['Performance monitoring', 'Traffic analysis', 'Network discovery (ad hoc and scheduled)'],
+          'Compares CONFIGURATIONS with the baseline — performance monitoring asks how loaded a device is, not what changed.',
+          S.steps([('Approved baseline', 'golden configuration'), ('Compare', 'running versus baseline'), ('Alert', 'change or drift found')], title='Configuration monitoring', tones=['green', 'blue', 'amber']),
+          caption='Configuration monitoring compares running configurations with the baseline and alerts on changes.')
+
+    b.add('3.6', 'SNMP community string',
+          'A shared, password-like text value that SNMPv1 and v2c managers present to read (and sometimes write) a device\'s data; it is sent in clear text and often left at defaults such as public and private, so it should be changed or replaced with SNMPv3.',
+          'find the clear-text, password-like value an SNMPv2c manager must send before a switch will answer its polls',
+          ['Management Information Base (MIB)', 'Object identifier (OID)', 'SNMP trap'],
+          'A PASSWORD sent in clear text — SNMPv3 replaces it with real authentication and encryption.',
+          S.facts([('Used by', 'SNMPv1 and v2c'), ('Acts like', 'a shared password'), ('Risk', 'sent in clear text'), ('Common defaults', 'public and private')], title='Community strings'),
+          caption='SNMPv1 and v2c community strings act as clear-text passwords; SNMPv3 replaces them.')
+
+    b.add('3.7', 'Reverse lookup zone',
+          'A DNS zone that maps IP addresses back to hostnames using PTR records, stored under in-addr.arpa for IPv4 and ip6.arpa for IPv6; it supports logging, troubleshooting, and the reverse checks mail servers make.',
+          'host the DNS zone that answers "which name belongs to 10.1.20.5?" for a whole address range',
+          ['Forward lookup zone', 'Stub zone', 'Hosts file'],
+          'ADDRESS to NAME with PTR records — the forward zone goes from name to address.',
+          S.facts([('Direction', 'address to name'), ('Record type', 'PTR'), ('IPv4 domain', 'in-addr.arpa'), ('IPv6 domain', 'ip6.arpa')], title='Reverse lookup zone'),
+          caption='A reverse lookup zone maps IP addresses back to hostnames using PTR records.')
+
+    b.add('3.7', 'Primary and secondary DNS servers',
+          'A primary DNS server holds the writable master copy of a zone, and one or more secondary servers keep read-only copies updated by zone transfers, which they request when the SOA serial number rises; secondaries add redundancy and spread the query load.',
+          'keep a second DNS server holding a read-only copy of the company zone so lookups still work if the first server fails',
+          ['A recursive resolver', 'A DNS forwarder', 'A root hint'],
+          'Primary is the editable MASTER, secondary is a read-only COPY — the SOA serial tells it when to refresh.',
+          S.steps([('Primary', 'writable master copy'), ('Zone transfer', 'when the serial rises'), ('Secondary', 'read-only copy')], title='Primary and secondary DNS', tones=['primary', 'amber', 'blue']),
+          caption='A secondary DNS server holds a read-only copy of the primary zone, updated by zone transfer.')
+
+    b.add('3.8', 'Console connection',
+          'A direct, local management connection through a device\'s console port, using a rollover or USB console cable and terminal emulation software; it needs no IP address or working network, so it is used for first-time setup, password recovery, and out-of-band repair.',
+          'give a brand-new switch its first configuration when it has no IP address and nothing is reachable over the network',
+          ['SSH management', 'Web-based (GUI) management', 'REST API management'],
+          'A CABLE to the console port works with no IP and no network — SSH, the GUI, and APIs all need the network up.',
+          S.steps([('Laptop', 'terminal emulator'), ('Console cable', 'rollover or USB'), ('Switch console port', 'no IP needed')], title='Console connection', tones=['blue', 'amber', 'green']),
+          caption='A console connection manages a device through a cable with no IP address or network needed.')
+
+    b.add('3.8', 'Web-based (GUI) management',
+          'Managing a device through a graphical web interface over HTTPS, which suits occasional changes and staff who avoid the command line, but should be limited to a management network, use HTTPS rather than HTTP, and have default credentials changed.',
+          'let a small-office administrator change a router\'s Wi-Fi settings from a browser instead of typing commands',
+          ['Console connection', 'REST API management', 'Out-of-band management'],
+          'A BROWSER interface over HTTPS — fine for occasional changes, but automation needs an API instead.',
+          S.facts([('Access', 'a browser over HTTPS'), ('Best for', 'occasional changes'), ('Harden', 'management network only'), ('Automation', 'use an API instead')], title='Web (GUI) management'),
+          caption='A web GUI manages a device from a browser over HTTPS and should be restricted and hardened.')
+
     # ------------------------------------------------------------------------------------------ guide
     b.section('Monitoring: SNMP, logs, counters, and alerting', ['3.6'],
-              'SNMPv1 and v2c send community strings in clear text, while SNMPv3 adds authentication and encryption. Managers poll agents on UDP 161, and agents send traps on UDP 162 when something happens; a MIB is the database of manageable objects and an OID is the dotted numeric address of one of them. A SIEM goes beyond a syslog server by correlating events across many sources, and APIs and streaming telemetry return structured data without parsing the CLI.\n\n'
+              'SNMPv1 and v2c send community strings (shared, password-like values) in clear text, while SNMPv3 adds authentication and encryption. Managers poll agents on UDP 161, and agents send traps on UDP 162 when something happens; a MIB is the database of manageable objects and an OID is the dotted numeric address of one of them. A SIEM goes beyond a syslog server by correlating events across many sources, and APIs and streaming telemetry return structured data without parsing the CLI. Network discovery finds devices on demand (ad hoc) or on a schedule, and configuration monitoring alerts when a running configuration differs from the baseline.\n\n'
               'Interface counters are clues: rising CRC errors mean corrupted frames from bad cabling, interference, or a duplex mismatch. Environmental sensors watch temperature, humidity, power, and leaks, anomaly-based alerts compare against the baseline instead of a fixed limit, and availability is measured in nines (99.99% allows about 53 minutes of downtime per year).')
     b.section('DHCP, DNS, and time services', ['3.7'],
               'DHCP leases through Discover, Offer, Request, and Acknowledge. A scope is the lease range, exclusions keep static addresses out of it, a reservation always gives one MAC the same address, options carry the gateway, DNS, and other settings, and a relay agent (IP helper) forwards broadcasts to a server on another subnet. In IPv6, SLAAC lets hosts build their own address from the router\'s prefix.\n\n'
-              'DNS record types: A (IPv4), AAAA (IPv6), CNAME (alias), MX (mail servers with priority), TXT (SPF, DKIM, DMARC, verification), NS (authoritative servers), and PTR (reverse lookups). DNSSEC signs answers for authenticity, while DoH and DoT encrypt queries. Authoritative servers hold zone data and recursive resolvers look answers up and cache them; the hosts file is a local override. For time, NTP strata count hops from the reference clock, PTP gives sub-microsecond accuracy, and NTS authenticates NTP.')
+              'DNS record types: A (IPv4), AAAA (IPv6), CNAME (alias), MX (mail servers with priority), TXT (SPF, DKIM, DMARC, verification), NS (authoritative servers), and PTR (reverse lookups). DNSSEC signs answers for authenticity, while DoH and DoT encrypt queries. Authoritative servers hold zone data (a primary holds the writable master copy and secondaries keep read-only copies by zone transfer) and recursive resolvers look answers up and cache them, which nslookup reports as non-authoritative; the hosts file is a local override. For time, NTP strata count hops from the reference clock, PTP gives sub-microsecond accuracy, and NTS authenticates NTP.')
     b.section('VPNs, remote access, and AAA', ['3.8'],
               'A site-to-site VPN joins two networks gateway to gateway, a client-to-site VPN lets one device tunnel in with client software, and a clientless VPN uses a browser portal for specific resources. A split tunnel sends only corporate traffic through the VPN, whereas a full tunnel sends everything for inspection; IPsec tunnel mode wraps the whole original packet and transport mode protects only the payload.\n\n'
-              'For management, a jump box is a hardened, logged entry point, out-of-band management uses a separate path (such as a console server) that works when production is down, and REST APIs enable automation. For authentication, RADIUS suits user network access (UDP 1812 and 1813), TACACS+ suits device administration with per-command authorization (TCP 49), Kerberos issues time-limited tickets that need synchronized clocks, and SSO gives access to many systems from one sign-in.')
+              'For management, a console cable works with no IP address or network, a web GUI over HTTPS suits occasional changes, a jump box is a hardened, logged entry point, out-of-band management uses a separate path (such as a console server) that works when production is down, and REST APIs enable automation. For authentication, RADIUS suits user network access (UDP 1812 and 1813), TACACS+ suits device administration with per-command authorization (TCP 49), Kerberos issues time-limited tickets that need synchronized clocks, and SSO gives access to many systems from one sign-in.')
     b.section('Traffic analysis, performance monitoring, and DNS zones', ['3.6', '3.7'],
               'Traffic analysis uses flow data (NetFlow, sFlow, IPFIX) to show which hosts and applications use the bandwidth, while performance monitoring graphs utilization, latency, errors, CPU, and memory over time against a baseline. In DNS, a forward lookup zone maps names to addresses and a reverse zone maps addresses to names with PTR records; the SOA record at the top of each zone carries the serial number and the timers that secondary servers use to decide when to refresh.')

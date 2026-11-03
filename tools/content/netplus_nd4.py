@@ -5,9 +5,9 @@ DOMAIN = 'nd4'
 
 
 def build(b):
-    b.topics['4.1'] = ['CIA triad', 'AAA', 'Defense in depth', 'Zero trust', 'Least privilege', 'Encryption', 'PKI', 'RBAC', 'Segmentation']
+    b.topics['4.1'] = ['CIA triad', 'AAA', 'Defense in depth', 'Zero trust', 'Least privilege', 'Encryption', 'PKI', 'RBAC', 'SAML and SSO', 'Segmentation', 'Guest networks', 'PCI DSS and GDPR']
     b.topics['4.2'] = ['DoS/DDoS', 'On-path attack', 'VLAN hopping', 'Rogue DHCP', 'ARP spoofing', 'Social engineering', 'MAC flooding', 'DNS poisoning', 'Evil twin']
-    b.topics['4.3'] = ['ACLs', 'NAC', 'DMZ', 'Honeypot', '802.1X', 'MFA', 'VPN', 'Hardening', 'DHCP snooping', 'Implicit deny']
+    b.topics['4.3'] = ['ACLs', 'NAC', 'Screened subnet', 'Honeypot', '802.1X', 'MFA', 'VPN', 'Hardening', 'DHCP snooping', 'Implicit deny']
 
     # ------------------------------------------------------------------------------------------ 4.1
     b.add('4.1', 'Encryption in transit',
@@ -308,13 +308,62 @@ def build(b):
           S.hub(('UTM appliance',), [('Firewall', 'stateful rules'), ('IPS', 'attack blocking'), ('Web filter', 'URL categories'), ('Antivirus', 'malware scanning')], title='Inside a UTM'),
           caption='A UTM appliance combines firewalling, intrusion prevention, filtering, and antivirus in one device.')
 
+    # ------------------------------------------------------------------------------------------ added 2026-11-03 (official-objective gaps)
+    b.add('4.1', 'SAML',
+          'Security Assertion Markup Language is an XML-based standard in which an identity provider authenticates a user once and sends a signed assertion to the service provider, enabling web single sign-on across organizations and cloud applications without sharing passwords.',
+          'let employees reach a cloud web application by signing in with their company login, with the company identity provider vouching for them through a signed assertion',
+          ['RADIUS', 'TACACS+', 'Kerberos'],
+          'A signed ASSERTION from an identity provider gives web SSO — Kerberos does ticket-based SSO inside a domain.',
+          S.steps([('User', 'requests the app'), ('Identity provider', 'signs an assertion'), ('Service provider', 'trusts the assertion')], title='SAML single sign-on', tones=['plain', 'green', 'blue']),
+          caption='In SAML, an identity provider authenticates the user and sends a signed assertion to the service.')
+
+    b.add('4.1', 'PCI DSS',
+          'The Payment Card Industry Data Security Standard, a set of requirements for any organization that stores, processes, or transmits payment card data, including network segmentation, firewalls, encryption of card data in transit, access control, logging, and regular testing.',
+          'meet the contractual security rules required to accept and process customer credit card payments',
+          ['GDPR', 'HIPAA', 'Sarbanes-Oxley'],
+          'PAYMENT CARDS — GDPR is about the personal data of people in the EU.',
+          S.facts([('Covers', 'payment card data'), ('Applies to', 'anyone who handles cards'), ('Requires', 'segmentation, encryption, logging'), ('Checked by', 'audits and scans')], title='PCI DSS'),
+          caption='PCI DSS sets security requirements for organizations that handle payment card data.')
+
+    b.add('4.1', 'GDPR',
+          'The General Data Protection Regulation, the European Union law governing the personal data of people in the EU: it requires a lawful basis and protection for the data, limits where it may be transferred, gives people rights to access and erase it, and requires breach notification within 72 hours.',
+          'handle the personal data of customers in Europe, including their right to have it erased and a duty to report breaches promptly',
+          ['PCI DSS', 'HIPAA', 'Sarbanes-Oxley'],
+          'EU PERSONAL data and privacy rights — PCI DSS is about payment cards.',
+          S.facts([('Protects', 'personal data of people in the EU'), ('Gives people', 'access and erasure rights'), ('Requires', 'breach notice within 72 hours'), ('Affects', 'where data may be stored')], title='GDPR'),
+          caption='GDPR protects the personal data of people in the EU and affects where data may be stored.')
+
+    b.add('4.1', 'Guest network',
+          'A separate wireless or wired network for visitors that gives Internet access only, on its own VLAN and subnet, blocked from internal resources, often behind a captive portal, with client isolation and bandwidth limits.',
+          'let visitors use the Internet from the lobby without being able to reach any internal servers or printers',
+          ['Internal corporate network', 'Bring your own device (BYOD)', 'Management VLAN'],
+          'INTERNET ONLY on its own VLAN — BYOD devices belong to employees and need controlled access to internal resources.',
+          S.flow_split(('Guest Wi-Fi', 'own VLAN and subnet'), [('Internet', 'allowed'), ('Internal servers', 'blocked'), ('Other guests', 'isolated')], title='Guest network', tones=['green', 'red', 'amber']),
+          caption='A guest network gives visitors Internet access only, on its own VLAN, away from internal resources.')
+
+    b.add('4.2', 'DNS spoofing',
+          'Forging a DNS response so a client or resolver accepts a false answer, for example by replying faster than the real server from an on-path position; when the false record is stored in a resolver\'s cache, the effect is DNS poisoning.',
+          'explain how an attacker on the path answers a client\'s DNS query with a fake IP address before the real server replies',
+          ['ARP spoofing (ARP poisoning)', 'MAC flooding', 'Rogue DHCP server'],
+          'A FORGED DNS answer sent to the client — poisoning is when a forged answer gets stored in a resolver\'s cache.',
+          S.steps([('Client asks', 'where is the bank?'), ('Attacker answers', 'a forged IP address'), ('Client is misled', 'goes to a fake site')], title='DNS spoofing', tones=['plain', 'red', 'amber']),
+          caption='DNS spoofing feeds a client a forged answer; poisoning is a forged answer cached by a resolver.')
+
+    b.add('4.2', 'Malware',
+          'Malicious software that harms systems or steals data, including viruses (attach to files and spread when run), worms (spread on their own across networks), Trojans (disguised as legitimate software), ransomware, spyware, and bot agents that take orders from a command-and-control server.',
+          'name the category of hostile software that covers worms that spread on their own, Trojans that pose as legitimate programs, and files locked until a payment is made',
+          ['Social engineering / phishing', 'Denial-of-service (DoS) attack', 'On-path (man-in-the-middle) attack'],
+          'The CATEGORY — ransomware, worms, Trojans, and bots are all kinds of malware, while phishing and DoS are other attack types.',
+          S.hub(('Malware', 'malicious software'), [('Virus', 'attaches to files'), ('Worm', 'spreads by itself'), ('Trojan', 'poses as legitimate'), ('Ransomware', 'locks files for pay'), ('Bot agent', 'obeys a C2 server')], title='Kinds of malware'),
+          caption='Malware is the category of hostile software: viruses, worms, Trojans, ransomware, and more.')
+
     # ------------------------------------------------------------------------------------------ guide
     b.section('Security concepts: encryption, PKI, access models, and segmentation', ['4.1'],
               'Encrypt data in two places: in transit (TLS, IPsec, SSH) while it crosses the network, and at rest (disk and database encryption) while it is stored. PKI relies on certificate authorities that sign certificates binding public keys to identities, with revocation through CRLs or OCSP. Role-based access control assigns permissions to roles that users are given, and posture assessment checks an endpoint\'s patches and antivirus before it is allowed on the network.\n\n'
-              'Segmentation divides the network into zones with VLANs, subnets, and firewalls so a breach is contained. Compliance rules such as PCI DSS (cards), HIPAA (health), and GDPR (EU personal data) shape controls, and data sovereignty can dictate which country or cloud region may store data.')
+              'Segmentation divides the network into zones with VLANs, subnets, and firewalls so a breach is contained. Compliance rules such as PCI DSS (payment cards), HIPAA (health), and GDPR (EU personal data) shape controls, and data sovereignty can dictate which country or cloud region may store data. SAML lets an identity provider vouch for a user with a signed assertion for web single sign-on, and a guest network gives visitors Internet access only on their own VLAN.')
     b.section('More attack types', ['4.2'],
-              'Layer 2 and name-resolution attacks each have a signature. MAC flooding overflows a switch\'s MAC table so it floods frames like a hub (defense: port security), and DNS poisoning plants forged records in a resolver cache (defense: DNSSEC and secure resolvers). On wireless networks, an evil twin copies a legitimate SSID to trap clients, a rogue access point is an unauthorized AP connected to your own network, and a deauthentication attack disconnects clients with forged management frames (defense: 802.11w).\n\n'
-              'Ransomware encrypts files and demands payment, so tested offline backups, segmentation, and patching are the real defenses.')
+              'Layer 2 and name-resolution attacks each have a signature. MAC flooding overflows a switch\'s MAC table so it floods frames like a hub (defense: port security), and DNS poisoning plants forged records in a resolver cache (defense: DNSSEC and secure resolvers); DNS spoofing is the forged answer itself. On wireless networks, an evil twin copies a legitimate SSID to trap clients, a rogue access point is an unauthorized AP connected to your own network, and a deauthentication attack disconnects clients with forged management frames (defense: 802.11w).\n\n'
+              'Malware is the umbrella term for viruses, worms, Trojans, ransomware, spyware, and bot agents. Ransomware encrypts files and demands payment, so tested offline backups, segmentation, and patching are the real defenses.')
     b.section('More defenses and hardening', ['4.3'],
               'Harden devices by changing default credentials, disabling unused ports and services, patching, and restricting management access, and replace insecure protocols with encrypted ones (Telnet to SSH, HTTP to HTTPS, FTP to SFTP, SNMPv1 or v2c to SNMPv3). Firewall and ACL rules are evaluated top-down with the first match winning, and anything not permitted is dropped by implicit deny. URL and content filtering blocks sites by category, while MAC filtering is a weak control because addresses can be spoofed.\n\n'
               'On switches, DHCP snooping trusts only the real DHCP server\'s port (stopping rogue DHCP servers) and builds a binding table that dynamic ARP inspection uses to drop spoofed ARP packets. Key management covers generating, storing, rotating, and revoking keys and certificates.')
