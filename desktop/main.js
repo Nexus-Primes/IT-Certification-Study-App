@@ -20,6 +20,9 @@ const FEED_OVERRIDE = TEST_MODE ? process.env.CERT_STUDY_UPDATE_FEED : '';
 
 protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { standard: true, secure: true, supportFetchAPI: true, stream: true } }]);
 
+// A test or rehearsal run (it sets its own data folder) gets its own browser profile too, so it never
+// shares storage with, or is blocked by, a real installed copy that happens to be running.
+if (TEST_MODE) app.setPath('userData', path.join(DATA_ROOT, 'electron-profile'));
 if (!app.requestSingleInstanceLock()) { app.quit(); } else { start(); }
 
 function start() {

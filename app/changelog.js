@@ -9,7 +9,7 @@ export const CHANGELOG = [
   { version: 'v241', date: 'November 2026', title: 'Windows app: add documents, back up everything', items: [
     "New: in the Windows app, the Document shelf has an Add files button and accepts files dragged onto the window. Files are copied into your shelf (a name that already exists gets a number), and the originals stay where they are. There is also an Open files folder button.",
     "New: in the Windows app, Settings, About has Back up everything. It copies all accounts, progress, your PIN, automatic backups and the shelf into a dated folder you choose, such as a USB drive.",
-    "New: Help, Check for updates in the window menu takes you straight to the update check.",
+    "New: Help, Check for updates in the window menu takes you straight to the update check. The Check for updates button in the top bar now asks the real updater too, instead of reporting an error.",
     "Changed: in the Windows app, wording that talked about a web browser or a local server now describes the app itself. The web version is unchanged."
   ] },
   { version: 'v240', date: 'November 2026', title: 'Cert Study for Windows', items: [

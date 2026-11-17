@@ -56,6 +56,8 @@ function createUpdater({ autoUpdater, currentVersion, settingsFile, emit, before
     try {
       await autoUpdater.checkForUpdates();
       set({ lastChecked: stamp() });
+      // Some runs (an unpackaged copy) never answer; do not leave the card saying "Checking" forever.
+      if (state.status === 'checking') set({ status: 'idle' });
     } catch (err) {
       log('check failed: ' + ((err && err.message) || err));
       // A silent background check never interrupts: offline just means "try again later".

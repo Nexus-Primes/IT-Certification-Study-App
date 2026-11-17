@@ -13,16 +13,16 @@ const { launchApp, sleep } = require('./launch');
 
 const PAYLOAD = crypto.randomBytes(6 * 1024 * 1024);
 const SHA = crypto.createHash('sha512').update(PAYLOAD).digest('base64');
-const FILE = 'Cert-Study-Setup-241.0.0.exe';
+const FILE = 'Cert-Study-Setup-242.0.0.exe';
 let mode = 'none'; // none | update | corrupt
 let slow = false;
 
 function yml(version, sha) {
-  return `version: ${version}\nfiles:\n  - url: ${FILE}\n    sha512: ${sha}\n    size: ${PAYLOAD.length}\npath: ${FILE}\nsha512: ${sha}\nreleaseDate: '2026-11-17T00:00:00.000Z'\nreleaseNotes: "<h2>v241</h2><p>A trivial test release.</p>"\n`;
+  return `version: ${version}\nfiles:\n  - url: ${FILE}\n    sha512: ${sha}\n    size: ${PAYLOAD.length}\npath: ${FILE}\nsha512: ${sha}\nreleaseDate: '2026-11-17T00:00:00.000Z'\nreleaseNotes: "<h2>v242</h2><p>A trivial test release.</p>"\n`;
 }
 const server = http.createServer((req, res) => {
   if (req.url.startsWith('/latest.yml')) {
-    const body = mode === 'none' ? yml('240.0.0', SHA) : yml('241.0.0', mode === 'corrupt' ? crypto.createHash('sha512').update('other').digest('base64') : SHA);
+    const body = mode === 'none' ? yml('241.0.0', SHA) : yml('242.0.0', mode === 'corrupt' ? crypto.createHash('sha512').update('other').digest('base64') : SHA);
     res.writeHead(200, { 'Content-Type': 'text/yaml' }); return res.end(body);
   }
   if (req.url.includes(FILE)) {
@@ -60,11 +60,19 @@ const server = http.createServer((req, res) => {
     let s = await app.evaluate('window.certStudyDesktop.checkForUpdates()');
     assert.equal(s.status, 'up-to-date'); assert.ok(s.lastChecked > 0);
     ok('no update: reports "up to date"');
+    // The top-bar button must use the real updater too (it used to show a browser-only error).
+    await app.evaluate("document.querySelectorAll('.toast').forEach(t => t.remove()); document.getElementById('update-check-btn').click(); true", { userGesture: true });
+    await app.waitFor("[...document.querySelectorAll('.toast')].some(t => /up to date/.test(t.innerText))", { timeout: 15000 });
+    assert.ok(!(await app.evaluate("[...document.querySelectorAll('.toast')].some(t => /Could not check/.test(t.innerText))")));
+    ok('the top-bar "Check for updates" button reports "up to date" through the real updater');
 
     mode = 'update';
     s = await app.evaluate('window.certStudyDesktop.checkForUpdates()');
-    assert.equal(s.status, 'available'); assert.equal(s.newVersion, '241.0.0'); assert.match(s.releaseNotes, /trivial test release/);
+    assert.equal(s.status, 'available'); assert.equal(s.newVersion, '242.0.0'); assert.match(s.releaseNotes, /trivial test release/);
     ok('update available: new version and release notes shown (' + s.newVersion + ')');
+    await app.evaluate("document.querySelectorAll('.toast').forEach(t => t.remove()); document.getElementById('update-check-btn').click(); true", { userGesture: true });
+    await app.waitFor("[...document.querySelectorAll('.toast')].some(t => /v242 is available/.test(t.innerText))", { timeout: 15000 });
+    ok('the top-bar button announces "v242 is available" with a See details link');
     await sleep(800); assert.equal(await status(), 'available');
     ok('nothing is downloaded until asked');
 

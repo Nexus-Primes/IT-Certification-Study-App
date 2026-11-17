@@ -7385,7 +7385,22 @@ import { createTools } from './tools.js?v=2';
     }
   }
 
+  // The top-bar and Settings "Check for updates" buttons. In the Windows app this asks the real
+  // updater (GitHub); in a browser it reloads the cached page through the service worker.
+  async function checkDesktopUpdateNow(bridge) {
+    onDesktopUpdateState({ ...(desktopUpdateState || {}), status: 'checking' });
+    toast('Checking for updates…', 'info');
+    let next = null;
+    try { next = await bridge.checkForUpdates(); } catch {}
+    if (next) onDesktopUpdateState(next);
+    if (!next || next.status === 'error') toast((next && next.error) || "Couldn't check for updates right now. The app keeps working.", 'error');
+    else if (next.status === 'available' || next.status === 'ready') toast(`${appLabelFromSemver(next.newVersion)} is available.`, 'info', { label: 'See details', run: () => { settingsSection = 'about'; navigate('settings'); if (currentRoute() === 'settings') renderRoute(); } });
+    else toast(`You're up to date (${APP_VERSION}).`);
+  }
+
   async function checkForUpdates() {
+    const bridge = desktopBridge();
+    if (bridge) { await checkDesktopUpdateNow(bridge); return; }
     if (!('serviceWorker' in navigator)) { location.reload(); return; }
     try {
       const reg = await navigator.serviceWorker.getRegistration();
