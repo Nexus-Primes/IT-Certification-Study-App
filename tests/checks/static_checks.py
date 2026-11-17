@@ -19,6 +19,15 @@ def run(ctx):
     t.check(bool(version and cache and version.group(1) == cache.group(1)), "APP_VERSION matches the service worker cache name",
             f"{version and version.group(1)} vs {cache and cache.group(1)}")
 
+    # The desktop app's package.json carries the same number as semver (v240 -> 240.0.0). Run
+    # `node scripts/sync-version.js` after bumping APP_VERSION.
+    package_json = APP_ROOT / "package.json"
+    if package_json.exists() and version:
+        import json
+        wanted_semver = version.group(1).lstrip("v") + ".0.0"
+        have = json.loads(package_json.read_text(encoding="utf-8")).get("version")
+        t.check(have == wanted_semver, "package.json version matches APP_VERSION (run node scripts/sync-version.js)", f"{have} vs {wanted_semver}")
+
     changelog_js = (APP_ROOT / "app" / "changelog.js").read_text(encoding="utf-8")
     changelog_top = re.search(r"const CHANGELOG = \[\s*\{ version: '(v\d+)'", changelog_js)
     if not (changelog_top and version and changelog_top.group(1) == version.group(1)):

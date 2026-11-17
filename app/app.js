@@ -4,7 +4,8 @@ import {
   daysBetween, formatDate, formatDateKey, formatPlanDate, formatDuration, hashNumber,
   seededShuffle, recallMatchHint
 } from './utils.js?v=4';
-import { CHANGELOG } from './changelog.js?v=22';
+import { CHANGELOG } from './changelog.js?v=23';
+import { desktopBridge, desktopCardMarkup, appLabelFromSemver } from './desktop.js?v=1';
 import { closeAnyCustomPopover, registerCustomPopover, releaseCustomPopover, setFontSuggestions, setDefaultFonts } from './controls.js?v=1';
 import { generateCrosswordLayout } from './crossword.js?v=1';
 import { createHighlightPalette, HIGHLIGHT_COLORS, HIGHLIGHT_DEFAULT_NAMES, guideHighlightColor, highlightCustomVars } from './highlights.js?v=1';
@@ -55,7 +56,7 @@ import { createTools } from './tools.js?v=1';
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v239';
+  const APP_VERSION = 'v240';
   const DIAGNOSTIC_LEN = 15;
   let certDialogGroup = null;
   let certDialogEntryDomain = null; // domain ('certs'|'programs') the bottom "Current track" switcher is scoped to
@@ -2310,7 +2311,7 @@ import { createTools } from './tools.js?v=1';
       ${state.settings.showAllTracks !== false ? allTracksSectionMarkup() : ''}`;
   }
 
-  // "Good evening, Chandler" — the name is whatever's set as the display name, else the account's
+  // "Good evening, Sam" — the name is whatever's set as the display name, else the account's
   // own name; with neither, just the time-of-day greeting.
   function greetingLine() {
     const hour = new Date().getHours();
@@ -5731,7 +5732,7 @@ import { createTools } from './tools.js?v=1';
   }
 
   function settingsCardApp(isPrograms) {
-    return `<article class="settings-card" data-section="about" data-card="app"><h3>App</h3><p>Running <strong>${APP_VERSION}</strong>. ${CONCEPTS.length} concepts and ${(LABS || []).length} labs loaded for this track.</p><div class="setting-row"><div><strong>Check for updates</strong><small>Reload from within the app instead of closing and reopening it.</small></div><button class="secondary small" data-action="check-for-updates">${icon('rotate')} Check now</button></div>${deferredInstallPrompt ? `<div class="setting-row"><div><strong>Install as an app</strong><small>Opens in its own window, with a taskbar/dock icon — not just a browser tab.</small></div><button class="secondary small" data-action="install-app">${icon('download')} Install</button></div>` : ''}<div class="setting-row stacked"><div><strong>App icon</strong><small>Changes the browser tab icon right away. If you've already installed the app, remove and reinstall it to pick up the new taskbar/dock icon too — that part is cached by your OS, not something a website can refresh on its own.</small></div><div class="avatar-style-row">${ICON_SHAPES.map(shape => `<button type="button" class="avatar-style-btn ${(metaState.appIconShape || 'cap') === shape ? 'active' : ''}" data-action="set-app-icon-shape" data-shape="${shape}" title="${shape}">${icon(shape)}</button>`).join('')}</div><div class="swatch-row">${ICON_COLORS.map(c => `<button type="button" class="swatch-btn ${(metaState.appIconColor || '#2dd4bf') === c ? 'active' : ''}" style="background:${c}" data-action="set-app-icon-color" data-color="${c}" title="${c}"></button>`).join('')}${customSwatchMarkup('icon', 'Choose a custom app icon color', metaState.appIconColor || '#2dd4bf', ICON_COLORS)}</div></div><div class="setting-row"><div><strong>What's new</strong><small>Recent changes to the app.</small></div><button class="secondary small" data-action="open-whats-new">${icon('sparkles')} View</button></div><div class="setting-row"><div><strong>Keyboard shortcuts</strong><small>Everything you can do without the mouse. Press <kbd>?</kbd> any time.</small></div><button class="secondary small" data-action="open-shortcuts">${icon('keyboard')} View</button></div>${isPrograms ? '' : `<div class="setting-row"><div><strong>Replay the walkthrough</strong><small>The first-run intro and optional diagnostic.</small></div><button class="secondary small" data-action="replay-onboarding">${icon('repeat')} Replay</button></div>`}</article>`;
+    return `<article class="settings-card" data-section="about" data-card="app"><h3>App</h3><p>Running <strong>${APP_VERSION}</strong>. ${CONCEPTS.length} concepts and ${(LABS || []).length} labs loaded for this track.</p>${desktopBridge() ? '' : `<div class="setting-row"><div><strong>Check for updates</strong><small>Reload from within the app instead of closing and reopening it.</small></div><button class="secondary small" data-action="check-for-updates">${icon('rotate')} Check now</button></div>`}${deferredInstallPrompt ? `<div class="setting-row"><div><strong>Install as an app</strong><small>Opens in its own window, with a taskbar/dock icon — not just a browser tab.</small></div><button class="secondary small" data-action="install-app">${icon('download')} Install</button></div>` : ''}<div class="setting-row stacked"><div><strong>App icon</strong><small>Changes the browser tab icon right away. If you've already installed the app, remove and reinstall it to pick up the new taskbar/dock icon too — that part is cached by your OS, not something a website can refresh on its own.</small></div><div class="avatar-style-row">${ICON_SHAPES.map(shape => `<button type="button" class="avatar-style-btn ${(metaState.appIconShape || 'cap') === shape ? 'active' : ''}" data-action="set-app-icon-shape" data-shape="${shape}" title="${shape}">${icon(shape)}</button>`).join('')}</div><div class="swatch-row">${ICON_COLORS.map(c => `<button type="button" class="swatch-btn ${(metaState.appIconColor || '#2dd4bf') === c ? 'active' : ''}" style="background:${c}" data-action="set-app-icon-color" data-color="${c}" title="${c}"></button>`).join('')}${customSwatchMarkup('icon', 'Choose a custom app icon color', metaState.appIconColor || '#2dd4bf', ICON_COLORS)}</div></div><div class="setting-row"><div><strong>What's new</strong><small>Recent changes to the app.</small></div><button class="secondary small" data-action="open-whats-new">${icon('sparkles')} View</button></div><div class="setting-row"><div><strong>Keyboard shortcuts</strong><small>Everything you can do without the mouse. Press <kbd>?</kbd> any time.</small></div><button class="secondary small" data-action="open-shortcuts">${icon('keyboard')} View</button></div>${isPrograms ? '' : `<div class="setting-row"><div><strong>Replay the walkthrough</strong><small>The first-run intro and optional diagnostic.</small></div><button class="secondary small" data-action="replay-onboarding">${icon('repeat')} Replay</button></div>`}</article>`;
   }
 
   const SETTINGS_SECTIONS = [
@@ -5747,17 +5748,24 @@ import { createTools } from './tools.js?v=1';
     sidebar: 'sidebar navigation menu collapse icons order hide', dashboard: 'home greeting primary action start',
     accessibility: 'contrast colorblind motion reading dyslexia', learning: 'second chance sound focus fullscreen start page speed exam date celebrations',
     notifications: 'reminders alerts due', backup: 'export import restore reset download json', content: 'track scoring completed finished passed',
-    references: 'sources links objectives', app: 'version update install icon shortcuts onboarding walkthrough'
+    references: 'sources links objectives', app: 'version update install icon shortcuts onboarding walkthrough',
+    desktop: 'desktop windows app update updates upgrade download install restart release notes version data folder import existing legacy move web'
   };
   let settingsSection = (() => { try { return localStorage.getItem('cert-study-settings-tab') || 'appearance'; } catch { return 'appearance'; } })();
   let settingsQuery = '';
+
+  // Desktop app only: the "About and updates" card. In a browser there is no bridge, so it is empty.
+  function settingsCardDesktop() {
+    if (!desktopBridge()) return '';
+    return desktopCardMarkup({ state: desktopUpdateState, info: desktopInfo, dismissedVersion: desktopDismissedVersion, appVersion: APP_VERSION, icon, escapeHtml });
+  }
 
   function settingsCards() {
     const isPrograms = currentDomain() === 'programs';
     return [
       settingsCardProfile(isPrograms), settingsCardLook(isPrograms), settingsCardSidebar(), settingsCardDashboard(isPrograms),
       settingsCardAccessibility(isPrograms), settingsCardLearning(isPrograms), settingsCardNotifications(isPrograms),
-      settingsCardContent(isPrograms), settingsCardBackup(isPrograms), settingsCardReferences(isPrograms), settingsCardApp(isPrograms)
+      settingsCardContent(isPrograms), settingsCardBackup(isPrograms), settingsCardReferences(isPrograms), settingsCardApp(isPrograms), settingsCardDesktop()
     ];
   }
 
@@ -6843,6 +6851,7 @@ import { createTools } from './tools.js?v=1';
       toast('All progress was reset.', 'success', { label: 'Undo', run: () => { state = previousState; saveState(); renderRoute(); } });
     }
     if (action === 'check-for-updates') checkForUpdates();
+    if (action.startsWith('desktop-')) handleDesktopAction(action);
     if (action === 'retry-connection') retryConnection();
     if (action === 'open-cert-dialog') openCertDialog();
     if (action === 'open-exam-comparison') openExamComparisonDialog();
@@ -7024,6 +7033,8 @@ import { createTools } from './tools.js?v=1';
       renderRoute();
     }
     if (event.target.id === 'setting-notify-reviews') setNotifyReviews(event.target.checked);
+    if (event.target.id === 'setting-desktop-auto-check' && desktopBridge()) desktopBridge().setAutoCheck(event.target.checked);
+    if (event.target.id === 'setting-desktop-install-on-quit' && desktopBridge()) desktopBridge().setInstallOnQuit(event.target.checked);
     if (event.target.id === 'setting-accent-hex') {
       const raw = event.target.value.trim().replace(/^#?/, '#').toLowerCase();
       const expanded = /^#[0-9a-f]{3}$/.test(raw) ? `#${raw[1]}${raw[1]}${raw[2]}${raw[2]}${raw[3]}${raw[3]}` : raw;
@@ -7309,6 +7320,63 @@ import { createTools } from './tools.js?v=1';
   // triggers the exact same install→activate→skipWaiting→clients.claim→controllerchange chain
   // already wired up below, which independently shows the "A new version is ready" reload toast —
   // this function only needs to kick that off, not duplicate it.
+  // ---------- Desktop app (Windows) ----------
+  // Everything below is inert in a browser: desktopBridge() is null there.
+  let desktopInfo = null;
+  let desktopUpdateState = null;
+  let desktopDismissedVersion = null;
+  let desktopAnnouncedVersion = null;
+
+  function onDesktopUpdateState(next) {
+    desktopUpdateState = next;
+    if (currentRoute() === 'settings') refreshSettingsInPlace();
+    // A quiet note, once per version, when a check you did not start finds something.
+    if (next && next.status === 'available' && desktopAnnouncedVersion !== next.newVersion) {
+      desktopAnnouncedVersion = next.newVersion;
+      if (currentRoute() !== 'settings') toast(`${appLabelFromSemver(next.newVersion)} is available.`, 'info', { label: 'See details', run: () => navigate('settings') });
+    }
+  }
+
+  async function initDesktop() {
+    const bridge = desktopBridge();
+    if (!bridge) return;
+    try {
+      desktopInfo = await bridge.getInfo();
+      desktopUpdateState = await bridge.getUpdateState();
+      bridge.onUpdateState(onDesktopUpdateState);
+      document.documentElement.dataset.desktop = 'on';
+    } catch { return; }
+    if (desktopInfo && desktopInfo.firstRun && !desktopInfo.importOfferDismissed) {
+      toast('Moving from the web version? You can bring your progress with you.', 'info', { label: 'Import', run: () => handleDesktopAction('desktop-import-data') });
+      try { bridge.dismissImportOffer(); } catch {}
+    }
+  }
+
+  async function handleDesktopAction(action) {
+    const bridge = desktopBridge();
+    if (!bridge) return;
+    try {
+      if (action === 'desktop-check-updates') { onDesktopUpdateState({ ...(desktopUpdateState || {}), status: 'checking' }); const next = await bridge.checkForUpdates(); if (next) onDesktopUpdateState(next); }
+      else if (action === 'desktop-download-update') { const next = await bridge.downloadUpdate(); if (next) onDesktopUpdateState(next); }
+      else if (action === 'desktop-cancel-download') { const next = await bridge.cancelDownload(); if (next) onDesktopUpdateState(next); }
+      else if (action === 'desktop-dismiss-update') { desktopDismissedVersion = desktopUpdateState && desktopUpdateState.newVersion; if (currentRoute() === 'settings') refreshSettingsInPlace(); }
+      else if (action === 'desktop-install-update') { toast('Backing up your progress, then restarting to install…', 'info'); await bridge.installUpdate(); }
+      else if (action === 'desktop-release-notes') await bridge.openReleaseNotes();
+      else if (action === 'desktop-open-data-folder') await bridge.openDataFolder();
+      else if (action === 'desktop-import-data') {
+        try { await flushSaves(); } catch {}
+        const result = await bridge.importExistingData();
+        if (!result || result.cancelled) return;
+        if (!result.ok) { toast(result.error || 'That folder could not be imported.', 'error'); return; }
+        const c = result.copied;
+        toast(`Imported ${c.accounts} account${c.accounts === 1 ? '' : 's'}, ${c.backups} backup${c.backups === 1 ? '' : 's'} and ${c.files} shelf file${c.files === 1 ? '' : 's'}. Reloading…`);
+        setTimeout(() => location.reload(), 1500);
+      }
+    } catch {
+      toast('That did not work. Nothing was changed.', 'error');
+    }
+  }
+
   async function checkForUpdates() {
     if (!('serviceWorker' in navigator)) { location.reload(); return; }
     try {
@@ -7326,6 +7394,7 @@ import { createTools } from './tools.js?v=1';
     // call this boot makes will read/write — must happen before initState(), which is the
     // first of those calls.
     await fetchProfiles();
+    initDesktop();
     let storedCert = null;
     try { storedCert = localStorage.getItem(ACTIVE_CERT_KEY); } catch {}
     loadCertData(CERT_REGISTRY.some(item => item.id === storedCert) ? storedCert : CERT_REGISTRY[0].id);

@@ -6,6 +6,12 @@
 // this app having per-build version numbers at all, so their "version" is the date instead —
 // still real history, just not tagged with a build number the way later entries are.
 export const CHANGELOG = [
+  { version: 'v240', date: 'November 2026', title: 'Cert Study for Windows', items: [
+    "New: Cert Study is now also a Windows app you can install. It runs the same study content offline, keeps your progress in your own user folder, and can update itself from inside the app when a new version is published.",
+    "New: in the Windows app, Settings has an About and updates card. Check for updates, see what changed, download only when you choose, then restart to install. Your progress is backed up first, and an update never touches your data.",
+    "New: in the Windows app, Settings can import an existing Cert Study folder (all accounts, your PIN, automatic backups and your document shelf) in one step. It copies and never moves, and backs up what is already there first.",
+    "Changed: a brand-new install now starts with a neutral account called Student instead of a personal name. Existing accounts keep their names. The web version works exactly as before."
+  ] },
   { version: 'v239', date: 'November 2026', title: 'Network+ questions checked against the official exam objectives', items: [
     "Reviewed: all 489 Network+ questions were read against CompTIA's N10-009 exam objectives (version 4.0, copyright 2023) and its acronym list, which I could read in full this time. CompTIA's own site would not serve the PDF, so this is a copy of the same document hosted elsewhere. CompTIA says its lists are not exhaustive, so the real exam can go a little beyond them. N10-009 is still the current Network+ exam on CompTIA's site, with up to 90 questions in 90 minutes and 720 to pass.",
     "Removed 23 questions: 19 that the N10-009 objectives no longer cover (the POP3 and IMAP ports, BiDi, CWDM and DWDM optics, the 66 and 110 blocks, MAN, PAN and CAN network sizes, DSL, cable broadband, leased lines, metro Ethernet, colocation, 802.3x flow control, and the cable certifier, TDR and OTDR) and 4 that repeated a question you already have (a dirty fiber connector, wrong DNS settings, a port in the wrong VLAN, and gathering information). Your saved progress is untouched; anything you had studied from a removed question simply stops appearing.",

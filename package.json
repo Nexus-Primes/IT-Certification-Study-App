@@ -1,0 +1,68 @@
+{
+  "name": "cert-study",
+  "productName": "Cert Study",
+  "version": "240.0.0",
+  "description": "Cert Study: an unofficial, offline IT certification study app.",
+  "author": "Nexus-Primes",
+  "private": true,
+  "main": "desktop/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test:desktop": "node --test desktop/tests/*.test.js",
+    "sync-version": "node scripts/sync-version.js",
+    "check-version": "node scripts/sync-version.js --check",
+    "dist": "node scripts/sync-version.js && electron-builder --win --publish never"
+  },
+  "build": {
+    "appId": "com.nexusprimes.certstudy",
+    "productName": "Cert Study",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "desktop/**/*",
+      "!desktop/tests/**",
+      "app/**/*",
+      "data/*.js",
+      "assets/**/*",
+      "build/icon.png",
+      "manifest.webmanifest",
+      "service-worker.js",
+      "package.json"
+    ],
+    "asarUnpack": [],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowElevation": false,
+      "deleteAppDataOnUninstall": false,
+      "artifactName": "Cert-Study-Setup-${version}.${ext}"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Nexus-Primes",
+        "repo": "IT-Certification-Study-App",
+        "releaseType": "release"
+      }
+    ]
+  },
+  "devDependencies": {
+    "electron": "^45.3.3",
+    "electron-builder": "^26.18.0"
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.11"
+  }
+}

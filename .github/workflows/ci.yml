@@ -1,0 +1,34 @@
+name: CI
+
+# Quick checks on every push and pull request. The full browser suite (about 16 minutes) runs on
+# release tags and by hand; see release.yml.
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quick:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Version numbers agree
+        run: node scripts/sync-version.js --check
+      - name: Static and server checks (Python)
+        run: python tests/run.py static server
+      - name: Desktop backend, parity, updater and import tests (Node)
+        run: npm run test:desktop
