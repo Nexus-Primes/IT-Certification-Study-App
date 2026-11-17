@@ -53,6 +53,6 @@ async function launchApp({ dataDir, env = {}, exe, args = [] } = {}) {
   };
   const consoleErrors = () => events.filter(e => (e.method === 'Runtime.exceptionThrown') || (e.method === 'Runtime.consoleAPICalled' && e.params.type === 'error') || (e.method === 'Log.entryAdded' && e.params.entry.level === 'error')).map(e => JSON.stringify(e.params).slice(0, 300));
   const close = async () => { try { ws.close(); } catch { /* closed */ } child.kill(); await sleep(300); };
-  return { data, port, send, evaluate, waitFor, consoleErrors, close, child, getLog: () => log };
+  return { events, data, port, send, evaluate, waitFor, consoleErrors, close, child, getLog: () => log };
 }
 module.exports = { launchApp, sleep, APP_ROOT };

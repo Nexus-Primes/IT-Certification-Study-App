@@ -4,8 +4,8 @@ import {
   daysBetween, formatDate, formatDateKey, formatPlanDate, formatDuration, hashNumber,
   seededShuffle, recallMatchHint
 } from './utils.js?v=4';
-import { CHANGELOG } from './changelog.js?v=23';
-import { desktopBridge, desktopCardMarkup, appLabelFromSemver } from './desktop.js?v=1';
+import { CHANGELOG } from './changelog.js?v=24';
+import { desktopBridge, desktopCardMarkup, appLabelFromSemver } from './desktop.js?v=2';
 import { closeAnyCustomPopover, registerCustomPopover, releaseCustomPopover, setFontSuggestions, setDefaultFonts } from './controls.js?v=1';
 import { generateCrosswordLayout } from './crossword.js?v=1';
 import { createHighlightPalette, HIGHLIGHT_COLORS, HIGHLIGHT_DEFAULT_NAMES, guideHighlightColor, highlightCustomVars } from './highlights.js?v=1';
@@ -20,7 +20,7 @@ import {
 } from './color.js?v=1';
 import { ACCENT_THEMES, THEME_PRESETS, presetById, TRACK_DEFAULT_ACCENTS, accentVarsFor } from './themes.js?v=1';
 import { defaultTools, toolsFromRemote } from './tools-core.js?v=1';
-import { createTools } from './tools.js?v=1';
+import { createTools } from './tools.js?v=2';
 
 (function () {
   'use strict';
@@ -56,7 +56,7 @@ import { createTools } from './tools.js?v=1';
   // Bump alongside service-worker.js's CACHE constant whenever a meaningful change ships —
   // this is the one place a person can glance at (footer, or Settings) to confirm which build
   // is actually loaded, distinct from the per-asset ?v= cache-busting numbers.
-  const APP_VERSION = 'v240';
+  const APP_VERSION = 'v241';
   const DIAGNOSTIC_LEN = 15;
   let certDialogGroup = null;
   let certDialogEntryDomain = null; // domain ('certs'|'programs') the bottom "Current track" switcher is scoped to
@@ -5811,7 +5811,7 @@ import { createTools } from './tools.js?v=1';
 
   function renderSettings() {
     const cards = settingsCards();
-    main.innerHTML = `<div class="section-head"><div><h2>Settings and local data</h2><p>Your progress is saved locally on this machine by the local server, in its own file per account. Export a backup before wiping that file or moving to another computer.</p></div></div>
+    main.innerHTML = `<div class="section-head"><div><h2>Settings and local data</h2><p>${desktopBridge() ? 'Your progress is saved on this computer, in its own file per account. Use Back up everything (in About) before moving to another computer.' : 'Your progress is saved locally on this machine by the local server, in its own file per account. Export a backup before wiping that file or moving to another computer.'}</p></div></div>
       <div class="settings-toolbar">
         <div class="domain-tabs" role="tablist" aria-label="Settings sections" style="margin:0">${[{ id: 'all', label: 'All' }, ...SETTINGS_SECTIONS].map(s => `<button class="tab-button" type="button" role="tab" data-action="settings-tab" data-section="${s.id}" aria-selected="false">${s.label}</button>`).join('')}</div>
         <div class="field settings-search"><label class="visually-hidden" for="settings-search">Search settings</label><input id="settings-search" type="search" placeholder="Search settings…" value="${escapeHtml(settingsQuery)}" autocomplete="off"></div>
@@ -5965,7 +5965,7 @@ import { createTools } from './tools.js?v=1';
       if (!quiet) { renderRoute(); toast(`Backup saved to backup/${data.filename}`); }
       return true;
     } catch {
-      toast('Could not save the backup file — is the local server still running?', 'error');
+      toast(desktopBridge() ? 'Could not save the backup file.' : 'Could not save the backup file — is the local server still running?', 'error');
       return false;
     }
   }
@@ -6286,7 +6286,7 @@ import { createTools } from './tools.js?v=1';
     items.push({ type: 'Action', label: `Switch to ${state.settings.theme === 'dark' ? 'light' : 'dark'} theme`, icon: state.settings.theme === 'dark' ? 'sun' : 'moon', run: () => setThemeMode(state.settings.theme === 'dark' ? 'light' : 'dark') });
     items.push({ type: 'Action', label: 'Keyboard shortcuts', sub: 'Every shortcut in one place', icon: 'keyboard', run: () => openShortcuts() });
     items.push({ type: 'Action', label: sidebarRailOn() ? 'Expand the sidebar' : 'Collapse the sidebar to icons', sub: 'Icon-only sidebar', icon: 'sidebar', run: () => toggleSidebarRail() });
-    items.push({ type: 'Action', label: 'Print or save this page as a PDF', sub: 'Opens the browser print dialog', icon: 'download', run: () => window.print() });
+    items.push({ type: 'Action', label: 'Print or save this page as a PDF', sub: desktopBridge() ? 'Opens the print dialog (choose Microsoft Print to PDF to save a PDF)' : 'Opens the browser print dialog', icon: 'download', run: () => window.print() });
     // One entry per sidebar page, worded for what it will do right now.
     navDefaults().forEach(group => group.items.forEach(item => {
       if (domain === 'programs' && CERTS_ONLY_ROUTES.has(item.route)) return;
@@ -7344,6 +7344,8 @@ import { createTools } from './tools.js?v=1';
       desktopInfo = await bridge.getInfo();
       desktopUpdateState = await bridge.getUpdateState();
       bridge.onUpdateState(onDesktopUpdateState);
+      // Help > Check for updates in the window menu jumps to the card and checks.
+      bridge.onMenu(action => { if (action === 'updates') { settingsSection = 'about'; navigate('settings'); if (currentRoute() === 'settings') renderRoute(); handleDesktopAction('desktop-check-updates'); } });
       document.documentElement.dataset.desktop = 'on';
     } catch { return; }
     if (desktopInfo && desktopInfo.firstRun && !desktopInfo.importOfferDismissed) {
@@ -7362,6 +7364,12 @@ import { createTools } from './tools.js?v=1';
       else if (action === 'desktop-dismiss-update') { desktopDismissedVersion = desktopUpdateState && desktopUpdateState.newVersion; if (currentRoute() === 'settings') refreshSettingsInPlace(); }
       else if (action === 'desktop-install-update') { toast('Backing up your progress, then restarting to install…', 'info'); await bridge.installUpdate(); }
       else if (action === 'desktop-release-notes') await bridge.openReleaseNotes();
+      else if (action === 'desktop-backup-everything') {
+        try { await flushSaves(); } catch {}
+        const result = await bridge.backupEverything();
+        if (!result || result.cancelled) return;
+        toast(result.ok ? `Backed up ${result.files} file${result.files === 1 ? '' : 's'} to ${result.folder}` : (result.error || 'The backup could not be made.'), result.ok ? 'success' : 'error');
+      }
       else if (action === 'desktop-open-data-folder') await bridge.openDataFolder();
       else if (action === 'desktop-import-data') {
         try { await flushSaves(); } catch {}

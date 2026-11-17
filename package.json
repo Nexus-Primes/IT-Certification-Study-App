@@ -1,7 +1,7 @@
 {
   "name": "cert-study",
   "productName": "Cert Study",
-  "version": "240.0.0",
+  "version": "241.0.0",
   "description": "Cert Study: an unofficial, offline IT certification study app.",
   "author": "Nexus-Primes",
   "private": true,

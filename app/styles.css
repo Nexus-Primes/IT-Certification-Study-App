@@ -1535,3 +1535,6 @@ select.t-input { padding-right: 24px; }
 .net-3cx summary { display: flex; align-items: center; gap: 8px; font-weight: 700; cursor: pointer; }
 .net-3cx summary svg { width: 15px; height: 15px; flex: 0 0 auto; color: var(--primary); }
 .net-3cx-notes { margin: 8px 0 0 18px; padding: 0; color: var(--muted); }
+
+/* Desktop app: the document shelf while files are dragged over it */
+.tool-page.drop-target { outline: 2px dashed var(--primary); outline-offset: 6px; border-radius: 12px; }

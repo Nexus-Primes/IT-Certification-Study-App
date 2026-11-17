@@ -5,6 +5,7 @@
 // listing (GET /api/files) and serves each file, so this page needs the current server.py.
 
 import { debounce } from './tools-core.js?v=1';
+import { desktopBridge } from './desktop.js?v=2';
 
 const KINDS = [
   ['PDF', /\.pdf$/i], ['Documents', /\.(docx?|odt|rtf|txt|md)$/i], ['Spreadsheets', /\.(xlsx?|ods|csv|tsv)$/i], ['Slides', /\.(pptx?|odp)$/i],
@@ -92,7 +93,7 @@ export function createShelf(ctx) {
   function body() {
     if (!listing) return `<p class="muted-line">Loading…</p>`;
     if (listing.error) return `<div class="notice">${icon('alert')}<span>${esc(listing.error)}</span></div>`;
-    if (!listing.files.length) return `<div class="empty-state"><div><span class="stat-icon" style="margin:0 auto 12px">${icon('folder')}</span><h3>${listing.folderExists ? 'The files folder is empty' : 'No files folder yet'}</h3><p>Put your PDFs and other documents in the <code>files</code> folder inside the study app's folder${listing.folderExists ? '' : ' (create it if it is missing)'}, then press Refresh. Subfolders are listed too.</p></div></div>`;
+    if (!listing.files.length) return `<div class="empty-state"><div><span class="stat-icon" style="margin:0 auto 12px">${icon('folder')}</span><h3>${desktopBridge() ? 'Your shelf is empty' : listing.folderExists ? 'The files folder is empty' : 'No files folder yet'}</h3><p>${desktopBridge() ? 'Press <strong>Add files</strong>, or drag documents onto this window. They are copied into your shelf; the originals are left where they are.' : `Put your PDFs and other documents in the <code>files</code> folder inside the study app's folder${listing.folderExists ? '' : ' (create it if it is missing)'}, then press Refresh. Subfolders are listed too.`}</p></div></div>`;
     return `<div class="shelf-controls print-hide"><div class="field net-search"><label for="sh-search">Search names, tags, and notes</label><input id="sh-search" type="search" data-sh="search" value="${esc(view.query)}" placeholder="3CX firewall…" autocomplete="off"></div>
         <div class="field"><label for="sh-sort">Sort by</label><select id="sh-sort" data-sh="sort" data-enhanced="1"><option value="name"${view.sort === 'name' ? ' selected' : ''}>Name</option><option value="newest"${view.sort === 'newest' ? ' selected' : ''}>Newest</option><option value="largest"${view.sort === 'largest' ? ' selected' : ''}>Largest</option></select></div></div>
       <div id="sh-filters" class="print-hide">${tagBarHtml()}</div><div id="sh-list" style="margin-top:14px">${listHtml()}</div>`;
@@ -108,7 +109,7 @@ export function createShelf(ctx) {
       listing = await res.json();
       if (!Array.isArray(listing.files)) throw new Error('shape');
     } catch {
-      listing = { error: 'The document shelf could not read the files folder. If you have just updated the app, restart the study server (close its window and run server.py again) so it picks up the new listing.' };
+      listing = { error: desktopBridge() ? 'The document shelf could not read your files. Restart the app and try again.' : 'The document shelf could not read the files folder. If you have just updated the app, restart the study server (close its window and run server.py again) so it picks up the new listing.' };
     }
     paintBody();
   }
@@ -116,13 +117,34 @@ export function createShelf(ctx) {
   function render() {
     main.innerHTML = `<div class="tool-page" id="sh-root">
       <div class="section-head"><div><h2>Document shelf</h2><p>Your PDFs and other reference files from the <code>files</code> folder, searchable and tagged. Tags and notes are saved with your account; the files are never copied or changed.</p></div>
-        <div class="button-row"><button class="secondary small" data-sh="refresh">Refresh</button></div></div>
+        <div class="button-row">${desktopBridge() ? `<button class="primary small" data-sh="add-files">${icon('upload')} Add files…</button><button class="secondary small" data-sh="open-folder">${icon('folder')} Open files folder</button>` : ''}<button class="secondary small" data-sh="refresh">Refresh</button></div></div>
       <section class="panel"><div class="panel-body" id="sh-body" style="padding-top:20px">${body()}</div></section></div>`;
     wire(document.getElementById('sh-root'));
     load();
   }
 
+  async function reportAdded(result) {
+    if (!result || result.cancelled) return;
+    if (!result.ok) { toast('Those files could not be added.', 'error'); return; }
+    const n = result.added.length; const skipped = result.skipped.length;
+    toast(n ? `Added ${n} file${n === 1 ? '' : 's'} to your shelf.${skipped ? ` ${skipped} skipped.` : ''}` : 'Nothing was added.', n ? 'success' : 'info');
+    listing = null; paintBody(); load();
+  }
+  async function addFromPicker() { const b = desktopBridge(); if (!b) return; try { reportAdded(await b.addShelfFiles()); } catch { toast('Those files could not be added.', 'error'); } }
+  async function addDropped(files) {
+    const b = desktopBridge(); if (!b) return;
+    const paths = b.pathsForFiles(files);
+    if (!paths.length) return;
+    try { reportAdded(await b.addShelfPaths(paths)); } catch { toast('Those files could not be added.', 'error'); }
+  }
+
   function wire(root) {
+    if (desktopBridge()) {
+      // Drop documents anywhere on the page to add them. Files only; the originals stay where they are.
+      root.addEventListener('dragover', event => { if (event.dataTransfer && [...event.dataTransfer.types].includes('Files')) { event.preventDefault(); root.classList.add('drop-target'); } });
+      root.addEventListener('dragleave', event => { if (!root.contains(event.relatedTarget)) root.classList.remove('drop-target'); });
+      root.addEventListener('drop', event => { root.classList.remove('drop-target'); if (event.dataTransfer && event.dataTransfer.files.length) { event.preventDefault(); addDropped(event.dataTransfer.files); } });
+    }
     const save = debounce(() => saveTools(), 400);
     const addTag = (path, text) => {
       const tag = normalizeTag(text); if (!tag) return false;
@@ -136,6 +158,8 @@ export function createShelf(ctx) {
       const el = event.target.closest('[data-sh]'); if (!el) return;
       const act = el.dataset.sh;
       if (act === 'refresh') { listing = null; paintBody(); load(); }
+      else if (act === 'add-files') addFromPicker();
+      else if (act === 'open-folder') { const b = desktopBridge(); if (b) b.openFilesFolder(); }
       else if (act === 'tag-remove') { const m = entry(el.dataset.path); m.tags = m.tags.filter(t => t !== el.dataset.tag); tidy(el.dataset.path); saveTools(); paintList(); }
       else if (act === 'tag-filter') { view.tag = el.dataset.tag; paintList(); }
       else if (act === 'kind-filter') { view.kind = el.dataset.kind; paintList(); }

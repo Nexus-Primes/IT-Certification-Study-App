@@ -1,7 +1,7 @@
 'use strict';
 // The only door between the page and the desktop shell. It exposes a few named actions, nothing
 // else: no Node, no file paths from the page, no generic "send anything" channel.
-const { contextBridge, ipcRenderer } = require('electron');
+const { contextBridge, ipcRenderer, webUtils } = require('electron');
 
 const invoke = channel => (...args) => ipcRenderer.invoke(channel, ...args);
 
@@ -18,6 +18,17 @@ contextBridge.exposeInMainWorld('certStudyDesktop', {
   openDataFolder: invoke('desktop:open-data-folder'),
   importExistingData: invoke('desktop:import-data'),
   dismissImportOffer: invoke('desktop:dismiss-import-offer'),
+  openFilesFolder: invoke('desktop:open-files-folder'),
+  addShelfFiles: invoke('desktop:add-shelf-files'),            // native file picker, copies into the shelf
+  addShelfPaths: invoke('desktop:add-shelf-paths'),            // files dropped on the window
+  pathsForFiles: files => Array.from(files || []).map(f => { try { return webUtils.getPathForFile(f); } catch { return ''; } }).filter(Boolean),
+  backupEverything: invoke('desktop:backup-everything'),
+  onMenu(callback) {
+    if (typeof callback !== 'function') return () => {};
+    const listener = (_event, action) => callback(action);
+    ipcRenderer.on('desktop:menu', listener);
+    return () => ipcRenderer.removeListener('desktop:menu', listener);
+  },
   openReleaseNotes: invoke('desktop:open-release-notes'),
   onUpdateState(callback) {
     if (typeof callback !== 'function') return () => {};

@@ -8,7 +8,7 @@ import { createNetwork, findNetworkWarnings } from './tools-network.js?v=1';
 import { createCalculators } from './tools-calc.js?v=1';
 import { createTimers, countdownRemaining, describeSpan, eventRemaining } from './tools-timers.js?v=1';
 import { createTextTools } from './tools-text.js?v=1';
-import { createShelf } from './tools-shelf.js?v=1';
+import { createShelf } from './tools-shelf.js?v=2';
 
 export const TOOL_ROUTES = ['runbooks', 'netsheet', 'calculators', 'timers', 'shelf', 'texttools'];
 

@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const { createBackend } = require('./backend');
 const { createUpdater } = require('./updater');
 const { importLegacyData, safetyBackup, pruneSafetyBackups } = require('./import-data');
+const { addToShelf, backupEverything } = require('./files');
 
 const APP_ORIGIN = 'app://cert-study';
 const REPO_URL = 'https://github.com/Nexus-Primes/IT-Certification-Study-App';
@@ -107,7 +108,7 @@ function start() {
       { label: 'File', submenu: [{ role: 'quit', label: 'Exit' }] },
       { label: 'Edit', submenu: [{ role: 'undo' }, { role: 'redo' }, { type: 'separator' }, { role: 'cut' }, { role: 'copy' }, { role: 'paste' }, { role: 'selectAll' }] },
       { label: 'View', submenu: [{ role: 'resetZoom' }, { role: 'zoomIn' }, { role: 'zoomOut' }, { type: 'separator' }, { role: 'togglefullscreen' }, ...(dev ? [{ type: 'separator' }, { role: 'reload' }, { role: 'toggleDevTools' }] : [])] },
-      { label: 'Help', submenu: [{ label: 'Release notes and downloads', click: () => shell.openExternal(`${REPO_URL}/releases`) }, { label: 'Report a problem', click: () => shell.openExternal(`${REPO_URL}/issues`) }] }
+      { label: 'Help', submenu: [{ label: 'Check for updates\u2026', click: () => { if (mainWindow) mainWindow.webContents.send('desktop:menu', 'updates'); } }, { type: 'separator' }, { label: 'Release notes and downloads', click: () => shell.openExternal(`${REPO_URL}/releases`) }, { label: 'Report a problem', click: () => shell.openExternal(`${REPO_URL}/issues`) }] }
     ]));
   }
 
@@ -154,6 +155,22 @@ updaterCacheDirName: cert-study-updater
     handleIpc('desktop:open-data-folder', async () => { await shell.openPath(DATA_ROOT); return { ok: true }; });
     handleIpc('desktop:open-release-notes', () => { shell.openExternal(`${REPO_URL}/releases`); return { ok: true }; });
     handleIpc('desktop:dismiss-import-offer', () => { updater.settings.importOfferDismissed = true; require('./updater').saveSettings(SETTINGS_FILE, updater.settings); return { ok: true }; });
+    handleIpc('desktop:open-files-folder', async () => { fs.mkdirSync(backend.paths.FILES_DIR, { recursive: true }); await shell.openPath(backend.paths.FILES_DIR); return { ok: true }; });
+    handleIpc('desktop:add-shelf-files', async () => {
+      const pick = process.env.CERT_STUDY_TEST_PICK_FILES
+        ? { canceled: false, filePaths: JSON.parse(process.env.CERT_STUDY_TEST_PICK_FILES) }
+        : await dialog.showOpenDialog(mainWindow, { title: 'Add documents to the shelf', properties: ['openFile', 'multiSelections'] });
+      if (pick.canceled || !pick.filePaths.length) return { ok: false, cancelled: true };
+      return addToShelf({ dataRoot: DATA_ROOT, sources: pick.filePaths });
+    });
+    handleIpc('desktop:add-shelf-paths', paths => addToShelf({ dataRoot: DATA_ROOT, sources: paths }));
+    handleIpc('desktop:backup-everything', async () => {
+      const pick = process.env.CERT_STUDY_TEST_BACKUP_DIR
+        ? { canceled: false, filePaths: [process.env.CERT_STUDY_TEST_BACKUP_DIR] }
+        : await dialog.showOpenDialog(mainWindow, { title: 'Choose where to save a backup of everything', message: 'A dated folder is created inside the one you choose.', properties: ['openDirectory', 'createDirectory'] });
+      if (pick.canceled || !pick.filePaths[0]) return { ok: false, cancelled: true };
+      return backupEverything({ dataRoot: DATA_ROOT, destDir: pick.filePaths[0] });
+    });
     handleIpc('desktop:import-data', async () => {
       const pick = process.env.CERT_STUDY_TEST_IMPORT_DIR
         ? { canceled: false, filePaths: [process.env.CERT_STUDY_TEST_IMPORT_DIR] }

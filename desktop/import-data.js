@@ -111,4 +111,4 @@ function importLegacyData({ sourceDir, dataRoot, now = new Date() }) {
   return { ok: true, copied, safetyBackup: safety };
 }
 
-module.exports = { importLegacyData, inspect, safetyBackup, pruneSafetyBackups, isInside, stamp };
+module.exports = { importLegacyData, inspect, safetyBackup, pruneSafetyBackups, isInside, stamp, copyTree };
