@@ -69,9 +69,9 @@ def _read_json_file(path, fallback):
 
 def _default_registry():
     # First run: the account already sitting in progress.json (real practice history, real
-    # name) becomes the "default" account named Chandler — nothing about that file moves,
+    # name) becomes the "default" account named Student — nothing about that file moves,
     # renames, or changes shape; this registry entry is purely a new pointer at it.
-    return {"pinHash": None, "profiles": [{"id": DEFAULT_PROFILE_ID, "name": "Chandler", "createdAt": None}]}
+    return {"pinHash": None, "profiles": [{"id": DEFAULT_PROFILE_ID, "name": "Student", "createdAt": None}]}
 
 
 def load_registry():

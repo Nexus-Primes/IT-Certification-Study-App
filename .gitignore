@@ -12,3 +12,16 @@ files/
 # Python
 __pycache__/
 *.pyc
+
+# Desktop app build output and tooling
+node_modules/
+dist/
+release/
+out/
+
+# Windows shortcuts hold local paths
+*.lnk
+
+# Personal data moved out of the project for safekeeping
+Cert Study legacy data/
+*.bundle
