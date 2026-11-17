@@ -41,8 +41,8 @@ async function launchApp({ dataDir, env = {}, exe, args = [] } = {}) {
   };
   const send = (method, params = {}) => new Promise((res, rej) => { const n = ++id; pending.set(n, { res, rej }); ws.send(JSON.stringify({ id: n, method, params })); });
   await send('Runtime.enable'); await send('Log.enable'); await send('Page.enable');
-  const evaluate = async (expression) => {
-    const r = await send('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true });
+  const evaluate = async (expression, { userGesture = false } = {}) => {
+    const r = await send('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true, userGesture });
     if (r.exceptionDetails) throw new Error(r.exceptionDetails.exception ? r.exceptionDetails.exception.description : r.exceptionDetails.text);
     return r.result.value;
   };

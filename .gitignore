@@ -25,3 +25,5 @@ out/
 # Personal data moved out of the project for safekeeping
 Cert Study legacy data/
 *.bundle
+
+release*/

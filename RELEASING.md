@@ -18,7 +18,7 @@ updater cannot see drafts.
 4. **Test.**
    - `python tests/run.py` (about 16 minutes, drives headless Edge; needs `pip install pymupdf` for the PDF checks)
    - `npm run test:desktop` (backend, Python/Node parity, updater, legacy-data import)
-   - `node desktop/tests/e2e/smoke.js` and `node desktop/tests/e2e/update-feed.js` (the real app and the real updater against a local fake feed)
+   - `node desktop/tests/e2e/smoke.js`, `update-feed.js` and `browser-apis.js` (the real app and the real updater against a local fake feed), and, after `npm run dist`, `install-update.js` (a real install, in-app update and uninstall in a throwaway folder; see its header)
 5. **Commit, tag, push:**
    ```
    git add -A

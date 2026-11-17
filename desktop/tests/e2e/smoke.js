@@ -7,7 +7,7 @@ const path = require('path');
 const { launchApp } = require('./launch');
 
 (async () => {
-  const app = await launchApp();
+  const app = await launchApp(process.env.CERT_STUDY_EXE ? { exe: process.env.CERT_STUDY_EXE } : {});
   const results = [];
   const ok = (name) => { results.push(name); console.log('  ok   ' + name); };
   try {
