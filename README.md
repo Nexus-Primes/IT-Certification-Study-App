@@ -37,8 +37,11 @@ The Windows app keeps everything in `%APPDATA%\Cert Study\` (Settings has an **O
 button): progress for each account, the account list and PIN, automatic backups, and the document
 shelf. Uninstalling the app leaves this folder alone.
 
-Coming from the web version? Settings has **Import existing Cert Study data**, and **Back up everything** copies your whole setup to a folder or USB drive. In the Document shelf, **Add files** (or dragging files onto the window) copies documents in. Pick your old
+Coming from the web version? Settings has **Import existing Cert Study data**: pick your old
 `study-app` folder and every account, PIN, backup and shelf file is copied in (never moved).
+**Back up everything** does the reverse, copying your whole setup into a dated folder, for example on
+a USB drive. In the Document shelf, **Add files** (or dragging files onto the window) copies
+documents in.
 
 ## Run it from source
 
